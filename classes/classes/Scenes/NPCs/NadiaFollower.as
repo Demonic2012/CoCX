@@ -950,5 +950,6 @@ private function BelisaNadiaTalk():void {
 	BelisaFollower.BelisaQuestComp = true;
 	endEncounter();
 }
+
 	}
 }
