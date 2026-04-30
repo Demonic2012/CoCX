@@ -10,7 +10,7 @@ public function TransformationLib() {
 //	printAlchemyTable();
 }
 
-// VARIABLE NAMING: <body part> + <what to do> + <flavour>
+// VARIABLE NAMING: <body part> + <what to do> + <flavor>
 // e.g. "grow 9th fox tail" -> TailFox9
 // Complex TF should have prefix "Complex" or "Tiered" and can have any naming
 
@@ -108,6 +108,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const AntennaeMantis: Transformation 		= antennae.AntennaeMantis.registerTf(AS_ANTENNAE, AE_MANTIS);
 	public const AntennaeSeaDragon: Transformation 		= antennae.AntennaeSeaDragon.registerTf(AS_ANTENNAE, AE_SEA_DRAGON);
     public const AntennaeMoth: Transformation           = antennae.AntennaeMoth.registerTf(AS_ANTENNAE, AE_MOTH);
+    public const AntennaeAutomata: Transformation       = antennae.AntennaeAutomata.registerTf(AS_ANTENNAE, AE_AUTOMATA);
 
 //ARMS
 //======================================================================================================================
@@ -160,7 +161,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const ArmsPhoenix: Transformation 			= arms.ArmsPhoenix.registerTf(AS_ARMS, AE_PHOENIX);
 	public const ArmsPig: Transformation 				= arms.ArmsPig.registerTf(AS_ARMS, AE_PIG);
 	public const ArmsPlant: Transformation 				= arms.ArmsPlant.registerTf(AS_ARMS, AE_PLANT);
-	public const ArmsPlant2: Transformation 			= arms.ArmsPlant2.registerTf(AS_ARMS, AE_YGGDRASIL);
+	public const ArmsPlant2: Transformation 			= arms.ArmsPlant2.registerTf(AS_ARMS, AE_PLANT);
 	public const ArmsRaccoon: Transformation 			= arms.ArmsRaccoon.registerTf(AS_ARMS, AE_RACCOON);
 	public const ArmsRaiju: Transformation 				= arms.ArmsRaiju.registerTf(AS_ARMS, AE_RAIJU);
 	public const ArmsRaijuPaws: Transformation 			= arms.ArmsRaijuPaws.registerTf(AS_ARMS, AE_RAIJU);
@@ -187,6 +188,14 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const ArmsReindeer: Transformation 			= arms.ArmsReindeer.registerTf(AS_ARMS, AE_REINDEER);
     public const ArmsMoth: Transformation               = arms.ArmsMoth.registerTf(AS_ARMS, AE_MOTH);
     public const ArmsSatyr: Transformation              = arms.ArmsSatyr.registerTf(AS_ARMS, AE_SATYR);
+    public const ArmsTroll: Transformation              = arms.ArmsTroll.registerTf(AS_ARMS, AE_TROLL);
+    public const ArmsGlacialTroll: Transformation       = arms.ArmsGlacialTroll.registerTf(AS_ARMS, AE_GLACIAL_TROLL);
+    public const ArmsShroom: Transformation       		= arms.ArmsShroom.registerTf(AS_ARMS, AE_MYCONID);
+    public const ArmsMechanicalDoll: Transformation 	= arms.ArmsMechanicalDoll.registerTf(AS_ARMS, AE_AUTOMATA);
+    public const ArmsYggdrasil: Transformation 			= arms.ArmsYggdrasil.registerTf(AS_ARMS, AE_YGGDRASIL);
+    public const ArmsWerespider: Transformation 		= arms.ArmsWerespider.registerTf(AS_ARMS, AE_WERESPIDER);
+    public const ArmsMarilith: Transformation 			= arms.ArmsMarilith.registerTf(AS_ARMS, AE_MARILITH);
+    public const ArmsHollow: Transformation 			= arms.ArmsHollow.registerTf(AS_ARMS, AE_HOLLOW)
 
 
 //ASS
@@ -263,7 +272,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
     public const RemoveLactation:Transformation 		= breasts.RemoveLactation;
     public const NipplesNoColor:Transformation 			= breasts.NipplesNoColor;
     public const NipplesBlack:Transformation 			= breasts.NipplesBlack.registerTfMultiple(AS_NIPPLES, AE_SPIDER, AE_SAND_TRAP);
-    public const NipplesGlowing:Transformation 			= breasts.NipplesGlowing.registerTf(AS_NIPPLES, AE_CAVE_WYRM);
+    public const NipplesGlowing:Transformation 			= breasts.NipplesGlowing.registerTfMultiple(AS_NIPPLES, AE_CAVE_WYRM, AE_MYCONID);
 	public const NipplessHumanize:Transformation        = new TransformationGroupAll("Humanize nipples",[NipplesUnfuck, NipplesNoColor]).registerTf(AS_NIPPLES, AE_HUMAN);
 
 
@@ -341,6 +350,11 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const CockAnyInsect:Transformation = CockInsect(-1).registerTfMultiple(AS_COCK, AE_BEE, AE_ANT, AE_MANTIS);
     public function CockArigean(cock:int = 0, length:Number = 5.5, thickness:Number = 1): Transformation 		{ return cocks.CockArigean(cock, length, thickness); }
 	public const CockAnyArigean:Transformation = CockArigean(-1).registerTf(AS_COCK, AE_ARIGEAN);
+    public function CockShroom(cock:int = 0, length:Number = 5.5, thickness:Number = 1): Transformation 		{ return cocks.CockShroom(cock, length, thickness); }
+	public const CockAnyShroom:Transformation = CockShroom(-1).registerTf(AS_COCK, AE_MYCONID);
+    public function CockAutomata(cock:int = 0, length:Number = 5.5, thickness:Number = 1): Transformation 		{ return cocks.CockAutomata(cock, length, thickness); }
+	public const CockAnyAutomata:Transformation = CockArigean(-1).registerTf(AS_COCK, AE_AUTOMATA);
+    public function CockBarometz(cock:int = 0, length:Number = 5.5, thickness:Number = 1): Transformation 		{ return cocks.CockBarometz(cock, length, thickness); }
     public function GrowKnot(cock:int = 0, crit:Number = 1, mod:Number = 1, div:Number = 20): Transformation 	{ return cocks.GrowKnot(cock, crit, mod, div); }
     public function CockChangeType(type:CockTypesEnum, grow:Boolean, oneByOne:Boolean=false):Transformation 	{ return cocks.CockChangeType(type, grow, oneByOne); }
 
@@ -356,51 +370,57 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 //                                                                                                                    ==
 //======================================================================================================================
 	public var ears:EarsTransformations = new EarsTransformations();
-	public const EarsHuman: Transformation 		= ears.EarsHuman.registerTf(AS_EARS, AE_HUMAN);
-	public const EarsLion: Transformation 		= ears.EarsLion.registerTf(AS_EARS, AE_LION);
-	public const EarsDisplacer: Transformation 	= ears.EarsDisplacer.registerTf(AS_EARS, AE_DISPLACER_BEAST);
-	public const EarsCat: Transformation 		= ears.EarsCat.registerTfMultiple(AS_EARS, AE_CAT, AE_DRAGONNE);
-	public const EarsRedPanda: Transformation 	= ears.EarsRedPanda.registerTf(AS_EARS, AE_RED_PANDA);
-	public const EarsHorse: Transformation 		= ears.EarsHorse.registerTf(AS_EARS, AE_HORSE);
-	public const EarsKirin: Transformation 		= ears.EarsKirin.registerTf(AS_EARS, AE_KIRIN);
-	public const EarsPig: Transformation 		= ears.EarsPig.registerTf(AS_EARS, AE_PIG);
-	public const EarsVampire: Transformation 	= ears.EarsVampire.registerTf(AS_EARS, AE_VAMPIRE);
-	public const EarsBat: Transformation 		= ears.EarsBat.registerTf(AS_EARS, AE_BAT);
-	public const EarsWeasel: Transformation 	= ears.EarsWeasel.registerTf(AS_EARS, AE_WEASEL);
-	public const EarsOni: Transformation 		= ears.EarsOni.registerTf(AS_EARS, AE_ONI);
-	public const EarsElven: Transformation 		= ears.EarsElven.registerTf(AS_EARS, AE_ELF);
-	public const EarsGoat: Transformation 		= ears.EarsGoat.registerTf(AS_EARS, AE_GOAT);
-	public const EarsCow: Transformation 		= ears.EarsCow.registerTf(AS_EARS, AE_COW);
-	public const EarsDraconic: Transformation 	= ears.EarsDraconic.registerTf(AS_EARS, AE_DRAGON);
-	public const EarsSnake: Transformation 		= ears.EarsSnake.registerTf(AS_EARS, AE_SNAKE);
-	public const EarsOrca: Transformation 		= ears.EarsOrca.registerTf(AS_EARS, AE_ORCA);
-	public const EarsOrca2: Transformation 		= ears.EarsOrca2.registerTf(AS_EARS, AE_ORCA);
-	public const EarsLizard: Transformation 	= ears.EarsLizard.registerTf(AS_EARS, AE_LIZARD);
-	public const EarsInsect: Transformation 	= ears.EarsInsect.registerTf(AS_EARS, AE_BEE);
-	public const EarsFox: Transformation 		= ears.EarsFox.registerTf(AS_EARS, AE_FOX);
-	public const EarsElfin: Transformation 		= ears.EarsElfin.registerTfMultiple(AS_EARS, AE_IMP, AE_GOBLIN);
-	public const EarsWolf: Transformation 		= ears.EarsWolf.registerTf(AS_EARS, AE_WOLF);
-	public const EarsDog: Transformation 		= ears.EarsDog.registerTf(AS_EARS, AE_DOG);
-	public const EarsGremlin: Transformation 	= ears.EarsGremlin.registerTf(AS_EARS, AE_GREMLIN);
-	public const EarsShark: Transformation 		= ears.EarsShark.registerTfMultiple(AS_EARS, AE_SHARK, AE_WERESHARK);
-	public const EarsCaveWyrm: Transformation 	= ears.EarsCaveWyrm.registerTf(AS_EARS, AE_CAVE_WYRM);
-	public const EarsBunny: Transformation 		= ears.EarsBunny.registerTf(AS_EARS, AE_BUNNY);
-	public const EarsAvian: Transformation 		= ears.EarsAvian.registerTf(AS_EARS, AE_AVIAN);
-	public const EarsGryphon: Transformation 	= ears.EarsGryphon.registerTf(AS_EARS, AE_GRYPHON);
-	public const EarsKangaroo: Transformation 	= ears.EarsKangaroo.registerTf(AS_EARS, AE_KANGAROO);
-	public const EarsRaiju: Transformation 		= ears.EarsRaiju.registerTf(AS_EARS, AE_RAIJU);
-	public const EarsSquirrel: Transformation 	= ears.EarsSquirrel.registerTf(AS_EARS, AE_SQUIRREL);
-	public const EarsRaccoon: Transformation 	= ears.EarsRaccoon.registerTf(AS_EARS, AE_RACCOON);
-	public const EarsMouse: Transformation 		= ears.EarsMouse.registerTf(AS_EARS, AE_MOUSE);
-	public const EarsFerret: Transformation 	= ears.EarsFerret.registerTf(AS_EARS, AE_FERRET);
-	public const EarsYeti: Transformation 		= ears.EarsYeti.registerTf(AS_EARS, AE_YETI);
-	public const EarsBear: Transformation 		= ears.EarsBear.registerTf(AS_EARS, AE_BEAR);
-	public const EarsPanda: Transformation 		= ears.EarsPanda.registerTf(AS_EARS, AE_PANDA);
-	public const EarsMelkie: Transformation 	= ears.EarsMelkie.registerTf(AS_EARS, AE_MELKIE);
-	public const EarsDeer: Transformation 		= ears.EarsDeer.registerTfMultiple(AS_EARS, AE_DEER, AE_REINDEER);
-	public const EarsBig: Transformation        = ears.EarsBig.registerTfMultiple(AS_EARS, AE_GOBLIN, AE_IMP);
-	public const EarsFennecFox: Transformation 	= ears.EarsFennecFox.registerTf(AS_EARS, AE_WEREFOX);
-	public const EarsJackal: Transformation 	= ears.EarsJackal.registerTf(AS_EARS, AE_ANUBIS);
+	public const EarsHuman: Transformation 				= ears.EarsHuman.registerTf(AS_EARS, AE_HUMAN);
+	public const EarsLion: Transformation 				= ears.EarsLion.registerTf(AS_EARS, AE_LION);
+	public const EarsDisplacer: Transformation 			= ears.EarsDisplacer.registerTf(AS_EARS, AE_DISPLACER_BEAST);
+	public const EarsCat: Transformation 				= ears.EarsCat.registerTfMultiple(AS_EARS, AE_CAT, AE_DRAGONNE);
+	public const EarsRedPanda: Transformation 			= ears.EarsRedPanda.registerTf(AS_EARS, AE_RED_PANDA);
+	public const EarsHorse: Transformation 				= ears.EarsHorse.registerTf(AS_EARS, AE_HORSE);
+	public const EarsKirin: Transformation 				= ears.EarsKirin.registerTf(AS_EARS, AE_KIRIN);
+	public const EarsPig: Transformation 				= ears.EarsPig.registerTf(AS_EARS, AE_PIG);
+	public const EarsVampire: Transformation 			= ears.EarsVampire.registerTf(AS_EARS, AE_VAMPIRE);
+	public const EarsBat: Transformation 				= ears.EarsBat.registerTf(AS_EARS, AE_BAT);
+	public const EarsWeasel: Transformation 			= ears.EarsWeasel.registerTf(AS_EARS, AE_WEASEL);
+	public const EarsOni: Transformation 				= ears.EarsOni.registerTf(AS_EARS, AE_ONI);
+	public const EarsElven: Transformation 				= ears.EarsElven.registerTf(AS_EARS, AE_ELF);
+	public const EarsGoat: Transformation 				= ears.EarsGoat.registerTf(AS_EARS, AE_GOAT);
+	public const EarsCow: Transformation 				= ears.EarsCow.registerTf(AS_EARS, AE_COW);
+	public const EarsDraconic: Transformation 			= ears.EarsDraconic.registerTf(AS_EARS, AE_DRAGON);
+	public const EarsSnake: Transformation 				= ears.EarsSnake.registerTf(AS_EARS, AE_SNAKE);
+	public const EarsOrca: Transformation 				= ears.EarsOrca.registerTf(AS_EARS, AE_ORCA);
+	public const EarsOrca2: Transformation 				= ears.EarsOrca2.registerTf(AS_EARS, AE_ORCA);
+	public const EarsLizard: Transformation 			= ears.EarsLizard.registerTf(AS_EARS, AE_LIZARD);
+	public const EarsInsect: Transformation 			= ears.EarsInsect.registerTfMultiple(AS_EARS, AE_BEE, AE_ANT, AE_MANTIS);
+	public const EarsFox: Transformation 				= ears.EarsFox.registerTf(AS_EARS, AE_FOX);
+	public const EarsElfin: Transformation 				= ears.EarsElfin.registerTfMultiple(AS_EARS, AE_IMP, AE_GOBLIN);
+	public const EarsWolf: Transformation 				= ears.EarsWolf.registerTf(AS_EARS, AE_WOLF);
+	public const EarsDog: Transformation 				= ears.EarsDog.registerTf(AS_EARS, AE_DOG);
+	public const EarsGremlin: Transformation 			= ears.EarsGremlin.registerTf(AS_EARS, AE_GREMLIN);
+	public const EarsShark: Transformation 				= ears.EarsShark.registerTfMultiple(AS_EARS, AE_SHARK, AE_WERESHARK);
+	public const EarsCaveWyrm: Transformation 			= ears.EarsCaveWyrm.registerTf(AS_EARS, AE_CAVE_WYRM);
+	public const EarsBunny: Transformation 				= ears.EarsBunny.registerTf(AS_EARS, AE_BUNNY);
+	public const EarsAvian: Transformation 				= ears.EarsAvian.registerTf(AS_EARS, AE_AVIAN);
+	public const EarsGryphon: Transformation 			= ears.EarsGryphon.registerTf(AS_EARS, AE_GRYPHON);
+	public const EarsKangaroo: Transformation 			= ears.EarsKangaroo.registerTf(AS_EARS, AE_KANGAROO);
+	public const EarsRaiju: Transformation 				= ears.EarsRaiju.registerTf(AS_EARS, AE_RAIJU);
+	public const EarsSquirrel: Transformation 			= ears.EarsSquirrel.registerTf(AS_EARS, AE_SQUIRREL);
+	public const EarsRaccoon: Transformation 			= ears.EarsRaccoon.registerTf(AS_EARS, AE_RACCOON);
+	public const EarsMouse: Transformation 				= ears.EarsMouse.registerTf(AS_EARS, AE_MOUSE);
+	public const EarsFerret: Transformation 			= ears.EarsFerret.registerTf(AS_EARS, AE_FERRET);
+	public const EarsYeti: Transformation 				= ears.EarsYeti.registerTf(AS_EARS, AE_YETI);
+	public const EarsBear: Transformation 				= ears.EarsBear.registerTf(AS_EARS, AE_BEAR);
+	public const EarsPanda: Transformation 				= ears.EarsPanda.registerTf(AS_EARS, AE_PANDA);
+	public const EarsMelkie: Transformation 			= ears.EarsMelkie.registerTf(AS_EARS, AE_MELKIE);
+	public const EarsDeer: Transformation 				= ears.EarsDeer.registerTfMultiple(AS_EARS, AE_DEER, AE_REINDEER);
+	public const EarsBig: Transformation        		= ears.EarsBig.registerTfMultiple(AS_EARS, AE_GOBLIN, AE_IMP);
+	public const EarsFennecFox: Transformation 			= ears.EarsFennecFox.registerTf(AS_EARS, AE_WEREFOX);
+	public const EarsJackal: Transformation 			= ears.EarsJackal.registerTf(AS_EARS, AE_ANUBIS);
+	public const EarsTroll: Transformation 				= ears.EarsTroll.registerTf(AS_EARS, AE_TROLL);
+	public const EarsGlacialTroll: Transformation 		= ears.EarsGlacialTroll.registerTf(AS_EARS, AE_GLACIAL_TROLL);
+	public const EarsAutomataFennecFox: Transformation 	= ears.EarsAutomataFennecFox.registerTf(AS_EARS, AE_AUTOMATA);
+	public const EarsAutomataCat: Transformation 		= ears.EarsAutomataCat.registerTf(AS_EARS, AE_AUTOMATA);
+	public const EarsAutomataBunny: Transformation 		= ears.EarsAutomataBunny.registerTf(AS_EARS, AE_AUTOMATA);
+	public const EarsBarometz: Transformation 			= ears.EarsBarometz.registerTf(AS_EARS, AE_BAROMETZ);
 
 
 //EYES
@@ -456,6 +476,12 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
     public const EyesArigean: Transformation		= eyes.EyesArigean.registerTf(AS_EYES, AE_ARIGEAN);
     public const EyesDemon: Transformation			= eyes.EyesDemon.registerTf(AS_EYES, AE_DEMON);
     public const EyesMoth: Transformation           = eyes.EyesMoth.registerTf(AS_EYES, AE_MOTH);
+    public const EyesGremlin: Transformation        = eyes.EyesGremlin.registerTf(AS_EYES, AE_GREMLIN);
+    public const EyesAutomata: Transformation       = eyes.EyesAutomata.registerTf(AS_EYES, AE_AUTOMATA);
+	public const EyesYggdrasil: Transformation		= eyes.EyesYggdrasil.registerTf(AS_EYES, AE_YGGDRASIL);
+	public const EyesMarilith: Transformation		= eyes.EyesMarilith.registerTf(AS_EYES, AE_MARILITH);
+	public const EyesWerespider: Transformation		= eyes.EyesWerespider.registerTf(AS_EYES, AE_WERESPIDER);
+	public const EyesHollow: Transformation			= eyes.EyesHollow.registerTf(AS_EYES, AE_HOLLOW);
 //=================================
 //                                =
 //   EYE COLORS                   =
@@ -468,7 +494,9 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const EyesAtlachColors: Transformation 			= eyes.EyesAtlachColors;
 	public const EyesOniColors: Transformation	 			= eyes.EyesOniColors;
 	public const EyesPlantColors: Transformation 			= eyes.EyesPlantColors;
+	public const EyesBarometzColors: Transformation 		= eyes.EyesBarometzColors;
 	public const EyesGoblinColors: Transformation 			= eyes.EyesGoblinColors;
+	public const EyesGremlinColors: Transformation 			= eyes.EyesGremlinColors;
 	public const EyesRaijuColors: Transformation 			= eyes.EyesRaijuColors;
 	public const EyesKirinColors: Transformation 			= eyes.EyesKirinColors;
 	public const EyesKamaitachiColors: Transformation 		= eyes.EyesKamaitachiColors;
@@ -479,6 +507,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const EyesFireSnailColors: Transformation 		= eyes.EyesFireSnailColors;
 	public const EyesFenrirColor: Transformation 			= eyes.EyesFenrirColor;
 	public const EyesDemonColors: Transformation 			= eyes.EyesDemonColors;
+	public const EyesYggdrasilColors: Transformation 		= eyes.EyesYggdrasilColors;
 	public const EyesSpiderAndMutagenInt: Transformation 	= eyes.EyesSpiderAndMutagenInt;
 
 
@@ -558,6 +587,11 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
     public const FaceAbyssalShark: Transformation 		= face.FaceAbyssalShark.registerTf(AS_FACE, AE_ABYSSAL_SHARK);
     public const FaceArigean: Transformation 			= face.FaceArigean.registerTf(AS_FACE, AE_ARIGEAN);
     public const FaceDemon: Transformation 				= face.FaceDemon.registerTf(AS_FACE, AE_DEMON);
+    public const FaceTroll: Transformation 				= face.FaceTroll.registerTf(AS_FACE, AE_TROLL);
+    public const FaceGlacialTroll: Transformation 		= face.FaceGlacialTroll.registerTf(AS_FACE, AE_GLACIAL_TROLL);
+    public const FaceAutomata: Transformation 			= face.FaceAutomata.registerTf(AS_FACE, AE_AUTOMATA);
+    public const FaceWerespiderFangs: Transformation 	= face.FaceWerespiderFangs.registerTf(AS_FACE, AE_WERESPIDER);
+    public const FaceHollowMask: Transformation 		= face.FaceHollowMask.registerTf(AS_FACE, AE_HOLLOW);
 
 
 //GILLS
@@ -588,29 +622,31 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 //                                                                                                                    ==
 //======================================================================================================================
     public var hair: HairTransformations = new HairTransformations();
-    public const HairHuman: Transformation 		= hair.HairHuman.registerTf(AS_HAIR, AE_HUMAN);
-    public const HairFeather: Transformation 	= hair.HairFeather.registerTfMultiple(AS_HAIR, AE_AVIAN, AE_GRYPHON);
-    public const HairGorgon: Transformation 	= hair.HairGorgon.registerTf(AS_HAIR, AE_GORGON);
-    public const HairSilky: Transformation 		= hair.HairSilky.registerTf(AS_HAIR, AE_ELF);
-    public const HairStorm: Transformation 		= hair.HairStorm.registerTfMultiple(AS_HAIR, AE_RAIJU, AE_KIRIN, AE_THUNDERBIRD).withAlchemyNames("StormHair","Storm hair");
-    public const HairBurning: Transformation 	= hair.HairBurning.registerTfMultiple(AS_HAIR, AE_FIRE_SNAIL, AE_HELLCAT, AE_HINEZUMI).withAlchemyNames("BurningHair", "Burning hair");
-    public const HairSnowy: Transformation 		= hair.HairSnowy.registerTf(AS_HAIR, AE_YUKI_ONNA);
-    public const HairLeaf: Transformation 		= hair.HairLeaf.registerTfMultiple(AS_HAIR, AE_PLANT, AE_ALRAUNE, AE_YGGDRASIL);
-    public const HairGrass: Transformation 		= hair.HairGrass.registerTfMultiple(AS_HAIR, AE_PLANT, AE_ALRAUNE, AE_YGGDRASIL);
-    public const HairGoo: Transformation 		= hair.HairGoo.registerTf(AS_HAIR, AE_GOO);
-    public const HairGhost: Transformation 		= hair.HairGhost.registerTf(AS_HAIR, AE_GHOST);
-    public const HairRatatoskr: Transformation 	= hair.HairRatatoskr.registerTf(AS_HAIR, AE_SQUIRREL);
-    public const HairWindswept: Transformation 	= hair.HairWindswept.registerTf(AS_HAIR, AE_KAMAITACHI);
-    public const HairWild: Transformation 		= hair.HairWild;
-    public const HairAnemone: Transformation 	= hair.HairAnemone.registerTf(AS_HAIR, AE_ANEMONE);
-    public const HairFluffy: Transformation 	= hair.HairFluffy.registerTf(AS_HAIR, AE_YETI);
-    public const HairCrazy: Transformation 		= hair.HairCrazy.registerTf(AS_HAIR, AE_GREMLIN);
-    public const HairPrismatic: Transformation 	= hair.HairPrismatic.registerTf(AS_HAIR, AE_SEA_DRAGON);
-    public const HairQuill: Transformation 		= hair.HairQuill.registerTf(AS_HAIR, AE_ECHIDNA);
-    public const HairFairy: Transformation 		= hair.HairFairy.registerTf(AS_HAIR, AE_FAIRY);
-    public const HairCow: Transformation 		= hair.HairCow.registerTf(AS_HAIR, AE_COW);
-    public const HairDripping: Transformation 	= hair.HairDripping.registerTf(AS_HAIR, AE_SAND_WORM);
-    public const HairPeafowlFeather: Transformation = hair.HairPeafowlFeather.registerTf(AS_HAIR, AE_PEAFOWL);
+    public const HairHuman: Transformation 				= hair.HairHuman.registerTf(AS_HAIR, AE_HUMAN);
+    public const HairFeather: Transformation 			= hair.HairFeather.registerTfMultiple(AS_HAIR, AE_AVIAN, AE_GRYPHON);
+    public const HairGorgon: Transformation 			= hair.HairGorgon.registerTf(AS_HAIR, AE_GORGON);
+    public const HairSilky: Transformation 				= hair.HairSilky.registerTf(AS_HAIR, AE_ELF);
+    public const HairStorm: Transformation 				= hair.HairStorm.registerTfMultiple(AS_HAIR, AE_RAIJU, AE_KIRIN, AE_THUNDERBIRD).withAlchemyNames("StormHair","Storm hair");
+    public const HairBurning: Transformation 			= hair.HairBurning.registerTfMultiple(AS_HAIR, AE_FIRE_SNAIL, AE_HELLCAT, AE_HINEZUMI).withAlchemyNames("BurningHair", "Burning hair");
+    public const HairSnowy: Transformation 				= hair.HairSnowy.registerTf(AS_HAIR, AE_YUKI_ONNA);
+    public const HairLeaf: Transformation 				= hair.HairLeaf.registerTfMultiple(AS_HAIR, AE_PLANT, AE_ALRAUNE, AE_YGGDRASIL);
+    public const HairGrass: Transformation 				= hair.HairGrass.registerTfMultiple(AS_HAIR, AE_PLANT, AE_ALRAUNE, AE_YGGDRASIL);
+    public const HairGoo: Transformation 				= hair.HairGoo.registerTf(AS_HAIR, AE_GOO);
+    public const HairGhost: Transformation 				= hair.HairGhost.registerTf(AS_HAIR, AE_GHOST);
+    public const HairRatatoskr: Transformation 			= hair.HairRatatoskr.registerTf(AS_HAIR, AE_SQUIRREL);
+    public const HairWindswept: Transformation 			= hair.HairWindswept.registerTf(AS_HAIR, AE_KAMAITACHI);
+    public const HairWild: Transformation 				= hair.HairWild;
+    public const HairAnemone: Transformation 			= hair.HairAnemone.registerTf(AS_HAIR, AE_ANEMONE);
+    public const HairFluffy: Transformation 			= hair.HairFluffy.registerTf(AS_HAIR, AE_YETI);
+    public const HairCrazy: Transformation 				= hair.HairCrazy.registerTf(AS_HAIR, AE_GREMLIN);
+    public const HairPrismatic: Transformation 			= hair.HairPrismatic.registerTf(AS_HAIR, AE_SEA_DRAGON);
+    public const HairQuill: Transformation 				= hair.HairQuill.registerTf(AS_HAIR, AE_ECHIDNA);
+    public const HairFairy: Transformation 				= hair.HairFairy.registerTf(AS_HAIR, AE_FAIRY);
+    public const HairCow: Transformation 				= hair.HairCow.registerTf(AS_HAIR, AE_COW);
+    public const HairDripping: Transformation 			= hair.HairDripping.registerTf(AS_HAIR, AE_SAND_WORM);
+    public const HairPeafowlFeather: Transformation		= hair.HairPeafowlFeather.registerTf(AS_HAIR, AE_PEAFOWL);
+    public const HairGlowingMushroom: Transformation	= hair.HairGlowingMushroom.registerTf(AS_HAIR, AE_MYCONID);
+    public const HairGlowingSynthetic: Transformation	= hair.HairGlowingSynthetic.registerTf(AS_HAIR, AE_AUTOMATA);
     public function HairChangeColor(colors: /*String*/ Array): Transformation { return hair.HairChangeColor(colors); }
 
 
@@ -649,6 +685,11 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
     public const HornsUshiOni: Transformation 				= horns.HornsUshiOni.registerTf(AS_HORNS, AE_USHI_ONI);
     public const HornsJiangshi: Transformation 				= horns.HornsJiangshi.registerTf(AS_HORNS, AE_JIANGSHI);
     public const HornsArchImp: Transformation 				= horns.HornsArchImp.registerTf(AS_HORNS, AE_IMP);
+    public const HornsShroomHeadcap: Transformation 		= horns.HornsShroomHeadcap.registerTf(AS_HORNS, AE_MYCONID);
+    public const HornsAutomataHeadset: Transformation 		= horns.HornsAutomataHeadset.registerTf(AS_HORNS, AE_AUTOMATA);
+    public const HornsRam: Transformation 					= horns.HornsRam.registerTf(AS_HORNS, AE_BAROMETZ);
+    public const HornsVerdantRam: Transformation 			= horns.HornsVerdantRam.registerTf(AS_HORNS, AE_BAROMETZ);
+    public const HornsHollow: Transformation 				= horns.HornsHollow.registerTf(AS_HORNS, AE_HOLLOW);
 
 
 //LOWER BODY ( LEGS )
@@ -727,6 +768,9 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
     public function LowerBodyGryphon(legCount: int = undefined): Transformation 				{ return lowerBody.LowerBodyGryphon(legCount); }
 	public const LowerBodyGryphonBipedal:Transformation = LowerBodyGryphon(2).registerTf(AS_LEGS, AE_GRYPHON);
     public function LowerBodyGryphonToggle(toggleTaur:Boolean = false): Transformation 			{ return lowerBody.LowerBodyGryphon(player.legCount, toggleTaur); }
+	public function LowerBodyBarometz(legCount: int = undefined): Transformation 				{ return lowerBody.LowerBodyBarometz(legCount); }
+	public const LowerBodyBarometzBipedal:Transformation = LowerBodyBarometz(2).registerTf(AS_LEGS, AE_BAROMETZ);
+    public function LowerBodyBarometzToggle(toggleTaur:Boolean = false): Transformation 		{ return lowerBody.LowerBodyBarometz(player.legCount, toggleTaur); }
     public const LowerBodyAnt: Transformation 					= lowerBody.LowerBodyAnt.registerTf(AS_LEGS, AE_ANT);
     public const LowerBodyAtlach: Transformation 				= lowerBody.LowerBodyAtlach.registerTf(AS_LEGS, AE_ATLACH_NACHA);
     public const LowerBodyAtlachNacha: Transformation 			= lowerBody.LowerBodyAtlachNacha.registerTf(AS_LEGS, AE_ATLACH_NACHA);
@@ -781,7 +825,13 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
     public const LowerBodyYgddrasilRootClaws: Transformation	= lowerBody.LowerBodyYgddrasilRootClaws.registerTf(AS_LEGS, AE_YGGDRASIL);
     public const LowerBodyArigean: Transformation 				= lowerBody.LowerBodyArigean.registerTf(AS_LEGS, AE_ARIGEAN);
     public const LowerBodyDemonGracefulFeet: Transformation 	= lowerBody.LowerBodyDemonGracefulFeet.registerTf(AS_LEGS, AE_DEMON);
-    public const LowerBodyMoth:Transformation                   = lowerBody.LowerBodyMoth.registerTf(AS_LEGS, AE_MOTH)
+    public const LowerBodyMoth:Transformation                   = lowerBody.LowerBodyMoth.registerTf(AS_LEGS, AE_MOTH);
+    public const LowerBodyTroll:Transformation                  = lowerBody.LowerBodyTroll.registerTf(AS_LEGS, AE_TROLL);
+    public const LowerBodyGlacialTroll:Transformation           = lowerBody.LowerBodyGlacialTroll.registerTf(AS_LEGS, AE_GLACIAL_TROLL);
+    public const LowerBodyShroomShirt:Transformation           	= lowerBody.LowerBodyShroomShirt.registerTf(AS_LEGS, AE_MYCONID);
+    public const LowerBodyMechanicalDoll:Transformation         = lowerBody.LowerBodyMechanicalDoll.registerTf(AS_LEGS, AE_AUTOMATA);
+    public const LowerBodyWerespider: Transformation 			= lowerBody.LowerBodyWerespider.registerTf(AS_LEGS, AE_WERESPIDER);
+    public const LowerBodyHollow: Transformation 				= lowerBody.LowerBodyHollow.registerTf(AS_LEGS, AE_HOLLOW);
 
 
 //OTHER ( SPECIAL )
@@ -844,6 +894,8 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const RearBodyArigeanAuraRed: Transformation 	= rearBody.RearBodyArigeanAuraRed.registerTf(AS_REAR, AE_ARIGEAN);
 	public const RearBodyArigeanAuraYellow: Transformation 	= rearBody.RearBodyArigeanAuraYellow.registerTf(AS_REAR, AE_ARIGEAN);
     public const RearBodyMoth: Transformation               = rearBody.RearBodyMoth.registerTf(AS_REAR, AE_MOTH);
+    public const RearBodyMyconidBraAndNeck: Transformation  = rearBody.RearBodyMyconidBraAndNeck.registerTf(AS_REAR, AE_MYCONID);
+    public const RearBodySerialCode: Transformation         = rearBody.RearBodySerialCode.registerTf(AS_REAR, AE_AUTOMATA);
 
 
 //SKIN
@@ -874,7 +926,8 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 			AE_AZAZEL, AE_BEAR, AE_BUNNY, AE_CAT, AE_CERBERUS, AE_COW, AE_DEER, AE_REINDEER, AE_DISPLACER_BEAST, AE_ECHIDNA, AE_FERRET, AE_FOX, AE_HELLCAT, AE_HORSE, AE_KAMAITACHI, AE_KANGAROO, AE_MELKIE, AE_MOUSE, AE_NEKOMATA, AE_PIG, AE_RACCOON, AE_SQUIRREL, AE_RED_PANDA, AE_SPHINX, AE_WENDIGO, AE_WEREWOLF, AE_WOLF, AE_YETI)
 																	   .withAlchemyNames("Fur", "Fur");
     public function SkinScales(coverage: int = Skin.COVERAGE_COMPLETE, options: * = null): Transformation 				{ return skin.SkinScales(coverage, options); }
-	public const SkinScalesToFull:Transformation = SkinScales().registerTfMultiple(AS_SKIN,
+    public function SkinScalesGradual(coverage: int = Skin.COVERAGE_COMPLETE, options: * = null): Transformation 				{ return skin.SkinScalesGradual(coverage, options); }
+	public const SkinScalesGradualToFull:Transformation = SkinScalesGradual().registerTfMultiple(AS_SKIN,
 			AE_APOPHIS, AE_COUATL, AE_CAVE_WYRM, AE_GORGON, AE_HYDRA, AE_LIZARD, AE_SNAKE, AE_PHOENIX, AE_SALAMANDER)
 															   .withAlchemyNames("Scale", "Scales");
     public function SkinDragonScales(coverage: int = Skin.COVERAGE_COMPLETE, options: * = null): Transformation 		{ return skin.SkinDragonScales(coverage, options); }
@@ -894,6 +947,9 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
     public function SkinGoo(coverage: int = Skin.COVERAGE_COMPLETE, type: int = 0, options: * = null): Transformation 	{ return skin.SkinGoo(coverage, type, options); }
 	public const SkinGooToFull:Transformation = SkinGoo().registerTfMultiple(AS_SKIN, AE_GOO, AE_DARK_SLIME)
 														 .withAlchemyNames("Goo", "Goo");
+    public function SkinSteel(coverage: int = Skin.COVERAGE_COMPLETE, type: int = 0, options: * = null): Transformation 	{ return skin.SkinSteel(coverage, options); }
+	public const SkinSteelToFull:Transformation = SkinSteel().registerTf(AS_SKIN, AE_AUTOMATA)
+														 .withAlchemyNames("Steel", "Steel");
 
 
 //SKIN PATTERN
@@ -923,6 +979,10 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
     public const SkinPatternArchImp:Transformation 			    = skin.SkinPatternArchImp.registerTf(AS_SKIN_PATTERN, AE_IMP);
     public const SkinPatternAnubis:Transformation 			    = skin.SkinPatternAnubis.registerTf(AS_SKIN_PATTERN, AE_ANUBIS);
     public const SkinPatternBioluminescence:Transformation 		= skin.SkinPatternBioluminescence.registerTf(AS_SKIN_PATTERN, AE_ABYSSAL_SHARK);//TfMultiple(AS_
+    public const SkinPatternCircuit:Transformation 			    = skin.SkinPatternCircuit.registerTf(AS_SKIN_PATTERN, AE_AUTOMATA);
+    public const SkinPatternDemonicPleasureRune:Transformation	= skin.SkinPatternDemonicPleasureRune.registerTfMultiple(AS_SKIN_PATTERN, AE_DEMON, AE_MARILITH);
+    public const SkinPatternRunic:Transformation				= skin.SkinPatternRunic.registerTf(AS_SKIN_PATTERN, AE_BAROMETZ);
+    public const SkinPatternSoulforceScaring:Transformation		= skin.SkinPatternSoulforceScaring.registerTf(AS_SKIN_PATTERN, AE_HOLLOW);
 
 
 //TAIL
@@ -941,7 +1001,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const TailManticore: Transformation 					= tail.TailManticore.registerTf(AS_TAIL, AE_MANTICORE);
 	public const TailBurning: Transformation 					= tail.TailBurning.registerTf(AS_TAIL, AE_HINEZUMI);
 	public const TailTwinkasha: Transformation 					= tail.TailTwinkasha.registerTf(AS_TAIL, AE_HELLCAT);
-	public const TailCat: Transformation 						= tail.TailCat.registerTfMultiple(AS_TAIL, AE_CAT< AE_DRAGONNE);
+	public const TailCat: Transformation 						= tail.TailCat.registerTfMultiple(AS_TAIL, AE_CAT, AE_DRAGONNE);
 	public const TailNekomataOneThirdForked: Transformation 	= tail.TailNekomataOneThirdForked.registerTf(AS_TAIL, AE_NEKOMATA);
 	public const TailNekomataTwoThirdsForked: Transformation 	= tail.TailNekomataTwoThirdsForked.registerTf(AS_TAIL, AE_NEKOMATA);
 	public const TailCat2nd: Transformation 					= tail.TailCat2nd.registerTf(AS_TAIL, AE_NEKOMATA);
@@ -984,12 +1044,17 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const TailHydra: Transformation 						= tail.TailHydra.registerTf(AS_TAIL, AE_HYDRA);
 	public const TailSpinneretAtlach: Transformation 			= tail.TailSpinneretAtlach.registerTf(AS_TAIL, AE_ATLACH_NACHA);
 	public const TailDeer: Transformation 						= tail.TailDeer.registerTf(AS_TAIL, AE_DEER);
-	public const TailYgddrasil: Transformation 					= tail.TailYgddrasil.registerTf(AS_TAIL, AE_YGGDRASIL);
+	public const TailAnt: Transformation 						= tail.TailAnt.registerTf(AS_TAIL, AE_ANT);
 	public const TailAbyssalShark: Transformation 				= tail.TailAbyssalShark.registerTf(AS_TAIL, AE_ABYSSAL_SHARK);
 	public const TailArigeanGreen: Transformation 				= tail.TailArigeanGreen.registerTf(AS_TAIL, AE_ARIGEAN);
 	public const TailArigeanRed: Transformation 				= tail.TailArigeanRed.registerTf(AS_TAIL, AE_ARIGEAN);
 	public const TailArigeanYellow: Transformation 				= tail.TailArigeanYellow.registerTf(AS_TAIL, AE_ARIGEAN);
     public const TailMoth: Transformation                       = tail.TailMoth.registerTf(AS_TAIL, AE_MOTH);
+    public const TailTroll: Transformation                      = tail.TailTroll.registerTf(AS_TAIL, AE_TROLL);
+    public const TailGlacialTroll: Transformation               = tail.TailGlacialTroll.registerTf(AS_TAIL, AE_GLACIAL_TROLL);
+    public const TailCable: Transformation               		= tail.TailCable.registerTf(AS_TAIL, AE_AUTOMATA);
+    public const TailBarometz: Transformation               	= tail.TailBarometz.registerTf(AS_TAIL, AE_BAROMETZ);
+	public const TailHollow: Transformation               		= tail.TailHollow.registerTf(AS_TAIL, AE_HOLLOW);
 
 	/**
 	 * @param tailCount target tail count
@@ -998,7 +1063,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	 */
 	public function TailFox(tailCount:int = 1, magnitude:int = 9, canRemove:Boolean = true):Transformation { return tail.TailFox(tailCount, magnitude, canRemove); }
 	public function TailKitshoo(tailCount: int = 1): Transformation { return tail.TailKitshoo(tailCount); }
-	public const TailAnt: Transformation 						= tail.TailAnt;
+	public function TailYgddrasil(tailCount: int = 1): Transformation { return tail.TailYgddrasil(tailCount); }
 
 
 //TONGUE
@@ -1026,6 +1091,7 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const TongueMelkie: Transformation 		= tongue.TongueMelkie.registerTf(AS_TONGUE, AE_MELKIE);
 	public const TongueImp: Transformation 			= tongue.TongueImp.registerTf(AS_TONGUE, AE_IMP);
 	public const TongueArigean: Transformation 		= tongue.TongueArigean.registerTf(AS_TONGUE, AE_ARIGEAN);
+	public const TongueAutomata: Transformation 	= tongue.TongueAutomata.registerTf(AS_TONGUE, AE_AUTOMATA);
 
 
 //VAGINA
@@ -1074,6 +1140,10 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const VaginaAnyAlraune:Transformation = VaginaAlraune(-1).registerTf(AS_VAGINA, AE_ALRAUNE);
     public function VaginaArigean(vagina:int = 0): Transformation { return vaginas.VaginaArigean(vagina); }
 	public const VaginaAnyArigean:Transformation = VaginaArigean(-1).registerTf(AS_VAGINA, AE_ARIGEAN);
+    public function VaginaShroom(vagina:int = 0): Transformation { return vaginas.VaginaShroom(vagina); }
+	public const VaginaAnyShroom:Transformation = VaginaShroom(-1).registerTf(AS_VAGINA, AE_MYCONID);
+    public function VaginaAutomata(vagina:int = 0): Transformation { return vaginas.VaginaAutomata(vagina); }
+	public const VaginaAnyAutomata:Transformation = VaginaAutomata(-1).registerTf(AS_VAGINA, AE_AUTOMATA);
 
 
 //WINGS
@@ -1104,13 +1174,13 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const WingsMantisLarge: Transformation 				= wings.WingsMantisLarge.registerTf(AS_WINGS, AE_MANTIS);
 	public const WingsMantisSmall: Transformation 				= wings.WingsMantisSmall.registerTf(AS_WINGS, AE_MANTIS);
 	public const WingsNightmare: Transformation 				= wings.WingsNightmare.registerTf(AS_WINGS, AE_NIGHTMARE);
-	public const WingsThunderousAura: Transformation 			= wings.WingsThunderousAura.registerTfMultiple(AS_WINGS, AE_KIRIN,AE_RAIJU).withAlchemyNames("Thund.Aura","Thunderous aura");
+	public const WingsThunderousAura: Transformation 			= wings.WingsThunderousAura.registerTfMultiple(AS_WINGS, AE_KIRIN, AE_RAIJU).withAlchemyNames("Thund.Aura","Thunderous aura");
 	public const WingsDemonicLarge: Transformation 				= wings.WingsDemonicLarge.registerTf(AS_WINGS, AE_DEMON);
 	public const WingsDemonicTiny: Transformation 				= wings.WingsDemonicTiny.registerTf(AS_WINGS, AE_DEMON);
 	public const WingsVampire: Transformation 					= wings.WingsVampire.registerTf(AS_WINGS, AE_VAMPIRE);
 	public const WingsFeatheredAvian: Transformation 			= wings.WingsFeatheredAvian.registerTf(AS_WINGS, AE_AVIAN);
 	public const WingsEthereal: Transformation 					= wings.WingsEthereal.registerTf(AS_WINGS, AE_POLTERGEIST);
-	public const WingsLevitation: Transformation 				= wings.WingsLevitation.registerTfMultiple(AS_WINGS, AE_GAZER,AE_WENDIGO, AE_YUKI_ONNA).withAlchemyNames("Levitation","Levitation");
+	public const WingsLevitation: Transformation 				= wings.WingsLevitation.registerTfMultiple(AS_WINGS, AE_GAZER, AE_WENDIGO, AE_YUKI_ONNA, AE_LICH).withAlchemyNames("Levitation","Levitation");
 	public const WingsWindyAura: Transformation 				= wings.WingsWindyAura.registerTf(AS_WINGS, AE_KAMAITACHI);
 	public const WingsGiantDragonfly: Transformation 			= wings.WingsGiantDragonfly.registerTf(AS_WINGS, AE_SAND_TRAP);
 	public const WingsSeaDragon: Transformation 				= wings.WingsSeaDragon.registerTf(AS_WINGS, AE_SEA_DRAGON);
@@ -1123,9 +1193,12 @@ public const NAME:PossibleEffect = new SimpleEffect("Effect name",
 	public const WingsPlant: Transformation 					= wings.WingsPlant.registerTf(AS_WINGS, AE_PLANT);
 	public const WingsYggdrasilLarge: Transformation 			= wings.WingsYggdrasilLarge.registerTf(AS_WINGS, AE_YGGDRASIL);
 	public const WingsYggdrasilHuge: Transformation 			= wings.WingsYggdrasilHuge.registerTf(AS_WINGS, AE_YGGDRASIL);
+	public const WingsYggdrasilOctupleHuge: Transformation 		= wings.WingsYggdrasilOctupleHuge.registerTf(AS_WINGS, AE_YGGDRASIL);
+	public const WingsYggdrasilSextupleHuge: Transformation 	= wings.WingsYggdrasilSextupleHuge.registerTf(AS_WINGS, AE_YGGDRASIL);
 	public const WingsYggdrasilQuadrupleHuge: Transformation 	= wings.WingsYggdrasilQuadrupleHuge.registerTf(AS_WINGS, AE_YGGDRASIL);
     public const WingsMothSmall: Transformation                 = wings.WingsMothSmall.registerTf(AS_WINGS, AE_MOTH);
     public const WingsMothLarge: Transformation                 = wings.WingsMothLarge.registerTf(AS_WINGS, AE_MOTH);
+    public const WingsJetThrusters: Transformation              = wings.WingsJetThrusters.registerTf(AS_WINGS, AE_AUTOMATA);
 
 
 

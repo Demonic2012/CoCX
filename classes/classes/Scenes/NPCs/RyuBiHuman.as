@@ -33,16 +33,16 @@ public class RyuBiHuman extends Monster
 			this.bodyColor = "red";
 			this.hairColor = "black";
 			this.hairLength = 45;//obscenely long, >= 40 a mniej niż tallness
-			initStrTouSpeInte(100, 90, 80, 90);
-			initWisLibSensCor(90, 50, 35, 50);
+			initStrTouSpeInte(900, 800, 700, 800);
+			initWisLibSensCor(800, 500, 350, 0);
 			this.weaponName = "claws";
 			this.weaponVerb="claw";
-			this.weaponAttack = 36;
+			this.weaponAttack = 360;
 			this.armorName = "scales";
-			this.armorDef = 54;
-			this.armorMDef = 54;
+			this.armorDef = 2540;
+			this.armorMDef = 2540;
 			this.bonusHP = 600;
-			this.bonusLust = 175;//lib+sens+lvl
+			this.bonusLust = 940;//lib+sens+lvl
 			this.lust = 20;
 			this.lustVuln = .25;
 			this.level = 90;
@@ -51,6 +51,8 @@ public class RyuBiHuman extends Monster
 					add(consumables.BAGOCA1, 1).
 					add(consumables.BAGOCA2, 0.7).
 					add(consumables.BAGOCA3, 0.4);
+			this.createPerk(PerkLib.EzekielBlessing, 0, 0, 0, 0);
+			this.createPerk(PerkLib.EnemyDragonType, 0, 0, 0, 0);
 			this.createPerk(PerkLib.EnemyBossType, 0, 0, 0, 0);
 			this.createPerk(PerkLib.EnemyGodType, 0, 0, 0, 0);
 			checkMonster();

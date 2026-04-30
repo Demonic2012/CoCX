@@ -7,13 +7,13 @@ public class Antennae extends BodyPart {
 	 * Entry properties:
 	 * - value: numerical id (0, 1)
 	 * - id: name of the constant ("NONE", "MANTIS")
-	 * - name: human-readable name, ("non-existant", "mantis")
+	 * - name: human-readable name, ("non-existent", "mantis")
 	 */
 	public static var Types:/*EnumValue*/Array = [];
 
 	public static const NONE: int = 0;
 	EnumValue.add(Types, NONE, "NONE", {
-		name: "non-existant",
+		name: "non-existent",
 		appearanceDesc: ""
 	});
 	public static const MANTIS: int = 1;
@@ -34,7 +34,7 @@ public class Antennae extends BodyPart {
 	public static const FIRE_SNAIL: int = 4;
 	EnumValue.add(Types, FIRE_SNAIL, "FIRE_SNAIL", {
 		name: "fire snail",
-		appearanceDesc: "Two horn like antennae grow from your head, feeling the air around and feeding you sensory information."
+		appearanceDesc: "Two horn-like antennae grow from your head, feeling the air around and feeding you sensory information."
 	});
 	public static const MOTH: int = 5;
 	EnumValue.add(Types, MOTH, "MOTH", {
@@ -60,6 +60,11 @@ public class Antennae extends BodyPart {
 	EnumValue.add(Types, ANT, "ANT", {
 		name: "ant",
 		appearanceDesc: "You have long, stiff-yet-prehensile ant antennae on your head, able to feel things just as your fingers do."
+	});
+	public static const AUTOMATA: int = 10;
+	EnumValue.add(Types, AUTOMATA, "AUTOMATA", {
+		name: "automata",
+		appearanceDesc: "A small metal rod on the side of your headset allows you to obtain information on the network from anywhere in Mareth."
 	});
 
 	public function Antennae(creature:Creature) {

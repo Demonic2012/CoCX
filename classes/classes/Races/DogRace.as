@@ -43,14 +43,17 @@ public class DogRace extends Race {
 				.earType(Ears.DOG, +1)
 				.tailType(Tail.DOG, +1)
 				.legType(LowerBody.DOG, +1)
-				.hasCockOfType(CockTypesEnum.DOG, +1)
+				.hasCockOfType(CockTypesEnum.DOG, +2)
 				.breastRowCount(2, +1)
 				.breastRowCount(3, +2)
 				.skinCoatType(Skin.FUR, +1)
 				.customRequirement("","not Cerberus",
 						function (body:BodyData):Boolean {
 							return !(CerberusRace.isCerberus(body));
-						}, 0, -1000);
+						}, 0, -1000)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
+		
+		addBloodline(PerkLib.CaninesDescendant, PerkLib.BloodlineCanine);
 		
 		buildTier(4, "dog-morph")
 				.namesMaleFemaleMorphTaur("dog-boy", "dog-girl", "dog-morph", "dog-taur")

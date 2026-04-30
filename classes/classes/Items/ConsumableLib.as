@@ -27,7 +27,7 @@ public final class ConsumableLib extends AlchemyLib
 							[1, AR_LIB],
 							[1, AR_SENS_INC]
 						]);
-		public const S_DREAM: Consumable = mk("S.Dream", "S.Dream", "a bottle of 'Succubus' Dream'", 6, "This precious fluid is often given to men a succubus intends to play with for a long time, though this batch has been enhanced by Lumi to have even greater potency.", m.succubusDream, ItemConstants.U_TF)
+		public const S_DREAM: Consumable = mk("S.Dream", "S.Dream", "a bottle of 'Succubus' Dream'", 6, "This precious fluid is often given to men a succubus intends to toy with for a long time, though this batch has been enhanced by Lumi to have even greater potency.", m.succubusDream, ItemConstants.U_TF)
 				.refineableInto(
 						[
 							[1, AS_BALLS]
@@ -37,7 +37,7 @@ public final class ConsumableLib extends AlchemyLib
 						], [
 							[10, AR_CORR_INC]
 						]);
-		public const SDELITE: Consumable = mk("SDelite", "S.Delite", "a bottle of 'Succubi's Delight'", 6, "This precious fluid is often given to men a succubus intends to play with for a long time.", curry(m.succubisDelight, true), ItemConstants.U_TF)
+		public const SDELITE: Consumable = mk("SDelite", "S.Delite", "a bottle of 'Succubi's Delight'", 6, "This precious fluid is often given to men a succubus intends to toy with for a long time.", curry(m.succubisDelight, true), ItemConstants.U_TF)
 				.refineableInto(
 						[
 							[1, AS_BALLS]
@@ -82,7 +82,7 @@ public final class ConsumableLib extends AlchemyLib
 						],
 						DemonRace.DemonSkinColors
 				);
-		public const PSDELIT: Consumable = mk("PSDelit", "PSDelit", "an untainted bottle of \"Succubi's Delight\"", 20, "This precious fluid is often given to men a succubus intends to play with for a long time.  It has been partially purified by Rathazul to prevent corruption.", curry(m.succubisDelight, false), ItemConstants.U_TF)
+		public const PSDELIT: Consumable = mk("PSDelit", "PSDelit", "an untainted bottle of \"Succubi's Delight\"", 20, "This precious fluid is often given to men a succubus intends to toy with for a long time.  It has been partially purified by Rathazul to prevent corruption.", curry(m.succubisDelight, false), ItemConstants.U_TF)
 				.refineableInto(
 						[
 							[1, AS_BALLS]
@@ -146,7 +146,10 @@ public final class ConsumableLib extends AlchemyLib
 		public const L_WHTEG: Consumable = mk("L.WhtEg", "L.WhtEg", "a large white egg", 6, "This is an oblong egg, not much different from an ostrich egg in appearance.  Something tells you it's more than just food.", curry(m.whiteEgg, true));
 		//Others
 		public const DRGNEGG: Consumable = mk("DrgnEgg", "DrgnEgg", "an unfertilized dragon egg", 6, "A large, solid egg, easily the size of your clenched fist.  Its shell color is reddish-white, with blue splotches.", m.eatEmberEgg);
-		public const NPNKEGG: Consumable = mk("NPnkEgg", "NPnkEgg", "a neon pink egg", 6, "This is an oblong egg with an unnatural neon pink coloration.  It tingles in your hand with odd energies that make you feel as if you could jump straight into the sky.", curry(m.neonPinkEgg, false));
+		public const NPNKEGG: Consumable = mk("NPnkEgg", "NPnkEgg", "a neon pink egg", 6, "This is an oblong egg with an unnatural neon pink coloration.  It tingles in your hand with odd energies that make you feel as if you could jump straight into the sky.", curry(m.neonPinkEgg, false, 0));
+		public const SNOWFLO: Consumable = mk("SnowFlo", "SnowFlower", "a Snow Flower", 6, "This beautiful flower grows even in the frozen wastes of the Glacial Rift, defying the arctic cold.", m.alrauneSnowFlower);
+		public const EMBER_F: Consumable = mk("Ember.F", "EmberFlower", "a Ember Flower", 6, "This beautiful flower grows even in the ash of the Volcanic Crag, defying the heat.", m.alrauneEmberFlower);
+		public const BLACK_L: Consumable = mk("Black.L", "BlackLily", "a Black Lily", 6, "You obtained this rather peculiar flower from Rafflesia, and despite its corrupted origins, it probably has the best smell ever.", m.alrauneBlackLily);
 
 		//FOOD & BEVERAGES
 		public const AjidAji: Consumable = mk ("AjidAji", "Aji de Aji", "a bag of Aji de Aji", 6, "A small bag of Aji de Aji Peppers.",function(player:Player):void{SceneLib.trollVillage.elderstore.itemsConsumed("AjidAji")});
@@ -162,7 +165,7 @@ public final class ConsumableLib extends AlchemyLib
 		public const D_MORAD: Consumable = mk("D_Morad", "D.Morada", "a bag of Dulce Morada", 6, "It appears to be a few purple-colored hard candies. It has the same color as the troll figs.\n",function(player:Player):void{SceneLib.trollVillage.elderstore.itemsConsumed("D.Morada")});
 		public const EXCMILK: Consumable = mk("ExcMilk", "ExcMilk", "a bottle of Excellia's milk", 10, "It's a bottle of Excellia's milk. It's guaranteed to restore your body and energy.", m.excelliaMilk);
 		public const FISHFIL: Consumable = mk("FishFil", "FishFil", "a fish fillet", 10, "A perfectly cooked piece of fish.  You're not sure what type of fish is, since you're fairly certain \"delicious\" is not a valid species.", m.fishFillet);
-		public const FREFISH: Consumable = mk("FreFish", "FreshFish", "a fresh fish", 6, "A fish freshly caugh from the waters of mareth.", m.freshFish);
+		public const FREFISH: Consumable = mk("FreFish", "FreshFish", "a fresh fish", 6, "A fish freshly caught from the waters of Mareth.", m.freshFish);
 		public const FR_BEER: Consumable = mk("Fr Beer", "Fr Beer", "a mug of frothy beer", 6, "A bottle of beer from The Black Cock.", m.frothyBeer);
 		public const GODMEAD: Consumable = mk("GodMead", "GodMead", "a pint of god's mead", 20, "A horn of potent, honey-colored mead. A single whiff makes your head swim and your thoughts turn to violence and heroism.", m.godMead);
 		public const H_BISCU: Consumable = mk("H.Bisct", "H.Biscuits", "a pack of hard biscuits", 5, "These biscuits are tasteless, but they can stay edible for an exceedingly long time.", m.hardBiscuits);
@@ -202,30 +205,34 @@ public final class ConsumableLib extends AlchemyLib
 		public const MET_SHO: Consumable = mk("Met.Sho", "Met.Sho.Spell", "a tome with Meteor Shower spell", 200, "This tome, contain knowledge about Meteor Shower spell.", m.whiteMeteorShower);
 
 		//MANA POTIONS
-		public const VDARCON: Consumable = mk("VDARCON", "V.D.ARC", "a very diluted Arcane Regen Concotion", 20, "This very diluted concotion could help you recover some of the spent mana.  Naturaly it won't be much but in tight situation it could make a difference between won or lost fight.", m.verydilutedarcaneregenconcotion);
-		public const D_ARCON: Consumable = mk("D_ARCON", "Dil.ARC", "a diluted Arcane Regen Concotion", 120, "This diluted concotion could help you recover some of the spent mana.  It won't be much but still a few more time more than after using very diluted concotion.", m.dilutedarcaneregenconcotion);
-		public const AREGCON: Consumable = mk("AREGCON", "ARegCon", "an Arcane Regen Concotion", 720, "This concotion could help you recover some of the spent mana.  It won't be much but still a few more time more than after using diluted concotion.", m.arcaneregenconcotion);
+		public const VDARCON: Consumable = mk("VDARCON", "V.D.ARC", "a very diluted Arcane Regen Concoction", 20, "This very diluted concoction could help you recover some of the spent mana.  Naturally, it won't be much, but in a tight situation, it could mean the difference between winning or losing.", m.verydilutedarcaneregenconcotion);
+		public const D_ARCON: Consumable = mk("D_ARCON", "Dil.ARC", "a diluted Arcane Regen Concoction", 120, "This diluted concoction could help you recover some of the spent mana.  It won't be much but still a few more time more than after using very diluted concoction.", m.dilutedarcaneregenconcotion);
+		public const AREGCON: Consumable = mk("AREGCON", "ARegCon", "an Arcane Regen Concoction", 720, "This concoction could help you recover some of the spent mana.  It won't be much but still a few more time more than after using diluted concoction.", m.arcaneregenconcotion);
 
 		//MAGIC STORAGES AND LOOT BAGS OF COSMOS
-		public const BAGOCOS: Consumable = mk("BagOCos", "BagOfCosmos", "a Bag of Cosmos", 1200, "It's small bag used by Soul Cultivtors covered with a complex symbols making it object that allow to store many more things that the size of itself would indicate.", m.bagofcosmos);
+		public const BAGOCOS: Consumable = mk("BagOCos", "BagOfCosmos", "a Bag of Cosmos", 1200, "It's small bag used by Soul Cultivators covered with a complex symbols making it object that allow to store many more things that the size of itself would indicate.", m.bagofcosmos);
 		public const SPPEARL: Consumable = mk("SPPearl", "SkyPoisonPearl", "a Sky Poison Pearl", 12000, "Mysterious Pearl.", m.skypoisonpearl);//moze jednak zmniejszyc do 6k tylko - 60 slotow po 200 gems kazdy wart = 12k (maybe reduce it to only 6k - 60 slots with 200 gems each worth = 12k)
-		public const BAGOCA1: Consumable = mk("BagOCA1", "BagOfCosmosA1", "a Bag of Cosmos (A1)", 0, "It's small bag used by enemy Soul Cultivtor to store much more things that the size of itself would indicate. What could be in this one?", m.bagofcosmosA1);
-		public const BAGOCA2: Consumable = mk("BagOCA2", "BagOfCosmosA2", "a Bag of Cosmos (A2)", 0, "It's small bag used by enemy Soul Cultivtor to store much more things that the size of itself would indicate. What could be in this one?", m.bagofcosmosA2);
-		public const BAGOCA3: Consumable = mk("BagOCA3", "BagOfCosmosA3", "a Bag of Cosmos (A3)", 0, "It's small bag used by enemy Soul Cultivtor to store much more things that the size of itself would indicate. What could be in this one?", m.bagofcosmosA3);
-		public const BAGOCA4: Consumable = mk("BagOCA4", "BagOfCosmosA4", "a Bag of Cosmos (A4)", 0, "It's small bag used by enemy Soul Cultivtor to store much more things that the size of itself would indicate. What could be in this one?", m.bagofcosmosA4);
-		public const BAGOCA5: Consumable = mk("BagOCA5", "BagOfCosmosA5", "a Bag of Cosmos (A5)", 0, "It's small bag used by enemy Soul Cultivtor to store much more things that the size of itself would indicate. What could be in this one?", m.bagofcosmosA5);
-		public const BAGOCA6: Consumable = mk("BagOCA6", "BagOfCosmosA6", "a Bag of Cosmos (A6)", 0, "It's small bag used by enemy Soul Cultivtor to store much more things that the size of itself would indicate. What could be in this one?", m.bagofcosmosA6);
+		public const BAGOCA1: Consumable = new BagOfCosmosA1();
+		public const BAGOCA2: Consumable = new BagOfCosmosA2();
+		public const BAGOCA3: Consumable = new BagOfCosmosA3();
+		public const BAGOCA4: Consumable = new BagOfCosmosA4();
+		public const BAGOCA5: Consumable = mk("BagOCA5", "BagOfCosmosA5", "a Bag of Cosmos (A5)", 0, "It's small bag used by enemy Soul Cultivator to store much more things that the size of itself would indicate. What could be in this one?", m.bagofcosmosA5);
+		public const BAGOCA6: Consumable = mk("BagOCA6", "BagOfCosmosA6", "a Bag of Cosmos (A6)", 0, "It's small bag used by enemy Soul Cultivator to store much more things that the size of itself would indicate. What could be in this one?", m.bagofcosmosA6);
+		public const BAGOCB1: Consumable = new BagOfCosmosB1();
+		public const BAGOCB2: Consumable = new BagOfCosmosB2();
+		public const BAGOCB3: Consumable = new BagOfCosmosB3();
+		public const BAGOCB4: Consumable = new BagOfCosmosB4();
 
 		//PILLS
-		public const LG_SFRP: Consumable = mk("LGSFRP", "LGSFRPill", "a low-grade Soulforce Recovery Pill", 10, "This low-grade recovery pill could help you recover some of the spent soulforce.  Naturaly it won't be much but in tight situation it could make a difference between won or lost fight.", m.lowgradesoulforcerecoverypill);
-		public const LGSFRPB: Consumable = mk("LGSFRPB", "LGSFRPBottle", "a bottle of low-grade Soulforce Recovery Pills", 110, "Those low-grade recovery pills could help you recover some of the spent soulforce.  Naturaly they won't be much but in tight situation it could make a difference between won or lost fight.", m.lowgradesoulforcerecoverypill2);
+		public const LG_SFRP: Consumable = mk("LGSFRP", "LGSFRPill", "a low-grade Soulforce Recovery Pill", 10, "This low-grade recovery pill could help you recover some of the spent soulforce.  Naturally, it won't be much, but in a tight situation, it could mean the difference between winning or losing.", m.lowgradesoulforcerecoverypill);
+		public const LGSFRPB: Consumable = mk("LGSFRPB", "LGSFRPBottle", "a bottle of low-grade Soulforce Recovery Pills", 110, "Those low-grade recovery pills could help you recover some of the spent soulforce.  Naturally they won't be much but in tight situation it could make a difference between won or lost fight.", m.lowgradesoulforcerecoverypill2);
 		public const MG_SFRP: Consumable = mk("MGSFRP", "MGSFRPill", "a mid-grade Soulforce Recovery Pill", 60, "This mid-grade recovery pill could help you recover some of the spent soulforce.  It won't be much but still a few more time more than after using low-grade one version of this pill.", m.midgradesoulforcerecoverypill);
 		public const MGSFRPB: Consumable = mk("MGSFRPB", "MGSFRPBottle", "a bottle of mid-grade Soulforce Recovery Pills", 610, "Those mid-grade recovery pills could help you recover some of the spent soulforce.  They won't be much but still a few more time more than after using low-grade one version of those pills.", m.midgradesoulforcerecoverypill2);
 		public const HG_SFRP: Consumable = mk("HGSFRP", "HGSFRPill", "a high-grade Soulforce Recovery Pill", 360, "This high-grade recovery pill could hep you recover some of the spent soulforce.  It can restore significant amount of soulforce compared to lower grade pills but still it's only an aid not a replacement for regular cultivation.", m.highgradesoulforcerecoverypill);
 		public const HGSFRPB: Consumable = mk("HGSFRPB", "HGSFRPBottle", "a bottle of high-grade Soulforce Recovery Pills", 3610, "Those high-grade recovery pills could help you recover some of the spent soulforce.  They can restore significant amount of soulforce compared to lower grade pills but still it's only an aid not a replacement for regular cultivation.", m.highgradesoulforcerecoverypill2);
 		public const SG_SFRP: Consumable = mk("SGSFRP", "SuperiorGradeSFRecovPill", "a superior-grade Soulforce Recovery Pill", 2160, "This superior-grade recovery pill could hep you recover some of the spent soulforce.  Best possible to obtain pill to fast recover soulforce in tight situations when you don't have time to cultivate.", m.superiorgradesoulforcerecoverypill);
 		public const SGSFRPB: Consumable = mk("SGSFRPB", "SGSFRPBottle", "a bottle of superior-grade Soulforce Recovery Pills", 21610, "Those superior-grade recovery pills could help you recover some of the spent soulforce.  Best possible to obtain pills to fast recover soulforce in tight situations when you don't have time to cultivate.", m.superiorgradesoulforcerecoverypill2);
-		public const FATPILL: Consumable = mk("FATPILL", "FastingPill", "a Fasting Pill", 100, "This fasting pill could keep you fully/partialy from feeling hunger for a few days.", m.fasteningpill);
+		public const FATPILL: Consumable = mk("FATPILL", "FastingPill", "a Fasting Pill", 100, "This fasting pill could keep you fully/partially from feeling hunger for a few days.", m.fasteningpill);
 
 		//SOUL SKILLS MANUALS
 		public const TRITMAN: Consumable = mk("TRITMAN", "TTManual", "a manual for Triple Thrust Soulskill", 50, "This manual would teach you how to use Triple Thrust soulskill. (Phys)", m.triplethrustmanual);
@@ -250,25 +257,26 @@ public final class ConsumableLib extends AlchemyLib
 		public const S_B_MAN: Consumable = mk("S_B_MAN", "SoarBManual", "a manual for Soaring Blades passive", 1000, "This manual would teach you Soaring Blades passive.", m.soaringbladesmanual);
 		public const FAFSMAN: Consumable = mk("FAFSMAN", "FAFSManual", "a manual for First Attack: Flying Sword technique", 1000, "This manual would teach you First Attack: Flying Sword technique.", m.firstattackflyingswordmanual);
 		//public const YYB_MAN: Consumable = mk("YYB_MAN", "YYBlastManual", "a manual for Yin Yang Blast", x, "This manual would teach you how to use Yin Yang Blast combination soulskill and it components Yin Palm and Yang Fist soulskills.", m.xxx);
+		public const SUNRMAN: Consumable = mk("SUNRMAN", "SunrManual", "a manual for Sunrise", 1000, "This manual would teach you how to use Sunrise soulskill. (Mag)", m.sunrisemanual);
 	/*	public const FOLXMAN: Consumable = mk("MAN", "Manual", "a manual for Flames of Love () Soulskill", x, "This manual would teach you how to use Flames of Love (... Rank) soulskill.", m.xxx);
 		public const IOLXMAN: Consumable = mk("MAN", "Manual", "a manual for Icicles of Love () Soulskill", x, ".", m.xxx);
 		public const SOSXMAN: Consumable = mk("MAN", "Manual", "a manual for Storm of Sisterhood () Soulskill", x, ".", m.xxx);
 		public const NOBXMAN: Consumable = mk("MAN", "Manual", "a manual for Night of Brotherhood () Soulskill", x, ".", m.xxx);
 		public const XXXXMAN: Consumable = mk("MAN", "Manual", "a manual for ", x, ".", m.xxx);
 		public const XXXXMAN: Consumable = mk("MAN", "Manual", "a manual for ", x, ".", m.xxx);
-		public const XXXXMAN: Consumable = mk("MAN", "Manual", "a manual for ", x, ".", m.xxx);
 		public const XXXXMAN: Consumable = mk("MAN", "Manual", "a manual for ", x, ".", m.xxx);*/
 
 		//RARE ITEMS (Permanent effects, gives perks on consumption.)
-		public const BIMBOLQ:BimboLiqueur     = new BimboLiqueur();
-		public const BROBREW: Consumable = mk("BroBrew", "BroBrew", "a can of Bro Brew", 1000, "This aluminum can is labelled as 'Bro Brew'.  It even has a picture of a muscly, bare-chested man flexing on it.  A small label in the corner displays: \"Demon General's Warning: Bro Brew's effects are as potent (and irreversible) as they are refreshing.", m.broBrew);
-		public const HUMMUS2: Consumable = mk("Hummus2", "S.Hummus", "a blob of cheesy-looking super hummus", 6, "This pile of hummus doesn't look that clean, and you really don't remember where you got it from.  It looks bland.  So bland that you feel blander just by looking at it.", m.superHummus);
-		public const P_PEARL:PurePearl = new PurePearl();
-		public const EZEKFRU: Consumable = mk("EzekFru", "EzekielFruit", "a magical fruit", 300,
+		public const BIMBOLQ:BimboLiqueur	= new BimboLiqueur();
+		public const BROBREW:Consumable		= mk("BroBrew", "BroBrew", "a can of Bro Brew", 1000, "This aluminum can is labelled as 'Bro Brew'.  It even has a picture of a muscly, bare-chested man flexing on it.  A small label in the corner displays: \"Demon General's Warning: Bro Brew's effects are as potent (and irreversible) as they are refreshing.", m.broBrew);
+		public const HUMMUS2:Consumable		= mk("Hummus2", "S.Hummus", "a blob of cheesy-looking super hummus", 6, "This pile of hummus doesn't look that clean, and you really don't remember where you got it from.  It looks bland.  So bland that you feel blander just by looking at it.", m.superHummus);
+		public const P_PEARL:PurePearl		= new PurePearl();
+		public const EZEKFRU:Consumable		= mk("EzekFru", "EzekielFruit", "a magical fruit", 300,
 			"Evangeline gave you this fruit as means of showing her gratitude. Eating it will probably strengthen your body and mind.\n\n<b>Effect: all stats +10</b>", m.ezekielfruit);
 		public const E3PEARL:ElementalPearl = new ElementalPearl(3);
 		public const E5PEARL:ElementalPearl = new ElementalPearl(5);
 		public const E7PEARL:ElementalPearl = new ElementalPearl(7);
+		public const DEMONME:DemonizeMe		= new DemonizeMe();
 		
 		//NON-TRANSFORMATIVE ITEMS
 		public const AGILI_E: Consumable = mk("Agil.E.", "Agility E.", "an agility elixir", 6, "This greenish elixir is supposed to increase the user’s natural swiftness and agility.", m.agilityElixir);
@@ -295,11 +303,15 @@ public final class ConsumableLib extends AlchemyLib
 		public const F_DRAFT: Consumable = mk("F.Draft", "FuckDraft", "a vial of roiling red fluid labeled \"Fuck Draft\"", 6, "This vial of red fluid bubbles constantly inside the glass, as if eager to escape.  It smells very strongly, though its odor is difficult to identify.  The word \"Fuck\" is inscribed on the side of the vial.", curry(m.lustDraft, true));
 		public const FROZENB:FrozenBalls      = new FrozenBalls();
 		public const H_PILL:Consumable        = new HealPill();
+		public const HM_FRAG:HollowMaskFrag	  = new HollowMaskFrag();
 		public const HRBCNT:Consumable        = new HerbalContraceptive();
 		public const INCOINS: Consumable = mk("IncOIns", "IncenOfIns", "an incense of Insight", 15, "These sticks, when burned, are rumored to fill an area with an incense that allows for deep meditation and granting greater insight.", m.incenseOfInsight);
 		public const ICICLE_:Consumable       = new IceShard();
 		public const KITGIFT:KitsuneGift	  = new KitsuneGift();
-		public const LETHITE:Lethite	      = new Lethite();
+		public const LETH0TE:Leth0te	      = new Leth0te();
+		public const LETH1TE:Leth1te	      = new Leth1te();
+		public const LETH2TE:Leth2te	      = new Leth2te();
+		public const LETH3TE:Leth3te	      = new Leth3te();
 		public const L_DRAFT: Consumable = mk("L.Draft", "LustDraft", "a vial of roiling bubble-gum pink fluid", 20, "This vial of bright pink fluid bubbles constantly inside the glass, as if eager to escape.  It smells very sweet, and has \"Lust\" inscribed on the side of the vial.", curry(m.lustDraft, false));
 		public const LACTAID:Consumable       = new Lactaid();
 		public const LUSTSTK:LustStick        = new LustStick();
@@ -309,6 +321,7 @@ public final class ConsumableLib extends AlchemyLib
 		public const MH_PILL: Consumable = mk("MH.Pill", "M.Heal Pill", "a medium healing pill", 15, "A medium healing pill that's guaranteed to heal you by a bit.", m.mediumhealpill);
 		public const MILKPTN:Consumable       = new MilkPotion();
 		public const MIND_UP:MindUp           = new MindUp();
+		public const MTMFRAG:MortarchMaskFrag = new MortarchMaskFrag();
 		public const NUMBCND: Consumable = mk("NumbCnd","Numb Candies", "a strange packet of 'Numb Candies'", 40, "This packet of innocuous looking 'candy' guarantees to reduce troublesome hear or rut and taste delicious.", m.numbCandies);
 		public const NUMBROX:Consumable       = new NumbRocks();
 		public const NUMBOIL:Consumable       = new NumbingOil();
@@ -332,7 +345,7 @@ public final class ConsumableLib extends AlchemyLib
 		
 		//TRANSFORMATIVE ITEMS
 		
-		public const ABYSSIN: Consumable = mk("AbyssIn", "AbyssalInk", "a vial of abyssal ink", 20, "Black abyssal ink normaly used for writing consuming this doesnt seem like the best idea.", curry(m.krakenInk, 0), ItemConstants.U_TF)
+		public const ABYSSIN: Consumable = mk("AbyssIn", "AbyssalInk", "a vial of abyssal ink", 20, "Black abyssal ink normally used for writing, consuming this doesn't seem like the best idea.", curry(m.krakenInk, 0), ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						MULTIRACE_ESSENCE_DROP_TABLE(
@@ -342,7 +355,7 @@ public final class ConsumableLib extends AlchemyLib
 								[1, AR_INT],
 								[1, AR_STR]
 						], ["ghostly white"]);
-		public const ABYSGIN: Consumable = mk("AbysGIn", "AbyssalGreyInk", "a vial of grey abyssal ink", 40, "Grey abyssal ink normaly used for writing consuming this doesnt seem like the best idea.", curry(m.krakenInk, 1), ItemConstants.U_TF)
+		public const ABYSGIN: Consumable = mk("AbysGIn", "AbyssalGreyInk", "a vial of grey abyssal ink", 40, "Grey abyssal ink normally used for writing, consuming this doesn't seem like the best idea.", curry(m.krakenInk, 1), ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						MULTIRACE_ESSENCE_DROP_TABLE(
@@ -352,7 +365,7 @@ public final class ConsumableLib extends AlchemyLib
 							[1, AR_INT],
 							[1, AR_STR]
 						], ["ghostly white"]);
-		public const ABYSWIN: Consumable = mk("AbysWIn", "AbyssalWhiteInk", "a vial of white abyssal ink", 60, "White abyssal ink normaly used for writing consuming this doesnt seem like the best idea.", curry(m.krakenInk, 2), ItemConstants.U_TF)
+		public const ABYSWIN: Consumable = mk("AbysWIn", "AbyssalWhiteInk", "a vial of white abyssal ink", 60, "White abyssal ink normally used for writing, consuming this doesn't seem like the best idea.", curry(m.krakenInk, 2), ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						MULTIRACE_ESSENCE_DROP_TABLE(
@@ -400,7 +413,7 @@ public final class ConsumableLib extends AlchemyLib
 						]
 				);
 		public const BEEHONY:BeeHoney         = new BeeHoney(false, false);
-		public const BLACKIN: Consumable = mk("BlackIn", "BlackInk", "a vial of black ink", 10, "Pitch black ink normaly used for writing. Consuming this doesnt seem like the best idea.", curry(m.scyllaInk, 0), ItemConstants.U_TF)
+		public const BLACKIN: Consumable = mk("BlackIn", "BlackInk", "a vial of black ink", 10, "Pitch black ink normally used for writing. Consuming this doesn't seem like the best idea.", curry(m.scyllaInk, 0), ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						DEFAULT_ESSENCE_DROP_TABLE(AE_SCYLLA),
@@ -421,7 +434,7 @@ public final class ConsumableLib extends AlchemyLib
 								[1, AR_TOU]
 						]
 				);
-		public const BLADEGR: Consumable = mk("BladeGr", "BladeGrass", "a blade shaped grass", 6, "A form of herb normaly infused in samurai and other warrior tea.  You think infusing this unprocessed item in your tea could result in interesting result.", m.bladeGrass, ItemConstants.U_TF)
+		public const BLADEGR: Consumable = mk("BladeGr", "BladeGrass", "a blade shaped grass", 6, "A form of herb normally infused in samurai and other warrior tea.  You think infusing this unprocessed item in your tea could result in interesting result.", m.bladeGrass, ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						DEFAULT_ESSENCE_DROP_TABLE(AE_MANTIS),
@@ -511,7 +524,7 @@ public final class ConsumableLib extends AlchemyLib
 							[1, AR_TOU]
 						]
 				);
-		public const DESERTB: Consumable = mk("DesertB", "Desert Berry", "a desert berry", 20, "This small orange berry is light in your hands.  It may have gotten its name from been founded usualy in desert regions.  You're certain it is no mere fruit.", m.desertBerry, ItemConstants.U_TF)
+		public const DESERTB: Consumable = mk("DesertB", "Desert Berry", "a desert berry", 20, "This small orange berry is light in your hands.  It may have gotten its name from been founded usually in desert regions.  You're certain it is no mere fruit.", m.desertBerry, ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						DEFAULT_ESSENCE_DROP_TABLE(AE_WEREFOX),
@@ -596,11 +609,25 @@ public final class ConsumableLib extends AlchemyLib
 							[1, AR_LIB]
 						]
 				);
+		public const FIENOIL: Consumable = mk("FienOil", "FiendishOil", "a vial of fiendish oil", 20, "Somehow this altered snake oil smells and probably tastes even worse than normal.", curry(m.snakeOil, 2), ItemConstants.U_TF)
+				.refineableInto(
+						DEFAULT_SUBSTANCES_DROP_TABLE,
+						MULTIRACE_ESSENCE_DROP_TABLE(AE_MARILITH, AE_SNAKE),
+						[
+							[1, AR_LIB]
+						],
+						concatUnique(
+								MarilithRace.MarilithSkinColors,
+								MarilithRace.MarilithHairColors,
+								MarilithRace.MarilithScaleColors
+						)
+				);
 		public const FIERYS_: Consumable = mk("FieryS", "FieryS.", "Fiery saké", 10, "A strong alcoholic beverage best served hot. The Hinezumi drink of this regularly.", curry(m.mouseCocoa, 1), ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						MULTIRACE_ESSENCE_DROP_TABLE(AE_HINEZUMI, AE_MOUSE)
 				);
+		public const FCARROT: Consumable = mk("FCarrot", "FlaredCarrot", "a Flared Carrot", 6, "A staple food loved both by bunny and horse morph. May have transformative properties when eaten raw.", curry(m.neonPinkEgg, false, 1));
 		public const FOXBERY: Consumable = mk("FoxBery", "Fox Berry", "a fox berry", 6, "This large orange berry is heavy in your hands.  It may have gotten its name from its bright orange coloration.  You're certain it is no mere fruit.", curry(m.foxTF, false), ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
@@ -613,14 +640,6 @@ public final class ConsumableLib extends AlchemyLib
 								FoxRace.FoxHairColors,
 								FoxRace.FoxFurColors
 						)
-				);
-		public const FRRTFRT: Consumable = mk("Frrtfrt", "FerretFrt", "a ferret fruit", 6, "This fruit is curved oddly, just like the tree it came from.  The skin is fuzzy and brown, like the skin of a peach.", m.ferretTF, ItemConstants.U_TF)
-				.refineableInto(
-						DEFAULT_SUBSTANCES_DROP_TABLE,
-						DEFAULT_ESSENCE_DROP_TABLE(AE_FERRET),
-						[
-							[1, AR_SPE]
-						]
 				);
 		public const FOXJEWL: Consumable = mk("FoxJewl", "Fox Jewel", "a fox jewel", 50, "A shining teardrop-shaped jewel.  An eerie blue flame dances beneath the surface.", curry(m.foxJewel, false), ItemConstants.U_TF)
 				.refineableInto(
@@ -637,15 +656,26 @@ public final class ConsumableLib extends AlchemyLib
 								KitsuneRace.BasicKitsuneSkinColors
 						)
 				);
+		public const FRRTFRT: Consumable = mk("Frrtfrt", "FerretFrt", "a ferret fruit", 6, "This fruit is curved oddly, just like the tree it came from.  The skin is fuzzy and brown, like the skin of a peach.", m.ferretTF, ItemConstants.U_TF)
+				.refineableInto(
+						DEFAULT_SUBSTANCES_DROP_TABLE,
+						DEFAULT_ESSENCE_DROP_TABLE(AE_FERRET),
+						[
+							[1, AR_SPE]
+						]
+				);
 		public const FSNAILS: Consumable = mk("FSnailS", "FireSnailSaliva", "a Fire snail Saliva", 20, "The saliva of a fire snail. Highly volatile.", m.firesnailsaliva, ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						DEFAULT_ESSENCE_DROP_TABLE(AE_FIRE_SNAIL)
 				);
-		public const G_FRUIT: Consumable = mk("G.Fruit", "G.Fruit", "a Ghastly fruit", 10, "A ghastly whisker fruit from some underground place. Legends even says they may been growing in netherwold. Highly favored by nekomata.", m.ghastlyFruit, ItemConstants.U_TF)
+		public const G_FRUIT: Consumable = mk("G.Fruit", "G.Fruit", "a Ghastly fruit", 10, "A ghastly whisker fruit from some underground place. Legends even says they may have grown in the netherworld. Highly favored by nekomata.", m.ghastlyFruit, ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
-						MULTIRACE_ESSENCE_DROP_TABLE(AE_NEKOMATA, AE_CAT)
+						MULTIRACE_ESSENCE_DROP_TABLE(AE_NEKOMATA, AE_CAT),
+						[
+							[1, AR_SPE]
+						]
 				);
 		public const GLDRIND:GoldenRind       = new GoldenRind();
 		public const GORGOIL: Consumable = mk("GorgOil", "GorgonOil", "a vial of gorgon oil", 20, "A vial the size of your fist made of dark green glass. It contains what appears to be oily, greenish liquid. The odor is foul.", curry(m.evolvedNagaOil, 0), ItemConstants.U_TF)
@@ -658,7 +688,7 @@ public final class ConsumableLib extends AlchemyLib
 							[1, AR_LIB]
 						]
 				);
-		public const GREYINK: Consumable = mk("GreyInk", "GreyInk", "a vial of grey ink", 30, "Ash grey ink normaly used for writing consuming this doesnt seem like the best idea.", curry(m.scyllaInk, 1), ItemConstants.U_TF)
+		public const GREYINK: Consumable = mk("GreyInk", "GreyInk", "a vial of grey ink", 30, "Ash grey ink normally used for writing, consuming this doesn't seem like the best idea.", curry(m.scyllaInk, 1), ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						DEFAULT_ESSENCE_DROP_TABLE(AE_SCYLLA),
@@ -693,11 +723,10 @@ public final class ConsumableLib extends AlchemyLib
 						], concatUnique(
 								GoblinRace.GoblinHairColors,
 								GoblinRace.GoblinEyeColors,
-								GoblinRace.GoblinSkinColors,
-								GoblinRace.GoblinRareSkinColors
+								GoblinRace.GoblinSkinColors
 						)
 				);
-		public const GRE_BER: Consumable = mk("Gre.Beer", "Gre.Beer", "a flagon of potent gremlin beer", 6, "This disgusting brew is made from the combination of goblin ale and Imp food. It smells of old engine oil and rust, let’s hope it does not taste like that as well.", m.gremlinBeer, ItemConstants.U_TF)
+		public const GRE_BER: Consumable = mk("Gre.Beer", "Gre.Beer", "a flagon of potent gremlin beer", 6, "This disgusting brew is made from the combination of goblin ale and incubi draft. It smells of old engine oil and rust, let’s hope it does not taste like that as well.", m.gremlinBeer, ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						DEFAULT_ESSENCE_DROP_TABLE(AE_GREMLIN),
@@ -711,6 +740,17 @@ public final class ConsumableLib extends AlchemyLib
 						)
 				);
 		public const HDEWCAK:HoneydewCake     = new HoneydewCake();
+		public const HORNFRU: Consumable = mk("HornFru", "HornedFruit", "a horned fruit", 6, "A delicious fruit of which the twisting stem reminds of the curving horn of a ram. Supposedly it naturally grows on the vines covered, mossy pelt of barometz when the season is right.", m.hornedFruit, ItemConstants.U_TF)
+				.refineableInto(
+						DEFAULT_SUBSTANCES_DROP_TABLE,
+						DEFAULT_ESSENCE_DROP_TABLE(AE_BAROMETZ),
+						[
+							[1, AR_TOU],
+							[1, AR_SPE],
+							[1, AR_WIS],
+							[1, AR_LIB]
+						]
+				);
 		public const HUMMUS_: Consumable = mk("Hummus ", "Hummus", "a blob of cheesy-looking hummus", 100, "This pile of hummus doesn't look that clean.  It looks bland.  So bland that you feel blander just by looking at it.", m.regularHummus, ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
@@ -731,8 +771,10 @@ public final class ConsumableLib extends AlchemyLib
 		public const ICY_FIG: Consumable = mk("Icy Fig", "Icy Fig", "an Icy Fig", 12, "A frozen fig that's a common delicacy among trolls that live in cold regions, it’s said that it infuses the consumer with tremendous insight.", curry(m.trollFig, 1), ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
-						DEFAULT_ESSENCE_DROP_TABLE(AE_TROLL),
+						DEFAULT_ESSENCE_DROP_TABLE(AE_GLACIAL_TROLL),
 						[
+							[1, AR_STR],
+							[1, AR_TOU],
 							[1, AR_WIS]
 						]
 				);
@@ -892,7 +934,7 @@ public final class ConsumableLib extends AlchemyLib
 								KitsuneRace.ElderKitsuneColors
 						)
 				);
-		public const NOCELIQ: Consumable = mk("NoceLiq", "NocelloLiq", "a bottle of Nocello Liquer", 20, "This bottle contain sweet liquer called 'Nocello', which one sip can makes your stomach feel warm even in middle of glacial rift.  It looks to be just hazelnut flavored alcohol or there is more to it?", m.nocelloliquer, ItemConstants.U_TF)
+		public const NOCELIQ: Consumable = mk("NoceLiq", "NocelloLiq", "a bottle of Nocello Liquer", 20, "This bottle contains a sweet liqueur called 'Nocello,' which with just one sip can make your stomach feel warm, even in the middle of the glacial rift.  Is it simply hazelnut-flavored alcohol, or is there more to it?", m.nocelloliquer, ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						MULTIRACE_ESSENCE_DROP_TABLE(AE_PHOENIX,AE_PHOENIX,AE_SALAMANDER,AE_HARPY),
@@ -1088,6 +1130,8 @@ public final class ConsumableLib extends AlchemyLib
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						DEFAULT_ESSENCE_DROP_TABLE(AE_TROLL),
 						[
+							[1, AR_STR],
+							[1, AR_TOU],
 							[1, AR_WIS]
 						]
 				);
@@ -1171,7 +1215,7 @@ public final class ConsumableLib extends AlchemyLib
 						],
 						SlimeRace.SlimeSkinColors
 				);
-		public const WHITEIN: Consumable = mk("WhiteIn", "WhiteInk", "a vial of white ink", 50, "Pearly white ink normaly used for writing consuming this doesnt seem like the best idea.", curry(m.scyllaInk, 2), ItemConstants.U_TF)
+		public const WHITEIN: Consumable = mk("WhiteIn", "WhiteInk", "a vial of white ink", 50, "Pearly white ink normally used for writing, consuming this doesn't seem like the best idea.", curry(m.scyllaInk, 2), ItemConstants.U_TF)
 				.refineableInto(
 						DEFAULT_SUBSTANCES_DROP_TABLE,
 						DEFAULT_ESSENCE_DROP_TABLE(AE_SCYLLA),
@@ -1213,7 +1257,7 @@ public final class ConsumableLib extends AlchemyLib
 		public const MOONGRASS: Consumable = mk("MoonGrass", "MoonGrass", "Moonlight grass", 6, "A tuft of grass with invigorative properties. Can be consumed directly or processed into a medicine.\n", m.MoonGrass);
 		public const SNAKEBANE: Consumable = mk("SnakFlowr", "SnakFlowr", "a Snakebane flower", 6, "This flower can cure poison but, when alchemically processed, remove burns and frostburns as well. Can be consumed directly or processed into a medicine.", m.SnakeFlower);
 		public const IRONWEED: Consumable  = mk("IronWeed", "IronWeed", "a Iron weed", 6, "This magical weed dulls one’s sense of pain and temporarily hardens the skin. Can be consumed directly or processed into a medicine.", m.Ironweed);
-		public const BLADEFERN: Consumable = mk("BladeFerns", "BladeFerns", "a handfull of Blade ferns", 6, "This magical ferns helps the user temporarily generate more adrenaline and boosts the muscle mass, improving one’s strength and speed. Can be consumed directly or processed into a medicine.", m.BladeFerns);
+		public const BLADEFERN: Consumable = mk("BladeFerns", "BladeFerns", "a handfull of Blade ferns", 6, "These magical ferns help the user temporarily generate more adrenaline and boosts the muscle mass, improving one’s strength and speed. Can be consumed directly or processed into a medicine.", m.BladeFerns);
 		public const RAUNENECT: Consumable = mk("RauneNectar", "RauneNectar", "a bottle of Alaune nectar", 6, "A powerful aphrodisiac when consumed, Alraune nectar can be processed into a perfume, granting the user the infamous arousing scent of the alraunes as well as an alchemical resilience to lust. Can be consumed directly or processed into a perfume.", m.AlrauneNectar);
 
 		private var mutations:Mutations;

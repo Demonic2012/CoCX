@@ -7,6 +7,7 @@ import classes.PerkLib;
 import classes.Race;
 import classes.StatusEffects;
 import classes.Transformations.GradualTransformation;
+import classes.Transformations.TransformationLib;
 import classes.VaginaClass;
 
 public class BeeRace extends Race {
@@ -38,31 +39,33 @@ public class BeeRace extends Race {
 
 
     public function get TfList():/*PossibleEffect*/Array {
-		return [
-			game.transformations.HairChangeColor(BeeHairColors),
-			game.transformations.BreastRowsRemoveToOne,
-			game.transformations.AntennaeBee,
-			game.transformations.EyesSandTrap,
-			game.transformations.HornsNone,
-			game.transformations.SkinPatternBeeStripes,
-			game.transformations.LowerBodyBee,
-			game.transformations.ArmsBee,
-			game.transformations.NipplesPerBreastOne,
-			game.transformations.OvipositorBee,
-			game.transformations.TailBee,
+	    var t:TransformationLib = game.transformations;
+	    return [
+			t.HairChangeColor(BeeHairColors),
+			t.BreastRowsRemoveToOne,
+			t.AntennaeBee,
+			t.EyesSandTrap,
+			t.HornsNone,
+			t.SkinPatternBeeStripes,
+			t.LowerBodyBee,
+			t.ArmsBee,
+			t.NipplesPerBreastOne,
+			t.OvipositorBee,
+			t.TailBee,
 			new GradualTransformation("BeeWings", [
-				game.transformations.WingsNone,
-				game.transformations.WingsBeeSmall,
-				game.transformations.WingsBeeLarge
+				t.WingsNone,
+				t.WingsBeeSmall,
+				t.WingsBeeLarge
 			]),
-			game.transformations.GillsNone,
-			game.transformations.CockChangeType(CockTypesEnum.BEE, false),
-			game.transformations.RearBodyNone
+			t.GillsNone,
+			t.CockChangeType(CockTypesEnum.BEE, false),
+			t.RearBodyNone
 		];
 	}
 	
 	public function BeeRace(id:int) {
 		super("Bee", id, []);//RaceBody);
+		mutationThreshold = 4;
 	}
 	
 	override public function finalizeScore(body:BodyData, score:int, checkRP:Boolean = true, outputText:Function = null):int {
@@ -79,7 +82,7 @@ public class BeeRace extends Race {
 				.chitinColors(ANY("yellow and black","yellow and ebony"), +1)
 				.eyeType(Eyes.BLACK_EYES_SAND_TRAP, +1)
 				.antennaeType(Antennae.BEE, +1)
-				.faceType(Face.HUMAN, +1) //potem zamienić na specificzny dla pszczół wariant twarzy
+				.faceType(Face.HUMAN, +1)
 				.earType(Ears.INSECT, +1)
 				.noHorns(+1)
 				.armType(Arms.BEE, +1)
@@ -87,11 +90,11 @@ public class BeeRace extends Race {
 				.tailType(Tail.BEE_ABDOMEN, +1)
 				.wingType(Wings.BEE_SMALL, +1)
 				.wingType(Wings.BEE_LARGE, +4)
-				.noRearBody(+1)
-				.skinCoatPattern(Skin.PATTERN_BEE_STRIPES, +1)
+				.skinCoatPattern(Skin.PATTERN_BEE_STRIPES, +2)
 				.hasPerk(PerkLib.BeeOvipositor, +1)
 				.cockOrVaginaOfType(CockTypesEnum.BEE, VaginaClass.BEE,1)
-				.hasPerk(PerkLib.TransformationImmunityBeeHandmaiden, +2);
+				.hasPerk(PerkLib.TransformationImmunityBeeHandmaiden, +2)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addConditionedScores(
 				function(body:BodyData):Boolean {
 					return body.player.hasPerk(PerkLib.TransformationImmunityBeeHandmaiden);
@@ -102,7 +105,9 @@ public class BeeRace extends Race {
 							return body.player.hasStatusEffect(StatusEffects.BlackNipples)
 						}, +1);
 		
+		addBloodline(PerkLib.BeesDescendant, PerkLib.BloodlineBee);
 		addMutation(IMutationsLib.TrachealSystemIM);
+		addMutation(IMutationsLib.PoisonGlandIM);
 		
 		buildTier(8, "Bee-Morph")
 				.buffs({

@@ -37,22 +37,6 @@ package classes.Scenes.NPCs
 			if (hasPerk(PerkLib.NaturalHealingLegendary)) cost -= 12.5;
 			return cost;
 		}
-		public function soulskillCostManyBirds():Number {
-			var cost:Number = 10;
-			if (hasPerk(PerkLib.DaoistApprenticeStage)) cost -= 1;
-			if (hasPerk(PerkLib.DaoistWarriorStage)) cost -= 1;
-			if (hasPerk(PerkLib.DaoistElderStage)) cost -= 1;
-			if (hasPerk(PerkLib.DaoistOverlordStage)) cost -= 1;
-			return cost;
-		}
-		public function soulskillCostHailOfBlades1():Number {
-			var cost:Number = 50;
-			if (hasPerk(PerkLib.DaoistApprenticeStage)) cost -= 5;
-			if (hasPerk(PerkLib.DaoistWarriorStage)) cost -= 5;
-			if (hasPerk(PerkLib.DaoistElderStage)) cost -= 5;
-			if (hasPerk(PerkLib.DaoistOverlordStage)) cost -= 5;
-			return cost;
-		}
 		
 		public function HealMod():Number {
 			var mod1:Number = 1;
@@ -72,26 +56,25 @@ package classes.Scenes.NPCs
 		}
 		public function SoulskillMod():Number {
 			var mod3:Number = 1;
-			if (hasPerk(PerkLib.DaoistApprenticeStage)) {
-				if (hasPerk(PerkLib.SoulApprentice)) mod3 += .3;
-				if (hasPerk(PerkLib.SoulPersonage)) mod3 += .3;
-				if (hasPerk(PerkLib.SoulWarrior)) mod3 += .3;
+			if (hasPerk(PerkLib.DaoistMDHiFApprenticeStage)) {
+				if (hasPerk(PerkLib.SoulApprentice)) mod3 += 1.25;
+				if (hasPerk(PerkLib.SoulPersonage)) mod3 += 1.25;
+				if (hasPerk(PerkLib.SoulWarrior)) mod3 += 1.25;
 			}
-			if (hasPerk(PerkLib.DaoistWarriorStage)) {
-				if (hasPerk(PerkLib.SoulSprite)) mod3 += .6;
-				if (hasPerk(PerkLib.SoulScholar)) mod3 += .6;
-				if (hasPerk(PerkLib.SoulGrandmaster)) mod3 += .6;
+			if (hasPerk(PerkLib.DaoistMDHiFWarriorStage)) {
+				if (hasPerk(PerkLib.SoulSprite)) mod3 += 2.5;
+				if (hasPerk(PerkLib.SoulScholar)) mod3 += 2.5;
+				if (hasPerk(PerkLib.SoulGrandmaster)) mod3 += 2.5;
 			}
-			if (hasPerk(PerkLib.DaoistElderStage)) {
-				if (hasPerk(PerkLib.SoulElder)) mod3 += 1;
-				if (hasPerk(PerkLib.SoulExalt)) mod3 += 1;
-				if (hasPerk(PerkLib.SoulOverlord)) mod3 += 1;
+			if (hasPerk(PerkLib.DaoistMDHiFElderStage)) {
+				if (hasPerk(PerkLib.SoulElder)) mod3 += 3.75;
+				if (hasPerk(PerkLib.SoulExalt)) mod3 += 3.75;
+				if (hasPerk(PerkLib.SoulOverlord)) mod3 += 3.75;
 			}
-			if (hasPerk(PerkLib.DaoistOverlordStage)) {
-				if (hasPerk(PerkLib.SoulTyrant)) mod3 += 1.4;
-				if (hasPerk(PerkLib.SoulKing)) mod3 += 1.4;
-				if (hasPerk(PerkLib.SoulEmperor)) mod3 += 1.4;
-				//if (hasPerk(PerkLib.SoulAncestor)) mod3 += 1.4;
+			if (hasPerk(PerkLib.DaoistMDHiFOverlordStage)) {
+				if (hasPerk(PerkLib.SoulTyrant)) mod3 += 5;
+				if (hasPerk(PerkLib.SoulKing)) mod3 += 5;
+				if (hasPerk(PerkLib.SoulEmperor)) mod3 += 5;
 			}
 			return mod3;
 		}
@@ -102,7 +85,7 @@ package classes.Scenes.NPCs
 			if (flags[kFLAGS.NADIA_LVL_UP] >= 5) temp *= 3;
 			if (flags[kFLAGS.NADIA_LVL_UP] >= 10) temp *= 3;
 			if (flags[kFLAGS.NADIA_LVL_UP] >= 15) temp *= 3;
-			outputText("She pops the small pill into her mouth and swallows. <b>(<font color=\"#008000\">+" + temp + "</font>)</b>.");
+			outputText("She pops the small pill into her mouth and swallows. <b>([font-heal]+" + temp + "[/font])</b>.");
 			addHP(temp);
 		}
 		public function usingARC():void {
@@ -115,7 +98,7 @@ package classes.Scenes.NPCs
 		
 		public function usingManyBirdsSoulskill():void {
 			outputText("She brings her hand up towards you, palm out. A shower of crystalline shards form in front of her outstretched hand. The crystals shoots towards you. The crystals shatter as they hit you, detonating");
-			soulforce -= soulskillCostManyBirds();
+			soulforce -= 10;
 			var damage:Number = wisdomscalingbonus();
 			if (damage < 10) damage = 10;
 			damage *= SoulskillMod();
@@ -126,7 +109,7 @@ package classes.Scenes.NPCs
 		
 		public function usingHailOfBlades1Soulskill():void {
 			outputText("placing her palms together, Nadia's aura flares. soulforce leaks out around her, and she brings her palms out to her sides. Eyes focused on you, Nadia forms six ethereal swords nearly six feet long, splaying out behind her like a fan of blades. She thrusts her hand outwards and in the blink of an eye, the etherial blades shoot towards you. ");
-			soulforce -= soulskillCostHailOfBlades1();
+			soulforce -= 50;
 			outputText("The blades cut deep, inflicting ");
 			var hob1:Number = 6;
 			while (hob1-->0) BladesD();
@@ -155,7 +138,7 @@ package classes.Scenes.NPCs
 		}
 		
 		public function usingMagicBoltsBarrageSpell():void {
-			outputText("Nadia narrow her eyes, focusing her mind with deadly intent. Mana pours down her shoulders, past her hands and into her staff, which she spins, pointing the tip at you. Blue energy coats the staff, and she fires a barrage of mana bolts at you! ");
+			outputText("Nadia narrows her eyes, focusing her mind with deadly intent. Mana pours down her shoulders, past her hands and into her staff, which she spins, pointing the tip at you. Blue energy coats the staff, and she fires a barrage of mana bolts at you! ");
 			mana -= 100;
 			var damage:Number = inteligencescalingbonus() * SpellMod() * 1.2;
 			if (damage < 10) damage = 10;
@@ -201,7 +184,7 @@ package classes.Scenes.NPCs
 			if (flags[kFLAGS.NADIA_LVL_UP] < 2) outputText("Horse-morph");
 			else if (flags[kFLAGS.NADIA_LVL_UP] >= 2 && flags[kFLAGS.NADIA_LVL_UP] < 8) outputText("Unicorn");
 			else outputText("Nadia");
-			outputText(" cries out, planting her staff. She inhales deeply, and begins chanting. A green pulse eminates from her staff, which wraps around her, closing her injuries almost instantly.  <b>(<font color=\"#008000\">+" + temp + "</font>)</b>.");
+			outputText(" cries out, planting her staff. She inhales deeply, and begins chanting. A green pulse eminates from her staff, which wraps around her, closing her injuries almost instantly.  <b>([font-heal]+" + temp + "[/font])</b>.");
 			addHP(temp);
 			mana -= spellCostHeal();
 			createStatusEffect(StatusEffects.AbilityCooldown1, 2, 0, 0, 0);
@@ -229,8 +212,8 @@ package classes.Scenes.NPCs
 			else if (flags[kFLAGS.NADIA_LVL_UP] >= 12 && flags[kFLAGS.NADIA_LVL_UP] < 16) {
 				var choice4:Number = rand(6);
 				if (choice4 < 3) {
-					if ((soulforce >= soulskillCostHailOfBlades1()) && rand(3) == 0) usingHailOfBlades1Soulskill();
-					else if ((soulforce >= soulskillCostManyBirds()) && rand(2) == 0) usingManyBirdsSoulskill();
+					if ((soulforce >= 50) && rand(3) == 0) usingHailOfBlades1Soulskill();
+					else if ((soulforce >= 10) && rand(2) == 0) usingManyBirdsSoulskill();
 					else eAttack();
 				}
 				if (choice4 > 2 && choice4 < 5) {
@@ -249,7 +232,7 @@ package classes.Scenes.NPCs
 			else if (flags[kFLAGS.NADIA_LVL_UP] >= 5 && flags[kFLAGS.NADIA_LVL_UP] < 12) {
 				var choice3:Number = rand(6);
 				if (choice3 < 3) {
-					if ((soulforce >= soulskillCostManyBirds()) && rand(2) == 0) usingManyBirdsSoulskill();
+					if ((soulforce >= 10) && rand(2) == 0) usingManyBirdsSoulskill();
 					else eAttack();
 				}
 				if (choice3 > 2 && choice3 < 5) {
@@ -267,7 +250,7 @@ package classes.Scenes.NPCs
 			else if (flags[kFLAGS.NADIA_LVL_UP] >= 2 && flags[kFLAGS.NADIA_LVL_UP] < 5) {
 				var choice2:Number = rand(6);
 				if (choice2 < 3) {
-					if ((soulforce >= soulskillCostManyBirds()) && rand(2) == 0) usingManyBirdsSoulskill();
+					if ((soulforce >= 10) && rand(2) == 0) usingManyBirdsSoulskill();
 					else eAttack();
 				}
 				if (choice2 > 2 && choice2 < 5) {
@@ -297,13 +280,7 @@ package classes.Scenes.NPCs
 		
 		override public function defeated(hpVictory:Boolean):void
 		{
-			if (flags[kFLAGS.NADIA_FOLLOWER] >= 6)
-                SceneLib.nadiaScene.wonOverNadiaSpar();
-            else if (flags[kFLAGS.NADIA_FOLLOWER] == 5 && (player.hasCock() || !player.blockingBodyTransformations()))
-                SceneLib.nadiaScene.beMyStallionRepeat();
-			else if (flags[kFLAGS.NADIA_FOLLOWER] < 3 && flags[kFLAGS.NADIA_LVL_UP] >= 8 && (player.hasCock() || !player.blockingBodyTransformations()))
-				SceneLib.nadiaScene.beMyStallion();
-			else SceneLib.nadiaScene.wonOverNadia();
+			SceneLib.nadiaScene.defeatedFork();
 		}
 		
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
@@ -316,7 +293,7 @@ package classes.Scenes.NPCs
 		{
 			if (flags[kFLAGS.NADIA_LVL_UP] == 0) {
 				initStrTouSpeInte(25, 25, 25, 75);
-				initWisLibSensCor(25, 25, 25, 50);
+				initWisLibSensCor(25, 25, 25, 0);
 				this.weaponAttack = 3;
 				this.armorDef = 6;
 				this.armorMDef = 12;
@@ -327,7 +304,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 1) {
 				initStrTouSpeInte(25, 30, 30, 80);
-				initWisLibSensCor(30, 30, 25, 50);
+				initWisLibSensCor(30, 30, 25, 0);
 				this.weaponAttack = 3;
 				this.armorDef = 6;
 				this.armorMDef = 12;
@@ -338,7 +315,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 2) {
 				initStrTouSpeInte(30, 40, 35, 80);
-				initWisLibSensCor(50, 50, 50, 30);
+				initWisLibSensCor(50, 50, 50, -60);
 				this.weaponAttack = 6;
 				this.armorDef = 9;
 				this.armorMDef = 27;
@@ -349,7 +326,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 3) {
 				initStrTouSpeInte(30, 50, 40, 80);
-				initWisLibSensCor(60, 55, 50, 30);
+				initWisLibSensCor(60, 55, 50, -60);
 				this.weaponAttack = 6;
 				this.armorDef = 9;
 				this.armorMDef = 27;
@@ -360,7 +337,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 4) {
 				initStrTouSpeInte(30, 60, 45, 80);
-				initWisLibSensCor(70, 60, 50, 30);
+				initWisLibSensCor(70, 60, 50, -60);
 				this.weaponAttack = 6;
 				this.armorDef = 9;
 				this.armorMDef = 27;
@@ -371,7 +348,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 5) {
 				initStrTouSpeInte(30, 70, 50, 80);
-				initWisLibSensCor(80, 65, 50, 30);
+				initWisLibSensCor(80, 65, 50, -60);
 				this.weaponAttack = 6;
 				this.armorDef = 9;
 				this.armorMDef = 27;
@@ -382,7 +359,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 6) {
 				initStrTouSpeInte(30, 80, 55, 90);
-				initWisLibSensCor(80, 70, 50, 30);
+				initWisLibSensCor(80, 70, 50, -60);
 				this.weaponAttack = 6;
 				this.armorDef = 9;
 				this.armorMDef = 27;
@@ -393,7 +370,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 7) {
 				initStrTouSpeInte(30, 90, 60, 90);
-				initWisLibSensCor(90, 75, 50, 30);
+				initWisLibSensCor(90, 75, 50, -60);
 				this.weaponAttack = 6;
 				this.armorDef = 9;
 				this.armorMDef = 27;
@@ -404,7 +381,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 8) {
 				initStrTouSpeInte(40, 100, 70, 100);
-				initWisLibSensCor(100, 100, 75, 5);
+				initWisLibSensCor(100, 100, 75, -90);
 				this.weaponAttack = 9;
 				this.armorDef = 12;
 				this.armorMDef = 48;
@@ -415,7 +392,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 9) {
 				initStrTouSpeInte(42, 110, 80, 110);
-				initWisLibSensCor(110, 110, 85, 5);
+				initWisLibSensCor(110, 110, 85, -90);
 				this.weaponAttack = 10;
 				this.armorDef = 13;
 				this.armorMDef = 52;
@@ -426,7 +403,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 10) {
 				initStrTouSpeInte(44, 120, 90, 120);
-				initWisLibSensCor(120, 120, 95, 5);
+				initWisLibSensCor(120, 120, 95, -90);
 				this.weaponAttack = 11;
 				this.armorDef = 14;
 				this.armorMDef = 56;
@@ -437,7 +414,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 11) {
 				initStrTouSpeInte(46, 130, 100, 130);
-				initWisLibSensCor(130, 130, 105, 5);
+				initWisLibSensCor(130, 130, 105, -90);
 				this.weaponAttack = 12;
 				this.armorDef = 15;
 				this.armorMDef = 60;
@@ -448,7 +425,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 12) {
 				initStrTouSpeInte(48, 140, 110, 140);
-				initWisLibSensCor(140, 140, 115, 5);
+				initWisLibSensCor(140, 140, 115, -90);
 				this.weaponAttack = 13;
 				this.armorDef = 16;
 				this.armorMDef = 64;
@@ -459,7 +436,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 13) {
 				initStrTouSpeInte(50, 150, 120, 150);
-				initWisLibSensCor(150, 150, 125, 5);
+				initWisLibSensCor(150, 150, 125, -90);
 				this.weaponAttack = 14;
 				this.armorDef = 17;
 				this.armorMDef = 68;
@@ -470,7 +447,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 14) {
 				initStrTouSpeInte(52, 160, 130, 160);
-				initWisLibSensCor(160, 160, 135, 5);
+				initWisLibSensCor(160, 160, 135, -90);
 				this.weaponAttack = 15;
 				this.armorDef = 18;
 				this.armorMDef = 72;
@@ -481,7 +458,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 15) {
 				initStrTouSpeInte(54, 170, 140, 170);
-				initWisLibSensCor(170, 170, 145, 5);
+				initWisLibSensCor(170, 170, 145, -90);
 				this.weaponAttack = 16;
 				this.armorDef = 19;
 				this.armorMDef = 76;
@@ -492,7 +469,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] == 16) {
 				initStrTouSpeInte(56, 180, 150, 180);
-				initWisLibSensCor(180, 180, 155, 5);
+				initWisLibSensCor(180, 180, 155, -90);
 				this.weaponAttack = 17;
 				this.armorDef = 20;
 				this.armorMDef = 80;
@@ -652,7 +629,7 @@ package classes.Scenes.NPCs
 				this.createPerk(PerkLib.NaturalHealingMinor, 0, 0, 0, 0);
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] >= 6) {
-				this.createPerk(PerkLib.DaoistApprenticeStage, 0, 0, 0, 0);
+				this.createPerk(PerkLib.DaoistMDHiFApprenticeStage, 0, 0, 0, 0);
 				this.createPerk(PerkLib.HalfStepToImprovedSelfControl, 0, 0, 0, 0);
 				this.createPerk(PerkLib.ImprovedDiehard, 0, 0, 0, 0);
 			}
@@ -664,7 +641,7 @@ package classes.Scenes.NPCs
 			if (flags[kFLAGS.NADIA_LVL_UP] >= 8) {
 				this.createPerk(PerkLib.HclassHeavenTribulationSurvivor, 0, 0, 0, 0);
 				this.createPerk(PerkLib.NaturalHealingEpic, 0, 0, 0, 0);
-				this.createPerk(PerkLib.DaoistWarriorStage, 0, 0, 0, 0);
+				this.createPerk(PerkLib.DaoistMDHiFWarriorStage, 0, 0, 0, 0);
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] >= 9) {
 				this.createPerk(PerkLib.SoulScholar, 0, 0, 0, 0);
@@ -678,7 +655,7 @@ package classes.Scenes.NPCs
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] >= 11) {
 				this.createPerk(PerkLib.GclassHeavenTribulationSurvivor, 0, 0, 0, 0);
-				this.createPerk(PerkLib.DaoistElderStage, 0, 0, 0, 0);
+				this.createPerk(PerkLib.DaoistMDHiFElderStage, 0, 0, 0, 0);
 				this.createPerk(PerkLib.EpicIntelligence, 0, 0, 0, 0);
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] >= 12) {
@@ -697,7 +674,7 @@ package classes.Scenes.NPCs
 				this.createPerk(PerkLib.AdvancedSpirituality, 0, 0, 0, 0);
 			}
 			if (flags[kFLAGS.NADIA_LVL_UP] >= 15) {
-				this.createPerk(PerkLib.DaoistOverlordStage, 0, 0, 0, 0);
+				this.createPerk(PerkLib.DaoistMDHiFOverlordStage, 0, 0, 0, 0);
 				this.createPerk(PerkLib.LegendaryToughness, 0, 0, 0, 0);
 				this.createPerk(PerkLib.Spellpower, 0, 0, 0, 0);
 			}

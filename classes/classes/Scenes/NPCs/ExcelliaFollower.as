@@ -55,9 +55,9 @@ public function ExcelliaPathChoice():void {
 	if (followerShouldra() && !player.hasStatusEffect(StatusEffects.ShouldraOff)) {
 		outputText("When you arrive back at camp you notice the cow-queen Excellia sitting patiently by your bedroll, seemingly waiting for your return. Approaching carefully, she gently opens her eyes and reveals to you that Shouldra is still driving the Queen.\n\n");
 		outputText("\"<i>Hey, champ! Good to see ya again! ...Does this mean you managed to defeat Lethice?</i>\"\n\n");
-		outputText("She stands up, bringing herself to her full height. She must be over seven feet tall, you realise as she pulls you into a soft, squishy embrace. Her tail gently caresses your butt, and she lets out a moo of happiness. Pulling away, she looks at you.\n\n");
+		outputText("She stands up, bringing herself to her full height. She must be over seven feet tall, you realize as she pulls you into a soft, squishy embrace. Her tail gently caresses your butt, and she lets out a moo of happiness. Pulling away, she looks at you.\n\n");
 		outputText("\"<i>Well, I guess it's time for me to leave this body~</i>\"\n\n");
-		outputText("You look into Shouldra's eyes as she leans forward, lips puckered. Happy to oblige, you kiss her fiercely, golden lipstick sending sensations rushing through your body. Her tongue searches hungrily in your mouth, exploring it's depths with zeal. You feel the odd sensation as Shouldra leaps across the gap, worming her way back into you. Excellia's eyes fade from gold back to a lighter yellow colour, before rolling back in her head and collapsing suddenly to the ground.\n\n");
+		outputText("You look into Shouldra's eyes as she leans forward, lips puckered. Happy to oblige, you kiss her fiercely, golden lipstick sending sensations rushing through your body. Her tongue searches hungrily in your mouth, exploring it's depths with zeal. You feel the odd sensation as Shouldra leaps across the gap, worming her way back into you. Excellia's eyes fade from gold back to a lighter yellow color, before rolling back in her head and collapsing suddenly to the ground.\n\n");
 		outputText("\"<i>Huh... I wondered why she wasn't fighting me. She's still exhausted from being ravaged by the minotaur king... I'm sure she'll wake up in a few hours, though</i>\"\n\n");
 	}
 	else {
@@ -272,10 +272,11 @@ public function ExcelliaCampFixHerGetMilkDrink():void {
 }
 
 public function ExcelliaMilkEffects():void {
-	HPChange((((player.level * 20) + 25) * 2 * (1 + player.newGamePlusMod())), true);
+	HPChange((((player.level * 20) + 25) * 2 * (1 + player.newGamePlusMod())), true, false);
 	dynStats("lus", 15, "scale", false);
 	fatigue(-200);
 	player.refillHunger(100);
+	if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
 }
 
 public function ExcelliaCampFixHerGetMilkBottle():void {
@@ -485,8 +486,8 @@ public function excelliaHenchmanOption2(slot:Number = 1):void {
 		outputText("The [exc race] grins and stretches, pumping herself up.\n\n");
 		outputText("\"<i>Of course, I'll help you out [name]. I'm ready for anything the world throws at us!</i>\"\n\n");
 		outputText("Excellia is now following you around.\n\n");
-		var strExcellia:Number = 290;//tyle i miałby mino king an tym samym levelu ^^
-		var unarmedExcellia:Number = 90;//j.w.
+		var strExcellia:Number = 390;//tyle i miałby mino king an tym samym levelu ^^
+		var unarmedExcellia:Number = 190;//j.w.
 		/*if (flags[kFLAGS.ETNA_LVL_UP] >= 1) {
 			strExcellia += 10 * flags[kFLAGS.ETNA_LVL_UP];
 			unarmedExcellia += 20 * flags[kFLAGS.ETNA_LVL_UP];
@@ -733,7 +734,7 @@ public function totalExcelliaChildren():int {
 	return flags[kFLAGS.EXCELLIA_FEMALE_KIDS] + flags[kFLAGS.EXCELLIA_MALE_KIDS] + flags[kFLAGS.EXCELLIA_FEMALE_COW_KIDS] + flags[kFLAGS.EXCELLIA_MALE_COW_KIDS]
 }
 private function excelliaPreg():void {
-	if (!pregnancy.isPregnant) {// && rand(100) < (10 + Math.round(player.cumQ() / 100))
+	if (!pregnancy.isPregnant && (rand(100) < (10 + Math.round(player.cumQ() / 100)) || player.hasPerk(PerkLib.PilgrimsBounty))) {
 		pregnancy.knockUpForce(PregnancyStore.PREGNANCY_PLAYER, PregnancyStore.INCUBATION_EXCELLIA);
 		if (flags[kFLAGS.SCENEHUNTER_PRINT_CHECKS]) outputText("\n<b>Excellia is pregnant!</b>");
 	}

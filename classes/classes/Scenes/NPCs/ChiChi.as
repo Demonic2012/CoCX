@@ -25,26 +25,34 @@ use namespace CoC;
 			SimpleStrike();
 			SimpleStrike();
 			SimpleStrike();
-			if (!player.hasPerk(PerkLib.Resolute) && flags[kFLAGS.CHI_CHI_SAM_TRAINING] < 2) {
+			if (!player.hasPerk(PerkLib.Resolute) && flags[kFLAGS.CHI_CHI_SAM_TRAINING] < 12) {
 				outputText(" You stagger under the violent force of the consecutive impacts, unable to recover your balance.");
 				player.createStatusEffect(StatusEffects.Stunned, 0, 0, 0, 0);
 			}
-			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] >= 2) outputText(" Thankfully your training with her helped you learn how to counter most of these attacks and you manage to weaken her normally overwhelming blows.");
+			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] >= 12) outputText(" Thankfully your training with her helped you learn how to counter most of these attacks and you manage to weaken her normally overwhelming blows.");
 			outputText("\n\n");
 		}
 		public function SimpleStrike():void {
 			var damage:Number = 0;
-			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] < 2 || flags[kFLAGS.CHI_CHI_LVL_UP] >= 7) {
-				damage += (this.str * 0.5) + rand(this.str * 0.5);
-				damage += eBaseDamage();
+			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] < 12 || flags[kFLAGS.CHI_CHI_LVL_UP] >= 7) {
+				damage += eBaseStrengthDamage() * 2;
+				damage += eBaseDamage() * 2;
+				if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 12) {
+					damage += eBaseStrengthDamage() * 2;
+					damage += eBaseDamage() * 2;
+				}
+				if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 17) {
+					damage += eBaseStrengthDamage() * 2;
+					damage += eBaseDamage() * 2;
+				}
 			}
-			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 2 || (flags[kFLAGS.CHI_CHI_LVL_UP] >= 2 && flags[kFLAGS.CHI_CHI_LVL_UP] < 7)) {
-				damage += ((this.str * 0.5) + rand(this.str * 0.5)) * 0.7;
-				damage += eBaseDamage() * 0.7;
+			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 12 || (flags[kFLAGS.CHI_CHI_LVL_UP] >= 2 && flags[kFLAGS.CHI_CHI_LVL_UP] < 7)) {
+				damage += eBaseStrengthDamage() * 1.4;
+				damage += eBaseDamage() * 1.4;
 			}
 			if (flags[kFLAGS.CHI_CHI_FOLLOWER] == 3 && flags[kFLAGS.CHI_CHI_LVL_UP] < 2) {
-				damage += ((this.str * 0.5) + rand(this.str * 0.5)) * 0.4;
-				damage += eBaseDamage() * 0.4;
+				damage += eBaseStrengthDamage() * 0.8;
+				damage += eBaseDamage() * 0.8;
 			}
 			if (player.hasStatusEffect(StatusEffects.Stunned)) damage *= 1.5;
 			var crit:Boolean = false;
@@ -70,7 +78,9 @@ use namespace CoC;
 		
 		public function Regeneration():void {
 			outputText("To your surprise, Chi Chi’s wounds start closing!");
-			createStatusEffect(StatusEffects.MonsterRegen, 5, 2, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 17) createStatusEffect(StatusEffects.MonsterRegen, 5, 6, 0, 0);
+			else if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 12) createStatusEffect(StatusEffects.MonsterRegen, 5, 4, 0, 0);
+			else createStatusEffect(StatusEffects.MonsterRegen, 5, 2, 0, 0);
 		}
 		
 		public function SoulBlast():void {
@@ -85,8 +95,8 @@ use namespace CoC;
 				}
 				else {
 					outputText("Chi Chi’s palms fill with a massive sphere of red energy which suddenly explodes in a devastating beam of concentrated soul force. You see the devastating torrent a mere fraction of a second before it hits you. Your defences are shattered, utterly unable to stop it as the energy overwhelms you. The blast barely leaves you intact.");
-					player.takePhysDamage(5000000);
-					player.takeMagicDamage(5000000);
+					player.takePhysDamage(500000000000000);
+					player.takeMagicDamage(500000000000000);
 				}
 			}
 		}
@@ -120,17 +130,41 @@ use namespace CoC;
 			}
 		}
 		
+		private function retry():void {
+			clearOutput();
+			if (hasStatusEffect(StatusEffects.CombatWounds)) {
+				addStatusValue(StatusEffects.CombatWounds, 1, 10);
+				if (statusEffectv1(StatusEffects.CombatWounds) > 90) chichiScene.LostFirstFight();
+			}
+			else createStatusEffect(StatusEffects.CombatWounds, 10, 0, 0, 0);
+			HP = maxHP();
+			lust = 0;
+			outputText("As lust begins to overwhelm Chi Chi she suddenly adopts a new stance.\n\n");
+			outputText("\"<i>You think you can win just by making me horny? Watch and learn.</i>\"\n\n");
+			outputText("Chi Chi suddenly begins to kick at the air at tremendous speed unleashing a flurry of fireballs at you. To your absolute dismay, with each kick, the lusty haze in her eyes dissipates until it's completely gone. Meanwhile, you end up getting immolated by her barrage of fiery projectiles!\n\n");
+			outputText("As the barrage ends, Chi Chi taunts you.\n\n");
+			outputText("\"<i>I’m literally just starting to get fired up. I hope you can handle the heat!</i>\"\n\n");
+			outputText("She speaks big but you can tell this barrage of strikes left her weaker than before. It seems that this technique forces her to exhaust herself more than normal. The problem is just how much of a beating can you take before she overwhelms you with it.\n\n");
+			SceneLib.combat.combatRoundOver();
+		}
+
 		override public function defeated(hpVictory:Boolean):void
 		{
-			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 3) chichiScene.WonSparringFight();
-			else if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 2) chichiScene.WonSecondFight();
-			else chichiScene.WonFirstFight();
+			if (flags[kFLAGS.CHI_CHI_FOLLOWER] > 2 && flags[kFLAGS.CHI_CHI_FOLLOWER] != 5) chichiScene.WonSparringFight();
+			else if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 12) chichiScene.WonSecondFight();
+			else {
+				if (hpVictory) chichiScene.WonFirstFight();
+				else {
+					retry();
+					return;
+				}
+			}
 		}
 
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
 		{
-			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 3) chichiScene.LostSparringFight();
-			else if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 2) chichiScene.LostSecondFight();
+			if (flags[kFLAGS.CHI_CHI_FOLLOWER] > 2 && flags[kFLAGS.CHI_CHI_FOLLOWER] != 5) chichiScene.LostSparringFight();
+			else if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 12) chichiScene.LostSecondFight();
 			else chichiScene.LostFirstFight();
 		}
 
@@ -143,74 +177,116 @@ use namespace CoC;
 		
 		public function ChiChi()
 		{
+			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] < 12) {
+				initStrTouSpeInte(630, 630, 610, 400);
+				initWisLibSensCor(400, 190, 160, 0);
+				this.weaponAttack = 140;
+				this.armorDef = 10;
+				this.armorMDef = 100;
+				this.bonusHP = 25000;
+				this.bonusLust = 408;
+				this.level = 58;
+			}
 			if (flags[kFLAGS.CHI_CHI_FOLLOWER] == 3 && flags[kFLAGS.CHI_CHI_LVL_UP] < 2) {
-				initStrTouSpeInte(90, 90, 80, 110);
-				initWisLibSensCor(110, 60, 40, 50);
-				this.weaponAttack = 30;
-				this.bonusLust = 122;
+				initStrTouSpeInte(180, 180, 160, 220);
+				initWisLibSensCor(220, 120, 80, 0);
+				this.weaponAttack = 60;
+				this.armorDef = 10;
+				this.armorMDef = 100;
+				this.bonusHP = 5000;
+				this.bonusLust = 222;
 				this.level = 22;
 			}
 			if (flags[kFLAGS.CHI_CHI_LVL_UP] == 2) {
-				initStrTouSpeInte(130, 130, 120, 125);
-				initWisLibSensCor(125, 70, 50, 50);
-				this.weaponAttack = 36;
-				this.bonusLust = 151;
+				initStrTouSpeInte(260, 260, 240, 250);
+				initWisLibSensCor(250, 140, 100, 0);
+				this.weaponAttack = 72;
+				this.armorDef = 11;
+				this.armorMDef = 110;
+				this.bonusHP = 6000;
+				this.bonusLust = 271;
 				this.level = 31;
 			}
 			if (flags[kFLAGS.CHI_CHI_LVL_UP] == 3) {
-				initStrTouSpeInte(170, 170, 160, 140);
-				initWisLibSensCor(140, 80, 60, 50);
-				this.weaponAttack = 44;
-				this.bonusLust = 180;
+				initStrTouSpeInte(340, 340, 320, 280);
+				initWisLibSensCor(280, 160, 120, 0);
+				this.weaponAttack = 88;
+				this.armorDef = 12;
+				this.armorMDef = 120;
+				this.bonusHP = 8000;
+				this.bonusLust = 320;
 				this.level = 40;
 			}
 			if (flags[kFLAGS.CHI_CHI_LVL_UP] == 4) {
-				initStrTouSpeInte(210, 210, 200, 155);
-				initWisLibSensCor(155, 90, 70, 50);
-				this.weaponAttack = 50;
-				this.bonusLust = 209;
+				initStrTouSpeInte(420, 420, 400, 310);
+				initWisLibSensCor(310, 180, 140, 0);
+				this.weaponAttack = 100;
+				this.armorDef = 13;
+				this.armorMDef = 130;
+				this.bonusHP = 10000;
+				this.bonusLust = 369;
 				this.level = 49;
 			}
-			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 2 || flags[kFLAGS.CHI_CHI_LVL_UP] == 5) {
-				initStrTouSpeInte(250, 250, 240, 170);
-				initWisLibSensCor(170, 100, 80, 50);
-				this.weaponAttack = 56;
-				this.bonusLust = 238;
+			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 12 || flags[kFLAGS.CHI_CHI_LVL_UP] == 5) {
+				initStrTouSpeInte(500, 500, 480, 340);
+				initWisLibSensCor(340, 200, 160, 0);
+				this.weaponAttack = 112;
+				this.armorDef = 15;
+				this.armorMDef = 150;
+				this.bonusHP = 12000;
+				this.bonusLust = 418;
 				this.level = 58;
 			}
 			if (flags[kFLAGS.CHI_CHI_LVL_UP] == 6) {
-				initStrTouSpeInte(280, 280, 270, 185);
-				initWisLibSensCor(185, 110, 90, 50);
-				this.weaponAttack = 60;
-				this.bonusLust = 264;
+				initStrTouSpeInte(560, 560, 540, 370);
+				initWisLibSensCor(370, 220, 180, 0);
+				this.weaponAttack = 120;
+				this.armorDef = 20;
+				this.armorMDef = 200;
+				this.bonusHP = 15000;
+				this.bonusLust = 464;
 				this.level = 64;
 			}
 			if (flags[kFLAGS.CHI_CHI_LVL_UP] == 7) {
-				initStrTouSpeInte(310, 340, 300, 200);
-				initWisLibSensCor(200, 120, 100, 50);
-				this.weaponAttack = 64;
-				this.bonusLust = 290;
+				initStrTouSpeInte(620, 620, 600, 400);
+				initWisLibSensCor(400, 240, 200, 0);
+				this.weaponAttack = 130;
+				this.armorDef = 25;
+				this.armorMDef = 250;
+				this.bonusHP = 20000;
+				this.bonusLust = 510;
 				this.level = 70;
 			}
-			if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] < 2 || flags[kFLAGS.CHI_CHI_LVL_UP] == 8) {
-				initStrTouSpeInte(340, 340, 330, 215);
-				initWisLibSensCor(215, 130, 110, 50);
-				this.weaponAttack = 68;
-				if (flags[kFLAGS.CHI_CHI_SAM_TRAINING] < 2) {
-					this.level = 58;
-					this.bonusLust = 298;
-				}
-				if (flags[kFLAGS.CHI_CHI_LVL_UP] == 8) {
-					this.level = 76;
-					this.bonusLust = 316;
-				}
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] == 8) {
+				initStrTouSpeInte(680, 680, 660, 430);
+				initWisLibSensCor(430, 260, 220, 0);
+				this.weaponAttack = 140;
+				this.armorDef = 30;
+				this.armorMDef = 300;
+				this.bonusHP = 25000;
+				this.bonusLust = 556;
+				this.level = 76;
 			}
-			if (flags[kFLAGS.CHI_CHI_LVL_UP] == 9) {
-				initStrTouSpeInte(370, 370, 360, 230);
-				initWisLibSensCor(230, 140, 120, 50);
-				this.weaponAttack = 72;
-				this.bonusLust = 342;
-				this.level = 82;
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 9 && flags[kFLAGS.CHI_CHI_LVL_UP] < 18) {
+				var mod:int = (flags[kFLAGS.CHI_CHI_LVL_UP] - 8);
+				initStrTouSpeInte(680 + 60*mod, 680 + 60*mod, 660 + 60*mod, 430 + 30*mod);
+				initWisLibSensCor(430 + 30*mod, 260 + 20*mod, 220 + 20*mod, 0);
+				this.weaponAttack = 140 + 14*mod;
+				this.armorDef = 30 + 10*mod;
+				this.armorMDef = 300 + 100*mod;
+				this.bonusHP = 25000 + 1000*mod;
+				this.bonusLust = 556 + 46*mod;
+				this.level = 76 + 6*mod;
+			}
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] == 18) {
+				initStrTouSpeInte(1280, 1280, 1260, 730);
+				initWisLibSensCor(730, 460, 420, 0);
+				this.weaponAttack = 280;
+				this.armorDef = 130;
+				this.armorMDef = 1300;
+				this.bonusHP = 35000;
+				this.bonusLust = 1016;
+				this.level = 136;
 			}
 			this.a = "";
 			this.short = "Master Chi Chi of the four winds";
@@ -230,22 +306,28 @@ use namespace CoC;
 			this.weaponName = "master gloves";
 			this.weaponVerb="punch";
 			this.armorName = "qipao";
-			this.armorDef = 1;
-			this.armorMDef = 10;
-			this.bonusHP = 25000;
 			this.lust = 30;
 			this.lustVuln = .8;
 			this.gems = 45 + rand(40);
 			if (flags[kFLAGS.CHI_CHI_FOLLOWER] == 2) this.drop = NO_DROP;
 			else this.drop = new ChainedDrop().add(consumables.FIERYS_, 0.2);
-			//this.arms.type = LION;
-			//this.lowerBody = LION;
-			//this.tailType = MANTICORE_PUSSYTAIL;
-			//this.tailRecharge = 0;
 			if (flags[kFLAGS.CHI_CHI_AFFECTION] < 20) this.createPerk(PerkLib.MonsterRegeneration, 5, 0, 0, 0);
 			this.createPerk(PerkLib.FireNature, 0, 0, 0, 0);
 			this.createPerk(PerkLib.EnemyBeastOrAnimalMorphType, 0, 0, 0, 0);
-			this.createPerk(PerkLib.EnemyBossType, 0, 0, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 12 && flags[kFLAGS.CHI_CHI_LVL_UP] < 19) this.createPerk(PerkLib.EnemyEliteType, 0, 0, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 9) this.createPerk(PerkLib.LimitBreakerFlesh1stStage, 0, 0, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 10) this.createPerk(PerkLib.LimitBreakerPsyche1stStage, 0, 0, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 11) this.createPerk(PerkLib.Diehard, 0, 0, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 12) {
+				this.createPerk(PerkLib.EpicStrength, 0, 0, 0, 0);
+				this.createPerk(PerkLib.Regeneration, 0, 0, 0, 0);
+			}
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 13) this.createPerk(PerkLib.EpicToughness, 0, 0, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 14) this.createPerk(PerkLib.LimitBreakerFlesh2ndStage, 0, 0, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 15) this.createPerk(PerkLib.LimitBreakerPsyche2ndStage, 0, 0, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 16) this.createPerk(PerkLib.ImprovedDiehard, 0, 0, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 17) this.createPerk(PerkLib.LegendaryStrength, 0, 0, 0, 0);
+			if (flags[kFLAGS.CHI_CHI_LVL_UP] >= 18) this.createPerk(PerkLib.LegendaryToughness, 0, 0, 0, 0);
 			checkMonster();
 		}
 		

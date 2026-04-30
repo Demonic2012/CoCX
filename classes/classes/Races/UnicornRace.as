@@ -63,7 +63,8 @@ public class UnicornRace extends Race{
 				.hornTypeAndCount(Horns.UNICORN, LESS_THAN(6), +1, 0, "Unicorn branch - size 1-5 unicorn horn")
 				.hornTypeAndCount(Horns.UNICORN, AT_LEAST(6), +2, 0, "Unicorn branch - size 6+ unicorn horn")
 				.hornTypeAndCount(Horns.BICORN, LESS_THAN(6), +1, 0, "Bicorn branch - size 1-5 bicorn horns")
-				.hornTypeAndCount(Horns.BICORN, AT_LEAST(6), +2, 0, "Bicorn branch - size 6+ bicorn horns");
+				.hornTypeAndCount(Horns.BICORN, AT_LEAST(6), +2, 0, "Bicorn branch - size 6+ bicorn horns")
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addConditionedScores(
 				function(body:BodyData):Boolean {
 					return body.hornType == Horns.UNICORN;
@@ -96,7 +97,8 @@ public class UnicornRace extends Race{
 				.hasPerk(PerkLib.AvatorOfCorruption, +1);
 		
 		addMutation(IMutationsLib.TwinHeartIM, +2);
-		addMutation(IMutationsLib.EclipticMindIM, +1);
+		addMutation(IMutationsLib.EclipticMindIM);
+		addMutation(IMutationsLib.EquineMuscleIM);
 		
 		buildTier(8, "Half Unicorn/Bicorn")
 				.customNamingFunction(Utils.curry(nameFn,1))

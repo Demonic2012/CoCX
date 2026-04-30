@@ -69,7 +69,7 @@ public class BeeGirlScene extends BaseContent
 			spriteSelect(SpriteDb.s_bee_girl);
 			outputText("That's when she comes into view.  A great woman, yellow and black, a Bee-like handmaiden would be the best comparison.  She sits atop a great flower while humming her tune, happily picking the petals off of another flower.  Her body is thin, save her abdomen.  Her head is more humanoid than bee, with black eyes, floppy antennae, and luscious black lips that glimmer wetly in the light.\n\n");
 			//Alraune race
-			if (player.lowerBody == LowerBody.PLANT_FLOWER) {
+			if (player.isAlraune()) {
 				AlrauneAndBee();
 				return;
 			}
@@ -290,7 +290,7 @@ public class BeeGirlScene extends BaseContent
 				outputText("  The pain of being stretched out soon gives way to sharing in the pleasure that your insectoid lover feels with each new bump passing into your body.\n\n");
 			}
 			else {
-				outputText("Your experiance in this world has well prepared your " + assholeDescript() + " for the knotted appendage.  Its lubricated surface gives nothing but pleasure to your used rear, and both you and your insectoid lover give nothing but moans of pleasure as each new bump passes into your body.\n\n");
+				outputText("Your experience in this world has well prepared your " + assholeDescript() + " for the knotted appendage.  Its lubricated surface gives nothing but pleasure to your used rear, and both you and your insectoid lover give nothing but moans of pleasure as each new bump passes into your body.\n\n");
 			}
 			outputText("Once the ovipositor is all the way inside you, the bee girl pulls herself up and wraps her arms around you.  She rubs her large chest into yours, hugging ");
 			if (player.tallness <= 50)
@@ -472,8 +472,8 @@ public class BeeGirlScene extends BaseContent
 
 		private function beeEncounterWithExgartuan():void {
 			outputText(", bending into a smile as she sees you approach.  Standing, she welcomes you in, her wings giving a small buzz as her arms spread open for a welcoming embrace.\n\n");
+			outputText("Your [cock] wriggles free of your [armor], as you keep walking forward.  A bodiless voice yells, \"<i>Honeypot, honeypot, ME LOOOOVE HONEYPOOOOOT!</i>\"\n\n");
 			if (rand(2) == 0) {
-				outputText("Your [cock] wriggles free of your [armor], as you keep walking forward.  A bodiless voice yells, \"<i>Honeypot, honeypot, ME LOOOOVE HONEYPOOOOOT!</i>\"\n\n");
 				outputText("The bee-girl's eyes widen at the sight, shocked by your over-endowed form being dragged towards her as if there were a magnet in your [cock].  She presses herself against the flower's petals, terrified and afraid to put up any meaningful resistance.  The nagging voice pipes up, \"<i>So are we gonna rape her or what, [name]?  I need some honeyyy!</i>\"\n\n");
 				outputText("She seems too surprised to resist.  Will you go along with Exgartuan and rape her?");
                 doYesNo(SceneLib.exgartuan.exgartuanBeeRape, explorer.done);
@@ -500,9 +500,10 @@ public class BeeGirlScene extends BaseContent
 		private function fightTheBeeGirl():void {
 			clearOutput();
 			spriteSelect(SpriteDb.s_bee_girl);
+			attitude = BEE_GIRL_TALKED;
             flags[kFLAGS.BEE_GIRL_RESET_COUNTER] = 0;
 			outputText("You clear your head and resolve to defeat the monstrous bee-girl");
-			if (player.level >= 3 && ((rand(4) == 0 && player.level < 12) || (rand(4) > 0 && player.level >= 12))) {
+			if (player.level >= 16 && rand(2) == 0 && !sceneHunter.other) {
 				outputText(" huntress.");
 				startCombat(new BeeGirlHuntress());
 			}
@@ -569,7 +570,7 @@ public class BeeGirlScene extends BaseContent
 			sceneHunter.selectGender(dickF, null, ["Her Stinger", stingerF]);
 			//Dicked version...
 			function dickF():void {
-				outputText("As if you have lost control of your body, you fall into her arms, happy. As she holds you close, a stinger slowly emerges from her abdomen, as well as a thick knot-like organ, both covered in a sweet smelling lubricant. As your mind synaesthetically sees a myriad of colors and scents, you don't resist as she gently pushes you down to your ");
+				outputText("As if you have lost control of your body, you fall into her arms, happy. As she holds you close, a stinger slowly emerges from her abdomen, as well as a thick knot-like organ, both covered in a sweet smelling lubricant. As your mind synesthetically sees a myriad of colors and scents, you don't resist as she gently pushes you down to your ");
 				if (player.isTaur()) outputText(" hocks and knees");
 				else outputText("stomach");
 				outputText(". Nor do you protest as she leans over you, her stinger - thank goodness it isn't poison - looming close to your anus.  With no more words she shoves the thick, lengthy stinger and knot inside of you. Her 'cock' slips in slowly, the lubricant keeping you from shaking out of your scent-induced pleasure coma. Your hand even ventures to your own engorged ");
@@ -907,7 +908,7 @@ public class BeeGirlScene extends BaseContent
 		private function beeDroneBadEndPart4():void {
 			clearOutput();
 			spriteSelect(SpriteDb.s_bee_girl);
-			outputText("<i>\"Welcome, to my hive, beautiful one!  My daughter hazzz told me about you, and I am delighted to zzzee you before me,\"</i> the queen says to you in a breathless voice, her massive breasts heaving as she pants in pleasure.  <i>\"You are zzzertainly as pleazzzent to the eyes azzz zhe told me you were.\"</i>  You can’t help but shiver in pleasure at her words, but it also brings another spike of pain to your massive member.  <i>\"You are eager it zzzeemzzz, though I cannot zzzay that I am not azzz well,\"</i> she says in response to your behaviour.  <i>\"Come beautiful one, take your plazzze at my side and feel my honey cover your member and bring it zzzweet releazzze.\"</i>\n\n");
+			outputText("<i>\"Welcome, to my hive, beautiful one!  My daughter hazzz told me about you, and I am delighted to zzzee you before me,\"</i> the queen says to you in a breathless voice, her massive breasts heaving as she pants in pleasure.  <i>\"You are zzzertainly as pleazzzent to the eyes azzz zhe told me you were.\"</i>  You can’t help but shiver in pleasure at her words, but it also brings another spike of pain to your massive member.  <i>\"You are eager it zzzeemzzz, though I cannot zzzay that I am not azzz well,\"</i> she says in response to your behavior.  <i>\"Come beautiful one, take your plazzze at my side and feel my honey cover your member and bring it zzzweet releazzze.\"</i>\n\n");
 			outputText("Her words are sweet, sweet honey to your ears, and you need no more encouragement to rush over to one of the free honey dripping slits on her abdomen, and start to push your member inside.  At once the walls contract around your member and start to liberally coat it with the wonderful honey that you needed so much.  The pain immediately leaves your body, and is replaced with a feeling of bliss as you slowly push your massive member further and further into her incredible massive honeypot.\n\n");
 			outputText("With each inch you push inside her, the more overwhelming the feeling is of her walls contracting and relaxing around your length.  Along with the flow of her honey washing over you, there is only one answer you have for her next question for you: <i>\"Izzz it all that you wanted?\"</i>  You respond by pushing yourself in faster, earning a quick gasp of pleasure from your queen.  You can’t help but grin in response, both at the pleasure you brought yourself, and that which you gave your queen.\n\n");
 			outputText("Your attention is drawn for a moment by the bee girl who was being screwed by the phallic stinger on the end of the queen’s abdomen.  She is screaming in orgasmic pleasure just as it retracts from her body.  She takes a few breaths to steady herself and then stands up, turning to the side and you get a chance to see that her abdomen has swollen to twice the size it was when you first noticed her.  You feel a hand on your shoulder and look the other way to see the handmaiden that brought you here.  <i>\"I hope I get to have your firzzzt batch of eggzzz,\"</i> she tells you before moving to the phallic stinger herself.\n\n");
@@ -1218,7 +1219,7 @@ public class BeeGirlScene extends BaseContent
 			if (!player.isTaur() && player.hasCock() && (!player.hasVagina() || rand(2) == 0)) {
 				if (player.lust >= player.maxOverLust()) outputText("Overcome by lust, you throw yourself into her waiting arms.  ");
 				else outputText("Overcome by your wounds, you are unable to resist as she lifts you into her arms and embraces you.  ");
-				outputText("At first, she holds you close, but as she does, a stinger slowly emerges from her abdomen, as well as a thick knot like organ, both covered in a sweet-smelling lubricant. Your mind synaesthetically sees a myriad of colors and scents, and you don't resist as she gently pushes you down to your stomach. Nor do you protest as she leans over you, her stinger - thank goodness it isn't poison - looming close to your anus. With no more words she shoves the thick, lengthy stinger and knot inside of you. Her 'cock' slipping in slowly, the lube keeping you from shaking out of your scent-induced pleasure coma. Your hand even ventures to your own engorged ");
+				outputText("At first, she holds you close, but as she does, a stinger slowly emerges from her abdomen, as well as a thick knot like organ, both covered in a sweet-smelling lubricant. Your mind synesthetically sees a myriad of colors and scents, and you don't resist as she gently pushes you down to your stomach. Nor do you protest as she leans over you, her stinger - thank goodness it isn't poison - looming close to your anus. With no more words she shoves the thick, lengthy stinger and knot inside of you. Her 'cock' slipping in slowly, the lube keeping you from shaking out of your scent-induced pleasure coma. Your hand even ventures to your own engorged ");
 				if (player.cockTotal() == 1) outputText("member");
 				if (player.cockTotal() > 1) outputText("members");
 				outputText(" as she rather forcefully rapes your once-tight hole, humming her tune all the while.\n\n");
@@ -1434,7 +1435,7 @@ public class BeeGirlScene extends BaseContent
 				else if (player.gender == 3) {
 					outputText("She returns to your rear end and assesses it some more. With an almost desperate scrabbling she climbs on top of you, jabbing you repeatedly with her outstretched stinger and causing " + sMultiCockDesc() + " to go rock hard and your " + vaginaDescript() + " to squirt fluid behind you.\n\n");
 
-					outputText("She can't see your cock, of course, and while she sees the spray and strokes your ass gently, can do nothing to help as she busies herself with inserting her ovipositor into your " + assholeDescript() + ". Its thick lubrication allows it quick entrance, and soon she's pumping her fluids into your bowels.\n\n");
+					outputText("She can't see your cock, of course, and while she sees the spray and strokes your ass gently, she can do nothing to help as she busies herself with inserting her ovipositor into your " + assholeDescript() + ". Its thick lubrication allows it quick entrance, and soon she's pumping her fluids into your bowels.\n\n");
 
 					outputText("The sensation proves too much for your massively engorged " + Appearance.cockNoun(player.cocks[cockIndex].cockType) + " and " + vaginaDescript(0) + " to take, and you begin to shake violently, incapable of touching it as one is trapped underneath you with the weight of the bee-girl preventing you from getting the leverage needed to hump the hard ground, and the other is hopelessly out of reach.\n\n");
 					outputText("She seems to understand your problem though and, wanting to help you with your needs, begins to massage your " + vaginaDescript() + " with her 'feet' while periodically stroking the back of your [cock].\n\n");

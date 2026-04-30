@@ -11,38 +11,50 @@ import coc.view.CoCButton;
 
 public class ArigeanOmnibusAbomination extends Monster
 	{
+		override public function combatStatusesUpdateWhenBound():void{
+			tentacleBindUpdateWhenBound();
+		}
+
+		override public function playerBoundStruggle():Boolean{
+			return tentacleBindStruggle();
+		}
+
+		override public function playerBoundWait():Boolean{
+			return tentacleBindWait();
+		}
+
 		private function arigeanOmnibusAbominationFoulMagic():void {
 			outputText("Her body goes limp before her arms lazily start tracing various shapes in the air, quickly gaining a crackling aura as she strikes you with a bolt of pink lightning. \"<i>P-please k- GIVE UP ALREADY!</i>\" ");
 			var lustDmg:Number = 0;
 			lustDmg += Math.round(eBaseIntelligenceDamage() / 3);
-			if (player.hasStatusEffect(StatusEffects.TentacleBind)) lustDmg *= 2;
+			if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical)) lustDmg *= 2;
 			player.takeLustDamage(lustDmg, true);
 		}
 		private function arigeanOmnibusAbominationSpray():void {
-			outputText("The mutant starts swiftly stroking her member while groping herself, and very quickly she reaches her limit, Spraying you with demonic cum. ");
+			outputText("The mutant swiftly starts stroking her member while groping herself, and very quickly reaches her limit, spraying you with demonic cum.");
 			var lustDmg:Number = this.lust;
 			lustDmg += this.lib;
 			lustDmg *= 3;
-			if (player.hasStatusEffect(StatusEffects.TentacleBind)) lustDmg *= 2;
+			if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical)) lustDmg *= 2;
 			this.lust = 0;
 			player.takeLustDamage(lustDmg, true);
 		}
 		private function arigeanOmnibusAbominationSquirt():void {
-			outputText("Her various mouths start heavily leaking cum before spraying a thick stream towards you. ");
+			outputText("Her various mouths start heavily leaking cum before spraying a thick stream towards you.");
 			var lustDmg:Number = 0;
 			lustDmg += this.lib;
 			lustDmg *= 3;
-			if (player.hasStatusEffect(StatusEffects.TentacleBind)) lustDmg *= 2;
+			if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical)) lustDmg *= 2;
 			player.takeLustDamage(lustDmg, true);
 		}
 		private function arigeanOmnibusAbominationMultiBite():void {
-			outputText("One of her various growls before clamping it’s jaws down on you. ");
+			outputText("One of her various mouths growls before clamping its jaws down on you.");
 			var damage:Number = 0;
 			damage += this.str;
 			damage += eBaseDamage();
 			damage += eBaseSpeedDamage();
 			damage *= 4;
-			if (player.hasStatusEffect(StatusEffects.TentacleBind)) damage *= 2;
+			if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical)) damage *= 2;
 			player.takePhysDamage(damage, true);
 			player.takePhysDamage(damage, true);
 			player.takePhysDamage(damage, true);
@@ -55,7 +67,7 @@ public class ArigeanOmnibusAbomination extends Monster
 			damage += eBaseDamage();
 			damage += eBaseStrengthDamage();
 			damage *= 3;
-			if (player.hasStatusEffect(StatusEffects.TentacleBind)) damage *= 2;
+			if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical)) damage *= 2;
 			player.takePhysDamage(damage, true);
 		}
 		private function arigeanOmnibusAbominationViolate():void {
@@ -66,20 +78,19 @@ public class ArigeanOmnibusAbomination extends Monster
 		}
 		private function arigeanOmnibusAbominationEnsnare():void {
 			outputText("Multiple tentacles burst out of the writhing mass supporting her, reaching out for limbs and anything they can get ahold of. ");
-			if (rand(3) == 0 || rand(80) < player.str / 2 || player.hasPerk(PerkLib.FluidBody)) outputText("Fortunately you're much quicker then they are, and evade their grasps.");
+			if (SceneLib.combat.struggleCentralizedCheck()) outputText("Fortunately, you're much quicker than they are and evade their grasps.");
 			else {
 				outputText("They find their target, swiftly grabbing and entangling you within the mass.");
-				player.createStatusEffect(StatusEffects.TentacleBind, 0, 0, 0, 0);
+				player.createStatusEffect(StatusEffects.PlayerBoundPhysical, 0, 0, 0, 0);
 			}
 		}
 		public function arigeanOmnibusAbominationEnsnareStruggle():void
 		{
 			clearOutput();
 			outputText("You struggle with all of your might to free yourself from the tentacles before the creature can fulfill whatever unholy desire it has for you.\n");
-			//33% chance to break free + up to 50% chance for strength
-            if (rand(3) == 0 || rand(80) < player.str / 2 || player.hasPerk(PerkLib.FluidBody)) {
+			if (SceneLib.combat.struggleCentralizedCheck()) {
                 outputText("You're able to use your strength to slip out of the slippery tentacles.\n\n");
-                player.removeStatusEffect(StatusEffects.TentacleBind);
+                player.removeStatusEffect(StatusEffects.PlayerBoundPhysical);
                 createStatusEffect(StatusEffects.TentacleCoolDown, 3, 0, 0, 0);
             }
             //Fail to break free
@@ -93,12 +104,12 @@ public class ArigeanOmnibusAbomination extends Monster
 		public function arigeanOmnibusAbominationEnsnareWait():void
 		{
 			clearOutput();
-			outputText("You wait for any sign of movement from the dense fog and catch a faint shape moving out from the fog. The head of a sea monster bursts through the fog and with a well timed strike the illusion fizzles and vanishes from existence.\n\n");
+			outputText("You wait for any sign of movement from the dense fog and catch a faint shape moving out from the fog. The head of a sea monster bursts through the fog, and with a well-timed strike, the illusion fizzles and vanishes from existence.\n\n");
 			player.removeStatusEffect(StatusEffects.Terrorize);
 			SceneLib.combat.enemyAIImpl();
 		}
 		override public function changeBtnWhenBound(btnStruggle:CoCButton, btnBoundWait:CoCButton):void{
-			if (player.hasStatusEffect(StatusEffects.TentacleBind)) {
+			if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical)) {
 				btnStruggle.call(arigeanOmnibusAbominationEnsnareStruggle);
 				btnBoundWait.call(arigeanOmnibusAbominationEnsnareWait);
 			}
@@ -110,7 +121,7 @@ public class ArigeanOmnibusAbomination extends Monster
 			if (choice == 0 || choice == 1) {
 				if (player.hasStatusEffect(StatusEffects.TentacleCoolDown)) arigeanOmnibusAbominationFoulMagic();
 				else {
-					if (player.hasStatusEffect(StatusEffects.TentacleBind)) arigeanOmnibusAbominationViolate();
+					if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical)) arigeanOmnibusAbominationViolate();
 					else arigeanOmnibusAbominationEnsnare();
 				}
 			}
@@ -161,20 +172,20 @@ public class ArigeanOmnibusAbomination extends Monster
 			this.bodyColor = "albino";
 			this.hairColor = "white";
 			this.hairLength = 16;
-			initStrTouSpeInte(253, 191, 224, 342);
-			initWisLibSensCor(321, 306, 125, 95);
+			initStrTouSpeInte(759, 573, 672, 684);
+			initWisLibSensCor(642, 612, 250, 90);
 			this.weaponName = "tentacles";
 			this.weaponVerb="slap";
-			this.weaponAttack = 35;
+			this.weaponAttack = 210;
 			this.armorName = "white one-piece swimsuit";
-			this.armorDef = 30;
-			this.armorMDef = 30;
-			this.bonusHP = 100;
-			this.bonusLust = 511;
+			this.armorDef = 300;
+			this.armorMDef = 300;
+			this.bonusHP = 1000;
+			this.bonusLust = 942;
 			this.lust = 40;
 			this.lustVuln = .2;
 			this.level = 80;
-			this.gems = rand(30) + 25;
+			this.gems = rand(20) + 50;
 			this.drop = new WeightedDrop()
 					.add(consumables.SIINGOT,3)
 					.add(consumables.L_B_BAR,3)

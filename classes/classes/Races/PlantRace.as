@@ -2,6 +2,8 @@ package classes.Races {
 import classes.BodyData;
 import classes.BodyParts.*;
 import classes.CockTypesEnum;
+import classes.IMutations.IMutationsLib;
+import classes.PerkLib;
 import classes.Race;
 import classes.Races;
 
@@ -51,7 +53,7 @@ public class PlantRace extends Race {
 				.customRequirement("skin", "bark skin", function (body:BodyData):Boolean {
 					return body.player.isBarkSkin()
 				}, +2)
-				.armType(Arms.PLANT, +1)
+				.armType(ANY(Arms.PLANT,Arms.PLANT2), +1)
 				.legType(ANY(LowerBody.PLANT_HIGH_HEELS,LowerBody.PLANT_ROOT_CLAWS), +1)
 				.hasCockOfType(CockTypesEnum.TENTACLE, +1)
 				.wingType(Wings.PLANT, +1)
@@ -62,7 +64,14 @@ public class PlantRace extends Race {
 				.customRequirement("","not yggdrasil",
 						function (body:BodyData):Boolean {
 							return !body.player.isRace(Races.YGGDRASIL);
-						}, 0, -4);
+						}, 0, -4)
+				.customRequirement("","not barometz",
+						function (body:BodyData):Boolean {
+							return !body.player.isRace(Races.BAROMETZ);
+						}, 0, -4)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
+				
+		addMutation(IMutationsLib.PlantChlorophyllIM);
 		
 		buildTier(7, "plant-morph")
 				.buffs({

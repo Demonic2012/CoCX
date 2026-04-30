@@ -278,6 +278,13 @@ public class SkinTransformations extends MutationsHelper {
 				}
 		)
 	}
+	public function SkinScalesGradual(coverage:int = Skin.COVERAGE_COMPLETE, options:* = null):Transformation {
+		var tfs:Array = [];
+		for (var c:int = Skin.COVERAGE_LOW; c <= coverage; c++) {
+			tfs.push(SkinScales(c, deepCopy(options)));
+		}
+		return new GradualTransformation("SkinScalesGradualTo"+coverage, tfs);
+	}
 
 	public function SkinDragonScales(coverage: int = Skin.COVERAGE_COMPLETE, options: * = null): Transformation {
 		return new SimpleTransformation("Dragon Scales Skin",
@@ -505,7 +512,7 @@ public class SkinTransformations extends MutationsHelper {
 				function (doOutput: Boolean): void {
 					var desc: String = "";
 					desc += "Your [skin] burns, and you look down, your [skin] blackening, beginning to flake off. Crying out in shock, you scratch your arm. This only speeds up the process, your [skin] sloughing off in thin strips. The pain is intense, and your arms curl, ignoring your commands as your shoulders spasm. For a moment, you can see beneath your skin, muscles visible, before a brown-black coating pushes through, up from your bones. A sense of relief fills you, and after a few minutes, you regain control, bringing your hands to your face.";
-					desc += "Thick bark, not unlike that of the world tree’s, now covers your entire body. The iron-hard, rough wood is surprisingly flexible, but you notice that you can’t feel as much through this new, natural armour. <b>You are now covered by [skin color] bark from head to toe.</b>";
+					desc += "Thick bark, not unlike that of the world tree’s, now covers your entire body. The iron-hard, rough wood is surprisingly flexible, but you notice that you can’t feel as much through this new, natural armor. <b>You are now covered by [skin color] bark from head to toe.</b>";
 					player.skin.setBaseOnly({type: Skin.BARK, adj: "bark-like", pattern: Skin.PATTERN_NONE});
 					if (doOutput) outputText(desc);
 					Metamorph.unlockMetamorph(SkinMem.getMemory(SkinMem.BARK));
@@ -515,6 +522,22 @@ public class SkinTransformations extends MutationsHelper {
 					options = skinFormatOptions(options, Skin.BARK);
 
 					return player.skin.base.type == Skin.BARK && InCollection(player.skinColor, options.colors) && player.skin.coverage == coverage;
+				}
+		)
+	}
+
+	public function SkinSteel(coverage: int = Skin.COVERAGE_COMPLETE, options: * = null): Transformation {
+		return new SimpleTransformation("Steel Skin",
+				function (doOutput: Boolean): void {
+					var desc: String = "";
+					player.skin.setBaseOnly({type: Skin.STEEL, adj: "steel-like"});
+					if (doOutput) outputText(desc);
+				},
+				// is present
+				function (): Boolean {
+					options = skinFormatOptions(options, Skin.STEEL);
+
+					return player.skin.base.type == Skin.STEEL && InCollection(player.skinColor, options.colors) && player.skin.coverage == coverage;
 				}
 		)
 	}
@@ -546,7 +569,7 @@ public class SkinTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "Your skin patterns itche incessantly, and as you scratch, they shift and change, becoming less and less visible till they are gone. <b>Your skin is without any skin patterns!</b>";
+				desc += "Your skin patterns itches incessantly, and as you scratch, they shift and change, becoming less and less visible till they are gone. <b>Your skin is without any skin patterns!</b>";
 				player.skin.base.adj = "";
 				player.skin.base.pattern = Skin.PATTERN_NONE;
 				player.skin.coat.pattern = Skin.PATTERN_NONE;
@@ -601,7 +624,7 @@ public class SkinTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "As you thought your skin couldn't handle more tattoo a few localised skin burns reveal a new set of drawing along your skin, some decorating your chest. Well you might as well proudly display your <b>Oni tattooed skin.</b>";
+				desc += "As you thought your skin couldn't handle more tattoo a few localised skin burns reveal a new set of drawing along your skin, some decorating your chest. Well, you might as well proudly display your <b>Oni tattooed skin.</b>";
 				player.skin.base.adj = "tattooed";
 				player.skin.base.pattern = Skin.PATTERN_BATTLE_TATTOO;
 
@@ -768,7 +791,7 @@ public class SkinTransformations extends MutationsHelper {
 			},
 			// is present
 			function ():Boolean {
-				return transformations.SkinAquaScales(Skin.COVERAGE_HIGH).isPresent() && player.skin.pattern === Skin.PATTERN_TIGER_STRIPES;
+				return transformations.SkinAquaScales(Skin.COVERAGE_HIGH, {colors: ["orange and black"]}).isPresent() && player.skin.pattern === Skin.PATTERN_TIGER_STRIPES;
 			}
 	);
 
@@ -829,7 +852,7 @@ public class SkinTransformations extends MutationsHelper {
 				if (player.isFurCovered()) desc += "You suddenly start sweating abundantly as your [skin.type] fall off leaving bare the smooth skin underneath.  ";
 				if (player.isGooSkin()) desc += "Your gooey skin solidifies, thickening up as your body starts to solidify into a more normal form. Then you start sweating abundantly. ";
 				if (player.isScaleCovered()) desc += "You suddenly start sweating abundantly as your scales fall off leaving bare the smooth skin underneath.  ";
-				desc += "Your skin starts to change, turning [skin color1]. Your underbelly, on the other hand , turns [skin color2]. Just as you thought it was over, your skin takes on a glossy shine. When you thought it was finaly over specks of light starts to forms underneath your arms, spreading to your underbelly. The bioluminescence gives you an appearance akin to those of a deep-sea creature. <b>Your body is now [skin color] with a [skin color2] underbelly running on the underside of your limbs and up to your mouth with bioluminescent patterns on the belly just like those of a sea dragon!.</b>";
+				desc += "Your skin starts to change, turning [skin color1]. Your underbelly, on the other hand, turns [skin color2]. Just as you thought it was over, your skin takes on a glossy shine. When you thought it was finally over, specks of light start to form underneath your arms, spreading to your underbelly. The bioluminescence gives you an appearance akin to those of a deep-sea creature. <b>Your body is now [skin color] with a [skin color2] underbelly running on the underside of your limbs and up to your mouth, with bioluminescent patterns on the belly just like those of a sea dragon.</b>";
 				player.skin.setBaseOnly({type: Skin.PLAIN, adj: "glossy", pattern: Skin.PATTERN_SEA_DRAGON_UNDERBODY});
 				if (doOutput) outputText(desc);
 				Metamorph.unlockMetamorph(SkinPatternMem.getMemory(SkinPatternMem.SEA_DRAGON_UNDERBODY));
@@ -864,7 +887,7 @@ public class SkinTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "You suddenly feel a searing warmth all over your skin as white patterns not unlike those of the desert anubis appear as if branded onto your flesh. Well you might as well proudly display your <b>Anubis glyph like tattoo.</b>";
+				desc += "You suddenly feel a searing warmth all over your skin as white patterns not unlike those of the desert anubis appear as if branded onto your flesh. Well, you might as well proudly display your <b>Anubis glyph like tattoo.</b>";
 				player.skin.base.adj = "tattooed";
 				player.skin.base.pattern = Skin.PATTERN_GLYPH_TATTOO;
 
@@ -891,6 +914,73 @@ public class SkinTransformations extends MutationsHelper {
 			// is present
 			function (): Boolean {
 				return player.skin.base.pattern === Skin.PATTERN_BIOLUMINESCENCE;
+			}
+	);
+
+	public const SkinPatternCircuit: Transformation = new SimpleTransformation("Circuit Skin Pattern",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "";
+				player.skin.base.pattern = Skin.PATTERN_CIRCUIT_TATTOO;
+
+				if (doOutput) outputText(desc);
+			},
+			// is present
+			function (): Boolean {
+				return player.skin.base.pattern === Skin.PATTERN_CIRCUIT_TATTOO;
+			}
+	);
+
+	public const SkinPatternDemonicPleasureRune: Transformation = new SimpleTransformation("Demonic Pleasure Rune Skin Pattern",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "You feel something like tickling all over your skin as something like a demonic tattoo etches itself across your body, the relief near your pussy tracing the shape of a heart with tendrils where your ovaries should be. The magical tattoo seems to have an effect on you as you become increasingly hornier. <b>Your skin is now marked with a demonic pleasure rune.</b>";
+				player.skin.base.pattern = Skin.PATTERN_DEMONIC_PLEASURE_RUNE;
+
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(SkinPatternMem.getMemory(SkinPatternMem.DEMONIC_PLEASURE_RUNE));
+			},
+			// is present
+			function (): Boolean {
+				return player.skin.base.pattern === Skin.PATTERN_DEMONIC_PLEASURE_RUNE;
+			}
+	);
+
+	public const SkinPatternRunic: Transformation = new SimpleTransformation("Runic Skin Pattern",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "Your skin itches as a glowing green tattoo etches themselves across your arm and belly. The scribblings seem to assist with your mana flow and are definitely magical in nature. <b>Your skin is now marked with a raunic patterns.</b>";
+				player.skin.base.pattern = Skin.PATTERN_RUNIC;
+
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(SkinPatternMem.getMemory(SkinPatternMem.RUNIC));
+			},
+			// is present
+			function (): Boolean {
+				return player.skin.base.pattern === Skin.PATTERN_RUNIC;
+			}
+	);
+
+	public const SkinPatternSoulforceScaring: Transformation = new SimpleTransformation("Soulforce Scaring Skin Pattern",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "Flecks of soulforce tear out of your flesh, they streak across your [body] and creep their way along your legs. The voilent flare up of spiritual pressure fades, you note that from your [chest] to [arms] and all across [body] and down your [legs] - are abstract patterns. They remind you of sigils and patterns one would see from tribals and occult studies. <b>You now have Soulforce Scaring skin pattern.</b>";
+				player.skin.base.pattern = Skin.PATTERN_SOULFORCE_SCARING;
+
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(SkinPatternMem.getMemory(SkinPatternMem.SOULFORCE_SCARING));
+			},
+			// is present
+			function (): Boolean {
+				return player.skin.base.pattern === Skin.PATTERN_SOULFORCE_SCARING;
 			}
 	);
 	/*

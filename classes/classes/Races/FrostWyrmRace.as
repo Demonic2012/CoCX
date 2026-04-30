@@ -52,7 +52,8 @@ public class FrostWyrmRace extends Race {
 				.legType(LowerBody.FROSTWYRM, +3, -3)
 				.rearType(RearBody.FROSTWYRM, +1)
 				.skinCoatType(Skin.DRAGON_SCALES, +1)
-				.hornType(Horns.FROSTWYRM, +2, -1);
+				.hornType(Horns.FROSTWYRM, +2, -1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addScoresAfter(5)
 				.noWings(+4)
 				.hornType(NONE(Horns.DRACONIC_X4_12_INCH_LONG, Horns.DRACONIC_X2), 0, -2)
@@ -66,12 +67,15 @@ public class FrostWyrmRace extends Race {
 						}, +1)
 				.hasPerk(PerkLib.DragonIceBreath, +1);
 		addScoresAfter(10)
-				.height(GREATER_THAN(120), +1);
+				.height(GREATER_THAN(120), +1)
+				.hasPerk(PerkLib.Dracoforce, +1);
 		
 		addBloodline(PerkLib.DragonsDescendant,PerkLib.BloodlineDragon);
-		addMutation(IMutationsLib.DraconicBonesIM);
-		addMutation(IMutationsLib.DraconicHeartIM);
+		addMutation(IMutationsLib.DrakeBloodIM);
+		addMutation(IMutationsLib.DrakeBonesIM);
+		addMutation(IMutationsLib.DrakeHeartIM);
 		addMutation(IMutationsLib.DrakeLungsIM);
+		addMutation(IMutationsLib.MightyLowerHalfIM);
 		
 		buildTier(18, "frost wyrm")
 				.buffs({
@@ -96,6 +100,19 @@ public class FrostWyrmRace extends Race {
 					"lib.mult": +0.70,
 					"def": +2,
 					"mdef": +2
+				})
+				.end();
+		
+		buildTier(32, "jormungandr")
+				.buffs({
+					"maxhp_mult": +0.15,
+					"str.mult": +2.30,
+					"tou.mult": +1.80,
+					"spe.mult": +0.90,
+					"int.mult": -1.10,
+					"lib.mult": +0.90,
+					"def": +4,
+					"mdef": +4
 				})
 				.end();
 	}

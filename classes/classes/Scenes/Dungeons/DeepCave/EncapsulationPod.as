@@ -233,7 +233,7 @@ import classes.internals.*;
 			this.armorMDef = 1;
 			this.bonusHP = 1500;
 			this.lust = 10;
-			this.lustVuln = 0;
+			this.lustVuln = 0.01;
 			this.level = 38;
 			this.gems = 1;
 			this.additionalXP = 210;
@@ -242,7 +242,6 @@ import classes.internals.*;
 			this.special2 = special2;
 			this.special3 = special3;
 			this.createPerk(PerkLib.Regeneration, 0, 0, 0, 0);
-			this.createPerk(PerkLib.FireVulnerability, 0, 0, 0, 0);
 			this.createPerk(PerkLib.EnemyPlantType, 0, 0, 0, 0);
 			checkMonster();
 		}

@@ -14,6 +14,7 @@ import classes.IMutations.IMutationsLib;
 import classes.Items.Weapons.Tidarion;
 import classes.PerkLib;
 import classes.Races;
+import classes.Scenes.Areas.VolcanicCrag.HellcatKasha;
 import classes.Scenes.Dungeons.D3.*;
 import classes.Scenes.SceneLib;
 import classes.StatusEffectClass;
@@ -82,7 +83,7 @@ public class CombatUI extends BaseCombatContent {
 
 		//Standard menu before modifications.
 		if (flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 2 || flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 4) {
-			btnMelee.show("E.Attack", combat.baseelementalattacks, "Command your elemental to attack the enemy.  Damage it will deal is affected by your wisdom and intelligence.").icon("A_Melee");
+			btnMelee.show("E.Attack", combat.basicElementalAttack, "Command your elemental to attack the enemy.  Damage it will deal is affected by your wisdom and intelligence.").icon("A_Melee");
 			if (combat.isEnemyInvisible) btnMelee.disable("You cannot use command your elemental to attack an opponent you cannot see or target.");
 		}
 		else {/*
@@ -113,25 +114,27 @@ public class CombatUI extends BaseCombatContent {
 				else btnMelee.show("Attack", combat.basemechmeleeattacks, "Attempt to attack the enemy with your mech "+weapon+".  Damage done is determined by your strength and weapon.").icon("A_Melee");
 				if (combat.isEnemyInvisible) btnMelee.disable("You cannot use attack an opponent you cannot see or target.");
 			}
-			else if ((player.isStaffTypeWeapon() || player.isPartiallyStaffTypeWeapon() && player.weapon != weapons.TIDAR) && player.hasPerk(PerkLib.StaffChanneling) && flags[kFLAGS.STAFF_CHANNELING_MODE]) {
+			else if ((player.isStaffTypeWeapon() || player.weapon.isWandType() || player.weaponOff.isWandType() || player.isPartiallyStaffTypeWeapon()) && player.weapon != weapons.TIDAR && player.weaponOff != weapons.TIDAR && player.hasPerk(PerkLib.StaffChanneling) && flags[kFLAGS.STAFF_CHANNELING_MODE]) {
 				//No shooting fuckbolts from Tidarion!!!
 				if (!Wings.Types[player.wings.type].canFly && Arms.Types[player.arms.type].canFly && player.isFlying && player.statusEffectv2(StatusEffects.Flying) == 0) btnMelee.disable("No way you could use your melee weapon with those arms while flying.");
 				else {
-					if (player.hasPerk(PerkLib.ElementalBolt)) btnMelee.show("E.Bolt", combat.magic.spellElementalBolt, "Attempt to attack the enemy with elemental bolt from your [weapon].  Damage done is determined by your intelligence and weapon.").icon("A_Melee");
-					else btnMelee.show("M.Bolt", combat.magic.spellMagicBolt, "Attempt to attack the enemy with magic bolt from your [weapon].  Damage done is determined by your intelligence and weapon.").icon("A_Melee");
+					if (player.hasPerk(PerkLib.ElementalBolt)) btnMelee.show("E.Bolt", combat.magic.spellElementalBolt, "Attempt to attack the enemy with elemental bolt from your [weapon].  Damage done is determined by your intelligence, wisdom and weapon.").icon("A_Melee");
+					else btnMelee.show("M.Bolt", combat.magic.spellMagicBolt, "Attempt to attack the enemy with magic bolt from your [weapon].  Damage done is determined by your intelligence, wisdom and weapon.").icon("A_Melee");
 				}
 			}
+			else if (player.hasStatusEffect(StatusEffects.Gallop)) btnMelee.disable("No way you could hit enemy with melee attacks while galloping. Unless you stop for a moment or two.");
 			else {
 				if (monster.isFlying()) {
-					if (player.isFlying() || player.haveThrowableMeleeWeapon() || player.isWhipTypeWeapon() || player.isRibbonTypeWeapon() || ((player.isStaffTypeWeapon() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.StaffChanneling) && flags[kFLAGS.STAFF_CHANNELING_MODE])) {
-						if (player.isFlying()) {
-							if (player.hasPerk(PerkLib.AerialCombat) || player.haveThrowableMeleeWeapon() || player.isWhipTypeWeapon() || player.isRibbonTypeWeapon()) {
+					if (player.isFlying() || monster.hasStatusEffect(StatusEffects.RootOfTheIssue) || player.haveThrowableMeleeWeapon() || player.weapon.isWhipType() || player.weaponOff.isWhipType() || player.weapon.isRibbonType() || player.weaponOff.isRibbonType() ||
+						((player.isStaffTypeWeapon() || player.weapon.isWandType() || player.weaponOff.isWandType() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.StaffChanneling) && flags[kFLAGS.STAFF_CHANNELING_MODE])) {
+						if (player.isFlying() || monster.hasStatusEffect(StatusEffects.RootOfTheIssue)) {
+							if (player.hasPerk(PerkLib.AerialCombat) || player.haveThrowableMeleeWeapon() || player.weapon.isWhipType() || player.weaponOff.isWhipType() || player.weapon.isRibbonType() || player.weaponOff.isRibbonType()) {
 								if (!Wings.Types[player.wings.type].canFly && Arms.Types[player.arms.type].canFly) btnMelee.disable("No way you could use your melee weapon with those arms while flying.");
 								else btnMelee.show("Attack", combat.basemeleeattacks, "Attempt to attack the enemy with your " + player.weaponName+".  Damage done is determined by your strength and weapon.").icon("A_Melee");
 							}
 							else btnMelee.disable("No way you could hit enemy with melee attacks while flying. Req. Aerial Combat perk or having melee weapon that could be used for range attack too.");
 						}
-						else if ((player.isStaffTypeWeapon() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.StaffChanneling) && flags[kFLAGS.STAFF_CHANNELING_MODE]) {
+						else if ((player.isStaffTypeWeapon() || player.weapon.isWandType() || player.weaponOff.isWandType() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.StaffChanneling) && flags[kFLAGS.STAFF_CHANNELING_MODE]) {
 							if (player.hasPerk(PerkLib.ElementalBolt)) btnMelee.show("E.Bolt", combat.magic.spellElementalBolt, "Attempt to attack the enemy with elemental bolt from your [weapon].  Damage done is determined by your intelligence and weapon.").icon("A_Melee");
 							else btnMelee.show("M.Bolt", combat.magic.spellMagicBolt, "Attempt to attack the enemy with magic bolt from your [weapon].  Damage done is determined by your intelligence and weapon.").icon("A_Melee");
 						}
@@ -142,9 +145,10 @@ public class CombatUI extends BaseCombatContent {
 				else btnMelee.show("Attack", combat.basemeleeattacks, "Attempt to attack the enemy with your " + player.weaponName+".  Damage done is determined by your strength and weapon.").icon("A_Melee");
 			}
 		}
-		if (combat.isEnemyInvisible){
-			btnMelee.disable("You cannot use attack an opponent you cannot see or target.");
+		if ((combat.isEnemyInvisible || monster.hasStatusEffect(StatusEffects.MaddeningTune)) && !player.hasPerk(PerkLib.TrueSeeing)){
+			btnMelee.disable("You cannot use attack on opponent you cannot see or target.");
 		}
+		if (monster is HellcatKasha) btnMelee.disable("The kasha is moving around too fast and too far for you to hit her. She is always keeping just enough distance to strike with her whip.");
 		// Ranged
 		switch (player.weaponRangePerk) {
 			case "Bow":
@@ -171,12 +175,13 @@ public class CombatUI extends BaseCombatContent {
 				if (combat.isEnemyInvisible) btnRanged.disable("You cannot use shoot an opponent you cannot see or target.").icon("GenericWeapon_Bow");
 				break;
 			default:
-				btnRanged.showDisabled("Shoot", "You cannot use ranged combat without a ranged weapon equiped").icon("A_Ranged");
+				btnRanged.showDisabled("Shoot", "You cannot use ranged combat without a ranged weapon equipped").icon("A_Ranged");
 				if (combat.isEnemyInvisible) btnRanged.disable("You cannot use shoot an opponent you cannot see or target.");
 		}
 		if (player.isFlying() && (!Wings.Types[player.wings.type].canFly && Arms.Types[player.arms.type].canFly)){btnRanged.disable("It would be rather difficult to aim while flapping your arms."); }
+		if (player.hasStatusEffect(StatusEffects.Gallop) && !player.hasPerk(PerkLib.CentaurHunterStyleMovingShot)){btnRanged.disable("It would be rather difficult to aim while galloping."); }
 		if (player.isInGoblinMech()) {
-			if (player.hasKeyItem("Repeater Gun") >= 0 || player.hasKeyItem("Machine Gun MK1") >= 0 || player.hasKeyItem("Machine Gun MK2") >= 0 || player.hasKeyItem("Machine Gun MK3") >= 0) {
+			if (player.hasKeyItem("Repeater Gun") >= 0 || player.hasKeyItem("Machine Gun MK1") >= 0 || player.hasKeyItem("Machine Gun MK2") >= 0 || player.hasKeyItem("Machine Gun MK3") >= 0 || player.hasKeyItem("Machine Gun MK4") >= 0 || player.hasKeyItem("Machine Gun MK5") >= 0 || player.hasKeyItem("Machine Gun MK6") >= 0) {
 				if (player.isFirearmTypeWeapon()) {
 					if (player.isUsingGoblinMechFriendlyFirearms()) btnRanged.show("Shoot", combat.fireBow, "Fire a round at your opponent with your " + player.weaponRangeName + "!  Damage done is determined only by your weapon. <b>AMMO LEFT: "+player.ammo+"</b>").icon("A_Ranged");
 					else btnRanged.disable("Your firearms are not compatibile with the current piloted mech.");
@@ -204,6 +209,23 @@ public class CombatUI extends BaseCombatContent {
 				}
 			}
 		}
+		function vampireBiteDuringGrappleBreakHypnosis(Position:int):void {
+			if (player.perkv1(IMutationsLib.HollowFangsIM) >= 2) {
+				addButton(Position, "Bite", combat.VampiricBite).hint("Suck on the blood of an opponent. Break hypnosis! \n\nFatigue Cost: " + physicalCost(20) + "");
+				if (player.fatigueLeft() <= combat.physicalCost(20)) {
+					button(Position).disable("You are too tired to bite " + monster.a + " [monster name].");
+				}
+			}
+		}
+		function vampireBiteDuringGrappleV(Position:int):void {
+			if (player.faceType == Face.VAMPIRE || player.perkv1(IMutationsLib.HollowFangsIM) >= 1) {
+				addButton(Position, "Bite", combat.VampiricBite).hint("Suck on the blood of an opponent. \n\nFatigue Cost: " + physicalCost(20) + "");
+				if (player.fatigueLeft() <= combat.physicalCost(20)) {
+					button(Position).disable("You are too tired to bite " + monster.a + " [monster name].");
+				}
+			}
+			else addButtonDisabled(Position, "Bite", "If only you had fangs.");
+		}
 
 		// Submenu - Physical Specials
 		if (player.isFlying()) combat.pspecials.buildMenuForFlying(physpButtons);
@@ -211,6 +233,9 @@ public class CombatUI extends BaseCombatContent {
 		if (physpButtons.length > 0) {
 			if (player.isInGoblinMech() || player.isInNonGoblinMech()) btnPSpecials.show("Mech", submenuPhySpecials, "Mech special attacks menu.", "Mech Specials");
 			else btnPSpecials.show("P. Specials", submenuPhySpecials, "Physical special attack menu.", "Physical Specials");
+		}
+		if (monster.hasStatusEffect(StatusEffects.MaddeningTune) || monster is HellcatKasha) {
+			btnPSpecials.disable();
 		}
 		// Submenu - Magical Specials
 		combat.mspecials.buildMenu(magspButtons);
@@ -225,8 +250,8 @@ public class CombatUI extends BaseCombatContent {
 			btnMagic.disable("You are too angry to think straight. Smash your puny opponents first and think later.\n\n").icon("A_Magic")
 		} else if (!combat.canUseMagic()) btnMagic.disable().icon("A_Magic")
 		// Submenu - Soulskills
-		//combat.soulskills.buildMenu(soulforceButtons);
-		buildAbilityMenu(CombatAbilities.ALL_SOULSKILLS, soulforceButtons);
+		//buildAbilityMenu(CombatAbilities.ALL_SOULSKILLS, soulforceButtons);
+		BuildSoulskillMenu(soulforceButtons);
 		if (soulforceButtons.length > 0) btnSoulskills.show("Soulforce", submenuSoulforce, "Soulforce attacks menu.", "Soulforce Specials");
 		// Submenu - Other
 		buildAbilityMenu(CombatAbilities.ALL_ELEMENTAL_ASPECTS, eAspectButtons);
@@ -257,6 +282,10 @@ public class CombatUI extends BaseCombatContent {
 			doWispTurn();
 		else if (isMummyTurn())
 			doMummyTurn();
+		else if (isZombieTurn())
+			doZombieTurn();
+		else if (isMatangoTurn())
+			doMatangoTurn();
 		else if (isFlyingSwordTurn())
 			doFlyingSwordTurn();
 		else if (isCompanionTurn(0))
@@ -267,6 +296,10 @@ public class CombatUI extends BaseCombatContent {
 			doCompanionTurn(2);
 		else if (isCompanionTurn(3))
 			doCompanionTurn(3);
+		else if (isMechAITurn())
+			doMechAITurn();
+		else if (isSlimeTurn())
+			doSlimeTurn();
 		//PC: is busy with something
 		else if (isPlayerBound()) {
 			mainMenuWhenBound();
@@ -303,12 +336,7 @@ public class CombatUI extends BaseCombatContent {
 			menu();
 			addButton(0, "Squeeze", SceneLib.desert.nagaScene.nagaSqueeze).hint("Squeeze some HP out of your opponent! Break hypnosis! \n\nFatigue Cost: " + physicalCost(20) + "");
 			addButton(1, "Tease", SceneLib.desert.nagaScene.nagaTease).hint("Deals lesser lust damage. Does not break hypnosis.");
-			if (player.perkv1(IMutationsLib.HollowFangsIM) >= 2) {
-				addButton(3, "Bite", combat.VampiricBite).hint("Suck on the blood of an opponent. Break hypnosis! \n\nFatigue Cost: " + physicalCost(20) + "");
-				if (player.fatigueLeft() <= combat.physicalCost(20)) {
-					button(3).disable("You are too tired to bite " + monster.a + " [monster name].");
-				}
-			}
+			vampireBiteDuringGrappleBreakHypnosis(3);
 			addButton(4, "Maintain", combat.HypnosisMaintain);
 		}
 		//Naga grapple
@@ -320,7 +348,7 @@ public class CombatUI extends BaseCombatContent {
 			addButton(4, "Release", SceneLib.desert.nagaScene.nagaLeggoMyEggo);
 		} else if (monster.hasStatusEffect(StatusEffects.CancerGrab)) {
 			menu();
-			addButton(0, "Guillotine", combat.Guillotine).hint("Crush your foe with your pincer and attempt to break it appart! \n\nFatigue Cost: " + physicalCost(20) + "");
+			addButton(0, "Guillotine", combat.Guillotine).hint("Crush your foe with your pincer and attempt to break it apart! \n\nFatigue Cost: " + physicalCost(20) + "");
 			vampireBiteDuringGrapple(3);
 			addButton(4, "Release", combat.CrabLeggoMyEggo);
 		}
@@ -329,9 +357,9 @@ public class CombatUI extends BaseCombatContent {
 			menu();
 			addButton(0, "Squeeze", combat.ScyllaSqueeze);
 			if (monster.plural) {
-				button(0).hint("Squeeze your foes with your tentacles attempting to break them appart! \n\nFatigue Cost: " + physicalCost(50) + "");
+				button(0).hint("Squeeze your foes with your tentacles attempting to break them apart! \n\nFatigue Cost: " + physicalCost(50) + "");
 			} else {
-				button(0).hint("Squeeze your foe with your tentacle attempting to break it appart! \n\nFatigue Cost: " + physicalCost(20) + "");
+				button(0).hint("Squeeze your foe with your tentacle attempting to break it apart! \n\nFatigue Cost: " + physicalCost(20) + "");
 			}
 			addButton(1, "Tease", combat.ScyllaTease).hint("Use a free limb to caress and pleasure your grappled foe. \n\nFatigue Cost: " + physicalCost(20) + "");
 			vampireBiteDuringGrapple(3);
@@ -356,12 +384,7 @@ public class CombatUI extends BaseCombatContent {
 		} else if (monster.hasStatusEffect(StatusEffects.Straddle)) {
 			menu();
 			addButton(0, "Tease", combat.StraddleTease).hint("Use a powerful teasing attack");
-			if (player.perkv1(IMutationsLib.HollowFangsIM) >= 2) {
-				addButton(1, "Bite", combat.VampiricBite).hint("Suck on the blood of an opponent. Break hypnosis! \n\nFatigue Cost: " + physicalCost(20) + "");
-				if (player.fatigueLeft() <= combat.physicalCost(20)) {
-					button(1).disable("You are too tired to bite " + monster.a + " [monster name].");
-				}
-			}
+			vampireBiteDuringGrappleBreakHypnosis(3);
 			addButton(4, "Release", combat.straddleLeggoMyEggo).hint("Release your opponent.");
 		} else if (monster.hasStatusEffect(StatusEffects.ManticorePlug)) {
 			menu();
@@ -372,6 +395,7 @@ public class CombatUI extends BaseCombatContent {
 		} else if (monster.hasStatusEffect(StatusEffects.SlimeInsert)) {
 			menu();
 			addButton(0, "Rape", combat.SlimeRapeFeed).hint("Violate your opponent from the inside!");
+			addButton(4, "Release", combat.SlimeRapeStop).hint("Release your opponent.");
 		} else if (monster.hasStatusEffect(StatusEffects.Swallowed)) {
 			menu();
 			addButton(0, "Tease", combat.SwallowTease).hint("Use a powerful teasing attack").icon("A_Tease");
@@ -398,7 +422,7 @@ public class CombatUI extends BaseCombatContent {
 				}
 			}
 			addButton(2, "Dig out", combat.DigOut).hint("Dig back out out of the ground.");
-			addButton(14, "Escape", combat.runAway).hint("Escape away from the battle throught underground tunneling.");
+			addButton(14, "Escape", combat.runAway).hint("Escape away from the battle through underground tunneling.");
 		//Singing
 		} else if (player.hasStatusEffect(StatusEffects.Sing)) {
 			menu();
@@ -424,23 +448,11 @@ public class CombatUI extends BaseCombatContent {
 			addButton(4, "Release", combat.GooLeggoMyEggo).hint("Release your opponent.");
 		} else if (monster.hasStatusEffect(StatusEffects.EmbraceVampire)) {
 			menu();
-			if (player.faceType == Face.VAMPIRE || player.perkv1(IMutationsLib.HollowFangsIM) >= 1) {
-				addButton(0, "Bite", combat.VampiricBite).hint("Suck on the blood of an opponent. \n\nFatigue Cost: " + physicalCost(20) + "");
-				if (player.fatigueLeft() <= combat.physicalCost(20)) {
-					button(0).disable("You are too tired to bite " + monster.a + " [monster name].");
-				}
-			}
-			else addButtonDisabled(0, "Bite", "If only you had fangs.");
+			vampireBiteDuringGrappleV(0);
 			addButton(4, "Release", combat.VampireLeggoMyEggo);
 		} else if (monster.hasStatusEffect(StatusEffects.TelekineticGrab)) {
 			menu();
-			if (player.faceType == Face.VAMPIRE || player.perkv1(IMutationsLib.HollowFangsIM) >= 1) {
-				addButton(0, "Bite", combat.VampiricBite).hint("Suck on the blood of an opponent. \n\nFatigue Cost: " + physicalCost(20) + "");
-				if (player.fatigueLeft() <= combat.physicalCost(20)) {
-					button(0).disable("You are too tired to bite " + monster.a + " [monster name].");
-				}
-			}
-			else addButtonDisabled(0, "Bite", "If only you had fangs.");
+			vampireBiteDuringGrappleV(0);
 			CombatAbilities.Tease.createButton(monster).applyTo(btnTease);
 			btnTease.hint("Attempt to make an enemy more aroused by striking a seductive pose and exposing parts of your body.");
 			//addButton(4, "Release", combat.VampireLeggoMyEggo);
@@ -455,7 +467,7 @@ public class CombatUI extends BaseCombatContent {
 			if (player.hasStatusEffect(StatusEffects.OniRampage) || player.wrath > player.maxSafeWrathSpellcasting()) {
 				btnMagic.disable("You are too angry to think straight. Smash your puny opponents first and think later.\n\n").icon("A_Magic")
 			} else if (!combat.canUseMagic()) btnMagic.disable().icon("A_Magic")
-		} else if (monster.hasStatusEffect(StatusEffects.MysticWeb)) {
+		} else if (monster.hasStatusEffect(StatusEffects.MysticWeb) || monster.hasStatusEffect(StatusEffects.BloodWeb)) {
 			menu();
 			addButton(0, "Tease", combat.WebTease).hint("Toy with your opponent");
 			addButton(1, "Bite", combat.spiderBiteAttack).hint("Inject your venom.");
@@ -489,12 +501,13 @@ public class CombatUI extends BaseCombatContent {
 		} else if (monster.hasStatusEffect(StatusEffects.GrabBear)) {
 			menu();
 			addButton(0, "Hug", combat.bearHug).hint("Crush your opponent with a bear hug. \n\nFatigue Cost: " + physicalCost(30) + "");
-			if (player.perkv1(IMutationsLib.HollowFangsIM) >= 2) {
-				addButton(3, "Bite", combat.VampiricBite).hint("Suck on the blood of an opponent. \n\nFatigue Cost: " + physicalCost(20) + "");
-				if (player.fatigueLeft() <= combat.physicalCost(20)) {
-					button(3).disable("You are too tired to bite " + monster.a + " [monster name].");
-				}
-			}
+			vampireBiteDuringGrapple(3);
+			addButton(4, "Release", combat.BearLeggoMyEggo);
+		} else if (monster.hasStatusEffect(StatusEffects.MummyBandage)) {
+			menu();
+			addButton(0, "Constrict", combat.mummyConstrict).hint("Constrict your opponent with your wrapping. \n\nFatigue Cost: " + physicalCost(30) + "");
+			if (monster.lustVuln != 0 && !monster.plural && player.hasPerk(PerkLib.Straddle)) addButton(1, "Straddle", combat.Straddle).hint("Change position and initiate a straddling stance");
+			vampireBiteDuringGrapple(3);
 			addButton(4, "Release", combat.BearLeggoMyEggo);
 		}
 		else playerBusy = false;
@@ -559,7 +572,7 @@ public class CombatUI extends BaseCombatContent {
 	}
 
 	public function isWispTurn():Boolean {
-		return CombatAbilities.WillOfTheWisp.isKnownAndUsable && flags[kFLAGS.WILL_O_THE_WISP] < 2 && flags[kFLAGS.IN_COMBAT_PLAYER_WILL_O_THE_WISP_ATTACKED] != 1;
+		return CombatAbilities.WillOfTheWisp.isKnownAndUsable && flags[kFLAGS.WILL_O_THE_WISP] < 2 && flags[kFLAGS.IN_COMBAT_PLAYER_WILL_O_THE_WISP_ATTACKED] != 1 && !doWeDisableThisOne(7);
 	}
 
 	public function doWispTurn():void {
@@ -578,7 +591,7 @@ public class CombatUI extends BaseCombatContent {
 			clearOutput();
 			outputText("Would you like your wisp to attack?");
 			outputText("\n<b>The wisp can be toggled to attack automatically (Page 3).</b>");
-			outputText("\n<b>You can also enable \"Simplified Pre-PC Turn\" in Perk menu to set all your allies' behaviour to automatic and avoid pressing the 'Next' button every time.</b>\n\n");
+			outputText("\n<b>You can also enable \"Simplified Pre-PC Turn\" in Perk menu to set all your allies' behavior to automatic and avoid pressing the 'Next' button every time.</b>\n\n");
 			menu();
 			addButton(0, "Skip", combat.willothewispskip).hint("You forfeit this attack of the wisp. Would skip to next minion attack/your main turn.");
 			addButton(1, "Attack", doWillOfTheWispAttack).hint("The wisp attacks your enemy.");
@@ -586,7 +599,7 @@ public class CombatUI extends BaseCombatContent {
 	}
 
 	public function isFlyingSwordTurn():Boolean {
-		return player.hasPerk(PerkLib.FirstAttackFlyingSword) && CombatAbilities.FlyingSwordAttack.isKnownAndUsable && flags[kFLAGS.FLYING_SWORD] == 1 && flags[kFLAGS.IN_COMBAT_PLAYER_FLYING_SWORD_ATTACKED] != 1;
+		return player.hasPerk(PerkLib.FirstAttackFlyingSword) && CombatAbilities.FlyingSwordAttack.isKnownAndUsable && flags[kFLAGS.FLYING_SWORD] == 1 && flags[kFLAGS.IN_COMBAT_PLAYER_FLYING_SWORD_ATTACKED] != 1 && !doWeDisableThisOne(5);
 	}
 
 	public function doFlyingSwordTurn():void {
@@ -603,13 +616,13 @@ public class CombatUI extends BaseCombatContent {
 	}
 
 	public function isMummyTurn():Boolean {
-		return CombatAbilities.MummyAttack.isKnownAndUsable && flags[kFLAGS.IN_COMBAT_PLAYER_MUMMY_ATTACKED] != 1 && flags[kFLAGS.MUMMY_ATTACK] == 1;
+		return CombatAbilities.MummyAttack.isKnownAndUsable && flags[kFLAGS.IN_COMBAT_PLAYER_MUMMY_ZOMBIE_ATTACKED] != 1 && flags[kFLAGS.MUMMY_ZOMBIE_ATTACK] == 1 && !doWeDisableThisOne(6);
 	}
 	
 	public function doMummyTurn():void {
 		if (CombatAbilities.MummyAttack.isKnownAndUsable) {
 			CombatAbilities.MummyAttack.perform();
-			flags[kFLAGS.IN_COMBAT_PLAYER_MUMMY_ATTACKED] = 1;
+			flags[kFLAGS.IN_COMBAT_PLAYER_MUMMY_ZOMBIE_ATTACKED] = 1;
 			if (!player.hasStatusEffect(StatusEffects.SimplifiedNonPCTurn)) {
 				menu();
 				addButton(0, "Next", combatMenu, false);
@@ -617,8 +630,70 @@ public class CombatUI extends BaseCombatContent {
 		}
 	}
 
+	public function isZombieTurn():Boolean {
+		return CombatAbilities.ZombieAttack.isKnownAndUsable && flags[kFLAGS.IN_COMBAT_PLAYER_MUMMY_ZOMBIE_ATTACKED] != 1 && flags[kFLAGS.MUMMY_ZOMBIE_ATTACK] == 1 && !doWeDisableThisOne(6);
+	}
+	
+	public function doZombieTurn():void {
+		if (CombatAbilities.ZombieAttack.isKnownAndUsable) {
+			CombatAbilities.ZombieAttack.perform();
+			flags[kFLAGS.IN_COMBAT_PLAYER_MUMMY_ZOMBIE_ATTACKED] = 1;
+			if (!player.hasStatusEffect(StatusEffects.SimplifiedNonPCTurn)) {
+				menu();
+				addButton(0, "Next", combatMenu, false);
+			}
+		}
+	}
+
+	public function isMatangoTurn():Boolean {
+		return CombatAbilities.MatangoAttack.isKnownAndUsable && flags[kFLAGS.IN_COMBAT_PLAYER_MATANGO_ATTACKED] != 1 && flags[kFLAGS.MATANGO_ATTACK] == 1 && !doWeDisableThisOne(8);
+	}
+	
+	public function doMatangoTurn():void {
+		if (CombatAbilities.MatangoAttack.isKnownAndUsable) {
+			CombatAbilities.MatangoAttack.perform();
+			flags[kFLAGS.IN_COMBAT_PLAYER_MATANGO_ATTACKED] = 1;
+			if (!player.hasStatusEffect(StatusEffects.SimplifiedNonPCTurn)) {
+				menu();
+				addButton(0, "Next", combatMenu, false);
+			}
+		}
+	}
+	
+	public function isMechAITurn():Boolean {
+		return (player.isInGoblinMech() || player.hasPerk(PerkLib.SelfImprovement)) && (player.hasKeyItem("Improved Artificial Intelligence") >= 0 || player.hasKeyItem("Improved Artificial Intelligence MK2") >= 0 || player.hasKeyItem("Improved Artificial Intelligence MK3") >= 0 || player.hasKeyItem("Improved Artificial Intelligence MK4") >= 0)
+				&& (player.hasKeyItem("Auto turret") >= 0 || player.hasKeyItem("Auto turret MK2") >= 0 || player.hasKeyItem("Auto turret MK3") >= 0 || player.hasKeyItem("Auto turret MK4") >= 0 || player.hasKeyItem("Auto turret MK5") >= 0 || player.hasKeyItem("Auto turret MK6") >= 0)
+				&& flags[kFLAGS.IN_COMBAT_PLAYER_GOBLIN_MECH_AI_ATTACKED] != 1 && flags[kFLAGS.MECH_AI_ATTACK] == 1 && !doWeDisableThisOne(9);
+	}
+	
+	public function doMechAITurn():void {
+		combat.shootMechWeaponByAI();
+		if (player.hasKeyItem("Improved Artificial Intelligence MK2") >= 0 || player.hasKeyItem("Improved Artificial Intelligence MK3") >= 0 || player.hasKeyItem("Improved Artificial Intelligence MK4") >= 0) combat.pspecials.goblinMechAIUseRadomlyItWeaponFunctions();
+		if (player.hasKeyItem("Improved Artificial Intelligence MK4") >= 0) combat.pspecials.goblinMechAIUseRadomlyItWeaponFunctions();
+		flags[kFLAGS.IN_COMBAT_PLAYER_GOBLIN_MECH_AI_ATTACKED] = 1;
+		if (!player.hasStatusEffect(StatusEffects.SimplifiedNonPCTurn)) {
+			menu();
+			addButton(0, "Next", combatMenu, false);
+		}
+	}
+	
+	public function isSlimeTurn():Boolean {
+        return flags[kFLAGS.IN_COMBAT_PLAYER_SLIMES_ATTACKED] != 1 && monster.getStatusValue(StatusEffects.SlimeSurround,2) > 0 && !doWeDisableThisOne(10);
+    }
+
+    public function doSlimeTurn():void {
+        if (monster.hasStatusEffect(StatusEffects.SlimeSurround) && monster.getStatusValue(StatusEffects.SlimeSurround,2) > 0) {
+            combat.pspecials.slimeArmyAttack(true);
+            flags[kFLAGS.IN_COMBAT_PLAYER_SLIMES_ATTACKED] = 1;
+            if (!player.hasStatusEffect(StatusEffects.SimplifiedNonPCTurn)) {
+                menu();
+                addButton(0, "Next", combatMenu, false);
+            }
+        }
+    }
+
 	public function isGolemTurn():Boolean {
-		return player.hasPerk(PerkLib.FirstAttackGolems) && flags[kFLAGS.GOLEMANCER_PERM_GOLEMS] == 1 && flags[kFLAGS.IN_COMBAT_PLAYER_GOLEM_ATTACKED] != 1 && player.mana >= combat.pspecials.permanentgolemsendcost();
+		return player.hasPerk(PerkLib.FirstAttackGolems) && flags[kFLAGS.GOLEMANCER_PERM_GOLEMS] == 1 && flags[kFLAGS.IN_COMBAT_PLAYER_GOLEM_ATTACKED] != 1 && player.mana >= combat.pspecials.permanentgolemsendcost() && !doWeDisableThisOne(4);
 	}
 
 	public function doGolemTurn():void {
@@ -683,11 +758,11 @@ public class CombatUI extends BaseCombatContent {
 	}
 
 	public function isSkeletonsTurn():Boolean {
-		return (player.hasPerk(PerkLib.FirstAttackSkeletons) && ((player.perkv2(PerkLib.PrestigeJobNecromancer) > 0 && !monster.isFlying()) || player.perkv1(PerkLib.GreaterHarvest) > 0 || player.perkv2(PerkLib.GreaterHarvest) > 0)) && flags[kFLAGS.NECROMANCER_SKELETONS] == 1 && flags[kFLAGS.IN_COMBAT_PLAYER_SKELETONS_ATTACKED] != 1;
+		return (player.hasPerk(PerkLib.FirstAttackSkeletons) && ((player.perkv2(PerkLib.PrestigeJobNecromancer) > 0 && !monster.isFlying()) || player.perkv1(PerkLib.GreaterHarvest) > 0 || player.perkv2(PerkLib.GreaterHarvest) > 0)) && flags[kFLAGS.NECROMANCER_SKELETONS] == 1 && flags[kFLAGS.IN_COMBAT_PLAYER_SKELETONS_ATTACKED] != 1 && !doWeDisableThisOne(3);
 	}
 
 	public function isEpicElementalTurn():Boolean {
-		return player.hasPerk(PerkLib.FirstAttackElementalsSu) && player.statusEffectv2(StatusEffects.SummonedElementals) > 0 && (flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 3 || flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 4) && !flags[kFLAGS.IN_COMBAT_PLAYER_EPIC_ELEMENTAL_ATTACKED];
+		return player.hasPerk(PerkLib.FirstAttackElementalsSu) && player.statusEffectv2(StatusEffects.SummonedElementals) > 0 && (flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 3 || flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 4) && flags[kFLAGS.ATTACKING_ELEMENTAL_TYPE] != 0 && flags[kFLAGS.IN_COMBAT_PLAYER_EPIC_ELEMENTAL_ATTACKED] != 1 && !doWeDisableThisOne(1);
 	}
 
 	public function doEpicElementalTurn():void {
@@ -715,7 +790,7 @@ public class CombatUI extends BaseCombatContent {
 	}
 
 	public function isElementalTurn():Boolean {
-		return player.hasPerk(PerkLib.FirstAttackElementals) && (flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 3 || flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 4) && !flags[kFLAGS.IN_COMBAT_PLAYER_ELEMENTAL_ATTACKED];
+		return player.hasPerk(PerkLib.FirstAttackElementals) && player.statusEffectv1(StatusEffects.SummonedElementals) > 0 && (flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 3 || flags[kFLAGS.ELEMENTAL_CONJUER_SUMMONS] == 4) && flags[kFLAGS.ATTACKING_EPIC_ELEMENTAL_TYPE] != 30 && flags[kFLAGS.IN_COMBAT_PLAYER_ELEMENTAL_ATTACKED] != 1 && !doWeDisableThisOne(2);
 	}
 
 	public function doElementalTurn():void {
@@ -740,7 +815,7 @@ public class CombatUI extends BaseCombatContent {
 	}
 
 	public function isBloodPuppiesTurn():Boolean {
-		return player.hasPerk(PerkLib.MyBloodForBloodPuppies) && flags[kFLAGS.IN_COMBAT_PLAYER_BLOOD_PUPPIES_ATTACKED] != 1 && flags[kFLAGS.BLOOD_PUPPY_SUMMONS] != 0;
+		return player.hasPerk(PerkLib.MyBloodForBloodPuppies) && flags[kFLAGS.IN_COMBAT_PLAYER_BLOOD_PUPPIES_ATTACKED] != 1 && flags[kFLAGS.BLOOD_PUPPY_SUMMONS] != 0 && !doWeDisableThisOne(0);
 	}
 
 	public function doBloodPuppiesTurn():void {
@@ -768,7 +843,7 @@ public class CombatUI extends BaseCombatContent {
 	public function isCompanionTurn(num:int):Boolean {
 		var present:Boolean;
 		var acted:Boolean;
-		var occupied:Boolean = player.hasStatusEffect(StatusEffects.MinoKing) && player.statusEffectv1(StatusEffects.MinoKing) == num;
+		var occupied:Boolean = ((player.hasStatusEffect(StatusEffects.MinoKing) && player.statusEffectv1(StatusEffects.MinoKing) == num) || monster.hasStatusEffect(StatusEffects.PastPresent));
 		switch(num) {
 			case 0:
 				present = flags[kFLAGS.PLAYER_COMPANION_0] != "";
@@ -820,11 +895,17 @@ public class CombatUI extends BaseCombatContent {
 		if (actFunction == null) CoC_Settings.error("Illegal companion " + num + ": " + companionName);
 		actFunction();
 		if (player.hasPerk(PerkLib.MotivationSu)) actFunction();
+		if (player.hasPerk(PerkLib.MotivationSu) && player.hasPerk(PerkLib.VocalTactician)) actFunction();
+		if (player.hasPerk(PerkLib.DrillSergeant)) actFunction();
 		if (clearAndNext) {
 			menu();
 			addButton(0, "Next", combatMenu, false);
 		}
 		monster.postCompanionAction();
+	}
+	
+	private function doWeDisableThisOne(nr:Number):Boolean {
+		return player.hasStatusEffect(StatusEffects.DisableMHActing) && player.statusEffectv1(StatusEffects.DisableMHActing) >= nr;
 	}
 
 	private function BuildSpellBookMenu(buttons:ButtonDataList):void {
@@ -832,9 +913,9 @@ public class CombatUI extends BaseCombatContent {
 		//Most basic spell ever ^^
 		if (player.hasPerk(PerkLib.JobSorcerer)) {
 			bd = buttons.add("M.Bolt", combat.magic.spellMagicBolt);
-			if (player.hasPerk(PerkLib.StaffChanneling) && player.weapon.isStaffType()) bd.hint("Attempt to attack the enemy with magic bolt from your [weapon].  Damage done is determined by your intelligence and weapon.", "Magic Bolt");
-			else bd.hint("Attempt to attack the enemy with magic bolt.  Damage done is determined by your intelligence.", "Magic Bolt");
-			if (player.mana < spellCost(40)) {
+			if (player.hasPerk(PerkLib.StaffChanneling) && (player.weapon.isWandType() || player.weaponOff.isWandType() || player.weapon.isStaffType() || player.weaponOff.isStaffType())) bd.hint("Attempt to attack the enemy with magic bolt from your [weapon].  Damage done is determined by your intelligence, wisdom and weapon.", "Magic Bolt");
+			else bd.hint("Attempt to attack the enemy with magic bolt.  Damage done is determined by your intelligence and wisdom.", "Magic Bolt");
+			if (player.mana < spellCost(30)) {
 				bd.disable("Your mana is too low to cast this spell.");
 			} else if (monster.hasStatusEffect(StatusEffects.Dig)) {
 				bd.disable("You can only use buff magic while underground.");
@@ -843,9 +924,9 @@ public class CombatUI extends BaseCombatContent {
 			}
 			if (player.hasPerk(PerkLib.MagesWrath)) {
 				bd = buttons.add("M.Bolt(Ex)", combat.magic.spellEdgyMagicBolt);
-				if (player.hasPerk(PerkLib.StaffChanneling) && player.weapon.isStaffType()) bd.hint("Attempt to attack the enemy with wrath-empowered magic bolt from your [weapon].  Damage done is determined by your intelligence and weapon.", "Wrath-Empowered Magic Bolt");
-				else bd.hint("Attempt to attack the enemy with wrath-empowered magic bolt.  Damage done is determined by your intelligence.", "Wrath-Empowered Magic Bolt");
-				if (player.mana < spellCost(40)) {
+				if (player.hasPerk(PerkLib.StaffChanneling) && (player.weapon.isWandType() || player.weaponOff.isWandType() || player.weapon.isStaffType() || player.weaponOff.isStaffType())) bd.hint("Attempt to attack the enemy with wrath-empowered magic bolt from your [weapon].  Damage done is determined by your intelligence, wisdom and weapon.", "Wrath-Empowered Magic Bolt");
+				else bd.hint("Attempt to attack the enemy with wrath-empowered magic bolt.  Damage done is determined by your intelligence and wisdom.", "Wrath-Empowered Magic Bolt");
+				if (player.mana < spellCost(60)) {
 					bd.disable("Your mana is too low to cast this spell.");
 				} else if (player.wrath < 100) {
 					bd.disable("Your wrath is too low to cast this spell.");
@@ -858,9 +939,9 @@ public class CombatUI extends BaseCombatContent {
 		}
 		if (player.hasPerk(PerkLib.ElementalBolt)) {
 			bd = buttons.add("E.Bolt", combat.magic.spellElementalBolt);
-			if (player.hasPerk(PerkLib.StaffChanneling) && player.weapon.isStaffType()) bd.hint("Attempt to attack the enemy with elemental bolt from your [weapon].  Damage done is determined by your intelligence and weapon.", "Elemental Bolt");
-			else bd.hint("Attempt to attack the enemy with elemental bolt.  Damage done is determined by your intelligence.", "Elemental Bolt");
-			if (player.mana < spellCost(80)) {
+			if (player.hasPerk(PerkLib.StaffChanneling) && (player.weapon.isWandType() || player.weaponOff.isWandType() || player.weapon.isStaffType() || player.weaponOff.isStaffType())) bd.hint("Attempt to attack the enemy with elemental bolt from your [weapon].  Damage done is determined by your intelligence, wisdom and weapon.", "Elemental Bolt");
+			else bd.hint("Attempt to attack the enemy with elemental bolt.  Damage done is determined by your intelligence and wisdom.", "Elemental Bolt");
+			if (player.mana < spellCost(30)) {
 				bd.disable("Your mana is too low to cast this spell.");
 			} else if (monster.hasStatusEffect(StatusEffects.Dig)) {
 				bd.disable("You can only use buff magic while underground.");
@@ -869,9 +950,9 @@ public class CombatUI extends BaseCombatContent {
 			}
 			if (player.hasPerk(PerkLib.MagesWrath)) {
 				bd = buttons.add("E.Bolt(Ex)", combat.magic.spellEdgyElementalBolt);
-				if (player.hasPerk(PerkLib.StaffChanneling) && player.weapon.isStaffType()) bd.hint("Attempt to attack the enemy with wrath-empowered elemental bolt from your [weapon].  Damage done is determined by your intelligence and weapon.", "Wrath-Empowered Elemental Bolt");
-				else bd.hint("Attempt to attack the enemy with wrath-empowered elemental bolt.  Damage done is determined by your intelligence.", "Wrath-Empowered Elemental Bolt");
-				if (player.mana < spellCost(80)) {
+				if (player.hasPerk(PerkLib.StaffChanneling) && (player.weapon.isWandType() || player.weaponOff.isWandType() || player.weapon.isStaffType() || player.weaponOff.isStaffType())) bd.hint("Attempt to attack the enemy with wrath-empowered elemental bolt from your [weapon].  Damage done is determined by your intelligence, wisdom and weapon.", "Wrath-Empowered Elemental Bolt");
+				else bd.hint("Attempt to attack the enemy with wrath-empowered elemental bolt.  Damage done is determined by your intelligence and wisdom.", "Wrath-Empowered Elemental Bolt");
+				if (player.mana < spellCost(60)) {
 					bd.disable("Your mana is too low to cast this spell.");
 				} else if (player.wrath < 100) {
 					bd.disable("Your wrath is too low to cast this spell.");
@@ -899,6 +980,20 @@ public class CombatUI extends BaseCombatContent {
 		if ((player.hasPerk(PerkLib.PrestigeJobNecromancer) || player.hasPerk(PerkLib.PrestigeJobGreySage)) && necroSpellButtons.length > 0) buttons.add("Necro Spells", curry(submenu,necroSpellButtons, submenuSpells, 0, false)).hint("Open your Necromicon");
 		if ((player.hasPerk(PerkLib.HiddenJobBloodDemon) || player.hasPerk(PerkLib.PrestigeJobGreySage)) && bloodSpellButtons.length > 0) buttons.add("Blood Spells", curry(submenu,bloodSpellButtons, submenuSpells, 0, false)).hint("Open your Blood grimoire");
 		if (greenSpellButtons.length > 0) buttons.add("Green Spells", curry(submenu,greenSpellButtons, submenuSpells, 0, false)).hint("Open your Green magic book");
+	}
+	
+	private function BuildSoulskillMenu(buttons:ButtonDataList):void {
+		var bd:ButtonData;
+		if (player.hasPerk(PerkLib.SwordIntentAura)) {
+			if (player.statStore.hasBuff("SwordIntentAura")) {
+				buttons.add("SwordIntentAD", combat.deactivateSwordIntentAura).hint("Disperse sword intent aura.");
+			} else {
+				bd = buttons.add("SwordIntentAA", combat.activateSwordIntentAura, "Coat your weapons with sword intent aura. (It would drain soulforce and fatigue until dispersed)\n");
+				bd.requireSoulforce(10 * soulskillCost() * soulskillcostmulti());
+				bd.requireFatigue(10);
+			}
+		}
+		buildAbilityMenu(CombatAbilities.ALL_SOULSKILLS, soulforceButtons);
 	}
 	
 	private function buildAbilityMenu(abilities:/*CombatAbility*/Array, buttons:ButtonDataList):void {
@@ -984,11 +1079,17 @@ public class CombatUI extends BaseCombatContent {
 						break;
 					case 8:
 						btnContinue.show("Continue", combat.mspecials.arigeanChargedShot, "Continue gathering energy.");
-						break;/*
+						break;
 					case 9:
+						btnContinue.show("Continue", combat.mspecials.CeroHollow, "Continue gathering energy.");
+						break;/*
+					case 10:
 						btnContinue.show("Continue", combat.magic., "Continue casting  spell.");
 						break;
-					case 10:
+					case 11:
+						btnContinue.show("Continue", combat.magic., "Continue casting  spell.");
+						break;
+					case 12:
 						btnContinue.show("Continue", combat.magic., "Continue casting  spell.");
 						break;*/
 				}
@@ -1060,3 +1161,5 @@ public class CombatUI extends BaseCombatContent {
 	}
 }
 }
+
+

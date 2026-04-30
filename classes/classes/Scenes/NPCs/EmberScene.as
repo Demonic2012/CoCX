@@ -28,7 +28,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
     //EmberQuestTrigger: Controls whether the PC can still visit the lost dragon city. 0 can visit and 1 can't, special text will be displayed. (Future Expansion)
     //BreathCooldown: How many hours you need to wait to be able to use the breath weapon again.
     // EMBER_STAT:int = 533; //All Embers have a hidden stat, Corrupt has Ego, Pure has Confidence, Tainted has Affection, and hybrids vary. There is a need to track this, but only 1 special stat for every Ember.
-    // EMBER_INTERNAL_DICK:int = 534; //Dragon-girl Ember can have either a internal sheath to keep " + emberMF("his","her") + " dick in or have it be more human-like. 0 = internal, 1 = external.
+    // EMBER_INTERNAL_DICK:int = 534; //Dragon-girl Ember can have either an internal sheath to keep " + emberMF("his","her") + " dick in or have it be more human-like. 0 = internal, 1 = external.
     //EmberKidsCount: How many children you've had with Ember, this will be important later.
     //BooleanEmberKidMale: If you've had a male child with Ember, having a herm sets both flags to 1 (true).
     //BooleanEmberKidFemale: If you've had a female child with Ember, having a herm sets both flags to 1 (true).
@@ -141,7 +141,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
     private function emberCorruption(changes:Number = 0):Number {
         flags[kFLAGS.EMBER_COR] += changes;
         if (flags[kFLAGS.EMBER_COR] > 100) flags[kFLAGS.EMBER_COR] = 100;
-        else if (flags[kFLAGS.EMBER_COR] < 0) flags[kFLAGS.EMBER_COR] = 0;
+        else if (flags[kFLAGS.EMBER_COR] < -100) flags[kFLAGS.EMBER_COR] = -100;
         return flags[kFLAGS.EMBER_COR];
     }
 
@@ -400,7 +400,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
         //set flags
         player.createKeyItem("Dragon Egg", 0, 0, 0, 0);
         flags[kFLAGS.TOOK_EMBER_EGG] = 1;
-        flags[kFLAGS.EMBER_COR] = 50;
+        flags[kFLAGS.EMBER_COR] = 0;
         endEncounter();
     }
 
@@ -476,7 +476,6 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
         }
         eggDescribe();
         eggMenu();
-
     }
 
     private function eggDescribe():void {
@@ -539,7 +538,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
     private function leaveWithoutUsingAnEmberItem():void {
         clearOutput();
         outputText("You shake your head; it would probably be best not to tamper with it. Returning the items to your pockets, you leave the egg alone.  As you put them away, the egg's glow slows down dramatically, almost as if it were feeling... disappointment?");
-        doNext(inventory.inventoryMenu);
+        doNext(camp.campActions);
     }
 
     //Incubus Draft/Purified Incubus Draft (Z)
@@ -547,10 +546,10 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
         clearOutput();
         if (purified) {
             player.consumeItem(consumables.P_DRAFT);
-            emberCorruption(-10);
+            emberCorruption(-20);
         } else {
             player.consumeItem(consumables.INCUBID);
-            emberCorruption(10);
+            emberCorruption(20);
         }
         outputText("Uncorking the vial, you drizzle the slimy off-white fluid onto the pointed cone of the egg.  It oozes slowly across the surface, then seeps through the shell, leaving not a drop of moisture.");
         if (flags[kFLAGS.EMBER_GENDER] == 3 || flags[kFLAGS.EMBER_GENDER] == 0) {
@@ -569,10 +568,10 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
         clearOutput();
         if (purified) {
             player.consumeItem(consumables.P_S_MLK);
-            emberCorruption(-10);
+            emberCorruption(-20);
         } else {
             player.consumeItem(consumables.SUCMILK);
-            emberCorruption(10);
+            emberCorruption(20);
         }
         outputText("Popping the cap off of the milk bottle, you pour the contents onto the egg - the porous shell soaks up the milk as fast as you dump it, spilling not a drop.");
         //(If Unsexed or Herm:
@@ -822,7 +821,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
         outputText("\n\n(<b>Ember has been gained as a follower! Mysterious Egg quest is now complete.</b>)");
         if (player.hasKeyItem("Radiant shard") >= 0) player.addKeyValue("Radiant shard", 1, +1);
         else player.createKeyItem("Radiant shard", 1, 0, 0, 0);
-        outputText("\n\n<b>Before fully settling in your camp as if remembering something Ember pulls a shining shard from her inventory and hand it over to you as a gift. You acquired a Radiant shard!</b>");
+        outputText("\n\n<b>Before fully settling in your camp, as if remembering something, Ember pulls a shining shard from her inventory and hands it over to you as a gift. You acquired a Radiant shard!</b>");
         flags[kFLAGS.EMBER_HATCHED] = 1;
         player.removeKeyItem("Dragon Egg");
         endEncounter();
@@ -972,7 +971,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
                 endEncounter();
                 return;
             }
-            if (player.pregnancyIncubation < 200 && (player.pregnancyType != PregnancyStore.PREGNANCY_EMBER || player.pregnancy2Type != PregnancyStore.PREGNANCY_EMBER) && flags[kFLAGS.EMBER_BITCHES_ABOUT_PREGNANT_PC] == 0) {
+            if (player.pregnancyIncubation < sceneHunter.adjustPregEventTimer(200, player.pregnancyType) && (player.pregnancyType != PregnancyStore.PREGNANCY_EMBER || player.pregnancy2Type != PregnancyStore.PREGNANCY_EMBER) && flags[kFLAGS.EMBER_BITCHES_ABOUT_PREGNANT_PC] == 0) {
                 manEmberBitchesAboutPCPregnancy();
                 endEncounter();
                 return;
@@ -1216,7 +1215,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
     //This scene only appears if Ember is male or herm and PC is pregnant and showing (ie: pregnancy has progressed as much as stage 2, at least.)
     //PC must be pregnant with something besides Ember's child/egg to get this scene.
     //Occurs once per pregnancy.
-    //To be implimented once preggers is set up.
+    //To be implemented once preggers is set up.
     private function manEmberBitchesAboutPCPregnancy():void {
         clearOutput();
         flags[kFLAGS.EMBER_BITCHES_ABOUT_PREGNANT_PC] = 1;
@@ -1231,7 +1230,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
     //Scene appears when selecting [Talk]
     //This scene only appears if the PC is pregnant with Ember's child.
     //Occurs only once.
-    //To be implimented once preggers is set up.
+    //To be implemented once preggers is set up.
     private function emberTalksToPCAboutPCDragoNPregnancy():void {
         clearOutput();
         flags[kFLAGS.EMBER_TALKS_TO_PC_ABOUT_PC_MOTHERING_DRAGONS] = 1;
@@ -1434,15 +1433,18 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
             outputText("You decide to continue drinking Ember's blood; intent on acquiring all the power it can bring out from within you.");
             //check for TFs and output appropriate text from below
             emberTFs();
+			if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
             outputText("\n\n\"<i>Ugh... you drank too much... I feel woozy,</i>\" the dragon gripes.");
             outputText("\n\nYou offer [ember em] a helping hand.  Ember, surprisingly, accepts your help.  \"<i>Thanks.  I guess no more work for today... I need some food and a nap.</i>\"");
         } else {
             outputText("\n\nYou decide to continue drinking Ember's blood; intent on acquiring all the power it can bring out from within you.");
             //output tf from below
             emberTFs();
+			if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
             outputText("\n\nAs you break the kiss; Ember leans over, supporting [ember em]self on your shoulders.  \"<i>Ugh... I guess we overdid it... I feel woozy.</i>\"");
             outputText("\n\nYou quickly offer [ember em] a helping hand, inquiring if [ember ey] is all right.  Ember accepts your help, using your hand to balance [ember em]self.  \"<i>I-I'll be fine... just, no more sharing for the day...</i>\"");
         }
+		if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
         endEncounter();
     }
 
@@ -1477,7 +1479,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
                 outputText(" erect");
             }
             outputText(".  One of her hands gently teases her clit, as another traces her outer labia; she bites her lips, trying to stifle her moans of pleasure, but it's useless... every touch brings a sigh.");
-            outputText("\n\nHer pace quickens, her moans grow more intense, and you think you can see what looks like the shell of a egg beginning to peek through her netherlips.  Sure enough, Ember holds her pussy open with a hand and cups the egg in the other.  She groans at the effort of pushing, and slowly the egg comes; once the largest part has passed, the egg rapidly slips out of her and plops into her hand.");
+            outputText("\n\nHer pace quickens, her moans grow more intense, and you think you can see what looks like the shell of an egg beginning to peek through her netherlips.  Sure enough, Ember holds her pussy open with a hand and cups the egg in the other.  She groans at the effort of pushing, and slowly the egg comes; once the largest part has passed, the egg rapidly slips out of her and plops into her hand.");
             outputText("\n\nShe pants, looking at the slick egg for a bit before licking it clean of her juices, then lays down, clearly intent on waiting until she's cooled down a bit");
             //[(if Ember has a dick)
             if (hasCock()) outputText(" and her throbbing cock is soft enough to hide");
@@ -1662,7 +1664,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
             outputText("\n\nEmber flushes with embarrassment.  \"<i>I-I... That's it!  No more milk for you!</i>\" [ember ey] declares, hauling you upright and shooing you out of her den.");
             outputText("\n\nYou shake your head with good temper.  Still, you got your fill of her milk, and you feel refreshed and renewed, new vitality flowing through your veins.");
             //(PC's D.Breath timer = not ready: Your throat feels soothed as the scratching and soreness die down; you feel like you could shout to the mountaintops!)
-            if ((player.hasStatusEffect(StatusEffects.DragonBreathCooldown) && !player.perkv1(IMutationsLib.DraconicLungIM) >= 2) || ((player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonIceBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonLightningBreathCooldown)) && !player.perkv1(IMutationsLib.DraconicLungIM) >= 1)) {
+            if ((player.hasStatusEffect(StatusEffects.DragonBreathCooldown) && !player.perkv1(IMutationsLib.DrakeLungsIM) >= 2) || ((player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonIceBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonLightningBreathCooldown)) && !player.perkv1(IMutationsLib.DrakeLungsIM) >= 1)) {
                 if (player.hasStatusEffect(StatusEffects.DragonBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonBreathCooldown);
                 if (player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonDarknessBreathCooldown);
                 if (player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonFireBreathCooldown);
@@ -1671,6 +1673,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
                 outputText("  Your throat feels soothed as the scratching and soreness die down; you feel like you could shout to the mountaintops!");
             }
             player.refillHunger(25);
+			if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
             //(no new PG, PC has dragon-morph status and is opposite Ember's sex:
             if (rand(2) == 0 && player.racialScore(Races.DRAGON, false) >= 4 && player.gender > 0 && (player.gender != flags[kFLAGS.EMBER_GENDER] || (player.gender == 3 && flags[kFLAGS.EMBER_GENDER] == 3))) {
                 outputText("  Though, a sudden swell of lust races through your ");
@@ -1727,7 +1730,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
             outputText("\n\nEmber can't hide the faintest of smiles that graces [ember eir] scaly face.  You yelp softly as you feel a sharp prick against your belly; when you feel it again, you jump out of Ember's lap to reveal the clawed finger prodding you.  \"<i>Payback for teasing me earlier.  And don't think I'll be feeding you my milk everytime you ask,</i>\" [ember ey] finishes, with a small puff of smoke.");
             outputText("\n\nYou can't resist pointing out that [ember ey] certainly seemed eager to let you drink your fill, and you didn't hear any complaining over [ember eir] purring.  Before [ember ey] can rebut that, you turn and leave the dragon in [ember eir] den.");
             outputText("\n\nThe drink you got did you plenty of good; you feel refreshed and renewed, new vitality flowing through your veins.");
-            if ((player.hasStatusEffect(StatusEffects.DragonBreathCooldown) && !player.perkv1(IMutationsLib.DraconicLungIM) >= 2) || ((player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonIceBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonLightningBreathCooldown)) && !player.perkv1(IMutationsLib.DraconicLungIM) >= 1)) {
+            if ((player.hasStatusEffect(StatusEffects.DragonBreathCooldown) && !player.perkv1(IMutationsLib.DrakeLungsIM) >= 2) || ((player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonIceBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonLightningBreathCooldown)) && !player.perkv1(IMutationsLib.DrakeLungsIM) >= 1)) {
                 if (player.hasStatusEffect(StatusEffects.DragonBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonBreathCooldown);
                 if (player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonDarknessBreathCooldown);
                 if (player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonFireBreathCooldown);
@@ -1736,6 +1739,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
                 outputText("  Your throat feels soothed as the scratching and soreness die down; you feel like you could shout to the mountaintops!");
             }
             player.refillHunger(50);
+			if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
             //(no new PG, PC has dragon-morph status and is opposite Ember's sex:
             if (rand(2) == 0 && player.racialScore(Races.DRAGON, false) >= 4 && player.gender > 0 && (player.gender != flags[kFLAGS.EMBER_GENDER] || (player.gender == 3 && flags[kFLAGS.EMBER_GENDER] == 3))) {
                 outputText("  Though, a sudden swell of lust races through your ");
@@ -1799,10 +1803,10 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
             outputText("\n\nRepositioning yourself where [ember ey] dropped you for greater comfort, you smile and adopt your most innocent expression, then go back to your drinking.");
             outputText("\n\nThis time, you focus on simply drinking from Ember's bountiful breast and the wonderful taste of [ember eir] milk.  You don't think you could ever get tired of this... the milk is sweet, refreshing and just a tad spicy.  You can't help but compare how like [ember em] it is.");
 
-            outputText("\n\nThe soft purrs that accompany each suckle and the soft caresses on your body, bringing you ever closer to these two motherlodes of Ember-flavoured treasure, only serve to enhance the whole experience.");
+            outputText("\n\nThe soft purrs that accompany each suckle and the soft caresses on your body, bringing you ever closer to these two motherlodes of Ember-flavored treasure, only serve to enhance the whole experience.");
 
             outputText("\n\nEventually, your swallows of the rich, freely-flowing, creamy dragon-milk cease as your stomach fills up.");
-            if ((player.hasStatusEffect(StatusEffects.DragonBreathCooldown) && !player.perkv1(IMutationsLib.DraconicLungIM) >= 2) || ((player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonIceBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonLightningBreathCooldown)) && !player.perkv1(IMutationsLib.DraconicLungIM) >= 1)) {
+            if ((player.hasStatusEffect(StatusEffects.DragonBreathCooldown) && !player.perkv1(IMutationsLib.DrakeLungsIM) >= 2) || ((player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonIceBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonLightningBreathCooldown)) && !player.perkv1(IMutationsLib.DrakeLungsIM) >= 1)) {
                 if (player.hasStatusEffect(StatusEffects.DragonBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonBreathCooldown);
                 if (player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonDarknessBreathCooldown);
                 if (player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonFireBreathCooldown);
@@ -1830,6 +1834,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
                 outputText("\n\nYeah, yeah.  You finish draining the second breast and then lift it, planting a kiss on the sensitized nipple.");
             }
             player.refillHunger(50);
+			if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
             if (player.tou > 40) player.addCurse("tou", 1, 1);
             //merge wuss and jerk forks
             outputText("\n\nEmber gets so flustered that [ember ey] just stares at you in stunned silence, wearing a goofy smile.  \"<i>Wha... you know, there's no point in saying anything.  I know you'll just sneak another opportunity like this in the future... doesn't mean I won't make you pay for this when I catch you later.</i>\"");
@@ -1866,7 +1871,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
         if (emberAffection() < 75) dynStats("lus", 20, "scale", false);
         fatigue(-50);
         player.slimeFeed();
-        HPChange(player.maxHP() * .33, false);
+        HPChange(player.maxHP() * .33, false, false);
         endEncounter();
     }
 
@@ -1931,7 +1936,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
         if (flags[kFLAGS.SPARRABLE_NPCS_TRAINING] == 2) {
             if (flags[kFLAGS.EMBER_DEFEATS_COUNTER] >= 1) flags[kFLAGS.EMBER_DEFEATS_COUNTER]++;
             else flags[kFLAGS.EMBER_DEFEATS_COUNTER] = 1;
-            if (flags[kFLAGS.EMBER_LVL_UP] < 13 && flags[kFLAGS.EMBER_DEFEATS_COUNTER] >= flags[kFLAGS.EMBER_LVL_UP] + 4) {
+            if (flags[kFLAGS.EMBER_LVL_UP] < 17 && flags[kFLAGS.EMBER_DEFEATS_COUNTER] >= flags[kFLAGS.EMBER_LVL_UP] + 7) {
                 var addToV1:Number = player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * flags[kFLAGS.EMBER_DEFEATS_COUNTER];
                 if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers1))
                     player.addStatusValue(StatusEffects.CampSparingNpcsTimers1, 1, addToV1);
@@ -1973,7 +1978,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
             emberAffection(-5);
         }
         cleanupAfterCombat();
-        HPChange(player.maxHP() * .33, false);
+        HPChange(player.maxHP() * .33, false, false);
     }
 
     //[Catch Anal] - a dragon coq up the date (Z)
@@ -3064,7 +3069,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
     //Bred by Ember
     //Only available to Medium/High Affection Ember.
     //Only occurs if the PC has a pussy and is in heat; Ember must have a dick; both must not be pregnant.
-    //In case Ember and the PC are herms, both being able to impregnate and be impregnated. One of the scenes will be randomly choosen.
+    //In case Ember and the PC are herms, both being able to impregnate and be impregnated. One of the scenes will be randomly hosen.
     //Ember never fails to impregnate the PC or be impregnated - unless the player is on contraceptives.
     private function getKnockedUpByEmbrahBroBaby():void {
         clearOutput();
@@ -3360,14 +3365,16 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
                 if (flags[kFLAGS.EMBER_OVIPOSITION] > 0) {
                     outputText("\n\nHer breasts look bloated, and you think you can see a drop of milk leaking from one of her perky nubs.  \"<i>Help me drain these,</i>\" she says, lifting her milky jugs and letting them fall.\n\nYou ask her if she'll have enough for the baby.  \"<i>Of course I will, it won't need any milk.  At least not until it hatches.  It'll take some time until then, and my breasts feel so uncomfortable.  So don't question me, just drink it!</i>\" she demands" + (flags[kFLAGS.EMBER_ROUNDFACE] > 0 ? ", a blush forming on her cheeks at her request" : "") + ".\n\nYou nod and lay down beside her, gently taking one of her nubs inside your mouth; then you begin suckling.  \"<i>Ooooh, yes...  Keep going...  This feels so good,</i>\" she moans in equal parts pleasure and relief.\n\nYou're happy to oblige, and begin drinking without stopping.  Ember's nutritious milk fills you.  ");
                     player.refillHunger(40, true);
+					if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
                     if (flags[kFLAGS.EMBER_MILK] > 0) {
                         outputText("Her breasts have always been full, but this time there's an incredible amount coming out.  She must've been really uncomfortable, and each suckle earns you a jet of milk and a moan of relief from Ember.  You keep at it for a long time; until you've drained one of Ember's ripe tits.\n\nThen you move to the other, intent on doing the same, however you feel very full already; you don't think you'll manage to empty this one.  Ember's moans of pleasure and relief push you on. You keep drinking regardless, and before you realize it, her other breast has been drained.\n\n\"<i>Ahhh, that feels much better.  I guess you're not too bad at making this feel good.</i>\" she admits" + (flags[kFLAGS.EMBER_ROUNDFACE] > 0 ? ", blushing softly" : "") + ". You stifle a burp and smile, then return to your duties.\n");
                     } else {
-                        outputText("Soon, you've exhausted one of ther breasts, then you move to the other intent on doing the same; however all too soon she's drained and you're left wanting more.\n\n\"<i>Ahhh, that feels much better.  Good job,</i>\" she comments.  You smile back, then return to your duties.\n");
+                        outputText("Soon, you've exhausted one of the breasts, then you move to the other intent on doing the same; however all too soon she's drained and you're left wanting more.\n\n\"<i>Ahhh, that feels much better.  Good job,</i>\" she comments.  You smile back, then return to your duties.\n");
                     }
                 } else {
                     outputText("\nYou decide to check up on Ember and see how she's been doing.  Once you're close enough she looks at you with tired eyes; clearly she hasn't been getting much sleep lately.  \"<i>[name], perfect timing!  I need you to help me drain my breasts, they're so heavy they hurt.</i>\"\n\nYou look at her breasts; they're so swollen they're at least a cup-size bigger than usual, maybe as much as two.  You can readily believe that she's in pain from carrying so much, and agree to help her out, then ask if she has any particular preferences.\n\n\"<i>Just take care of it... NOW!</i>\" Ember growls.\n\nWith a long-suffering sigh, you seat yourself down beside her, gently lift up one of her milk-bloated breasts, close your lips softly around the nipple, and start to suckle.  At once your efforts are rewarded with a long, strong gush of sweet, cool dragon-milk.  Ember sighs in relief and reaches out to hold your head against her breast.\n\nYou suckle gently, wondering how well Ember will take to nursing a real baby, but simply enjoying being so close to her.  You drink and drink, alternating between breasts, until finally you've vented the worst of the pressure, at the cost of visibly distending your own stomach with the amount of milk you've drunk.  You settle back on your [ass] and stifle a belch, looking at Ember and wondering what she thinks of your efforts to help.\n\nEmber yawns.  \"<i>Good... I feel much better, now I think I need a nap.</i>\"\n\nYou sigh softly, watch as she falls over on her side, belly visibly jiggling as she disturbs the unborn dragon in her womb, and is soon fast asleep.  You clamber back upright and leave her to get some rest; you've a feeling it won't be too long before she gives birth.\n");
                     player.refillHunger(40, false);
+					if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
                 }
                 fatigue(-25);
                 return true;
@@ -3493,6 +3500,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
 
             outputText("\n\nYou continue drinking, draining Ember's bloated breasts, the cool nutritious milk helps you relax for a spell and forget about your troubles.  Your ordeals are forgotten for the moments you find yourself drifting off, guided into the land of dreams by Ember's soft purring - or is it snoring?  You can't tell, and it doesn't matter right now...");
             player.refillHunger(40);
+			if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
             outputText("\n\nYou wake up a short while later.  Ember's breasts are completely drained of their milk, and your belly is bulging a bit from the amount you've drank.  Ember sleeps softly under you.  Gently you extract yourself from Ember's embrace - a difficult task, considering Ember's tail is intent on holding you like a boa constrictor.  Eventually though, you manage to withdraw yourself from its insistent grip and slowly sneak out of the den.\n");
             flags[kFLAGS.EMBER_EGGS]++;
         }
@@ -3579,9 +3587,18 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
             outputText(" coos, giggles and nuzzles into your neck, clearly happy to be here in the real world at last.");
 
             outputText("\n\n\"<i>I'll tend to the little one, you can just rest for a while longer,</i>\" Ember offers, taking the cute little dragon up in [ember eir] arms.  You sigh and nod your head gratefully, then lay back down to get some more rest.\n");
-            if (roll < 40) flags[kFLAGS.EMBER_CHILDREN_MALES]++;
-            else if (roll < 80) flags[kFLAGS.EMBER_CHILDREN_FEMALES]++;
-            else flags[kFLAGS.EMBER_CHILDREN_HERMS]++;
+            if (roll < 40) {
+				if (player.hasMutation(IMutationsLib.GoblinOvariesIM)) flags[kFLAGS.EMBER_CHILDREN_MALES] += 2;
+				else flags[kFLAGS.EMBER_CHILDREN_MALES]++;
+			}
+            else if (roll < 80) {
+				if (player.hasMutation(IMutationsLib.GoblinOvariesIM)) flags[kFLAGS.EMBER_CHILDREN_FEMALES] += 2;
+				else flags[kFLAGS.EMBER_CHILDREN_FEMALES]++;
+			}
+            else {
+				if (player.hasMutation(IMutationsLib.GoblinOvariesIM)) flags[kFLAGS.EMBER_CHILDREN_HERMS] += 2;
+				else flags[kFLAGS.EMBER_CHILDREN_HERMS]++;
+			}
         }
         //PC Lays Egg
         else {
@@ -3634,7 +3651,8 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
             outputText(", anyway.  The dragon ");
             if (flags[kFLAGS.EMBER_ROUNDFACE] > 0) outputText("blushes and then ");
             outputText("scurries away, even as you pull yourself upright and get ready to go about your business.\n");
-            flags[kFLAGS.EMBER_EGGS]++;
+            if (player.hasMutation(IMutationsLib.GoblinOvariesIM)) flags[kFLAGS.EMBER_EGGS] += 2;
+			else flags[kFLAGS.EMBER_EGGS]++;
         }
         player.createStatusEffect(StatusEffects.EmberNapping, 5, 0, 0, 0);
     }
@@ -4251,18 +4269,20 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
                 outputText("\n\nYou nod your head quietly, choosing not to offend Ember's pride, before gently reaching out to stroke [ember eir] ever-naked bosom, feeling the weight of [ember eir] breasts in your hands.  They actually feel dramatically heavier than usual... Poor thing, [ember ey] must be in such pain from it.  Not wanting to keep [ember em] waiting, you bend your head in and close your lips around the first nipple.  At once milk spurts into your mouth, cool and sweet as always, hardly needing encouragement to be coaxed from the dragon's tit into your mouth.");
                 outputText("\n\n\"<i>Ah!... Be careful!  They're sensitive...</i>\" Ember scolds you, slowly leaning back to lay on [ember eir] nest.  You apologize and try to be gentler about the act, gently massaging [ember eir] breast to help relieve the tension, even as you continue to suckle the cool, sweet fluid. ");
                 player.refillHunger(25);
-                outputText("\n\nEmber sighs in relief.  \"<i>Ahh... just like that... You have no idea, how much of a relief this is... I felt like I was going to burst...</i>\" You're surprised by Ember's suddenly calm response; to be honest you'd already gotten used to [ember eir] rather brash behaviour... still now is not the time to ponder such things.  You've got a titful of dragon milk to empty into your thirsty belly, after all.");
+				if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
+                outputText("\n\nEmber sighs in relief.  \"<i>Ahh... just like that... You have no idea, how much of a relief this is... I felt like I was going to burst...</i>\" You're surprised by Ember's suddenly calm response; to be honest you'd already gotten used to [ember eir] rather brash behavior... still now is not the time to ponder such things.  You've got a titful of dragon milk to empty into your thirsty belly, after all.");
                 outputText("\n\nYou continue to suckle and knead, relishing the delicious treat and gently stroking your draconic lover's breasts, something [ember ey] evidently enjoys, by [ember eir] soft purring, as well as by the little sighs of pleasure.  When you judge you've vented the worst of it from the first breast, you get started on the second one, continuing your treatment.");
                 outputText("\n\n\"<i>Yesss.... don't stop... hmmm...</i>\" Ember's purring rumbles louder, a quick glance at [ember eir] face reveals [ember ey] is actually smiling, eyes closed.  You're glad you seem to be doing a good job of this, and of course the milky treat helps... You have to wonder though... Despite Ember's usual production of milk being pretty high, this is a bit too much even for [ember em].  Maybe [ember ey] ate something that triggered this?  You'll just have to ask [ember em] once you're done.");
                 outputText("\n\nYou drink and drink, but as you keep drinking, you become aware of a certain dampness on your cheek.  You stop your suckling and lift your head from Ember's breast to reveal that the other breast has visibly swollen back up; it's just as full of milk now as it was when you started!");
                 outputText("\n\nYou ask Ember what did [ember ey] do?  It's not normal for [ember eir] milk production to be this high.  Your only reply however is a soft snore from the - now sleeping - dragon.  It seems the relief from your suckling was enough to put [ember em] out like a candle... well, anyways you did offer to help [ember em], so that's what you're gonna do.  With a sigh, you latch back onto the first breast and begin drinking anew. ");
                 player.refillHunger(25);
+				if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
                 outputText("\n\nAfter a while, you find that whenever you suckle [ember em] in a particularly pleasurable way, you interrupt Ember's soft snoring with a sigh or a gasp, still the dragon does not wake up.  It's kinda funny actually...");
                 outputText("\n\n<b>Sometime later...</b>");
                 outputText("\n\nYou've been at this for quite some time now... how many times have you drained Ember's breasts?  Four?  Five?  You don't know... and besides that, you're feeling rather tired yourself... plus all this milk sloshing inside your belly does not help keep you awake... still you must press on...");
                 outputText("\n\n<b>Even later...</b>");
                 outputText("\n\nWith a final powerful suckle, you finally drain the last of Ember's milk... for the 8th time you believe... tired and full... you don't even bother getting off the sleeping dragon.  You settle your head between Ember's soft, milky mounds, and surrounded by their soft " + (flags[kFLAGS.EMBER_ROUNDFACE] == 0 ? "scales" : "flesh") + ", you fall asleep right there...");
-                if ((player.hasStatusEffect(StatusEffects.DragonBreathCooldown) && !player.perkv1(IMutationsLib.DraconicLungIM) >= 2) || ((player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonIceBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonLightningBreathCooldown)) && !player.perkv1(IMutationsLib.DraconicLungIM) >= 1)) {
+                if ((player.hasStatusEffect(StatusEffects.DragonBreathCooldown) && !player.perkv1(IMutationsLib.DrakeLungsIM) >= 2) || ((player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonIceBreathCooldown) || player.hasStatusEffect(StatusEffects.DragonLightningBreathCooldown)) && !player.perkv1(IMutationsLib.DrakeLungsIM) >= 1)) {
                     if (player.hasStatusEffect(StatusEffects.DragonBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonBreathCooldown);
                     if (player.hasStatusEffect(StatusEffects.DragonDarknessBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonDarknessBreathCooldown);
                     if (player.hasStatusEffect(StatusEffects.DragonFireBreathCooldown)) player.removeStatusEffect(StatusEffects.DragonFireBreathCooldown);
@@ -4275,7 +4295,7 @@ public class EmberScene extends NPCAwareContent implements TimeAwareInterface {
                 outputText("\n\nAfter a hard day's work, all you want to do is head to your " + camp.homeDesc() + ", flop down and pass out. Still, you figure that it couldn't hurt to check in on Ember before you turn in, maybe [ember ey]'d some company for the night... ");
                 if (player.lib >= 66 || player.lust >= 90) outputText("and maybe you'll get lucky and [ember ey]'ll want to have a little fun, too?");
                 outputText("\n\nAs you approach [ember eir] den, you catch a glimpse of Ember sitting in the dust outside of it, eating a little snack. Despite [ember eir] usual preference for meat, it's clearly some sort of fruit you're not familiar with... it is quite juicy though; each bite Ember takes is rewarded with a small outburst of sweet looking juice that runs down through Ember's hand and arms.");
-                outputText("\n\nEmber finishes the last few bites and as you'd expect it [ember ey] begins licking the juice off [ember eir] scales, slowly licking the juice off [ember eir] arms, savouring every sensuous little lick; then moving to [ember eir] fingers. [ember Ey] picks a clawed digit and carefully encircles it with [ember eir] tongue; then slowly drags it in, gliding the claw carefully between [ember eir] lips... [ember eir] wonderfully soft lips... suckling on the finger like a teat... licking it all over to make sure it's clean... before finally pulling it out with a POP and smacking [ember eir] lips, licking them to make sure [ember ey]'s got all the juice...");
+                outputText("\n\nEmber finishes the last few bites and as you'd expect it [ember ey] begins licking the juice off [ember eir] scales, slowly licking the juice off [ember eir] arms, savoring every sensuous little lick; then moving to [ember eir] fingers. [ember Ey] picks a clawed digit and carefully encircles it with [ember eir] tongue; then slowly drags it in, gliding the claw carefully between [ember eir] lips... [ember eir] wonderfully soft lips... suckling on the finger like a teat... licking it all over to make sure it's clean... before finally pulling it out with a POP and smacking [ember eir] lips, licking them to make sure [ember ey]'s got all the juice...");
                 outputText("\n\nA sudden stirring " + (player.gender > 0 ? "in your groin" : "within you") + " makes itself known; and if you didn't know any better you'd think Ember was actually putting on a show for you... [ember ey] repeats the procedure on each of [ember eir] juice-smeared fingers, ending the process with a sigh of delight. You're somewhat disappointed by the short duration of this little impromptu show... maybe you should go to sleep now...");
                 outputText("\n\nBut as you are ready to turn your gaze away you spot Ember raising to [ember eir] feet and beginning to stretch. [ember Ey] puts [ember eir] arms behind [ember eir] head and thrusts [ember eir] chest forwards, giving you a nice view of [ember eir] " + (flags[kFLAGS.EMBER_MILK] > 0 || hasVagina() ? "generous bosom" : "toned chest") + ". The fire reflecting on [ember eir] " + (flags[kFLAGS.EMBER_ROUNDFACE] == 0 ? "scales" : "skin") + " looks like little hands, touching and licking over [ember eir] nipples, twisting them in the most perverted ways, making Ember groan in pleasure...");
                 outputText("\n\nBy now you've forgotten all about your tiredness, your eyes are glued to Ember as [ember ey] turns around and reaches down towards [ember eir] feet, keeping [ember eir] legs straight to finish stretching; [ember eir] tail lifts up in the air to help [ember em] balance [ember em]self, giving you a perfect view of [ember eir] handful of butt " + (hasVagina() ? "and the soft lips of [ember eir] pleasure hole" : "") + ".  When Ember lets out a moaning sigh of relief, you whimper; imagining yourself doing truly wonderful things with Ember in that particular position... Mesmerized by Ember's slowly curving back you take a step towards [ember em] knocking over a small pebble. Ember jumps a bit and looks at the source of the sound, only to spot you.");

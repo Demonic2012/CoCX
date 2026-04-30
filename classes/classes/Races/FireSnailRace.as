@@ -52,7 +52,10 @@ public class FireSnailRace extends Race {
 							return body.legType == LowerBody.FIRE_SNAIL && body.tailType == Tail.NONE;
 						}, +3)
 				.eyeType(Eyes.FIRE_SNAIL, +1)
-				.faceType(Face.FIRE_SNAIL, +1);
+				.faceType(Face.FIRE_SNAIL, +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
+		
+		addMutation(IMutationsLib.BlazingHeartIM);
 		
 		buildTier(15, "fire snail")
 				.buffs({

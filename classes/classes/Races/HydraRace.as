@@ -69,11 +69,14 @@ public class HydraRace extends Race {
 									|| GorgonRace.isGorgonLike(body)
 									|| VouivreRace.isVouivreLike(body)
 									|| CouatlRace.isCouatlLike(body)
-									|| ApophisRace.isApophisLike(body));
-						}, 0, -1000);
+									|| ApophisRace.isApophisLike(body)
+									|| MarilithRace.isMarilithLike(body));
+						}, 0, -1000)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		
 		addBloodline(PerkLib.HydrasDescendant, PerkLib.BloodlineHydra);
 		addMutation(IMutationsLib.VenomGlandsIM);
+		addMutation(IMutationsLib.HydraBloodIM);
 		
 		buildTier(14, "hydra")
 				.buffs({

@@ -30,7 +30,7 @@ public class Wings extends SaveableBodyPart {
 
 	public static const NONE: int = 0;
 	EnumValue.add(Types, NONE, "NONE", {
-		name:"non-existant"
+		name:"non-existent"
 	});
 
 	public static const BEE_SMALL: int = 1;
@@ -222,7 +222,7 @@ public class Wings extends SaveableBodyPart {
 	public static const FEY_DRAGON: int = 26;
 	EnumValue.add(Types, FEY_DRAGON, "FEY_DRAGON", {
 		name:"large majestic fey draconic",
-		appearanceDesc: "Magnificent huge wings sprout from your shoulders. When unfurled they stretch over twice further than your arm span, and a single beat of them is all you need to set out toward the sky. They look like butterfly wings albeith far to large to belong to any regular butterfly. The delicate frame of your fey dragon wings allows for great speed and maneuverability.",
+		appearanceDesc: "Magnificent huge wings sprout from your shoulders. When unfurled they stretch over twice further than your arm span, and a single beat of them is all you need to set out toward the sky. They look like butterfly wings albeit far to large to belong to any regular butterfly. The delicate frame of your fey dragon wings allows for great speed and maneuverability.",
 		wingSlap: true,
 		canFly: true,
 		physical: true
@@ -323,6 +323,7 @@ public class Wings extends SaveableBodyPart {
 		canFly: true,
 		physical: true
 	});
+	
 	public static const YGGDRASIL_LARGE: int = 39;
 	EnumValue.add(Types, YGGDRASIL_LARGE, "YGGDRASIL_LARGE", {
 		name:"large yggdrasil",
@@ -332,6 +333,7 @@ public class Wings extends SaveableBodyPart {
 		canFly: true,
 		physical: true
 	});
+	
 	public static const YGGDRASIL_HUGE: int = 40;
 	EnumValue.add(Types, YGGDRASIL_HUGE, "YGGDRASIL_HUGE", {
 		name:"large majestic yggdrasil",
@@ -341,11 +343,12 @@ public class Wings extends SaveableBodyPart {
 		canFly: true,
 		physical: true
 	});
+	
 	public static const YGGDRASIL_HUGE_2: int = 41;
 	EnumValue.add(Types, YGGDRASIL_HUGE_2, "YGGDRASIL_HUGE_2", {
 		name:"two large pairs of majestic yggdrasil",
 		desc:"two large, majestic pairs of plant-like",
-		appearanceDesc: "Twin pairs of Massive wings of wood extend from your shoulders, the leafy plumage shivering with each step you take. The air around you is filled with the rustling, like the wind through a dense forest canopy. Now far too large to hide, you keep your woodland wings unfurled behind you, a grand, capelike display.",
+		appearanceDesc: "Twin pairs of massive wings of wood extend from your shoulders, the leafy plumage shivering with each step you take. The air around you is filled with the rustling, like the wind through a dense forest canopy. Now far too large to hide, you keep your woodland wings unfurled behind you, a grand, capelike display.",
 		wingSlap: true,
 		canFly: true,
 		physical: true
@@ -354,7 +357,7 @@ public class Wings extends SaveableBodyPart {
 	public static const JABBERWOCKY: int = 42;
 	EnumValue.add(Types, JABBERWOCKY, "JABBERWOCKY", {
 		name:"large exotic draconic",
-		appearanceDesc: "Magnificent huge wings sprout from your shoulders. When unfurled they stretch over twice further than your arm span, and a single beat of them is all you need to set out toward the sky. They look a bit like bat's wings, but the membranes are splited in cells like that of a butterfly though some parts are covered in fine, delicate scales . While draconic in appearance the delicate frame of your fey like dragon wings allows for even better speed and maneuverability.",
+		appearanceDesc: "Magnificent huge wings sprout from your shoulders. When unfurled they stretch over twice further than your arm span, and a single beat of them is all you need to set out toward the sky. They look a bit like bat's wings, but the membranes are split into cells like that of a butterfly though some parts are covered in fine, delicate scales . While draconic in appearance the delicate frame of your fey like dragon wings allows for even better speed and maneuverability.",
 		wingSlap: true,
 		canFly: true,
 		physical: true
@@ -364,12 +367,13 @@ public class Wings extends SaveableBodyPart {
 	EnumValue.add(Types, COUATL, "COUATL", {
 		name:"large colorful feathered",
 		desc:"large, colorful, feathered",
-		appearanceDesc: "A pair of large, feathery wings sprout from your back. The feathers are colorful with shades combining those of your hairs, scales and even their own unique feather colors. Though you usually keep the your wings folded close, they can unfurl to allow you to soar as gracefully as a couatl.",
+		appearanceDesc: "A pair of large, feathery wings sprout from your back. The feathers are colorful with shades combining those of your hairs, scales and even their own unique feather colors. Though you usually keep the your wings folded closely, they can unfurl to allow you to soar as gracefully as a couatl.",
 		wingSlap: true,
 		canFly: true,
 		feathers: true,
 		physical: true
 	});
+	
 	public static const PUREDEVILFEATHER: int = 44;
 	EnumValue.add(Types, PUREDEVILFEATHER, "PUREDEVILFEATHER", {
 		name:"puredevil",
@@ -378,23 +382,54 @@ public class Wings extends SaveableBodyPart {
 		canFly: true,
 		physical: true
 	});
+	
 	public static const MOTH_SMALL: int = 45;
 	EnumValue.add(Types, MOTH_SMALL, "MOTH_SMALL", {
-		name:"moth",
+		name:"small moth-like",
 		desc:"fuzzy, small",
 		appearanceDesc: "A pair of small [chitin color1] fuzzy satin covered insectile wings.",
 		canFly: true,
 		physical: true
 	});
+	
 	public static const MOTH_LARGE: int = 46;
 	EnumValue.add(Types, MOTH_LARGE, "MOTH_LARGE", {
-		name:"moth",
+		name:"large moth-like",
 		desc:"fuzzy, large",
 		appearanceDesc: "A pair of large [chitin color1] fuzzy satin covered insectile wings.",
 		canFly: true,
 		physical: true
 	});
-	public var desc:String = "non-existant";
+	
+	public static const JET_THRUSTERS: int = 47;
+	EnumValue.add(Types, JET_THRUSTERS, "JET_THRUSTERS", {
+		name:"jet thrusters",
+		appearanceDesc: "A pair of jet thrusters extend from your back allowing you to fly with perfect maneuverability to survey your environments.",
+		canFly: true,
+		physical: false
+	});
+	
+	public static const YGGDRASIL_HUGE_3: int = 48;
+	EnumValue.add(Types, YGGDRASIL_HUGE_3, "YGGDRASIL_HUGE_3", {
+		name:"three large pairs of majestic yggdrasil",
+		desc:"three large, majestic pairs of plant-like",
+		appearanceDesc: "Three pairs of massive wings of wood extend from your shoulders, the leafy plumage shivering with each step you take. The air around you is filled with the rustling, like the wind through a dense forest canopy. Now far too large to hide, you keep your woodland wings unfurled behind you, a grand, capelike display.",
+		wingSlap: true,
+		canFly: true,
+		physical: true
+	});
+	
+	public static const YGGDRASIL_HUGE_4: int = 49;
+	EnumValue.add(Types, YGGDRASIL_HUGE_4, "YGGDRASIL_HUGE_4", {
+		name:"four large pairs of majestic yggdrasil",
+		desc:"four large, majestic pairs of plant-like",
+		appearanceDesc: "Four pairs of massive wings of wood extend from your shoulders, the leafy plumage shivering with each step you take. The air around you is filled with the rustling, like the wind through a dense forest canopy. Now far too large to hide, you keep your woodland wings unfurled behind you, a grand, capelike display.",
+		wingSlap: true,
+		canFly: true,
+		physical: true
+	});
+	
+	public var desc:String = "non-existent";
 	public function Wings(creature:Creature) {
 		super(creature, "wings", []);
 	}

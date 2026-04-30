@@ -2,7 +2,7 @@ package classes.BodyParts {
 import classes.Creature;
 import classes.internals.EnumValue;
 
-public class Arms extends BodyPart {
+public class Arms extends SaveableBodyPart {
 	/**
 	 * Entry properties:
 	 * - value: numerical id (0, 1)
@@ -24,6 +24,7 @@ public class Arms extends BodyPart {
 	 * - feathers: has feathers material
 	 * - scales: has scales material
 	 * - chitin: has chitin material
+	 * - bark: has bark material
 	 * */
 	public static var Types:/*EnumValue*/Array = [];
 
@@ -363,7 +364,7 @@ public class Arms extends BodyPart {
 	public static const FROSTWYRM:int = 45;
 	EnumValue.add(Types, FROSTWYRM, "FROSTWYRM", {
 		name:"frostwyrm",
-		appearanceDesc: "Your forearms are covered by scales which themselves are covered by fur, ending in five fingered clawed hands. Your claws are strong enough to rip and tear through next to anything.",
+		appearanceDesc: "Your forearms are covered by scales which themselves are covered by fur, ending in five-fingered clawed hands. Your claws are strong enough to rip and tear through next to anything.",
 		claw: true,
 		scales: true
 	});
@@ -420,7 +421,7 @@ public class Arms extends BodyPart {
 	public static const WENDIGO:int = 53;
 	EnumValue.add(Types, WENDIGO, "WENDIGO", {
 		name:"wendigo",
-		appearanceDesc: "Your arms and hands are practically human, save for the sharp white claws you have in place of normal nails.",
+		appearanceDesc: "Your arms and hands are practically human, save for the sharp white, claws you have in place of normal nails.",
 		claw: true
 	});
 
@@ -449,7 +450,7 @@ public class Arms extends BodyPart {
 	public static const JABBERWOCKY:int = 57;
 	EnumValue.add(Types, JABBERWOCKY, "JABBERWOCKY", {
 		name:"jabberwocky",
-		appearanceDesc: "Your forearms are covered by scales which themselves are covered by fur, ending in five fingered clawed hands. Your claws are strong enough to rip and tear through next to anything though you tend to use your arms as a mean to keep your partners pinned down so they don't move during sex.",
+		appearanceDesc: "Your forearms are covered by scales which themselves are covered by fur, ending in five-fingered clawed hands. Your claws are strong enough to rip and tear through next to anything though you tend to use your arms as a mean to keep your partners pinned down so they don't move during sex.",
 		claw: true,
 		scales: true
 	});
@@ -457,7 +458,7 @@ public class Arms extends BodyPart {
 	public static const ANT:int = 58;
 	EnumValue.add(Types, ANT, "ANT", {
 		name:"ant",
-		appearanceDesc: "Where a normal creature would have only two arms, you instead have four, with shining [chitin color] exoskeleton covering them from the biceps down, resembling a pair of long [chitin color] gloves from a distance.",
+		appearanceDesc: "Where a normal creature would have only two arms, you instead have four, with shining [chitin color1] exoskeleton covering them from the biceps down, resembling a pair of long [chitin color1] gloves from a distance.",
 		fourArms: true,
 		claw: true,
 		chitin: true
@@ -466,7 +467,7 @@ public class Arms extends BodyPart {
 	public static const FEY_DRACONIC:int = 59;
 	EnumValue.add(Types, FEY_DRACONIC, "FEY_DRACONIC", {
 		name:"fae dragon",
-		appearanceDesc: "Leathery scales cover your arms from the biceps down. While soft to the touch, the scales are rigid, acting as sturdy natural armour. Your fingernails are short, and as you flex your fingers, they extend out into thin curved claws.",
+		appearanceDesc: "Leathery scales cover your arms from the biceps down. While soft to the touch, the scales are rigid, acting as sturdy natural armor. Your fingernails are short, and as you flex your fingers, they extend out into thin curved claws.",
 		claw: true,
 		scales: true
 	});
@@ -504,7 +505,8 @@ public class Arms extends BodyPart {
 	public static const ARMORED_FOREARMS:int = 64;
 	EnumValue.add(Types, ARMORED_FOREARMS, "ARMORED_FOREARMS", {
 		name:"arigean",
-		appearanceDesc: "Your arms are identical to those of a human, However your forearms seem to be covered in fragments of a black, glossy metal acting as natural bracers."
+		appearanceDesc: "Your arms are identical to those of a human, However your forearms seem to be covered in fragments of a black, glossy metal acting as natural bracers.",
+		claw: true
 	});
 
 	public static const DEMON:int = 65;
@@ -527,12 +529,13 @@ public class Arms extends BodyPart {
 		appearanceDesc: "Your arms are covered by thick [fur color] fur, ending in hands with paw pads and four fingers ending with hoof-like fingernails.",
 		fur: true
 	});
-	
+
 	public static const MOTH:int = 68;
 	EnumValue.add(Types, MOTH, "MOTH", {
 		name:"moth",
 		appearanceDesc: "Where a normal creature would have only two arms, you instead have four covered in a sleeve like fuzzy mass.",
-		fourArms: true
+		fourArms: true,
+		fur: true
 	});
 
 	public static const SATYR:int = 69;
@@ -542,15 +545,94 @@ public class Arms extends BodyPart {
 		claw: true,
 		fur: true
 	});
-	
+
+	public static const TROLL:int = 70;
+	EnumValue.add(Types, TROLL, "TROLL", {
+		name:"troll",
+		appearanceDesc: "Your arms are covered with [fur color] fur. They end with somewhat human-like hands with sharp nails. Such dexterous hands are as adept at playing a piper as they would to draw out moans out of a partner.",
+		fur: true
+	});
+
+	public static const GLACIAL_TROLL:int = 71;
+	EnumValue.add(Types, GLACIAL_TROLL, "GLACIAL_TROLL", {
+		name:"g.troll",
+		appearanceDesc: "Your arms are covered with [fur color] fur. They end with somewhat human-like hands with sharp nails. Such dexterous hands are as adept at playing a piper as they would to draw out moans out of a partner.",
+		claw: true,
+		fur: true
+	});
+
+	public static const LICH:int = 72;
+	EnumValue.add(Types, LICH, "LICH", {
+		name:"lich",
+		appearanceDesc: "Your arms are human in shape and appearance but the nails of your hand glow with unholy powers. Your very touch drains the life out of the living."
+	});
+
+	public static const MUMMY:int = 73;
+	EnumValue.add(Types, MUMMY, "MUMMY", {
+		name:"mummy",
+		appearanceDesc: "Your arms are human in shape and appearance but the skin is extremely sensitive to the touch. As such they are covered from the elbows to the tip of your fingers with bandages."
+	});
+
+	public static const HUMANCHAINED:int = 74;
+	EnumValue.add(Types, HUMANCHAINED, "HUMAN", {
+		name:"human chained",
+		appearanceDesc: "You have a pair of normal human arms and though they dont have any unusual traits thick magical silver chains coils around your arms protecting them from arms. You know those chains to be fully part of your body and can use them to fight if necessary."
+	});
+
+	public static const SHROOM_ARMS:int = 75;
+	EnumValue.add(Types, SHROOM_ARMS, "SHROOM_ARMS", {
+		name:"myconid",
+		appearanceDesc: "Your arms end in frills not unlike those of a fancy dress reaching all the way up to your hands which are concealed inside."
+	});
+
+	public static const MECHANICAL_DOLL_ARMS:int = 76;
+	EnumValue.add(Types, MECHANICAL_DOLL_ARMS, "MECHANICAL_DOLL_ARMS", {
+		name:"automata",
+		appearanceDesc: "Your segmented arms and hands have machine precision allowing you to perform complex maneuvers to inhumane perfection be it swordsmanship, marksmanship or magic. Your metal arms are reinforced with hydraulic systems which allows you to lift weights and deliver strikes with enough power to shatter stones."
+	});
+
+	public static const WERESPIDER:int = 77;
+	EnumValue.add(Types, WERESPIDER, "WERESPIDER", {
+		name:"werespider",
+		appearanceDesc: "Where a normal creature would have only two arms, you instead have four, with shining [chitin color1] exoskeleton covering them, ending in clawed hands.",
+		fourArms: true,
+		claw: true,
+		chitin: true
+	});
+
+	public static const YGGDRASIL:int = 78;
+	EnumValue.add(Types, YGGDRASIL, "YGGDRASIL", {
+		name:"yggdrasil",
+		appearanceDesc: "Where a normal creature would have only two arms, you instead have four, with bark covering them and ending in hands with large claws.",
+		fourArms: true,
+		claw: true,
+		bark: true
+	});
+
+	public static const MARILITH:int = 79;
+	EnumValue.add(Types, MARILITH, "MARILITH", {
+		name:"marilith",
+		appearanceDesc: "Plate-like scales cover your arms from the biceps down, and your fingernails are sharp curved claws perfect for tearing through flesh. From your shoulder extend a second pair of arms covered in scales.",
+		fourArms: true,
+		claw: true,
+		scales: true
+	});
+
+	public static const HOLLOW:int = 80;
+	EnumValue.add(Types, HOLLOW, "HOLLOW", {
+		name:"hollow",
+		appearanceDesc: "Your arms are covered in bone-white ridges that cascade from arm to wrist with talons that are as strong and they are dexterous.",
+		claw: true
+	});
+
 	public static function canFly(id: int): Boolean {
 		return Types[id].canFly || false;
 	}
 
 	public function Arms(creature:Creature) {
-		super(creature, null);
+		super(creature, "arms", ["armCount"]);
 	}
-	
+
 	override public function hasMaterial(type:int):Boolean {
 		switch (type) {
 			case BodyMaterial.SKIN:
@@ -565,10 +647,24 @@ public class Arms extends BodyPart {
 				return Types[this.type].chitin;
 			case BodyMaterial.FEATHERS:
 				return Types[this.type].feathers;
+			case BodyMaterial.BARK:
+				return Types[this.type].bark;
 			default:
 				return false;
 		}
 	}
+
+	/*
+	override protected function loadFromOldSave(savedata:Object):void {
+		type = intOr(savedata.arms, HUMAN);
+		//armCount = intOr(savedata.armCount,2);
+	}
+
+	override protected function saveToOldSave(savedata:Object):void {
+		savedata.arms = type;
+		savedata.armCount = armCount;
+	}
+	 */
 
 	public static function getAppearanceDescription(creature: *):String {
 		const id: int = creature.arms.type;
@@ -581,6 +677,12 @@ public class Arms extends BodyPart {
 
 		return desc
 			.replace(upperCasePattern, function($0:*):* {return $0.toUpperCase();});
+	}
+
+	public function arms():String {
+		var prefix:String = "";
+		if (hasFourArms()) prefix = "four ";
+		return prefix + "arms";
 	}
 
 	public static function hasFelineArms(creature: *):Boolean {

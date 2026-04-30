@@ -18,8 +18,8 @@ import classes.Scenes.SceneLib;
 
 public function firstMeetingIridesian():void {
 	clearOutput();
-	outputText("As you wander the battlefield you hear nearby sounds of the battle. Walking into that direction you finds large group of imps battling lone person dressed into robe. From under the hood sticks out medium length single horn and throu holes on the back extends many pairs of tentacle-like appendixes.\n\n");
-	outputText("\"<i>Begone foul creatures!!!</i>\" you can hear the sole figure yelling ocassionaly when another imp fell after one of back tentacles tips glowing for brief moment. In few minutes you spends watching it deals with most of remaining imps as the rest fleed in all directions. Then he turns his attnetion toward you.\n\n");
+	outputText("As you wander the battlefield you hear nearby sounds of the battle. Walking into that direction you finds large group of imps battling lone person dressed into robe. From under the hood sticks out medium length single horn and through holes on the back extends many pairs of tentacle-like appendixes.\n\n");
+	outputText("\"<i>Begone foul creatures!!!</i>\" you can hear the sole figure yelling occasionally when another imp fell after one of back tentacles tips glowing for brief moment. In few minutes you spends watching it deals with most of remaining imps as the rest flee in all directions. Then he turns his attention toward you.\n\n");
 	outputText("\"<i>Another Tarnished One?</i>\" he speaks slowly until assuming combat posture. \"<i>Rip or Tear? What you choose?</i>\"\n\n");
 	startCombat(new Iridesian());
 	doNext(playerMenu);
@@ -65,6 +65,7 @@ public function itemImproveMenuPure():void {
 		[weapons.BFTHSWORD, weapons.ARMAGED, weapons.CHAOSEA],
 		[weapons.A_WAND, weapons.OCCULUS, weapons.ECLIPSE],
 		[weapons.PFLUTTE, weapons.ELYSIUM, weapons.HELLCAL],
+		[weapons.GNARLEDS, weapons.ANCIENTO, weapons.QULIPOTH],
 		[weaponsrange.BOWLONG, weaponsrange.ARTEMIS, weaponsrange.WILDHUN],
 		[weaponsrange.SHUNHAR, weaponsrange.KSLHARP, weaponsrange.LEVHARP],
 		[weaponsrange.SIXSHOT, weaponsrange.GOODSAM, weaponsrange.BADOMEN],
@@ -78,7 +79,11 @@ public function itemImproveMenuPure():void {
 		[armors.SPKIMO, armors.OEKIMO, armors.OTKIMO],
 		[armors.CTPALAD, armors.CTHPALA, armors.CTBGUAR],
 		[armors.LTHRPNT, null, armors.CGUNSLI],
-		[armors.DEATHPO, null, armors.DEATHPGA]
+		[armors.DEATHPO, null, armors.DEATHPGA],
+		[armors.B_QIPAO, armors.SFLAREQ, null],
+		[armors.G_QIPAO, armors.SFLAREQ, null],
+		[armors.P_QIPAO, armors.SFLAREQ, null],
+		[armors.R_QIPAO, armors.SFLAREQ, null]
 	];
 	clearOutput();
 	outputText("\"<i></i>\"\n\n");

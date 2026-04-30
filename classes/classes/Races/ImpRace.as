@@ -84,7 +84,7 @@ public class ImpRace extends Race {
 				.armType(NOT(Arms.HUMAN), 0, -10)
 				.legType(LowerBody.TINY, +1)
 				.legType(NOT(LowerBody.HUMAN), 0, -10)
-				.height(AT_MOST(42), +1)
+				.height(AT_MOST(48), +1)
 				.skinPlainOnly(+1)
 				.customRequirement("", "Male red or Female purple skin",
 						function (body:BodyData):Boolean {
@@ -97,7 +97,8 @@ public class ImpRace extends Race {
 				.hairColor1(ANY(ImpHairColors), +1)
 				.cockOrVaginaOfType(CockTypesEnum.DEMON, VaginaClass.DEMONIC, +1)
 				.noAntennae(+1)
-				.noRearBody(+1);
+				.noRearBody(+1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addConditionedScores(function (body:BodyData):Boolean {
 					return body.player.cor >= 50;
 				}, "cor 50+;", 5);
@@ -107,6 +108,8 @@ public class ImpRace extends Race {
 				.hasPerk(PerkLib.Soulless, +4);
 
 		addMutation(IMutationsLib.BlackHeartIM);
+		addMutation(IMutationsLib.FiendishMetabolismIM);
+		addMutation(IMutationsLib.FiendishBallsIM);
 
 		buildTier(9, "imp")
 				.buffs({

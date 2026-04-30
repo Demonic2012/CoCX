@@ -25,14 +25,15 @@ import classes.internals.Utils;
 
 public class BeeHoney extends Consumable
     {
+        private const BEE_HONEY_VALUE:int = 10;
         private const PURE_HONEY_VALUE:int = 40;
-        private const SPECIAL_HONEY_VALUE:int = 20;
+        private const SPECIAL_HONEY_VALUE:int = 60;
 
         public function BeeHoney(pure:Boolean, special:Boolean) {
 			var honeyName:String = special ? "SpHoney" : ((pure ? "PurHony" : "BeeHony"));
 			var honeyLong:String = special ? "a bottle of special bee honey" : ((pure ? "a crystal vial filled with glittering honey" : "a small vial filled with giant-bee honey"));
 			var honeyDesc:String = special ? "A clear crystal bottle of a dark brown fluid that you got from the bee handmaiden.  It gives off a strong sweet smell even though the bottle is still corked." : ("This fine crystal vial is filled with a thick amber liquid that glitters " + (pure ? "" : "dully ") + "in the light.  You can smell a sweet scent, even though it is tightly corked.");
-			var honeyValue:int   = special ? SPECIAL_HONEY_VALUE : ((pure ? PURE_HONEY_VALUE : 6));
+			var honeyValue:int   = special ? SPECIAL_HONEY_VALUE : ((pure ? PURE_HONEY_VALUE : BEE_HONEY_VALUE));
 			super(
 					honeyName,
 					honeyName,
@@ -241,14 +242,16 @@ public class BeeHoney extends Consumable
 			if (special) { //All the special honey effects occur after any normal bee transformations (if the player wasn't a full bee morph)
 				//Cock growth multiplier.
 				var mult:int = 1.0;
-				if (player.cocks[0].cArea() >= 140) mult -= 0.2;
-				if (player.cocks[0].cArea() >= 180) mult -= 0.2;
-				if (player.cocks[0].cArea() >= 220) mult -= 0.2;
-				if (player.cocks[0].cArea() >= 260) mult -= 0.2;
-				if (player.cocks[0].cArea() >= 300) mult -= 0.1;
-				if (player.cocks[0].cArea() >= 400) mult -= 0.1; //Cock stops growing at that point.
+				if (player.hasCock()) {
+					if (player.cocks[0].cArea() >= 140) mult -= 0.2;
+					if (player.cocks[0].cArea() >= 180) mult -= 0.2;
+					if (player.cocks[0].cArea() >= 220) mult -= 0.2;
+					if (player.cocks[0].cArea() >= 260) mult -= 0.2;
+					if (player.cocks[0].cArea() >= 300) mult -= 0.1;
+					if (player.cocks[0].cArea() >= 400) mult -= 0.1; //Cock stops growing at that point.
+				}
 				//Begin TF
-				if (!player.hasCock()) {
+				if (!player.hasCockCockOnly()) {
 					outputText("\n\nYou double over in pain as the effects start to concentrate into your groin.  You need to get release, but what you’ve got just isn’t cutting it.  You fall to the ground and grab at your crotch, trying desperately to get the release you need.  Finally, it happens.  With a sudden burst of intense relief and sexual satisfaction, a new human looking penis bursts from your skin and sprays your seed all over the ground in front of you.  When you’re able to recover and take a look at your new possession.  <b>You now have an eight inch long human cock that is very sensitive to stimulation.</b>");
 					CoC.instance.transformations.CockHuman(0, Utils.rand(3) + 8, 2).applyEffect(false);
 					player.orgasm();

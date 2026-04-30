@@ -556,6 +556,55 @@ package classes.GeneticMemories {
           title: "Reindeer Legs",
           transformation: function(): Transformation {return CoC.instance.transformations.LowerBodyReindeerToggle(true)}});
 
+      public static const MOTH: int = _partid++;
+      EnumValue.add(Memories, MOTH, "MOTH", {
+          id: "Moth Lower Body",name: "Moth Legs",
+          cost: 100,
+          title: "Moth Legs",
+          transformation: function(): Transformation {return CoC.instance.transformations.LowerBodyMoth}});
+
+      public static const TROLL: int = _partid++;
+      EnumValue.add(Memories, TROLL, "TROLL", {
+          id: "Troll Lower Body",name: "Troll Legs",
+          cost: 100,
+          title: "Troll Legs",
+          transformation: function(): Transformation {return CoC.instance.transformations.LowerBodyTroll}});
+
+      public static const GLACIAL_TROLL: int = _partid++;
+      EnumValue.add(Memories, GLACIAL_TROLL, "GLACIAL_TROLL", {
+          id: "G.Troll Lower Body",name: "G.Troll Legs",
+          cost: 100,
+          title: "G.Troll Legs",
+          transformation: function(): Transformation {return CoC.instance.transformations.LowerBodyGlacialTroll}});
+
+      public static const SHROOM_SKIRT: int = _partid++;
+      EnumValue.add(Memories, SHROOM_SKIRT, "SHROOM_SKIRT", {
+          id: "Shroom Shirt Lower Body",name: "Myconid Legs",
+          cost: 100,
+          title: "Myconid Legs",
+          transformation: function(): Transformation {return CoC.instance.transformations.LowerBodyShroomShirt}});
+
+      public static const WERESPIDER: int = _partid++;
+      EnumValue.add(Memories, WERESPIDER, "WERESPIDER", {
+          id: "Werespider Lower Body",name: "Werespider Legs",
+          cost: 100,
+          title: "Werespider Legs",
+          transformation: function(): Transformation {return CoC.instance.transformations.LowerBodyWerespider}});
+
+      public static const BAROMETZ: int = _partid++;
+      EnumValue.add(Memories, BAROMETZ, "BAROMETZ", {
+          id: "Barometz Lower Body",name: "Barometz Legs",
+          cost: 200,
+          title: "Barometz",
+          transformation: function(): Transformation {return CoC.instance.transformations.LowerBodyBarometzToggle(true)}});
+
+      public static const HOLLOW: int = _partid++;
+      EnumValue.add(Memories, HOLLOW, "HOLLOW", {
+          id: "Hollow Lower Body",name: "Hollow Legs",
+          cost: 100,
+          title: "Hollow Legs",
+          transformation: function(): Transformation {return CoC.instance.transformations.LowerBodyHollow}});
+
       public static function getMemory(memoryId: Number): * {
 			return Memories[memoryId] || Memories[0];
 		}

@@ -25,7 +25,7 @@ public class BimboLiqueur extends Consumable {
 		override public function useItem():Boolean {
 			if (game.player.hasPerk(PerkLib.BroBody)) {
 				outputText("You wince as the stuff hits your stomach, already feeling the insidious effects beginning to take hold.  A lengthy belch escapes your lips as your stomach gurgles, and you giggle abashedly to yourself.");
-				if (game.player.basetallness < 77) {
+				if (game.player.tallness < 77) {
 					outputText(" ...Did the ground just get farther away?  You glance down and realize, you're growing!  Like a sped-up flower sprout, you keep on getting taller until finally stopping around... six and a half feet, you assume.  Huh.  You didn't expect that to happen!");
 					game.player.tallness = 77;
 				}
@@ -48,7 +48,7 @@ public class BimboLiqueur extends Consumable {
 				outputText("A wave of numbness rolls through your features, alerting you that another change is happening.  You reach up to your feel your jaw narrowing, becoming more... feminine?  Heavy, filling lips purse in disappointment as your face takes on a very feminine cast.  You're probably pretty hot now!\n\n");
 				if (game.player.femininity < 80) game.player.femininity = 80;
 
-				outputText("Your surging, absurdly potent libido surges through your body, reminding you that you need to fuck.  Not just bitches, but guys too.  Hard cocks, wet pussies, hell, you don't care.  They can have both or a dozen of either.  You just want to get laid and bone something, hopefully at the same time!");
+				outputText("Your absurdly potent libido surges through your body, reminding you that you need to fuck.  Not just bitches, but guys too.  Hard cocks, wet pussies, hell, you don't care.  They can have both or a dozen of either.  You just want to get laid and bone something, hopefully at the same time!");
 				outputText("\n\n<b>(Perks Lost: Bro Body");
 				if (game.player.hasPerk(PerkLib.BroBrains)) outputText(", Bro Brains");
 				outputText(")\n");
@@ -100,12 +100,12 @@ public class BimboLiqueur extends Consumable {
 					game.player.ballSize = 3;
 					game.player.cumMultiplier = 2;
 				}
-				if (game.player.hasCock()) {
+				if (game.player.hasCockCockOnly()) {
 					outputText("\n\n[EachCock] seems to be responding to the liqueur in its own way.  Clenching and relaxing obscenely, your genitals begin to drizzle cum onto the ground in front of you, throwing you into paroxysms of bliss.  The flow of cum is steady but weak, and each droplet that leaves you lets [eachCock] go more flaccid.  Even once you're soft and little, it doesn't stop.  You cum your way down to nothing, a tiny droplet heralding your new, girlish groin.  <b>You no longer have ");
 					if (game.player.cockTotal() == 1) outputText("a penis");
 					else outputText("penises");
 					outputText("!</b>");
-					while (game.player.hasCock()) {
+					while (game.player.hasCockCockOnly()) {
 						game.player.removeCock(0, 1);
 					}
 				}

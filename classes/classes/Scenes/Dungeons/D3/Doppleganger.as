@@ -23,12 +23,11 @@ import classes.VaginaClass;
 		public function mirrorAttack(damage:Number):void
 		{
 			this.createStatusEffect(StatusEffects.MirroredAttack, 0, 0, 0, 0);
-			outputText("As you swing your [weapon] at the doppleganger, [he] smiles mockingly, and mirrors your move exactly, lunging forward with [his] duplicate " + weaponName + ".");
+			outputText("As you swing your [weapon] at the doppelganger, [he] smiles mockingly, and mirrors your move exactly, lunging forward with [his] duplicate " + weaponName + ".");
 			// Cribbing from combat mechanics - if the number we got here is <= 0, it was deflected, blocked or otherwise missed.
 			// We'll use this as our primary failure to hit, and then mix in a bit of random.
 			// tl;dr this avoids a bunch of weapon effects and perks, but given the specific means of attack, I think it actually makes sense overall. (Basically having to pull back from what you would normally do mid-attack to successfully land any kind of hit).
-			if (damage > 0 && rand(2) == 0)
-			{
+			if (damage > 0 && rand(2) == 0) {
 				outputText("  At the very last moment, you twist downwards and strike into your opponent’s trunk, drawing a gasp of pain from " + player.mf("him", "her") +" as " + player.mf("he", "she") +" clumsily lashes [his] own " + weaponName +" over you. It’s your turn to mirror " + player.mf("him", "her") +", smiling mockingly at " + player.mf("his", "her") +" rabid snarls as " + player.mf("he", "she") +" resets " + player.mf("him", "her") +"self, " + player.mf("his", "her") +" voice bubbling and flickering for a moment as " + player.mf("he", "she") +" tries to maintain control.");
 			} else {
 				outputText("  Your");
@@ -64,17 +63,9 @@ import classes.VaginaClass;
 		private function addTalkShit():void
 		{
 			statScreenRefresh();
-			if (HP < 1)
-			{
-				doNext(SceneLib.combat.endHpVictory);
+			if (SceneLib.combat.monsterDefeatCheck())
 				return;
-			}
-			if (lust > maxLust())
-			{
-				doNext(SceneLib.combat.endLustVictory);
-				return;
-			}
-			if (player.HP <= player.minHP())
+			if (Math.round(player.HP) <= Math.round(player.minHP()))
 			{
 				doNext(SceneLib.combat.endHpLoss);
 				return;
@@ -142,7 +133,7 @@ import classes.VaginaClass;
 				}
 				mirrorAttack(damage);
 			}
-			// Stunning the doppleganger should now "buy" you another round.
+			// Stunning the doppelganger should now "buy" you another round.
 			if (hasStatusEffect(StatusEffects.MirroredAttack)) {//Doppelganger parry!
 				damage = 0;
 				removeStatusEffect(StatusEffects.MirroredAttack);
@@ -190,7 +181,7 @@ import classes.VaginaClass;
 		
 		public function handlePlayerWait():void
 		{
-			outputText("Your doppleganger similarly opts to take a momentary break from the ebb and flow of combat.");
+			outputText("Your doppelganger similarly opts to take a momentary break from the ebb and flow of combat.");
 		}
 
 		// Doppelganger has no attack, skip the attack and countdown
@@ -209,7 +200,7 @@ import classes.VaginaClass;
 		{
 			this.a = "the ";
 			this.short = "doppleganger";
-			this.long = ""; // Needs to be set to supress validation errors, but is handled by an accessor override.
+			this.long = ""; // Needs to be set to suppress validation errors, but is handled by an accessor override.
 			this.imageName = "doppleganger";
 			this.plural = false;
 			this.tallness = player.tallness;

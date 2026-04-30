@@ -10,7 +10,6 @@ import classes.Scenes.Areas.BlightRidge.DemonPackBlightRidge;
 import classes.Scenes.SceneLib;
 import classes.internals.SaveableState;
 
-
 import coc.view.ButtonDataList;
 
 public class TyrantiaFollower extends NPCAwareContent implements SaveableState
@@ -274,7 +273,7 @@ public function repeatEncounterBattlefield():void {
 	addButton(1, "Talk", repeatEncounterBattlefieldTalk);
 	if (TyrantiaAffectionMeter >= 15) addButton(2, "Spar", TyrantiaSpar);
 	else addButtonDisabled(2, "???", "Req. 15%+ affection.");
-	if (TyrantiaTrainingSessions >= 30) addButtonDisabled(3, "Training", "You finished all training session with her.");
+	if (TyrantiaTrainingSessions >= 40) addButtonDisabled(3, "Training", "You finished all training session with her.");
 	else addButton(3, "Training", TyrantiaTraining);
 	if (TyraniaPostFinalKissScene) addButton(4, "Sex", TyrantiaSexMenu);
 	else addButtonDisabled(4, "Sex", "Req. special scene after reaching 40%+ affection.");
@@ -295,7 +294,7 @@ public function repeatEncounterBattlefieldRe():void {
 	addButton(1, "Talk", repeatEncounterBattlefieldTalk);
 	if (TyrantiaAffectionMeter >= 15) addButton(2, "Spar", TyrantiaSpar);
 	else addButtonDisabled(2, "???", "Req. 15%+ affection.");
-	if (TyrantiaTrainingSessions >= 30) addButtonDisabled(3, "Training", "You finished all training session with her.");
+	if (TyrantiaTrainingSessions >= 40) addButtonDisabled(3, "Training", "You finished all training session with her.");
 	else addButton(3, "Training", TyrantiaTraining);
 	if (TyraniaPostFinalKissScene) addButton(4, "Sex", TyrantiaSexMenu);
 	else addButtonDisabled(4, "Sex", "Req. special scene after reaching 40%+ affection.");
@@ -751,7 +750,7 @@ public function TyrantiaReactions2():void {
 	outputText("<b>Tyrantia has joined you as a lover.</b>\n\n");
 	if (player.hasKeyItem("Radiant shard") >= 0) player.addKeyValue("Radiant shard",1,+1);
 	else player.createKeyItem("Radiant shard", 1,0,0,0);
-	outputText("\n\n<b>Before fully settling in your camp as if remembering something Tyrantia pulls a shining shard from her inventory and hand it over to you as a gift. You acquired a Radiant shard!</b>");
+	outputText("\n\n<b>Before fully settling in your camp, as if remembering something, Tyrantia pulls a shining shard from her inventory and hands it over to you as a gift. You acquired a Radiant shard!</b>");
 	endEncounter();
 }
 public function AmilyReaction():void {
@@ -856,7 +855,7 @@ private function LevelingHerself():void {
 	if (flags[kFLAGS.SPARRABLE_NPCS_TRAINING] == 2) {
 		if (flags[kFLAGS.TYRANTIA_DEFEATS_COUNTER] >= 1) flags[kFLAGS.TYRANTIA_DEFEATS_COUNTER]++;
 		else flags[kFLAGS.TYRANTIA_DEFEATS_COUNTER] = 1;
-		if (flags[kFLAGS.TYRANTIA_LVL_UP] < 4 && flags[kFLAGS.TYRANTIA_DEFEATS_COUNTER] >= flags[kFLAGS.TYRANTIA_LVL_UP] + 9) {
+		if (flags[kFLAGS.TYRANTIA_LVL_UP] < 15 && flags[kFLAGS.TYRANTIA_DEFEATS_COUNTER] >= flags[kFLAGS.TYRANTIA_LVL_UP] + 9) {
 			var addToV1:Number = player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * flags[kFLAGS.TYRANTIA_DEFEATS_COUNTER];
 			if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers5)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers5, 1, addToV1);
 			else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers5, addToV1, 0, 0, 0);
@@ -906,9 +905,12 @@ public function TyrantiaTraining2():void {
 		if (TyrantiaTrainingSessions == 14) outputText("<b>You have gained new magic special: False Weapon - costs 10% of your max Lust and 100 Fatigue and lasts until the end of combat.</b>\n\n");
 		if (TyrantiaTrainingSessions == 19) outputText("<b>You can now use toggle to turn on/off auto-cast of Tyrant State at the combat start.</b>\n\n");
 		if (TyrantiaTrainingSessions == 24) outputText("<b>You have gained ability to take less physical and lust damage the closer you're to the maximum lust. (20% at 50% Max Lust, up to 70% at max)</b>\n\n");
-		if (TyrantiaTrainingSessions == 29) outputText("<b>You can delay your own defeat by Lust for two turns. Reducing your own Lust below the max will reset the timer.</b>\n\n");
-		if (TyrantiaTrainingSessions == 34) outputText("<b>If you are in Rut or Heat, halve the lust DoT you take from it, and deal an additional 20% physical damage while under the effects.</b>\n\n");
-		//if (TyrantiaTrainingSessions == 39) outputText("<b></b>\n\n");//TyrantiaFollower.TyrantiaTrainingSessions >= 35
+		if (TyrantiaTrainingSessions == 29) outputText("<b>You can delay your own defeat by Lust for two turns (when in Tyrant State). Reducing your own Lust below the max will reset the timer.</b>\n\n");
+		if (TyrantiaTrainingSessions == 34) outputText("<b>Constant Buildup - If you are in Rut or Heat, halve the lust DoT you take from it, and deal an additional 20% physical damage while under the effects.</b>\n\n");
+		if (TyrantiaTrainingSessions == 39) {
+			outputText("<b>Mental Bastion - The effects of Tyrant State are doubled: While active, you take 30% less damage from magic. You count as either pure or corrupt (whichever is better) for equipment. (Pure for the Beautiful weapons etc, corrupt for corrupt weapons)</b>\n\n");
+			
+		}
 	}
 	else {
 		outputText("Tyrantia considers your state, shaking her head.\n\n");
@@ -955,7 +957,7 @@ public function TyrantiaLetDieYouMonster():void {
 public function TyrantiaSaveFight():void {
 	clearOutput();
 	outputText("With a roar of rage, you jump from hiding, bowling through the shocked demons. The commander turns, too late, as you draw your [weapon], striking him hard enough to snap his neck with a single blow. Shocked, the demons take a step back as their commanding officer falls, dead. You turn, putting your back to Tyrantia.\n\n");
-	outputText("<i>“[name], what are you doing here?!”</i> She snaps back, alert once more. <i>“Leave me. I’m not worth your life. You...You heard what they said?”</i> You call her an idiot. You tell her that your life is yours to live, and yours to spend. You remind her that she has her mission as well, to find her sisters, and that she can’t do that from the end of a demon’s dick. She looks at you, five eyes focusing, and she grits her teeth in raw anger, her armour visibly rippling as she looks down at her fists.\n\n");
+	outputText("<i>“[name], what are you doing here?!”</i> She snaps back, alert once more. <i>“Leave me. I’m not worth your life. You...You heard what they said?”</i> You call her an idiot. You tell her that your life is yours to live, and yours to spend. You remind her that she has her mission as well, to find her sisters, and that she can’t do that from the end of a demon’s dick. She looks at you, five eyes focusing, and she grits her teeth in raw anger, her armor visibly rippling as she looks down at her fists.\n\n");
 	outputText("<i>“Argh!”</i> She punches the ground, sending tremors through it. Nearby demons lose their footing, but she punches again, cracking the stone of the battlefield and sending stone shards flying. Her cunt drools faster, and the black energy emitting from her stops, reversing its course and covering her body. <i>“Stupid!”</i> The earth shakes again as she slams her fist through a stone the size of your head. <i>“Weak-willed!”</i> She stands, shattering the stone by flexing her wrist. <i>“I’ve...Had...ENOUGH!”</i> Her roars of rage echo throughout the battlefield, and as you watch, in utter awe, her helmet flies from the ground, planting itself back on her head.\n\n");
 	outputText("The aura that had once flowed from her, in pulsing waves, now clings tight to her body. Her violet eyes shine brighter, and her black armor pulses with brown light. Tyrantia motions with one hand, and the stones on the battleground form into more spears, complete with the crude phalluses on the tips. <i>“YOU WANNA GET FUCKED?!”</i> She roars, her new, odd aura flaring, the spears rotating, aiming at the demon horde. <i>“LETS FUCKING GO!”</i>\n\n");
 	outputText("You notice that there are still a hundred or so demons left, but the one-woman army at your back looks like she could take on the whole damn horde...Something you find surprisingly arousing. You smile at the incoming demons, letting out your own, much quieter, less dramatic war cry, and you charge the demon horde together.\n\n");
@@ -1253,7 +1255,7 @@ public function TyrantiaAtCamp():void {
 	addButton(2, "Spar", TyrantiaSpar)
 		.disableIf((flags[kFLAGS.PLAYER_COMPANION_1] == "Tyrantia" || flags[kFLAGS.PLAYER_COMPANION_2] == "Tyrantia"), "You can't fight against her as long she's in your team.")
 		.disableIf(flags[kFLAGS.CAMP_UPGRADES_SPARING_RING] < 2, "You need a good sparring ring for that.");
-	if (TyrantiaTrainingSessions >= 30) addButtonDisabled(3, "Training", "You finished all training session with her.");
+	if (TyrantiaTrainingSessions >= 40) addButtonDisabled(3, "Training", "You finished all training session with her.");
 	else addButton(3, "Training", TyrantiaTraining);
 	addButton(4, "Sex", TyrantiaSexMenu);
 	if (player.hasPerk(PerkLib.BasicLeadership) && TyrantiaAffectionMeter >= 60) addButton(5, "JoinMe", TyrantiaHenchmanOption);
@@ -1356,13 +1358,13 @@ public function TyrantiaHenchmanOption2(slot:Number = 1):void {
 		outputText("You ask Tyrantia if she’d be willing to follow you on your adventures. She looks back at her hutch, then back to you. \"<i>And miss all this?</i>\" She grins, her five eyes sparkling. \"<i>[name]...After all you’ve done for me? I’d…</i>\" She smiles, wrapping you in a big fuzzy hug. \"<i>I’d die for you.</i>\"\n\n");
 		if (!player.isDrider() && !player.isTaur() && !player.isInNonGoblinMech() && !player.isInGoblinMech()) outputText("She kisses you on the cheek, picking you up and putting you on her Drider back. \"<i>Just tell me where to go, my sweet [race], and I’ll make sure we get there safely.</i>\"\n\n");
 		outputText("Tyrantia is now following you around.\n\n");
-		var strTyrantia:Number = 295;
-		var intTyrantia:Number = 150;
+		var strTyrantia:Number = 400;
+		var intTyrantia:Number = 300;
 		var meleeAtkTyrantia:Number = 150;
 		if (flags[kFLAGS.TYRANTIA_LVL_UP] >= 2) {
-			strTyrantia += 20 * (flags[kFLAGS.TYRANTIA_LVL_UP] - 1);
-			intTyrantia += 10 * (flags[kFLAGS.TYRANTIA_LVL_UP] - 1);
-			meleeAtkTyrantia += 10 * (flags[kFLAGS.TYRANTIA_LVL_UP] - 1);
+			strTyrantia += 50 * (flags[kFLAGS.TYRANTIA_LVL_UP] - 1);
+			intTyrantia += 30 * (flags[kFLAGS.TYRANTIA_LVL_UP] - 1);
+			meleeAtkTyrantia += 30 * (flags[kFLAGS.TYRANTIA_LVL_UP] - 1);
 		}
 		strTyrantia *= (1 + (0.2 * player.newGamePlusMod()));
 		strTyrantia = Math.round(strTyrantia);
@@ -1409,6 +1411,7 @@ public function itemImproveMenuCorrupt():void {
 		[weapons.BFTHSWORD, weapons.ARMAGED, weapons.CHAOSEA],
 		[weapons.A_WAND, weapons.OCCULUS, weapons.ECLIPSE],
 		[weapons.PFLUTTE, weapons.ELYSIUM, weapons.HELLCAL],
+		[weapons.GNARLEDS, weapons.ANCIENTO, weapons.QULIPOTH],
 		[weaponsrange.BOWLONG, weaponsrange.ARTEMIS, weaponsrange.WILDHUN],
 		[weaponsrange.SHUNHAR, weaponsrange.KSLHARP, weaponsrange.LEVHARP],
 		[weaponsrange.SIXSHOT, weaponsrange.GOODSAM, weaponsrange.BADOMEN],
@@ -1422,7 +1425,11 @@ public function itemImproveMenuCorrupt():void {
 		[armors.SPKIMO, armors.OEKIMO, armors.OTKIMO],
 		[armors.CTPALAD, armors.CTHPALA, armors.CTBGUAR],
 		[armors.LTHRPNT, null, armors.CGUNSLI],
-		[armors.DEATHPO, null, armors.DEATHPGA]
+		[armors.DEATHPO, null, armors.DEATHPGA],
+		[armors.B_QIPAO, armors.SFLAREQ, null],
+		[armors.G_QIPAO, armors.SFLAREQ, null],
+		[armors.P_QIPAO, armors.SFLAREQ, null],
+		[armors.R_QIPAO, armors.SFLAREQ, null]
 	];
 	clearOutput();
 	outputText("You ask your Drider lover if she’d be willing to upgrade a piece of your gear. She nods simply, bringing out a trough on wheels, filled with ebony liquid that bubbles, despite being under no heat.\n\n");// legendary

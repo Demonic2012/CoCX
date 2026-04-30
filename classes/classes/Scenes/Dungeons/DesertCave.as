@@ -2115,7 +2115,7 @@ public class DesertCave extends DungeonAbstractContent
 			addButton(2,"Cum Witches",discussCumWitches).hint("Ask the Sand Mother about the Cum Witches.", "Talk: Cum Witches");
 			addButton(3,"CovenStatus",currentStateOfInterwebs).hint("Ask the Sand Mother about the status of the coven.", "Talk: Coven Status");
 			addButton(4,"History",sandWitchHistory).hint("Ask the Sand Mother about the history of the Sand Witches.", "Talk: History");
-			if(flags[kFLAGS.SAND_WITCH_LOOT_TAKEN] < 10) {
+			if(flags[kFLAGS.SAND_WITCH_LOOT_TAKEN] < 20) {
 				addButton(5,"Get LaBova",getLaBova).hint(consumables.LABOVA_.description);
 				addButton(6,"Get Lactaid",getLactaidFromWitches).hint(consumables.LACTAID.description);
 			}
@@ -2129,7 +2129,7 @@ public class DesertCave extends DungeonAbstractContent
 		public function slavesDiscussion():void {
 			menu();
 			if(canFreeEssy()) addButton(0,"Essrayle",SceneLib.forest.essrayle.askMotherToReleaseEssy).hint("Request the Sand Mother to release Essrayle.");
-			if(canFreeMilkSlave()) addButton(1,"Milk-Slave",freeSlaves).hint("Request the Sand Mother to release the milk slave you've found in the bathroom.");
+			if(canFreeMilkSlave()) addButton(1,"Milk-Slave",freeSlaves).hint("Request the Sand Mother to release the milk slave you found in the bathroom.");
 		}
 		//Getting a Milk Slut, Purity Style
 		//{Having beat the Sammiches, and made Momma Witch your friend, add a button labeled [Free Slaves] to Momma's menu. Needs to have met Milk Slut.}
@@ -2274,7 +2274,7 @@ public class DesertCave extends DungeonAbstractContent
 				addButton(4,"Get Lactaid",takeLaBovaOrLactaid, true, null, null, consumables.LACTAID.description);
 			}
 			if(canFreeEssy()) addButton(5,"Essrayle",SceneLib.forest.essrayle.askMotherToReleaseEssy).hint("Request the Sand Mother to release Essrayle.");
-			if (canFreeMilkSlave()) addButton(6, "Milk-Slave", talkToEnemySMaboutMilk).hint("Request the Sand Mother to release the milk slave you've found in the bathroom.");
+			if (canFreeMilkSlave()) addButton(6, "Milk-Slave", talkToEnemySMaboutMilk).hint("Request the Sand Mother to release the milk slave you found in the bathroom.");
 			addButton(14,"Leave",playerMenu);
 		}
 
@@ -2305,7 +2305,7 @@ public class DesertCave extends DungeonAbstractContent
 				//Resisting Options
 				outputText("\n\nThe Sand Mother cringes back in her throne, eyeing you warily.  It appears you've made an enemy, however, at least it is an enemy that fears you.  There's a chest full of potions of La Bova and Lactaid behind her throne");
 				if(flags[kFLAGS.SAND_WITCH_LOOT_TAKEN] >= 10) outputText(", though right now it sits empty.  You'll need to wait for them to restock it");
-				else outputText(", and noone could stop you from taking them");
+				else outputText(", and no one could stop you from taking them");
 				outputText(".");
 				sandMotherPOMenu();
 			}
@@ -3662,7 +3662,7 @@ public class DesertCave extends DungeonAbstractContent
 			//{for small or non-breasted characters}
 			else outputText("rest against your torso and shoulders");
 			outputText(".");
-			if(player.hasVisiblePregnancy()) outputText("  Each of these raised legs carefully bend at the knee to accomodate your own pregnant belly that looms over their prone figures.");
+			if(player.hasVisiblePregnancy()) outputText("  Each of these raised legs carefully bend at the knee to accommodate your own pregnant belly that looms over their prone figures.");
 			outputText("  As each witch lies on her side, both of them begin feeling your stiff cocks slap against their multiple pussies.  They moan as their four pairs of labia bloom in anticipation of the fucking to come.  Each set of nether lips are dark and dripping with gobs of desperation, but on each girl there's one set that looks particularly gaping as if the pressure inside was forcing it open.  It isn't difficult to figure out that those are the ones that lead to their already occupied wombs, while the other sets are the ones eagerly awaiting a fresh deposit of baby batter.");
 			
 			outputText("\n\nYou feel supremely ready to fulfill those cum craving needs and you carefully align your cocks for the purpose.");
@@ -3934,7 +3934,7 @@ public class DesertCave extends DungeonAbstractContent
 		public function grabTheMilkGirl():void {
 			clearOutput();
 			outputText("You call out to the milk slave before she can slink away, and wade over to the side of the tub, leaving your face a few scant inches from her massive, milk-laden jugs. She cocks her head to the side, obviously unused to the attention, and quietly whispers, \"<i>" + player.mf("M-master?","M-mistress?") + "</i>\"");
-			outputText("\n\nYou flash her a mischievous grin before grabbing a handful of her giant tits and pulling, yanking her into the tub with you. The milk-maid lets out a sharp cry of surprise as she tumbles in, a huge splash of cream spraying over the rim of the tub, painting the walls white. Gasping, her head pops back over the surface of her own milk, long ebony hair dripping onto the tops of her seemingly-buoyant teats, which bob over the milky waves with a strangely serene, regal grace.  \"<i>" + player.mf("M-master?","M-mistress?") + "</i>\" the slave girl repeats, her lower lip quivering with fright as she wades through her own lactation, slowly retreating to the edge of the tub. Smiling, you reach out and stroke her cheek, telling her it's all right, that you thought she might like a bath, too. She starts to reply in her broken dialect, but you cut her off with a playful stroke of her massive mounds, urging her over toward you. Though still nervous, she does as you ask, sliding up under your arm and onto your lap. Once seated, she looks ups to you with saucer-like brown eyes until you cup her cheek and give her a short, tender kiss, pressing your lips to her dusky mounds. To your delight, she seems to melt at your touch, relaxing in an instant as you hold her as close as you can, seperated only by her prodigious chest");
+			outputText("\n\nYou flash her a mischievous grin before grabbing a handful of her giant tits and pulling, yanking her into the tub with you. The milk-maid lets out a sharp cry of surprise as she tumbles in, a huge splash of cream spraying over the rim of the tub, painting the walls white. Gasping, her head pops back over the surface of her own milk, long ebony hair dripping onto the tops of her seemingly-buoyant teats, which bob over the milky waves with a strangely serene, regal grace.  \"<i>" + player.mf("M-master?","M-mistress?") + "</i>\" the slave girl repeats, her lower lip quivering with fright as she wades through her own lactation, slowly retreating to the edge of the tub. Smiling, you reach out and stroke her cheek, telling her it's all right, that you thought she might like a bath, too. She starts to reply in her broken dialect, but you cut her off with a playful stroke of her massive mounds, urging her over toward you. Though still nervous, she does as you ask, sliding up under your arm and onto your lap. Once seated, she looks ups to you with saucer-like brown eyes until you cup her cheek and give her a short, tender kiss, pressing your lips to her dusky mounds. To your delight, she seems to melt at your touch, relaxing in an instant as you hold her as close as you can, separated only by her prodigious chest");
 			if(player.biggestTitSize() >= 8) outputText(", pressing deep into your own huge rack, your nipples flicking across her own leaky tits");
 			outputText(".");
 			
@@ -3976,7 +3976,7 @@ public class DesertCave extends DungeonAbstractContent
 			clearOutput();
 			outputText("You allow the girl to continue for a long, long while until your entire body feels deeply refreshed, her milk having soaked into your body and making you feel fresh and revitalized. You start to thank the milk girl for the pleasurable company, but when you open your mouth, she slips into your arms and presses her lips to yours.  Chuckling to yourself, you hold the girl as tight against yourself as her udders will allow, turning her to the side to let her nuzzle her cheek into your [chest], kissing the top of her head before the two of you climb from the pool.  You have to help her out, her massive extra weight nearly dragging her back in except for your quick reflexes.  You gather your [armor] and ruffle the milk slave's hair before turning back to the task at hand.");
 			//[+Lust, +HP, -Fatigue]
-			HPChange(player.maxHP()*.33,false);
+			HPChange(player.maxHP()*.33,false,false);
 			fatigue(-20);
 			doNext(playerMenu);
 		}
@@ -4089,12 +4089,12 @@ public class DesertCave extends DungeonAbstractContent
 		48 == bulges with unclean spawn..blahblahblah*/
 		public function sandPregUpdate(womb:Object):Boolean {
 			//1:
-			if(womb["incubation"] == 336) {
+			if(womb["incubation"] == sceneHunter.adjustPregEventTimer(336, womb["type"])) {
 				outputText("\nYour breasts have felt unusually heavy recently, and a strange pulsing sensation occasionally emanates from them.  Your appetite is a little off; you could really go for some milk...\n");
 				return true;
 			}
 			//2:
-			if(womb["incubation"] == 280) {
+			if(womb["incubation"] == sceneHunter.adjustPregEventTimer(280, womb["type"])) {
 				outputText("\nYou've been having strange dreams recently, about seeds growing before your eyes into beautiful flowers; what's really weird is the sense of pride and maternal contentment that seeing them bloom makes you feel.  Your breasts are definitely heavier than normal, and sometimes you wake up to find them damp; are you ");
 				if(player.biggestLactation() < 1) outputText("starting to lactate");
 				else outputText("lactating more");
@@ -4111,7 +4111,7 @@ public class DesertCave extends DungeonAbstractContent
 				return true;
 			}
 			//3:
-			if(womb["incubation"] == 216) {
+			if(womb["incubation"] == sceneHunter.adjustPregEventTimer(216, womb["type"])) {
 				outputText("\nYour breasts have definitely grown bigger, and they occasionally trickle milk.  More importantly than that, your stomach is bulging out in a small but unquestionable pot-belly.  You're definitely pregnant.\n");
 				i = player.bRows();
 				while(i > 0) {
@@ -4125,7 +4125,7 @@ public class DesertCave extends DungeonAbstractContent
 				return true;
 			}
 			//4:
-			if(womb["incubation"] == 180) {
+			if(womb["incubation"] == sceneHunter.adjustPregEventTimer(180, womb["type"])) {
 				outputText("\nYour belly continues to grow, the hormones triggering your milk's production to kick it up a notch.  Your breasts are so heavy and sensitive, aching to be used to feed life-giving milk to something.\n");
 				while(player.biggestLactation() < 2) {
 					player.boostLactation(.5);
@@ -4133,7 +4133,7 @@ public class DesertCave extends DungeonAbstractContent
 				return true;
 			}
 			//5:
-			if(womb["incubation"] == 120) {
+			if(womb["incubation"] == sceneHunter.adjustPregEventTimer(120, womb["type"])) {
 				outputText("\nYou sometimes catch yourself humming to your unborn child, stroking your belly like a contented mother.  At other times, you catch yourself proudly stroking your swollen breasts, admiring the way it makes the milk spurt and flow.");
 				while(player.biggestLactation() < 3) {
 					player.boostLactation(.5);
@@ -4141,7 +4141,7 @@ public class DesertCave extends DungeonAbstractContent
 				return true;
 			}
 			//6:
-			if(womb["incubation"] == 72) {
+			if(womb["incubation"] == sceneHunter.adjustPregEventTimer(72, womb["type"])) {
 				outputText("\nMilk dribbles constantly out of your nipples now, in many ways being harder to deal with than the ever-increasing swell of your midriff.  The scent of milk hangs in the air around you constantly, giving you a craving to suckle almost as bad as your breasts' need to be suckled from.\n");
 				while(player.biggestLactation() < 4.5) {
 					player.boostLactation(.5);
@@ -4149,7 +4149,7 @@ public class DesertCave extends DungeonAbstractContent
 				return true;
 			}
 			//7:
-			if(womb["incubation"] == 48) {
+			if(womb["incubation"] == sceneHunter.adjustPregEventTimer(48, womb["type"])) {
 				outputText("\nYour stomach hangs out, heavy and round as any full-term mother's back in Ingnam, your breasts feeling almost as taut and swollen, as if jealous of the life nearly grown inside your womb.  At morning, you find yourself milking your breasts until the cascading fluid ends up glazing your engorged stomach in a beautiful liquid white sheen, not that it seems to make much difference to your production.  You can only hope whatever's growing inside you will be hungry enough to keep up with all the food you'll have for it...");
 				while(player.biggestLactation() < 5.5) {
 					player.boostLactation(.5);

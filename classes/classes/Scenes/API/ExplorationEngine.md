@@ -85,6 +85,17 @@ explorer.prepareArea(groupEncounter);
 ```
 This code generates random encounters and places them on roads.
 
+After `prepareArea` you can edit the 'roads':
+```as
+if (explorer.roadLength(0) > 5) { // check road length
+  explorer.removeLast(0); // remove last entry
+}
+if (explorer.entryAt(2, 1).encounter.encounterName() == "beegirl") { // check encounter at road 2 pos 1
+  explorer.setEncounterAt(2, 1, "trip"); // replace
+}
+```
+Indices are 0-based: road numbers are 0..4, and road poitions are 0..6. 
+
 ### 2. Customization
 
 Exploration engine has many properties that could be overriden, if needed:
@@ -127,7 +138,7 @@ explorer.onMenu = function():void {
 // +1 for 100 forest explorations
 explorer.revealMultiple(1+player.wis/10+player.exploredForest/100);
 
-// Change the behaviour of [End] button that appears on the end of the exploration
+// Change the behavior of [End] button that appears on the end of the exploration
 explorer.onEnd = new ButtonData("Repeat", exploreEndlessForest);
 
 // true (default) - encounters can be fully revealed, displaying their name.

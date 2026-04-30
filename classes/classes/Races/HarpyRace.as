@@ -54,13 +54,15 @@ public class HarpyRace extends Race {
 									|| PhoenixRace.isPhoenixLike(body)
 									|| body.tailType == Tail.THUNDERBIRD
 							);
-						}, 0, -1000);
+						}, 0, -1000)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addScoresAfter(3)
 				.hasVagina(+1)
 				.skinCoverage(Skin.COVERAGE_NONE, +1)
 				.faceType(ANY(Face.HUMAN, Face.ANIMAL_TOOTHS), +1)
 				.earType(ANY(Ears.HUMAN, Ears.ELFIN), +1);
 		
+		addBloodline(PerkLib.HarpysDescendant, PerkLib.BloodlineHarpy);
 		addMutation(IMutationsLib.HarpyHollowBonesIM);
 		
 		buildTier(8, "harpy")

@@ -39,7 +39,6 @@ public class AbyssalSharkRace extends Race {
 
 	public function AbyssalSharkRace(id:int) {
 		super("Abyssal Shark", id, []);//RaceBody);
-		//disabled = true;
 	}
 	
 	public override function setup():void {
@@ -71,7 +70,8 @@ public class AbyssalSharkRace extends Race {
 						function (body:BodyData):Boolean {
 							return body.biggestTitSize > 18 || body.biggestCockSize > 17
 						}, +1)
-				.hasPerk(PerkLib.DantianPhylactery, +1, -10);//23+1
+				.hasPerk(PerkLib.DantianPhylactery, +1, -10)
+				.hasPerk(PerkLib.GOBXChemical, -1000);//23+1
 		
 		addMutation(IMutationsLib.SharkOlfactorySystemIM);
 		

@@ -9,8 +9,10 @@ import classes.*;
 import classes.GlobalFlags.kFLAGS;
 import classes.Items.Armors.LustyMaidensArmor;
 import classes.Scenes.Areas.DefiledRavine.CowSuccubus;
+import classes.Scenes.Areas.DefiledRavine.FeralDemonHellHound;
 import classes.Scenes.Areas.DefiledRavine.MinoIncubus;
 import classes.Scenes.SceneLib;
+import classes.display.SpriteDb;
 
 //use namespace CoC;
 	
@@ -20,10 +22,9 @@ import classes.Scenes.SceneLib;
 		{}
 		
 		//MinoIncubus
-		
 		public function MinoIncubusEncounter():void {
 			clearOutput();
-			outputText("As you wander in the ravine, from behind one of trees ahead comes out a purple skinned person covered in fur.  When he approaches closer, you can clearly see his horse dick hangging free.  Looks like this minotaur went to the dark side of Mareth.  \"<i>Tasty soul in you I can feel.  Give it to me!</i>\" he directly command with a manly voice.  Look like there is no way around it, you ready your [weapon] for the fight.");
+			outputText("As you wander in the ravine, from behind one of trees ahead comes out a purple skinned person covered in fur.  When he approaches closer, you can clearly see his horse dick hanging free.  Looks like this minotaur went to the dark side of Mareth.  \"<i>Tasty soul in you I can feel.  Give it to me!</i>\" he directly commands with a manly voice.  Looks like there is no way around it, you ready your [weapon] for the fight.");
 			startCombat(new MinoIncubus());
 			doNext(playerMenu);
 		}
@@ -33,15 +34,53 @@ import classes.Scenes.SceneLib;
 			menu();
 			outputText("You smile in satisfaction as the mino incubus collapses, unable to continue fighting.");
 			if (monster.HP < 1) addButton (5, "Kill Him", killDemon);
-            LustyMaidensArmor.addTitfuckButton(7);
+            addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
+			LustyMaidensArmor.addTitfuckButton(7);
 			addButton (14, "Leave", cleanupAfterCombat);
 			SceneLib.uniqueSexScene.pcUSSPreChecksV2(defeatMinoIncubus);
+		}
+		
+		//Feral MinoIncubus/Inkubus
+		public function FeralMinoIncubusEncounter():void {
+			clearOutput();
+			outputText("As you wander in the ravine, from behind one of trees ahead comes out a purple skinned person covered in fur.  When he approaches closer, you can clearly see his horse dick hanging free.  Looks like this minotaur went to the dark side of Mareth.  He flashes a cruel smile your way while flexing his massive muscles.  Looks like there is no way around it, you ready your [weapon] for the fight.");
+			player.createStatusEffect(StatusEffects.FeralDemon, 0, 0, 0, 0);
+			startCombat(new MinoIncubus());
+			doNext(playerMenu);
+		}
+		
+		public function defeatFeralMinoIncubus():void {
+			clearOutput();
+			menu();
+			outputText("You smile in satisfaction as the feral mino incubus collapses, unable to continue fighting.");
+			player.removeStatusEffect(StatusEffects.FeralDemon);
+			if (monster.HP < 1) addButton (5, "Kill Him", killDemon2);
+			addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
+			addButton (14, "Leave", cleanupAfterCombat);
+		}
+		
+		public function FeralIncubusEncounter():void {
+			clearOutput();
+			outputText("As you wander in the ridge, from behind one of trees ahead comes out a purple skinned person.  To be more precise, a male person.  When he approaches closer, you can clearly see his dick hanging free.  He flashes a cruel smile your way while flexing his massive muscles.  Looks like there is no way around it, you ready your [weapon] for the fight.");
+			player.createStatusEffect(StatusEffects.FeralDemon, 0, 0, 0, 0);
+			startCombat(new Incubus());
+			doNext(playerMenu);
+		}
+		
+		public function defeatFeralIncubus():void {
+			clearOutput();
+			menu();
+			outputText("You smile in satisfaction as the feral incubus collapses, unable to continue fighting.");
+			player.removeStatusEffect(StatusEffects.FeralDemon);
+			if (monster.HP < 1) addButton (5, "Kill Her", killDemon2);
+			addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
+			addButton (14, "Leave", cleanupAfterCombat);
 		}
 		
 		//Incubus
 		public function IncubusEncounter():void {
 			clearOutput();
-			outputText("As you wander in the ridge, from behind one of trees ahead comes out a purple skinned person.  To be more precise, a male person.  When he approaches closer, you can clearly see his dick hanging free.  \"<i>I can feel tasty soul in you.  Give it to me!</i>\" he directly command with a manly voice.  Look like there is no way around it, you ready your [weapon] for the fight.");
+			outputText("As you wander in the ridge, from behind one of trees ahead comes out a purple skinned person.  To be more precise, a male person.  When he approaches closer, you can clearly see his dick hanging free.  \"<i>I can feel tasty soul in you.  Give it to me!</i>\" he directly commands with a manly voice.  Looks like there is no way around it, you ready your [weapon] for the fight.");
 			startCombat(new Incubus());
 			doNext(playerMenu);
 		}
@@ -50,7 +89,8 @@ import classes.Scenes.SceneLib;
 			clearOutput();
 			menu();
 			outputText("You smile in satisfaction as the incubus collapses, unable to continue fighting.");
-			if (monster.HP < 1) addButton (12, "Kill Him", killDemon);
+			if (monster.HP < 1) addButton (5, "Kill Him", killDemon);
+			addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
 			addButton (14, "Leave", cleanupAfterCombat);
 			if (player.lust >= 33) {
 				outputText("\nNow would be the perfect opportunity to taste the fruits of his sex-ready form...[pg]Do you fuck him?");
@@ -58,7 +98,7 @@ import classes.Scenes.SceneLib;
 				addButtonIfTrue(1, "F. Fuck", IncubusGetsRapedByFemale, "Req. a vagina.", player.hasVagina());
 				addButton (2, "Service Him", GiveIncubusOral);
 				addButton (3, "Catch Anal", SceneLib.dungeons.factory.doRideIncubusAnally);
-				addButtonIfTrue(4, "L.Paizuri", lustyPaizuri, "Req . to have Lusty Maiden or Succubus armor equipped (unique scene for incubi).",
+				addButtonIfTrue(4, "L.Paizuri", lustyPaizuri, "Req. to have Lusty Maiden or Succubus armor equipped (unique scene for incubi).",
 					player.hasVagina() && player.biggestTitSize() >= 4 && (player.armor == armors.LMARMOR || player.armor == armors.S_ARMOR));
 				SceneLib.uniqueSexScene.pcUSSPreChecksV2(defeatIncubus); //the last!
 			} else {
@@ -185,10 +225,29 @@ import classes.Scenes.SceneLib;
 			cleanupAfterCombat();
 		}
 		
+		//Feral Omnibus
+		public function FeralOmnibusEncounter():void {
+			clearOutput();
+			outputText("As you wander in the ridge, from behind one of trees ahead comes out a purple skinned person.  At first glance, it seems to be a female person.  When she approaches closer, despite rags covering some of her body you notice a demonic cock hanging free.  She flashes a cruel smile your way while flexing her massive muscles.  Looks like there is no way around it, you ready your [weapon] for the fight.");
+			player.createStatusEffect(StatusEffects.FeralDemon, 0, 0, 0, 0);
+			startCombat(new Omnibus());
+			doNext(playerMenu);
+		}
+		
+		public function defeatFeralOmnibus():void {
+			clearOutput();
+			menu();
+			outputText("You smile in satisfaction as the feral omnibus collapses, unable to continue fighting.");
+			player.removeStatusEffect(StatusEffects.FeralDemon);
+			if (monster.HP < 1) addButton (5, "Kill Her", killDemon2);
+			addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
+			addButton (14, "Leave", cleanupAfterCombat);
+		}
+		
 		//Omnibus
 		public function OmnibusEncounter():void {
 			clearOutput();
-			outputText("As you wander in the ridge, from behind one of trees ahead comes out a purple skinned person.  At first glance, it seems to be a female person.  When she approaches closer, despite rags covering some of her body you notice a demonic cock hanging free.  \"<i>I can feel tasty soul in you.  Give it to me!</i>\" she directly commands yet still using a gentle feminine voice.  Look like there is no way around it, you ready your [weapon] for the fight.");
+			outputText("As you wander in the ridge, from behind one of trees ahead comes out a purple skinned person.  At first glance, it seems to be a female person.  When she approaches closer, despite rags covering some of her body you notice a demonic cock hanging free.  \"<i>I can feel tasty soul in you.  Give it to me!</i>\" she directly commands yet still using a gentle feminine voice.  Looks like there is no way around it, you ready your [weapon] for the fight.");
 			startCombat(new Omnibus());
 			doNext(playerMenu);
 		}
@@ -198,6 +257,7 @@ import classes.Scenes.SceneLib;
 			menu();
 			outputText("You smile in satisfaction as the omnibus collapses, unable to continue fighting.");
 			if (monster.HP < 1) addButton (5, "Kill Her", killDemon);
+			addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
 			addButton (14, "Leave", cleanupAfterCombat);
 			if (player.lust>=33 && player.gender > 0) {
 				outputText("\nNow would be the perfect opportunity to taste the fruits of her sex-ready form...[pg]Do you fuck her?");
@@ -342,10 +402,9 @@ import classes.Scenes.SceneLib;
 		}
 		
 		//CowSuccubus
-		
 		public function CowSuccubusEncounter():void {
 			clearOutput();
-			outputText("As you wander in the ridge, from behind one of trees ahead comes out a blue skinned person covered in fur.  To be more precise, a cow that felt that grass must be greener on the dark side.  When she approaches closer, despite rags covering some of her body, you don't notice any 'addition' at her crotch.  \"<i>A yummy soul in you I can feel.  Would you kindly give it to me?</i>\" she blurts directly.  Look like there is no way around it, you ready your [weapon] for the fight.");
+			outputText("As you wander in the ridge, from behind one of trees ahead comes out a blue skinned person covered in fur.  To be more precise, a cow that felt the grass must be greener on the dark side.  When she approaches closer, despite rags covering some of her body, you don't notice any 'addition' at her crotch.  \"<i>A yummy soul in you I can feel.  Would you kindly give it to me?</i>\" she blurts directly.  Looks like there is no way around it, you ready your [weapon] for the fight.");
 			camp.codex.unlockEntry(kFLAGS.CODEX_ENTRY_SUCCUBUS);
 			startCombat(new CowSuccubus());
 			doNext(playerMenu);
@@ -356,14 +415,54 @@ import classes.Scenes.SceneLib;
 			menu();
 			outputText("You smile in satisfaction as the cow succubus collapses, unable to continue fighting.");
 			if (monster.HP < 1) addButton (5, "Kill Her", killDemon);
+			addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
 			addButton (14, "Leave", cleanupAfterCombat);
 			SceneLib.uniqueSexScene.pcUSSPreChecksV2(defeatCowSuccubus);
+		}
+		
+		//Feral CowSuccubus/Succubus
+		public function FeralCowSuccubusEncounter():void {
+			clearOutput();
+			outputText("As you wander in the ridge, from behind one of trees ahead comes out a blue skinned person covered in fur.  To be more precise, a cow that felt the grass must be greener on the dark side.  When she approaches closer, despite rags covering some of her body, you don't notice any 'addition' at her crotch.  She flashes a cruel smile your way while flexing her muscles.  Looks like there is no way around it, you ready your [weapon] for the fight.");
+			camp.codex.unlockEntry(kFLAGS.CODEX_ENTRY_SUCCUBUS);
+			player.createStatusEffect(StatusEffects.FeralDemon, 0, 0, 0, 0);
+			startCombat(new CowSuccubus());
+			doNext(playerMenu);
+		}
+		
+		public function defeatFeralCowSuccubus():void {
+			clearOutput();
+			menu();
+			outputText("You smile in satisfaction as the feral cow succubus collapses, unable to continue fighting.");
+			player.removeStatusEffect(StatusEffects.FeralDemon);
+			if (monster.HP < 1) addButton (5, "Kill Her", killDemon2);
+			addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
+			addButton (14, "Leave", cleanupAfterCombat);
+		}
+		
+		public function FeralSuccubusEncounter():void {
+			clearOutput();
+			outputText("As you wander in the ridge, from behind one of trees ahead comes out a blue skinned person.  To be more precise, a female person.  When she is approaches closer, despite rags covering some of her body, you don't notice any 'addition' at her crotch.  She flashes a cruel smile your way while flexing her muscles.  Looks like there is no way around it, you ready your [weapon] for the fight.");
+			camp.codex.unlockEntry(kFLAGS.CODEX_ENTRY_SUCCUBUS);
+			player.createStatusEffect(StatusEffects.FeralDemon, 0, 0, 0, 0);
+			startCombat(new Succubus());
+			doNext(playerMenu);
+		}
+		
+		public function defeatFeralSuccubus():void {
+			clearOutput();
+			menu();
+			outputText("You smile in satisfaction as the feral succubus collapses, unable to continue fighting.");
+			player.removeStatusEffect(StatusEffects.FeralDemon);
+			if (monster.HP < 1) addButton (5, "Kill Her", killDemon2);
+			addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
+			addButton (14, "Leave", cleanupAfterCombat);
 		}
 		
 		//Succubus
 		public function SuccubusEncounter():void {
 			clearOutput();
-			outputText("As you wander in the ridge, from behind one of trees ahead comes out a blue skinned person.  To be more precise, a female person.  When she is approaches closer, despite rags covering some of her body, you don't notice any 'addition' at her crotch.  \"<i>I can feel yummy soul in you.  Would you kindly give it to me?</i>\" she blurts directly.  Look like there is no way around it, you ready your [weapon] for the fight.");
+			outputText("As you wander in the ridge, from behind one of trees ahead comes out a blue skinned person.  To be more precise, a female person.  When she is approaches closer, despite rags covering some of her body, you don't notice any 'addition' at her crotch.  \"<i>I can feel yummy soul in you.  Would you kindly give it to me?</i>\" she blurts directly.  Looks like there is no way around it, you ready your [weapon] for the fight.");
 			camp.codex.unlockEntry(kFLAGS.CODEX_ENTRY_SUCCUBUS);
 			startCombat(new Succubus());
 			doNext(playerMenu);
@@ -374,6 +473,7 @@ import classes.Scenes.SceneLib;
 			menu();
 			outputText("You smile in satisfaction as the succubus collapses, unable to continue fighting.");
 			if (monster.HP < 1) addButton (5, "Kill Her", killDemon);
+			addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
 			addButton (14, "Leave", cleanupAfterCombat);
 			if (player.lust>=33) {
 				outputText("\nNow would be the perfect opportunity to taste the fruits of her sex-ready form...[pg]Do you fuck her?");
@@ -413,7 +513,6 @@ import classes.Scenes.SceneLib;
             SGRBM_start(x);
             outputText("But the pleasure is short-lived, as even her altered physiology can't accommodate your massive tool. With a grunt of frustration you yank your hungry demonic cock away from your goal.  She smiles knowingly and massages her breasts, releasing streams of the same black fluid from her tumescent nipples. It coats the valley of her pornstar-sized breasts, allowing the fluid to flow down and pool in her tight little belly button.[pg]");
             outputText("\"<i>This will, like, be even better anyways stud!</i>\" coos a higher pitched you, smashing her tits together wetly for emphasis.  Viscous strings of lubricants form a mesmerizing lattice between her mountainous tits as she puts on a show for you.  Entirely of its own accord, your " + player.cockDescript(x) + " drags you into her web of corruption, plopping itself firmly into the river of desire that fountains from the peaks on either side. With a steady rhythm, you rock your [hips] back and forwards, plunging into her delicious fuckpillows without abandon. With an inhuman strength, she pushes them together, forcing them to completely encircle your over-sized pole with a tight ring of corruption-dripping tit-flesh.[pg]");
-            transformations.CockDemon(x).applyEffect(false);
             //[normal]
             if(player.cumQ() < 50) outputText("Droplets of pre begin to escape your cock-slit every time your sensitive nodules pass between your fem-clone's wondrous pleasure-tits.  You fuck harder, no longer caring if it's your choice or your cock's, mashing your purplish head against her lips with every stroke.  The flash-fire of an orgasm sweeps over you, over-engorging the nodules all over your cock and doubling their size.  Your hips resort to tiny rocking motions as you rub your cock-slit into your fem-self's open mouth, blasting thick ropes of tainted black cum into her mouth. Though you quickly empty of cum and collapse onto her, your [hips] continue to fuck like a machine.  All you can do is hang on to your meat and try to stay conscious as your demonic prick feasts on your double.[pg]");
             //[high]
@@ -428,7 +527,7 @@ import classes.Scenes.SceneLib;
                 }
                 outputText("You throw back your head as the first wave of release pours from your tip, splattering your female clone with inky black cum!  The color startles you for a moment before the next blast moves down your shaft, visibly distending your urethra until it bursts free to coat her hair.  Your hips keep moving of their own accord, massaging the crown-ring with tits during each thrust forwards and accompanying cumshot.  By the fourth load, your double is opening her soaked lips wide and guzzling it down.  By the sixth she's sputtering and coughing as the black sex juice sloughs off her.  By the ninth she's managed to clamp her lips over your cock-tip, and her throat bulges ludicrously with the effort of taking each load.  Thankfully, your orgasm finally winds down.  As the last few globs of inky jism escape from you, you realize your hips are still moving, plunging your massive possessed tool into its new favorite place.  Sighing, you hang onto your endowment and try to stay conscious in spite of your exhaustion and the overwhelming feelings coming from your groin.[pg]");
             }
-            outputText("Still, your possessed maleness is far from finished as it continues to slide along her belly and between her still-dripping tits, and before long you feel another orgasm building.  You hang on for dear life, hoping just to stay conscious through the ordeal...[pg]Hour later you pull away, sated.  For now.");
+            outputText("Still, your possessed maleness is far from finished as it continues to slide along her belly and between her still-dripping tits, and before long you feel another orgasm building.  You hang on for dear life, hoping just to stay conscious through the ordeal...[pg]Hour later you pull away, sated, but with your previous dick.");
             //common
             outputText("[pg]The succubus licks her fingers clean, looking totally recovered.  In the blink of an eye, she dashes out and disappearing in the distance.");
 			player.sexReward("vaginalFluids","Dick");
@@ -443,7 +542,6 @@ import classes.Scenes.SceneLib;
             if(player.hasBalls()) outputText("Looking down, you even see the veins on your sack darkening to solid black as the corruption begins tainting your sperm-factories.  ");
             outputText("You pull back, letting the ring of pointed fleshy barbs spring free before plunging them back in. The pleasure makes you swoon, nearly forcing you to orgasm on the spot.  ");
             if(player.biggestTitSize() > 0) outputText("Your female double reaches down to pinch your nipple, spurring you on, \"<i>Please, could you like, cum for me?</i>\"");
-			transformations.CockDemon(x).applyEffect(false);
 			//New PG
             outputText("[pg]");
 			outputText("The succubus bucks her hips weakly, still clearly defeated, but egging on your orgasm as dark fluids squelch free from her quim.  \"<i>Please... can't you see how hot you're making me?  I've made your cock perfect, so please make me cum!</i>\" she begs as she quivers with delight.  ");
@@ -457,7 +555,7 @@ import classes.Scenes.SceneLib;
             if(player.cumQ() >= 50 && player.cumQ() < 400) outputText("You inhale as black cum spatters from her entrance, her belly distending slightly as you empty what feels like a gallon inside her.");
             //((Ginormohuge))
             if(player.cumQ() >= 400) outputText("Gasping in pleasure and surprise, you marvel as her belly visibly expands with each eruption of your dark load.  At first, it looks like a tiny belly, but by the time the orgasm finishes, your girlish double looks like a woman in her ninth month of pregnancy – with twins.");
-            outputText("[pg]You pant with exertion and pull back, only to have your " + player.cockDescript(x) + " plunge right back in. Beginning another rough fucking session, your hips force-fuck her beyond your control.  Exhausted, you lean over her, figuring you may as well enjoy your double's wondrous breasts until your demonic cock has finally sated itself.  You just hope you don't black out from the waves of pleasure each of your new nubs radiates.[pg]\nHours later you pull away, sated.  For now.");
+            outputText("[pg]You pant with exertion and pull back, only to have your " + player.cockDescript(x) + " plunge right back in. Beginning another rough fucking session, your hips force-fuck her beyond your control.  Exhausted, you lean over her, figuring you may as well enjoy your double's wondrous breasts until your demonic cock has finally sated itself.  You just hope you don't black out from the waves of pleasure each of your new nubs radiates.[pg]\nHours later you pull away, sated, but with your previous dick.");
 			//common
             outputText("[pg]The succubus licks her fingers clean, looking totally recovered.  In the blink of an eye, she dashes out and disappearing in the distance.");
 			player.sexReward("vaginalFluids","Dick");
@@ -551,6 +649,26 @@ import classes.Scenes.SceneLib;
 			cleanupAfterCombat();
 		}
 		
+		//Feral Demon Hellhound
+		public function FeralDemonHellhoundEncounter():void {
+			clearOutput();
+			outputText("You hear a fiery howl as a demonic, feral two-headed beast-man leaps out in front of you!  Looks like there is no way around it, you ready your [weapon] for the fight.");
+			camp.codex.unlockEntry(kFLAGS.CODEX_ENTRY_HELLHOUNDS);
+			startCombat(new FeralDemonHellHound());
+			spriteSelect(SpriteDb.s_hellhound);
+			doNext(playerMenu);
+		}
+		
+		public function defeatFeralDemonHellhound():void {
+			clearOutput();
+			menu();
+			outputText("The demon hellhound's flames dim, and the heads let out a whine before the creature slumps down, defeated and nearly unconscious.");
+			player.removeStatusEffect(StatusEffects.FeralDemon);
+			if (monster.HP < 1) addButton (5, "Kill Him", killDemonHellhound);
+			addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
+			addButton (14, "Leave", cleanupAfterCombat);
+		}
+		
 		private function killDemon():void {
 			clearOutput();
 			flags[kFLAGS.TRUE_DEMONS_KILLED]++;
@@ -573,17 +691,73 @@ import classes.Scenes.SceneLib;
 			if (player.hasPerk(PerkLib.PrestigeJobNecromancer)) addButton(3, "Harvest", harvestBones);
 			else addButtonDisabled(3, "???", "Req. Prestige Job: Necromancer.");
 		}
+		private function killDemon2():void {
+			clearOutput();
+			flags[kFLAGS.TRUE_DEMONS_KILLED]++;
+			outputText("You make a quick work of the feral ");
+			if (monster.short == "feral succubus") outputText("succubus");
+			if (monster.short == "feral incubus") outputText("incubus");
+			if (monster.short == "feral omnibus") outputText("omnibus");
+			if (monster.short == "feral cow succubus") outputText("cow succubus");
+			if (monster.short == "feral mino incubus") outputText("mino incubus");
+			outputText(" before dragging the corpse away. That's one less foul creature prowling the realms. ");
+			if (player.hasPerk(PerkLib.Purifier)) player.purifyDemonBonus();
+			if (player.cor < 25) dynStats("cor", -0.5);
+			if (player.enemiesKillCount() >= 10 && !player.hasPerk(PerkLib.KillingIntent)) {
+				outputText("Kill upon kill, corpse after corpse... Ashes... to ashes... Your fingers itch, your blood boils, there's still more to kill, more fiends to slay. The fire burning inside is but another weapon of murder. <b>(You have gained the Killing Intent perk!)</b> ");
+				player.createPerk(PerkLib.KillingIntent, 0, 0, 0, 0);
+			}
+			menu();
+			addButton(1, "Leave", cleanupAfterCombat);
+			addButton(2, "Take Skull", takeSkull2);
+			if (player.hasPerk(PerkLib.PrestigeJobNecromancer)) addButton(3, "Harvest", harvestBones);
+			else addButtonDisabled(3, "???", "Req. Prestige Job: Necromancer.");
+		}
+		private function killDemonHellhound():void {
+			clearOutput();
+			flags[kFLAGS.HELLHOUNDS_KILLED]++;
+			flags[kFLAGS.TRUE_DEMONS_KILLED]++;
+			outputText("You finish off the demon hellhound and claim his two tongues as your prize. ");
+			if (player.cor < 25) dynStats("cor", -0.5);
+			if (player.enemiesKillCount() >= 10 && !player.hasPerk(PerkLib.KillingIntent)) {
+				outputText("Kill upon kill, corpse after corpse... Ashes... to ashes... Your fingers itch, your blood boils, there's still more to kill, more fiends to slay. The fire burning inside is but another weapon of murder. <b>(You have gained the Killing Intent perk!)</b> ");
+				player.createPerk(PerkLib.KillingIntent, 0, 0, 0, 0);
+			}
+			menu();
+			addButton(1, "Leave", cleanupAfterCombat);
+			addButton(2, "Take Skulls", takeSkull3);
+			if (player.hasPerk(PerkLib.PrestigeJobNecromancer)) addButton(3, "Harvest", harvestBones2);
+			else addButtonDisabled(3, "???", "Req. Prestige Job: Necromancer.");
+		}
 		private function takeSkull():void {
 			inventory.takeItem(useables.DEMSKLL, cleanupAfterCombat);
+		}
+		private function takeSkull2():void {
+			inventory.takeItem(useables.FDEMSKL, cleanupAfterCombat);
+		}
+		public function takeSkull3():void {
+			inventory.takeItem(useables.FDEMSKL, takeSkull3a);
+		}
+		public function takeSkull3a():void {
+			outputText("\n\n");
+			inventory.takeItem(useables.FDEMSKL, takeSkull3b);
+		}
+		public function takeSkull3b():void {
+			outputText("\n\n");
+			inventory.takeItem(useables.THHTONG, cleanupAfterCombat);
 		}
 		private function harvestBones():void {
 			harvestDemonBones();
 			cleanupAfterCombat();
 		}
+		private function harvestBones2():void {
+			harvestDemonBones();
+			inventory.takeItem(useables.THHTONG, cleanupAfterCombat);
+		}
 		public function harvestDemonBones():void {
 			var harv:Number = 1 + rand(5);
 			if (player.hasPerk(PerkLib.GreaterHarvest)) harv += 4 + rand(12);
-			if (harv + player.perkv1(PerkLib.PrestigeJobNecromancer) > SceneLib.camp.campMake.maxDemonBonesStored()) harv = SceneLib.camp.campMake.maxDemonBonesStored() - player.perkv1(PerkLib.PrestigeJobNecromancer);
+			if (harv + player.perkv1(PerkLib.PrestigeJobNecromancer) > SceneLib.campMakeWinions.maxDemonBonesStored()) harv = SceneLib.campMakeWinions.maxDemonBonesStored() - player.perkv1(PerkLib.PrestigeJobNecromancer);
 			outputText("You take your time to harvest material. You acquired " + harv + " bones!");
 			player.addPerkValue(PerkLib.PrestigeJobNecromancer, 1, harv);
 		}

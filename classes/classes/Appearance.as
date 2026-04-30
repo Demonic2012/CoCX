@@ -413,7 +413,7 @@ public class Appearance extends Utils
 		public static function cockDescription(cockType:CockTypesEnum, length:Number, girth:Number, lust:int = 50, cumQ:Number = 10, isPierced:Boolean = false, hasSock:Boolean = false, isGooey:Boolean = false, isGhastly:Boolean = false): String {
 			if (rand(2) == 0) {
 				if(cockType == CockTypesEnum.HUMAN) return cockAdjective(cockType, length, girth, lust, cumQ, isPierced, hasSock, isGooey, isGhastly) + " " + cockNoun(cockType);
-				else return cockAdjective(cockType, length, girth, lust, cumQ, isPierced, hasSock, isGooey, isGhastly) + ", " + cockNoun(cockType);
+				else return cockAdjective(cockType, length, girth, lust, cumQ, isPierced, hasSock, isGooey, isGhastly) + " " + cockNoun(cockType);
 			}
 			return cockNoun(cockType);
 		}
@@ -706,6 +706,25 @@ public class Appearance extends Utils
 					"light blue prick",
 					"light blue member",
 					"light blue shaft");
+			}
+			else if (cockType == CockTypesEnum.SHROOM) {
+				return randomChoice("glowing fungal clit cock",
+					"mushroom futa dick");
+			}
+			else if (cockType == CockTypesEnum.AUTOMATA) {
+				return randomChoice("steel hard dick",
+					"steel hard plug",
+					"steel hard shaft");
+			}
+			else if (cockType == CockTypesEnum.BAROMETZ) {
+				return randomChoice("flared verdant horse-cock",
+					"verdant equine prick",
+					"bestial verdant horse-shaft",
+					"flat-tipped verdant horse-member",
+					"animalistic verdant stallion-prick",
+					"verdant equine dong",
+					"verdant beast cock",
+					"flared verdant stallion-cock");
 			}
 			return randomChoice("cock",
 				"prick",
@@ -1255,6 +1274,26 @@ public class Appearance extends Utils
 
 			description += randomChoice(options);
 
+			return description;
+		}
+
+		public static function vaginaCockDescript(i_creature:Creature, i_vaginaIndex:Number = 0, forceDesc:Boolean=false):String{
+			if (i_vaginaIndex > (i_creature.vaginas.length - 1)) {
+				CoC_Settings.error("<B>Error: Invalid vagina number (" + i_vaginaIndex + ") passed to vaginaCockDescript()</b>");
+				return "<B>Error: Invalid vagina number (" + i_vaginaIndex + ") passed to vaginaCockDescript()</b>";
+			}
+			if (i_vaginaIndex < 0) {
+				CoC_Settings.error("<B>Error: Invalid vaginaNum (" + i_vaginaIndex + ") passed to vaginaCockDescript()</b>");
+				return "<B>Error: Invalid vaginaNum (" + i_vaginaIndex + ") passed to vaginaCockDescript()</b>";
+			}
+			if (i_creature.vaginas.length <= 0) {
+				CoC_Settings.error("ERROR: Called vagina Cock Description with no vaginas");
+				return "ERROR: Called vaginaCockDescript with no vaginas";
+			}
+			var description:String = "";
+			description += clitDescription(i_creature);
+			description += " " + i_creature.clitLength < 1.5 + " inches";
+			if (i_creature.vaginaType() == 20) description += " glowing fungal clit cock";
 			return description;
 		}
 
@@ -2316,10 +2355,13 @@ public class Appearance extends Utils
 
 		public static function multiCockDescriptLight(creature:Creature):String {
 			if (creature.cocks.length < 1) {
-
-				CoC_Settings.error("");
-				return "<B>Error: multiCockDescriptLight() called with no penises present.</B>";
-
+				if (creature.hasCock()){
+					return vaginaCockDescript(creature);
+				}
+				else{
+					CoC_Settings.error("");
+					return "<B>Error: multiCockDescriptLight() called with no penises or cockclit present.</B>";
+				}
 			}
 			//Get cock counts
 			var descript:String = "";
@@ -2435,8 +2477,14 @@ public class Appearance extends Utils
 				}
 				//If mixed
 				if (!descripted) {
-					descript += creature.cockAdjective() + ", ";
-					descript += randomChoice("mutated cocks", "mutated dicks", "mixed cocks", "mismatched dicks");
+					if (creature.cocks[0].cockType == CockTypesEnum.BAROMETZ) {
+						descript += ", " + creature.cockDescript(0) + " ";
+						descript += "Slithering out of your sheath, you have "+num2Text(currCock-1)+" vine like tentacle cock, ready to plug and erupt into a fertile hole at any given time. You sometimes use them to jerk yourself to orgasm when feeling antsy.";
+					}
+					else {
+						descript += creature.cockAdjective() + ", ";
+						descript += randomChoice("mutated cocks", "mutated dicks", "mixed cocks", "mismatched dicks");
+					}
 				}
 			}
 			return descript;
@@ -2444,8 +2492,13 @@ public class Appearance extends Utils
 
 		public static function multiCockDescript(creature:Creature):String {
 			if (creature.cocks.length < 1) {
-				CoC_Settings.error("");
-				return "<B>Error: multiCockDescript() called with no penises present.</B>";
+				if (creature.hasCock()){
+					return vaginaCockDescript(creature);
+				}
+				else{
+					CoC_Settings.error("");
+					return "<B>Error: multiCockDescriptLight() called with no penises or cockclit present.</B>";
+				}
 			}
 			//Get cock counts
 			var descript:String = "";

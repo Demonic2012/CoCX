@@ -25,7 +25,7 @@ public class IceFistSkill extends AbstractSoulSkill {
         var uc:String =  super.usabilityCheck();
         if (uc) return uc;
 
-		if ((player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) && (player.hasPerk(PerkLib.ColdMastery) || player.hasPerk(PerkLib.ColdAffinity))) {
+		if ((player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.FireShadowAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) && (player.hasPerk(PerkLib.ColdMastery) || player.hasPerk(PerkLib.ColdAffinity))) {
 			return "When you try to use this technique, you shudder in revulsion. Ice, that close to your body? You're a creature of fire!";
 		}
 		if (!player.isFistOrFistWeapon()) {
@@ -51,19 +51,21 @@ public class IceFistSkill extends AbstractSoulSkill {
 			damage += scalingBonusStrength();
 		}
 		damage += player.wis;
-		damage += scalingBonusWisdom();
+		damage += scalingBonusWisdom() * 2;
+		//soulskill mod effect
+		damage *= soulskillPhysicalMod();
 		//other bonuses
 		if (player.hasPerk(PerkLib.PerfectStrike) && monster && monster.monsterIsStunned()) damage *= 1.5;
 		if (player.hasPerk(PerkLib.Heroism) && monster && (monster.hasPerk(PerkLib.EnemyBossType) || monster.hasPerk(PerkLib.EnemyHugeType))) damage *= 2;
 		if (combat.wearingWinterScarf()) damage *= 1.2;
 		if (player.perkv1(IMutationsLib.AnubiHeartIM) >= 4 && player.HP < Math.round(player.maxHP() * 0.5)) damage *= 1.5;
+		if (player.hasPerk(PerkLib.ExanimationI)) damage *= combat.hollowSkillsAndSoulskillsBoost();
 		return Math.round(damage);
 
 	}
 
     override public function doEffect(display:Boolean = true):void {
 		var damage:Number = calcDamage(monster);
-
 		var crit:Boolean = false;
 		var critChance:int = 5;
 		critChance += combat.combatPhysicalCritical();
@@ -75,17 +77,7 @@ public class IceFistSkill extends AbstractSoulSkill {
 		}
 		monster.buff("FrozenSolid").addStats({spe:-20}).withText("Frozen Solid").combatTemporary(1);
 		if (display) outputText("The air around your fist seems to lose all heat as you dash at [themonster]. You place your palm on [monster him], [monster his] body suddenly is frozen solid, encased in a thick block of ice! ");
-		damage = Math.round(damage * combat.iceDamageBoostedByDao());
-		doIceDamage(damage, true, display);
-		if (player.statStore.hasBuff("FoxflamePelt")) combat.layerFoxflamePeltOnThis(damage);
-		if (player.hasPerk(PerkLib.FlurryOfBlows)) {
-			doIceDamage(damage, true, display);
-			if (player.statStore.hasBuff("FoxflamePelt")) combat.layerFoxflamePeltOnThis(damage);
-			doIceDamage(damage, true, display);
-			if (player.statStore.hasBuff("FoxflamePelt")) combat.layerFoxflamePeltOnThis(damage);
-			damage *= 3;
-		}
-
+		combat.checkForElementalEnchantmentAndDoDamageMain(damage, true, true, crit, false, 4);
 		if (crit && display) outputText(" <b>*Critical Hit!*</b>");
 		//stun
 		if (monster.hasPerk(PerkLib.Resolute)) {
@@ -107,6 +99,12 @@ public class IceFistSkill extends AbstractSoulSkill {
 		combat.heroBaneProc(damage);
 		combat.EruptingRiposte();
 		if (display) outputText("\n\n");
+		if (player.hasPerk(PerkLib.BrutalBlows) && player.str > 75 && damage > 0) {
+            if (monster.armorDef > 0) outputText("Your hits are so brutal that you damage [themonster]'s defenses!\n\n");
+            var bbc:Number = (Math.round(monster.armorDef * 0.1) + 5);
+			if (monster.armorDef - bbc > 0) monster.armorDef -= bbc;
+            else monster.armorDef = 0;
+        }
     }
 }
 }

@@ -2,6 +2,7 @@ package classes.Races {
 import classes.BodyData;
 import classes.BodyParts.*;
 import classes.CockTypesEnum;
+import classes.IMutations.IMutationsLib;
 import classes.PerkLib;
 import classes.Race;
 
@@ -60,7 +61,10 @@ public class MaleMindbreakerRace extends Race{
 				.skinColor1("eldritch purple", +1)
 				.skinBaseAdj("slippery", +1)
 				.hasPerk(PerkLib.Insanity, +1)
-				.givePerkV1(PerkLib.MindbreakerBrain1toX);
+				.givePerkV1(PerkLib.MindbreakerBrain1toX)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
+		
+		addMutation(IMutationsLib.MightyLowerHalfIM, +3);
 		
 		buildTier(15,"Half Mindbreaker")
 				.requireEyeType(Eyes.MINDBREAKERMALE)
@@ -83,9 +87,9 @@ public class MaleMindbreakerRace extends Race{
 					"spe.mult": -0.40,
 					"tou.mult": +1.00,
 					"int.mult": +4.50,
-					"lib.mult": +4.00,
+					"lib.mult": +5.00,
 					"wis.mult": -0.30,
-					"sens": +50
+					"sens": +150
 				})
 				.end()
 	}

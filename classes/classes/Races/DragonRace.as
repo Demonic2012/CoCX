@@ -66,13 +66,14 @@ public class DragonRace extends Race {
 				.legType(LowerBody.DRAGON, +1)
 				.legType(NONE(LowerBody.FROSTWYRM, LowerBody.FEY_DRAGON, LowerBody.LION), 0, -10)
 				.armType(Arms.DRACONIC, +1)
-				.armType(NONE(Arms.FEY_DRACONIC, Arms.LION), 0, -10)
+				.armType(NONE(Arms.FEY_DRACONIC, Arms.LION, Arms.YGGDRASIL), 0, -10)
 				.skinCoatType(Skin.DRAGON_SCALES, +1)
 				.hornType(Horns.DRACONIC_X2, +1)
 				.hornType(Horns.DRACONIC_X4_12_INCH_LONG, +2)
 				.hornType(NOT(Horns.FROSTWYRM), 0, -3)
 				.hasCockOfType(CockTypesEnum.DRAGON, +1)
-				.gender(Gender.GENDER_FEMALE, +1);
+				.gender(Gender.GENDER_FEMALE, +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addScoresAfter(8)
 				.height(GREATER_THAN(120), +1)
 				.hasAnyPerk([
@@ -86,12 +87,14 @@ public class DragonRace extends Race {
 					PerkLib.DragonIceBreath,
 					PerkLib.DragonLightningBreath,
 					PerkLib.DragonDarknessBreath
-				], +1);
+				], +1)
+				.hasPerk(PerkLib.Dracoforce, +1);
 		
 		addBloodline(PerkLib.DragonsDescendant, PerkLib.BloodlineDragon);
-		addMutation(IMutationsLib.DraconicBonesIM);
-		addMutation(IMutationsLib.DraconicHeartIM);
-		addMutation(IMutationsLib.DraconicLungIM);
+		addMutation(IMutationsLib.DrakeBloodIM);
+		addMutation(IMutationsLib.DrakeBonesIM);
+		addMutation(IMutationsLib.DrakeHeartIM);
+		addMutation(IMutationsLib.DrakeLungsIM);
 		
 		buildTier(16, "dragon")
 				.namesMaleFemaleMorphTaur("dragon-man","dragon-girl",

@@ -3,6 +3,7 @@ import classes.BodyData;
 import classes.BodyParts.*;
 import classes.CockTypesEnum;
 import classes.IMutations.IMutationsLib;
+import classes.PerkLib;
 import classes.Race;
 
 public class PigRace extends Race{
@@ -46,10 +47,15 @@ public class PigRace extends Race{
 				.faceType(Face.BOAR, +2)
 				.armType(ANY(Arms.PIG, Arms.BOAR), +2)
 				.legType(LowerBody.CLOVEN_HOOFED, +1)
+				.breastRowCount(2, +1)
+				.breastRowCount(3, +2)
+				.breastRowCount(4, +3)
+				.breastRowCount(5, +4)
 				.skinPlainOnly(+1)
 				.skinColor1(ANY(PigSkinColors), +1)
 				.thickness(AT_LEAST(75), +1)
 				.hasCockOfType(CockTypesEnum.PIG, +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addConditionedScores(
 				function(body:BodyData):Boolean {
 					return body.faceType === Face.BOAR || body.armType === Arms.BOAR

@@ -251,6 +251,50 @@ package classes.GeneticMemories {
 		  }
 	  });
 
+	  public static const SHROOM_HEADCAP:int = _partid++;
+	  EnumValue.add(Memories, SHROOM_HEADCAP, "SHROOM_HEADCAP", {
+		  id: "Shroom Headcap",
+		  name: "Shroom Headcap",
+		  cost: 100,
+		  title: "Shroom Headcap",
+		  transformation: function(): Transformation {
+			  return CoC.instance.transformations.HornsShroomHeadcap;
+		  }
+	  });
+
+	  public static const RAM:int = _partid++;
+	  EnumValue.add(Memories, RAM, "RAM", {
+		  id: "Ram Horns",
+		  name: "Ram Horns",
+		  cost: 100,
+		  title: "Ram Horns",
+		  transformation: function(): Transformation {
+			  return CoC.instance.transformations.HornsRam;
+		  }
+	  });
+
+	  public static const VERDANT_RAM:int = _partid++;
+	  EnumValue.add(Memories, VERDANT_RAM, "VERDANT_RAM", {
+		  id: "Verdant Ram Horns",
+		  name: "Verdant Ram Horns",
+		  cost: 200,
+		  title: "Verdant Ram Horns",
+		  transformation: function(): Transformation {
+			  return CoC.instance.transformations.HornsVerdantRam;
+		  }
+	  });
+
+	  public static const HOLLOW:int = _partid++;
+	  EnumValue.add(Memories, HOLLOW, "HOLLOW", {
+		  id: "Hollow Horns",
+		  name: "Hollow Horns",
+		  cost: 100,
+		  title: "Hollow Horns",
+		  transformation: function(): Transformation {
+			  return CoC.instance.transformations.HornsHollow;
+		  }
+	  });
+
 		public static function getMemory(memoryId: Number): * {
 			return Memories[memoryId] || Memories[0];
 		}

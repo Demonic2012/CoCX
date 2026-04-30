@@ -38,12 +38,14 @@ public class CowRace extends Race {
 		addScores()
 				.earType(Ears.COW, +1)
 				.tailType(Tail.COW, +1)
+				.hairType(Hair.COW, +1)
 				.legType(LowerBody.CLOVEN_HOOFED, +1)
 				.hornType(Horns.COW_MINOTAUR, +1)
 				.customRequirement("","milk production > 500",
 						function (body:BodyData):Boolean {
 							return body.player.lactationQ() > 500
-						}, +1);
+						}, +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addScoresAfter(3)
 				.customRequirement("","milk production > 1000",
 						function (body:BodyData):Boolean {
@@ -60,6 +62,7 @@ public class CowRace extends Race {
 		
 		addBloodline(PerkLib.MinotaursDescendant, PerkLib.BloodlineMinotaur);
 		addMutation(IMutationsLib.LactaBovinaOvariesIM);
+		addMutation(IMutationsLib.MightyLegsIM);
 		
 		buildTier(10, "cow-morph")
 				.namesMaleFemale("cow-morph", "cow-girl")

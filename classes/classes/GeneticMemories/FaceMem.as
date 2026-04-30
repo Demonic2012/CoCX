@@ -113,7 +113,7 @@ package classes.GeneticMemories {
 			id: "Buck Teeth",
 			name: "Buck Teeth",
 			cost: 100,
-			title: "Buck Teeth",
+			title: "Bunny Face",
 			transformation: function(): Transformation {
 				return CoC.instance.transformations.FaceBunny;
 			}
@@ -679,6 +679,83 @@ package classes.GeneticMemories {
 			title: "Demon Face",
 			transformation: function(): Transformation {
 				return CoC.instance.transformations.FaceDemon;
+			}
+		});
+
+		public static const TROLL:int = _partid++;
+		EnumValue.add(Memories, TROLL, "TROLL", {
+			id: "Troll Face",
+			name: "Troll Face",
+			cost: 100,
+			title: "Troll Face",
+			transformation: function(): Transformation {
+				return CoC.instance.transformations.FaceTroll;
+			}
+		});
+
+		public static const GLACIAL_TROLL:int = _partid++;
+		EnumValue.add(Memories, GLACIAL_TROLL, "GLACIAL_TROLL", {
+			id: "G.Troll Face",
+			name: "G.Troll Face",
+			cost: 100,
+			title: "G.Troll Face",
+			transformation: function(): Transformation {
+				return CoC.instance.transformations.FaceGlacialTroll;
+			}
+		});
+
+		public static const WERESPIDER:int =_partid++;
+		EnumValue.add(Memories, WERESPIDER, "WERESPIDER", {
+			id: "Werespider Fangs Face",
+			name: "Werespider Fangs",
+			cost: 100,
+			title: "Werespider Fangs",
+			transformation: function(): Transformation {
+				return CoC.instance.transformations.FaceWerespiderFangs;
+			}
+		});
+
+		public static const HOLLOW_MASK:int =_partid++;
+		EnumValue.add(Memories, HOLLOW_MASK, "HOLLOW_MASK", {
+			id: "Hollow Mask",
+			name: "Hollow Mask",
+			cost: 100,
+			title: "Hollow Mask",
+			transformation: function(): Transformation {
+				return CoC.instance.transformations.FaceHollowMask;
+			}
+		});
+
+		public static const BUCKTOOTH:int = _partid++;
+		EnumValue.add(Memories, BUCKTOOTH, "BUCKTOOTH", {
+			id: "Bucktooth Face",
+			name: "Bucktooth Face",
+			cost: 100,
+			title: "Bucktooth Face",
+			transformation: function(): Transformation {
+				return CoC.instance.transformations.FaceBucktooth;
+			}
+		});
+
+		public static const JABBERWOCKY:int = _partid++;
+		EnumValue.add(Memories, JABBERWOCKY, "JABBERWOCKY", {
+			id: "Jabberwocky Face",
+			name: "Jabberwocky Face",
+			cost: 100,
+			title: "Jabberwocky Face",
+			transformation: function(): Transformation {
+				return CoC.instance.transformations.FaceJabberwocky;
+			}
+		});
+
+		public static const KUDERE:int = _partid++;
+		EnumValue.add(Memories, KUDERE, "KUDERE", {
+			id: "Kuudere Face",
+			name: "Kuudere Face",
+			cost: 100,
+			title: "Kuudere Face",
+			transformation: function(): Transformation {
+				return CoC.instance.transformations.FaceKudere;
 			}
 		});
 

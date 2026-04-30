@@ -86,6 +86,7 @@ use namespace CoC;
 			else outputText("The feral imp falls to the ground panting and growling in anger.  He quickly submits however, the thoroughness of his defeat obvious.  You walk towards the imp who gives one last defiant snarl before slipping into unconsciousness.");
 			menu();
 			addButton(0, "Kill Him", killFeralImp);
+			addButtonIfTrue(1, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer and not been group enemy", (player.hasPerk(PerkLib.JobTamer) && flags[kFLAGS.FERAL_EXTRAS] != 4));
 			if (flags[kFLAGS.GALIA_LVL_UP] > 0 && flags[kFLAGS.GALIA_LVL_UP] < 0.5) {
 				if (flags[kFLAGS.GALIA_AFFECTION] > 0) addButtonDisabled(3, "Capture", "You need to turn in already captured imp before you can capture another one.");
 				else addButton(3, "Capture", captureFeralImp);
@@ -1312,7 +1313,7 @@ use namespace CoC;
 					outputText("Imps lick milk from your bloated " + biggestBreastSizeDescript() + " as your rider milks you.  As one imp drinks his fill, staggering away with a sloshing belly, another steps up to guzzle from your milk-spewing udders.\n\n");
 					//Additional nipplefucking scene by Xodin
 					if (player.hasFuckableNipples()) {
-						outputText("The imp rider grabs the fat folds of one of your nipplecunt's 'labia' and grins mischeviously. He rubs his obscene erection all over the milk stained surface of your nipple-cunt's clit and begins to press the head of his bulbous imp cock into the swollen orifice against the flow of milk. You know no woman in your village could have handled an aroused cock this big, and yet now this imp on your [allbreasts] is about to ram just such an erection into one of your [nipple]s. He tugs and pulls and pulls again on your nipple-cunt's sensitive labia, forcing his cock to push into the flesh of your " + biggestBreastSizeDescript() + ". Your taut flesh burns with his venom already, and is now violated by the presence of his demonic flesh rod.  ");
+						outputText("The imp rider grabs the fat folds of one of your nipplecunt's 'labia' and grins mischievously. He rubs his obscene erection all over the milk stained surface of your nipple-cunt's clit and begins to press the head of his bulbous imp cock into the swollen orifice against the flow of milk. You know no woman in your village could have handled an aroused cock this big, and yet now this imp on your [allbreasts] is about to ram just such an erection into one of your [nipple]s. He tugs and pulls and pulls again on your nipple-cunt's sensitive labia, forcing his cock to push into the flesh of your " + biggestBreastSizeDescript() + ". Your taut flesh burns with his venom already, and is now violated by the presence of his demonic flesh rod.  ");
 						//[START BREAST SIZE SPECIFIC TEXT]
 						//[IF breastSize <= DD]
 						if (player.biggestTitSize() <= 5) outputText("You feel the bulbous head of his cock squeeze further and deeper until it pushes up against your ribs.");
@@ -1466,8 +1467,8 @@ use namespace CoC;
 			//HP or insta-loss
 			else {
 				outputText("\n<b>You fall, defeated by the imp!</b>\nThe last thing you see before losing consciousness is the creature undoing its crude loincloth to reveal a rather disproportionately-sized member.");
+				cleanupAfterCombat();
 			}
-			cleanupAfterCombat();
 
 			//========================================
 			function vaginal():void {
@@ -1744,7 +1745,7 @@ use namespace CoC;
 			}
             sceneHunter.print("Failed check: Alraune/Liliraune race");
 			sceneHunter.selectLossMenu([
-					[0, "getRapedAsAGirl", getRapedAsAGirl, "Req. a vagina", player.hasVagina()],
+					[0, "Vaginal", getRapedAsAGirl, "Req. a vagina", player.hasVagina()],
 					[1, "Anal", loseToImpLord, "Req. a cock", player.hasCock()]
 				],
 				"The imp is going to use his gigantic dick anyway, but you probably can provide a hint <i>where</i> he can put it.\n\n"
@@ -2246,14 +2247,14 @@ use namespace CoC;
 		//IMP PACK
 		public function impPackEncounter():void {
 			clearOutput();
-			outputText("During your searching thou current location you suddenly hear sound of many wings flapping.  Turning around you notice a large group of imps flying toward you.  In no time they catch up to you and surrounds.  No way around it, you ready your [weapon] for the fight.");
+			outputText("During your searching through the current location you suddenly hear the sound of wings flapping.  Turning around you notice a large group of imps flying toward you.  In no time they catch up to you and surrounds.  No way around it, you ready your [weapon] for the fight.");
 			startCombat(new ImpPack());
 			camp.codex.unlockEntry(kFLAGS.CODEX_ENTRY_IMPS);
 			doNext(playerMenu);
 		}
 		public function impPackEncounter2():void {
 			clearOutput();
-			outputText("During your searching thou current location you suddenly hear sound of many wings flapping.  Turning around you notice a large group of feral imps flying toward you.  In no time their catch up to you and surrounds.  No way around it, you ready your [weapon] for the fight.");
+			outputText("During your searching through the current location you suddenly hear the sound of wings flapping.  Turning around you notice a large group of feral imps flying toward you.  In no time their catch up to you and surrounds.  No way around it, you ready your [weapon] for the fight.");
 			flags[kFLAGS.FERAL_EXTRAS] = 4;
 			startCombat(new FeralImps());
 			camp.codex.unlockEntry(kFLAGS.CODEX_ENTRY_IMPS);
@@ -2450,7 +2451,7 @@ use namespace CoC;
 		private function harvestBones():void {
 			var harv:Number = 1 + rand(5);
 			if (player.hasPerk(PerkLib.GreaterHarvest)) harv += 4 + rand(12);
-			if (harv + player.perkv1(PerkLib.PrestigeJobNecromancer) > SceneLib.camp.campMake.maxDemonBonesStored()) harv = SceneLib.camp.campMake.maxDemonBonesStored() - player.perkv1(PerkLib.PrestigeJobNecromancer);
+			if (harv + player.perkv1(PerkLib.PrestigeJobNecromancer) > SceneLib.campMakeWinions.maxDemonBonesStored()) harv = SceneLib.campMakeWinions.maxDemonBonesStored() - player.perkv1(PerkLib.PrestigeJobNecromancer);
 			outputText("You take your time to harvest material. You acquired " + harv + " bones!");
 			player.addPerkValue(PerkLib.PrestigeJobNecromancer, 1, harv);
 			cleanupAfterCombat();

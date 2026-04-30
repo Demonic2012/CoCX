@@ -7,6 +7,7 @@ import classes.Race;
 
 public class YgddrasilRace extends Race {
 	public static const YgddrasilSkinColors:/*String*/Array = ["mahogany", "brown", "black"];
+    public static const YgddrasilEyeColor:/*String*/Array = ["green"];
     public static const RaceBody:/*String*/Array = [
         /*Antenna*/		"Human",
         /*Arms*/		"Human",
@@ -44,14 +45,19 @@ public class YgddrasilRace extends Race {
 				.faceType(NONE(Face.DRAGON, Face.DRAGON_FANGS, Face.CAT, Face.CAT_CANINES), 0, -10)
 				.hairType(ANY(Hair.ANEMONE,Hair.LEAF,Hair.GRASS), +1)
 				.hairColor1("green", +1)
+				.eyeType(Eyes.YGGDRASIL, +1)
+				.eyeColor("green", +1)
+				.eyeType(NOT(Eyes.CAT), 0, -10)
 				.earType(Ears.LIZARD, +1)
 				.earType(NOT(Ears.ELFIN), 0, -2)
 				.hornType(Horns.OAK, +1)
-				.armType(ANY(Arms.PLANT,Arms.PLANT2), +2)
+				.armType(Arms.YGGDRASIL, +2)
 				.armType(NONE(Arms.DRACONIC, Arms.FEY_DRACONIC, Arms.LION), 0, -10)
 				.wingType(Wings.YGGDRASIL_LARGE, +4)
 				.wingType(Wings.YGGDRASIL_HUGE, +6)
 				.wingType(Wings.YGGDRASIL_HUGE_2, +8)
+				.wingType(Wings.YGGDRASIL_HUGE_3, +10)
+				.wingType(Wings.YGGDRASIL_HUGE_4, +12)
 				.customRequirement("skin", "bark skin", function (body:BodyData):Boolean {
 					return body.player.isBarkSkin()
 				}, +2)
@@ -61,55 +67,65 @@ public class YgddrasilRace extends Race {
 						}, +1)
 				.legType(LowerBody.YGG_ROOT_CLAWS, +1)
 				.legType(NONE(LowerBody.FROSTWYRM, LowerBody.FEY_DRAGON, LowerBody.LION), 0, -10)
-				.tailType(Tail.YGGDRASIL, +1)
-				.hasPerk(PerkLib.DragonPoisonBreath, +1);
+				.customScoreRequirement("tail", "multiple yggdrasil tails, +1 per tail",
+						function (body:BodyData):Boolean {
+							return body.tailType == Tail.YGGDRASIL && body.tailCount >= 1;
+						},
+						function (body:BodyData):int {
+							return body.tailCount;
+						},
+						-7
+				)
+				.hasPerk(PerkLib.DragonPoisonousSapBreath, +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		
-		addMutation(IMutationsLib.DraconicBonesIM);
-		addMutation(IMutationsLib.DraconicHeartIM);
+		addMutation(IMutationsLib.DrakeBonesIM);
+		addMutation(IMutationsLib.DrakeHeartIM);
 		addMutation(IMutationsLib.DrakeLungsIM);
+		addMutation(IMutationsLib.PlantChlorophyllIM);
 		
-		buildTier(12, "ygddrasil")
+		buildTier(16, "ygddrasil")
 				.buffs({
-					"maxhp_mult": +0.12,
+					"maxhp_mult": +0.15,
 					"str.mult": +0.30,
-					"tou.mult": +1.30,
-					"spe.mult": -0.50,
-					"int.mult": +0.10,
-					"wis.mult": +1.30,
-					"lib.mult": -0.50,
-					"sens": +20,
-					"def": +7,
-					"mdef": +7
-				})
-				.end();
-		
-		buildTier(20, "elder ygddrasil")
-				.buffs({
-					"maxhp_mult": +0.24,
-					"str.mult": +0.40,
-					"tou.mult": +2.00,
+					"tou.mult": +1.70,
 					"spe.mult": -0.60,
-					"int.mult": +0.20,
-					"wis.mult": +2.00,
+					"int.mult": +0.30,
+					"wis.mult": +1.70,
 					"lib.mult": -0.60,
 					"sens": +40,
-					"def": +14,
-					"mdef": +14
+					"def": +10,
+					"mdef": +10
 				})
 				.end();
 		
-		buildTier(28, "ancient ygddrasil")
+		buildTier(24, "elder ygddrasil")
 				.buffs({
-					"maxhp_mult": +0.36,
+					"maxhp_mult": +0.30,
 					"str.mult": +0.50,
-					"tou.mult": +2.70,
-					"spe.mult": -0.70,
-					"int.mult": +0.30,
-					"wis.mult": +2.70,
-					"lib.mult": -0.70,
-					"sens": +60,
-					"def": +21,
-					"mdef": +21
+					"tou.mult": +2.80,
+					"spe.mult": -1.00,
+					"int.mult": +0.50,
+					"wis.mult": +2.80,
+					"lib.mult": -1.00,
+					"sens": +100,
+					"def": +20,
+					"mdef": +20
+				})
+				.end();
+		
+		buildTier(32, "ancient ygddrasil")
+				.buffs({
+					"maxhp_mult": +0.45,
+					"str.mult": +0.70,
+					"tou.mult": +3.90,
+					"spe.mult": -1.40,
+					"int.mult": +0.70,
+					"wis.mult": +3.90,
+					"lib.mult": -1.40,
+					"sens": +160,
+					"def": +30,
+					"mdef": +30
 				})
 				.end();
 	}

@@ -8,6 +8,7 @@ import classes.*;
 import classes.BodyParts.*;
 import classes.GeneticMemories.*;
 import classes.GlobalFlags.kFLAGS;
+import classes.IMutations.*;
 import classes.Items.*;
 import classes.Items.Dynamic.DynamicWeapon;
 import classes.Scenes.Areas.DeepSea.Kraken;
@@ -19,6 +20,7 @@ import classes.Scenes.Dungeons.DesertCave.SandMother;
 import classes.Scenes.Dungeons.EbonLabyrinth.*;
 import classes.Scenes.Explore.Pierce;
 import classes.Scenes.Monsters.Malikore;
+import classes.Scenes.NPCs.AetherTwinsFollowers;
 import classes.Scenes.NPCs.Alvina;
 import classes.Scenes.NPCs.Aria;
 import classes.Scenes.NPCs.Belisa;
@@ -41,6 +43,7 @@ import classes.Scenes.Dungeons.Factory.OmnibusOverseer;
 import classes.Scenes.Dungeons.DemonLab.Incels;
 import classes.Scenes.Dungeons.EbonLabyrinth.Draculina;
 import classes.Stats.Buff;
+import classes.Scenes.Places.RuinedTownRebuilt;
 
 import coc.view.ButtonDataList;
 
@@ -67,11 +70,12 @@ public class TestMenu extends BaseContent
 		bd.add("BodyPartEditor", curry(SceneLib.debugMenu.bodyPartEditorRoot, SoulforceCheats), "");
 		bd.add("Insta-house", instaHouse, "Instant-house + bed. No Mutant here.");
 		bd.add("Learn Hexes", learnHexes, "Learn Prestige Job - Warlock and different hex spells");
-		bd.add("WendigoTrigger", wendigoTrigger, "Trigger Wendigo transformation. (Without active Wendigo Psychosis will do nothing ;) )");
+		bd.add("WendigoTrigger", wendigoTrigger, "Trigger Wendigo transformation.");
 		bd.add("ChimeraBodyUlt", ChimeraBodyUltimateStage, "Ultimate Stage of Chimera Body for tests and lulz. Now with on/off switch for more lulz.");
 		bd.add("All4HiddenPrestige", hiddenPJ, "A11 th4t H1dd3n Prestige is Y0urs to T4ke!!!");
 		bd.add("PerkGalore1", PerkGalore1, "");
 		bd.add("PerkGalore2", PerkGalore2, "");
+		bd.add("UnPerkGal2Part", unPerkGalore2Part, "");
 		bd.add("RemoveRP", cheatRemoveRP, "Remove Racial Paragon perk");
 		bd.add("Fix Shards", cheatFixShards, "Check the player's quests and give the deserved shards.");
 		bd.add("Add Shard", cheatAddShard, "Add 1 radiant shard");
@@ -89,7 +93,22 @@ public class TestMenu extends BaseContent
 		bd.add("Bugfixes", cheatBugfixes, "Buttons or fixing some rare old bugs that can't be fixd with save-updater.");
 		bd.add("Testing", cheatTesting, "Buttons for testing some new stuff. May break your game if something is outdated.");
 		bd.add("Bags expansion", SceneLib.garden.justForTestBuildsAdjustingBagsCapacityCuzINotWannaWasteSaveUpdateForThat, "Expand the bags. (If you not own any of them will not have any effect)");
-		bd.add("NoMoreKillInst", FairyTest4, "Removing bonus 'Killing Intent' perks after first one.").disableIf(!player.hasPerk(PerkLib.KillingIntent));
+		bd.add("Amily Re:Fit", AddJabbyShit1, "Amily Re:Fit.").disableIf(player.hasPerk(PerkLib.Soulless));
+		bd.add("X-Uni 2", MightyOrNot, "Adding status effect needed for gifts and yuri scene unlock in demon lair.");
+		bd.add("RuinedTown", SceneLib.ruinedTown.enterVillage, "Test the Mousetown");
+		bd.add("LichTest", MightyOrNot2, "Lich Testing");
+		bd.add("Re:Pearl", MightyOrNot3, "Restore chance to find Pearl after regaining soul").disableIf(flags[kFLAGS.SKY_POISON_PEARL] > 0);
+		bd.add("Chi-a-Chi-Fix", MightyOrNot4).disableIf((flags[kFLAGS.CHI_CHI_SAM_TRAINING] < 3 || flags[kFLAGS.CHI_CHI_SAM_TRAINING] == 3));
+		bd.add("Test5", MightyOrNot5, "Testing NaN");
+		bd.add("Test6", MightyOrNot6, "It's Tengliu not Teiling.");
+		bd.add("Test7", MightyOrNot7, "Combat Slaves Operational.");
+		bd.add("Test8", NotAnAizen, "If you really not wanna go to Ignam agian for this testing use this.").disableIf(player.hasStatusEffect(StatusEffects.ChainOfFate));
+		bd.add("Test9", NotHollowed, "Cheatish curing Demi-hollow state.");
+		bd.add("Test10", ConvertYourMaskFragments, "Convert Your Mask Fragments. One at the time!");
+		bd.add("Test11", MightyOrNot8, "Fixing ascension bug for Exanimation II.");
+		bd.add("Test12", MightyOrNot9, "Testing Hollow evolutions faster.");
+		bd.add("Test13", MightyOrNot10, "Testing Bad End after effects.");
+		bd.add("Test14", MightyOrNot11, "Missing Spiritual Hunger for Vacant and higher hollows.");
 		submenu(bd, playerMenu, 0, false);
 	}
 
@@ -103,7 +122,7 @@ public class TestMenu extends BaseContent
 		bd.add("QuestItBag", AddMaxBackpack2, "Giving missing Quest Items Bag as part of Adventure Guild welcome/promotion package.");
 		bd.add("ClickItOnce", AddMaxBackpack3, "Fixing Lover Zenji missing one status effect needed for his sex scenes menu.").disableIf(!player.hasStatusEffect(StatusEffects.ZenjiZList));
 		bd.add("BeliConfFix", belisatest2, "Belisa Confession Fix").disableIf(TyrantiaFollower.isLover() && BelisaFollower.BelisaFollowerStage >= 5 && BelisaFollower.BelisaEncounternum >= 5 && BelisaFollower.BelisaAffectionMeter >= 80 && !BelisaFollower.BelisaConfessed);
-		bd.add("FixJiangshi", jiangshiBuggedItemsCleanUpCrew0, "Shit! Here we go Again! Fixing Jiangshi! (better use it only once or may be some bugs i not plan to account for in case of using this more than once - i not blocked using it more than once so belive ppl will be reasonable to not click like mad this)");
+		bd.add("FixJiangshi", jiangshiBuggedItemsCleanUpCrew0, "Shit! Here we go Again! Fixing Jiangshi! (better use it only once or may be some bugs i not plan to account for in case of using this more than once - i not blocked using it more than once so believe ppl will be reasonable to not click like mad this)");
 		bd.add("ClickItTwice", golemArmy, "Golem Army and Ascension: Additional Organ Mutation/Prestige perks correction pre global save upgrade on new public build.");
 		bd.add("FixClones", fixClones, "If you have messed up clones or negative levels or related outdated data this will clear it all away.");
 		submenu(bd, SoulforceCheats, 0, false);
@@ -123,8 +142,148 @@ public class TestMenu extends BaseContent
 		bd.add("BelisaTest", belisatest3, "Belisa Trigger").disableIf(BelisaFollower.BelisaInGame && BelisaFollower.BelisaFollowerStage < 3);
 		bd.add("Test dynamic stat", TestDynamicStats, "Test Dynamic stats.");
 		bd.add("Neko Items", giveNekoItems, "All new neko items from Nekobake Inn doc");
-		bd.add("DantianPhylactery", dantianPhylacteryTest, "Getting or loosing Dantian Phylactery.");
+		bd.add("DantianPhylactery", dantianPhylacteryTest, "Getting or losing Dantian Phylactery.");
 		submenu(bd, SoulforceCheats, 0, false);
+	}
+	
+	public function MightyOrNot11():void {
+		if (player.hasPerk(PerkLib.EmptyVessel) && player.hasPerk(PerkLib.ExanimationIII)) {
+			player.createPerk(PerkLib.SpiritualHunger, 0, 0, 0, 0);
+			player.removePerk(PerkLib.EmptyVessel);
+		}
+		doNext(SoulforceCheats);
+	}
+	
+	public function MightyOrNot10():void {
+		EventParser.gameOver(true);
+		doNext(SoulforceCheats);
+	}
+	
+	public function MightyOrNot9():void {
+		if (player.hasPerk(PerkLib.ExanimationII)) player.addPerkValue(PerkLib.ExanimationII, 1, 60);
+		doNext(SoulforceCheats);
+	}
+	
+	public function MightyOrNot8():void {
+		if (player.perkv4(PerkLib.ExanimationII) > 0) {
+			player.setPerkValue(PerkLib.ExanimationII, 4, 0);
+			if (player.hasPerk(PerkLib.ExanimationIII)) player.addPerkValue(PerkLib.ExanimationIII, 1, 1);
+		}
+		if (player.hasPerk(PerkLib.ExanimationII) && !player.hasPerk(PerkLib.ExanimationI)) player.removePerk(PerkLib.ExanimationII);
+		doNext(SoulforceCheats);
+	}
+	
+	public function ConvertYourMaskFragments():void {
+		outputText("\n\n<b>Convert Your Mask Fragments</b>\n\n");
+		if (player.hasItem(useables.MMASKFRAG, 1)) {
+			player.destroyItems(useables.MMASKFRAG, 1);
+			inventory.takeItem(consumables.MTMFRAG, SoulforceCheats);
+		}
+		else if (player.hasItem(useables.HMASKFRAG, 1)) {
+			player.destroyItems(useables.HMASKFRAG, 1);
+			inventory.takeItem(consumables.HM_FRAG, SoulforceCheats);
+		}
+		else doNext(SoulforceCheats);
+	}
+	
+	public function NotAnAizen():void {
+		outputText("\n\n<b>You been hand patted on your shoulder. Beware of the masks.</b>\n\n");
+		player.createStatusEffect(StatusEffects.ChainOfFate, 0, 6, 0, 0);
+		doNext(SoulforceCheats);
+	}
+	
+	public function NotHollowed():void {
+		outputText("\n\n<b>You specification was restored to default ^^</b>\n\n");
+		if (player.hasStatusEffect(StatusEffects.ChainOfFate)) player.removeStatusEffect(StatusEffects.ChainOfFate);
+		if (player.hasPerk(PerkLib.ExanimationI)) player.removePerk(PerkLib.ExanimationI);
+		if (player.hasPerk(PerkLib.EmptyVessel)) player.removePerk(PerkLib.EmptyVessel);
+		CoC.instance.transformations.FaceHuman.applyEffect(false);
+		CoC.instance.transformations.EyesHuman.applyEffect(false);
+		doNext(SoulforceCheats);
+	}
+	
+	public function MightyOrNot7():void {
+		if (flags[kFLAGS.STELLA_FOLLOWER] == 1) {
+			flags[kFLAGS.STELLA_LVL_UP] = 1;
+			flags[kFLAGS.STELLA_DEFEATS_COUNTER] = 0;
+		}
+		if (flags[kFLAGS.SYTHRIL_FOLLOWER] == 1) {
+			flags[kFLAGS.SYTHRIL_LVL_UP] = 1;
+			flags[kFLAGS.SYTHRIL_DEFEATS_COUNTER] = 0;
+		}
+		if (flags[kFLAGS.ELISE_FOLLOWER] == 1) {
+			flags[kFLAGS.ELISE_LVL_UP] = 1;
+			flags[kFLAGS.ELISE_DEFEATS_COUNTER] = 0;
+		}
+		doNext(SoulforceCheats);
+	}
+	
+	public function MightyOrNot6():void {
+		if (player.hasKeyItem("Cultivation Manual: Embodiment of Teiling") >= 0) {
+			player.removeKeyItem("Cultivation Manual: Embodiment of Teiling");
+			player.createKeyItem("Cultivation Manual: Embodiment of Tengliu", 0, 0, 0, 0);
+		}
+		doNext(SoulforceCheats);
+	}
+	
+	public function MightyOrNot5():void {
+		outputText("\n\n<b>Setting HP to 100 unless your save is potentialy bugged without help.</b>\n\n");
+		player.HP = 100;
+		doNext(SoulforceCheats);
+	}
+	
+	public function MightyOrNot4():void {
+		flags[kFLAGS.CHI_CHI_SAM_TRAINING] = 3;
+		doNext(SoulforceCheats);
+	}
+	
+	public function MightyOrNot3():void {
+		flags[kFLAGS.SKY_POISON_PEARL] = 0;
+		doNext(SoulforceCheats);
+	}
+	
+	public function MightyOrNot2():void {
+		player.skinColor = randomChoice("ghostly pale", "light blue", "snow white", "ghostly white");
+		CoC.instance.transformations.SkinPlain.applyEffect(false);
+		CoC.instance.transformations.SkinPatternNone.applyEffect(false);
+		player.skinAdj = "flawless";
+		CoC.instance.transformations.FaceDemon.applyEffect(false);
+		player.eyes.type = Eyes.LICH;
+		CoC.instance.transformations.EyesChangeColor(["light blue"]).applyEffect(false);
+		CoC.instance.transformations.EarsHuman.applyEffect(false);
+		CoC.instance.transformations.HairHuman.applyEffect(false);
+		player.hairColor = randomChoice("silver white", "silver", "snow white", "ghostly white");
+		CoC.instance.transformations.TongueDemonic.applyEffect(false);
+		CoC.instance.transformations.HornsNone.applyEffect(false);
+		CoC.instance.transformations.AntennaeNone.applyEffect(false);
+		player.arms.type = Arms.LICH;
+		player.lowerBody = LowerBody.LICH;
+		CoC.instance.transformations.WingsLevitation.applyEffect(false);
+		player.createPerk(PerkLib.Phylactery, 0, 0, 0, 0);
+		player.createPerk(PerkLib.UndeadLord, 1, 0, 0, 0);
+		player.createPerk(PerkLib.Undeath, 1, 0, 0, 0);
+		player.createPerk(PerkLib.DeathlyPower, 0, 0, 0, 0);
+		player.createPerk(PerkLib.Immortality, 0, 0, 0, 0);
+		player.createPerk(PerkLib.TransformationImmunity2, 10, 0, 0, 0);
+		if (player.cor < 100) player.cor = 100;
+		player.updateRacialAndPerkBuffs();
+		CoC.instance.mainViewManager.updateCharviewIfNeeded();
+		doNext(SoulforceCheats);
+	}
+	
+	public function MightyOrNot():void {
+		if (player.hasStatusEffect(StatusEffects.MeetXuviel) && !player.hasStatusEffect(StatusEffects.MeetXuviel2)) player.createStatusEffect(StatusEffects.MeetXuviel2, 0, 0, 0, 0);
+		doNext(SoulforceCheats);
+	}
+	
+	public function AddJabbyShit1():void {
+		outputText("\n\n<b>Amilly have been Re:Fit'd.</b>\n\n");
+		flags[kFLAGS.AMILY_CORRUPT_FLIPOUT] = 0;
+		flags[kFLAGS.AMILY_FOLLOWER] = 1;
+		flags[kFLAGS.AMILY_WARNING] = 0;
+		RuinedTownRebuilt.RebuildState = 0;
+		flags[kFLAGS.AMILY_VILLAGE_ENCOUNTERS_DISABLED] = 1;
+		doNext(SoulforceCheats);
 	}
 
 	private function FaeDragTest2():void{
@@ -212,6 +371,11 @@ public class TestMenu extends BaseContent
 			if (player.hasStatusEffect(StatusEffects.AlterBindScroll3)) player.removeStatusEffect(StatusEffects.AlterBindScroll3);
 			if (player.hasStatusEffect(StatusEffects.AlterBindScroll4)) player.removeStatusEffect(StatusEffects.AlterBindScroll4);
 			if (player.hasStatusEffect(StatusEffects.AlterBindScroll5)) player.removeStatusEffect(StatusEffects.AlterBindScroll5);
+			if (player.hasStatusEffect(StatusEffects.AlterBindScroll6)) player.removeStatusEffect(StatusEffects.AlterBindScroll6);
+			if (player.hasStatusEffect(StatusEffects.AlterBindScroll7)) player.removeStatusEffect(StatusEffects.AlterBindScroll7);
+			if (player.hasStatusEffect(StatusEffects.AlterBindScroll8)) player.removeStatusEffect(StatusEffects.AlterBindScroll8);
+			if (player.hasStatusEffect(StatusEffects.AlterBindScroll9)) player.removeStatusEffect(StatusEffects.AlterBindScroll9);
+			if (player.hasStatusEffect(StatusEffects.AlterBindScroll10)) player.removeStatusEffect(StatusEffects.AlterBindScroll10);
 		}
 		doNext(SoulforceCheats);
 	}
@@ -287,7 +451,8 @@ public class TestMenu extends BaseContent
 		doNext(SoulforceCheats);
 	}
 	public function FairyTest4():void {
-		player.removePerk(PerkLib.KillingIntent);
+		//player.removePerk(PerkLib.);
+		player.perkPoints += 1;
 		doNext(SoulforceCheats);
 	}
 	public function FairyTest3():void {
@@ -703,8 +868,8 @@ public class TestMenu extends BaseContent
 	public function wendigoTrigger():void {
 		if (player.hasStatusEffect(StatusEffects.WendigoPsychosis)) SceneLib.glacialRift.wendigoScene.becomeWendigo();
 		else {
-			outputText("Get a Life... i mean Wendigo Psychosis...");
-			doNext(SoulforceCheats);
+			player.createStatusEffect(StatusEffects.WendigoPsychosis, 3, 0, 0, 0);
+			SceneLib.glacialRift.wendigoScene.becomeWendigo();
 		}
 	}
 	public function AddMaxBackpack5():void {
@@ -985,14 +1150,6 @@ public class TestMenu extends BaseContent
 		doNext(SoulforceCheats);
 	}
 	public function PerkGalore2():void {
-		if (!player.hasPerk(PerkLib.PrestigeJobSeer)) {
-			player.createPerk(PerkLib.PrestigeJobSeer, 0, 0, 0, 0);
-			outputText("\n\n<b>(Gained Perk: Prestige Job: Seer!)</b>");
-		}
-		if (!player.hasPerk(PerkLib.PrestigeJobSoulArcher)) {
-			player.createPerk(PerkLib.PrestigeJobSoulArcher, 0, 0, 0, 0);
-			outputText("\n\n<b>(Gained Perk: Prestige Job: Soul Archer!)</b>");
-		}
 		if (!player.hasPerk(PerkLib.PiercedCrimstone)) {
 			player.createPerk(PerkLib.PiercedCrimstone, 5, 0, 0, 0);
 			outputText("\n\n<b>(Gained Perk: Pierced: Crimstone!)</b>");
@@ -1175,6 +1332,17 @@ public class TestMenu extends BaseContent
 		}
 		doNext(SoulforceCheats);
 	}
+	public function unPerkGalore2Part():void {
+		if (player.hasPerk(PerkLib.PrestigeJobSeer)) {
+			player.removePerk(PerkLib.PrestigeJobSeer);
+			outputText("\n\n<b>(Lost Perk: Prestige Job: Seer!)</b>");
+		}
+		if (player.hasPerk(PerkLib.PrestigeJobSoulArcher)) {
+			player.removePerk(PerkLib.PrestigeJobSoulArcher);
+			outputText("\n\n<b>(Lost Perk: Prestige Job: Soul Archer!)</b>");
+		}
+		doNext(SoulforceCheats);
+	}
 	public function StatsAscensionMenu():void {
 		menu();
 		addButton(0, "Ascension", StatsAscensionMenu2);
@@ -1191,9 +1359,9 @@ public class TestMenu extends BaseContent
 	}
 	public function StatsAscensionMenu2():void {
 		menu();
-		addButton(0, "EarlyAscension", EarlyAscension).hint("Allowing to premature ascension.");
-		addButton(1, "NG tier ++", IncreaseAscensionCounter).hint("Allowing to increase ascension counter.");
-		if (flags[kFLAGS.NEW_GAME_PLUS_LEVEL] > 0) addButton(2, "NG tier --", DecreaseAscensionCounter).hint("Allowing to decrease ascension counter.");
+		addButton(0, "EarlyAscension", EarlyAscension).hint("Allowing premature ascension.");
+		addButton(1, "NG tier ++", IncreaseAscensionCounter).hint("Allowing you to increase ascension counter.");
+		if (flags[kFLAGS.NEW_GAME_PLUS_LEVEL] > 0) addButton(2, "NG tier --", DecreaseAscensionCounter).hint("Allowing you to decrease ascension counter.");
 		addButton(5, "AscenPerks01", AddAscenionPerkPoints, 1).hint("Add 1 ascension perk point for use during ascending to the next NG+ tier.");
 		addButton(6, "AscenPerks05", AddAscenionPerkPoints, 5).hint("Add 5 ascension perk points for use during ascending to the next NG+ tier.");
 		addButton(7, "AscenPerks10", AddAscenionPerkPoints, 10).hint("Add 10 ascension perk points for use during ascending to the next NG+ tier.");
@@ -1269,9 +1437,15 @@ public class TestMenu extends BaseContent
 		menu();
 		if (player.level < CoC.instance.levelCap) addButton(0, "Add 1 LvL", addsubLvl, "Lvl", 1).hint("Add 1 Level (with stat and perk points).");
 		if (player.level < CoC.instance.levelCap - 9) addButton(1, "Add 10 LvL's", addsubLvl, "Lvl", 10).hint("Add 10 Levels (with stat and perk points).");
-		if (player.level > 0) addButton(2, "Sub 1 LvL", addsubLvl, "DLvl", 1).hint("Substract 1 Level (keeping stat and perk points).");
-		if (player.level > 9) addButton(3, "Sub 10 LvL's", addsubLvl, "DLvl", 10).hint("Substract 10 Levels (keeping stat and perk points).");
-		if (player.negativeLevel > 0) addButton(4, "-1 Neg LvL (" + player.negativeLevel + ")", function _():void{ player.negativeLevel -= 1; LevelDeLevel(); }).hint("Recover 1 negative level.");
+		if (player.level < CoC.instance.levelCap - 19) addButton(2, "Add 20 LvL's", addsubLvl, "Lvl", 20).hint("Add 20 Levels (with stat and perk points).");
+		if (player.level < CoC.instance.levelCap - 49) addButton(3, "Add 50 LvL's", addsubLvl, "Lvl", 50).hint("Add 50 Levels (with stat and perk points).");
+		if (player.level < CoC.instance.levelCap - 99) addButton(4, "Add 100 LvL's", addsubLvl, "Lvl", 100).hint("Add 100 Levels (with stat and perk points).");
+		if (player.level > 0) addButton(5, "Sub 1 LvL", addsubLvl, "DLvl", 1).hint("Substract 1 Level (keeping stat and perk points).");
+		if (player.level > 9) addButton(6, "Sub 10 LvL's", addsubLvl, "DLvl", 10).hint("Substract 10 Levels (keeping stat and perk points).");
+		if (player.level > 19) addButton(7, "Sub 20 LvL's", addsubLvl, "DLvl", 20).hint("Substract 20 Levels (keeping stat and perk points).");
+		if (player.level > 49) addButton(8, "Sub 50 LvL's", addsubLvl, "DLvl", 50).hint("Substract 50 Levels (keeping stat and perk points).");
+		if (player.level > 99) addButton(9, "Sub 100 LvL's", addsubLvl, "DLvl", 100).hint("Substract 100 Levels (keeping stat and perk points).");
+		if (player.negativeLevel > 0) addButton(10, "-1 Neg LvL (" + player.negativeLevel + ")", function _():void{ player.negativeLevel -= 1; LevelDeLevel(); }).hint("Recover 1 negative level.");
 		addButton(14, "Back", SoulforceCheats);
 	}
 	public function BodyStateMenu():void {
@@ -1294,12 +1468,12 @@ public class TestMenu extends BaseContent
 	}
 	public function AddTallness1():void {
 		player.tallness += 2;
-		if (player.basetallness >= 132) player.tallness = 132;
+		if (player.tallness >= 132) player.tallness = 132;
 		BodyStateMenu();
 	}
 	public function AddTallness2():void {
 		player.tallness += 12;
-		if (player.basetallness >= 132) player.tallness = 132;
+		if (player.tallness >= 132) player.tallness = 132;
 		BodyStateMenu();
 	}
 	public function AddHairLength():void {
@@ -1334,12 +1508,12 @@ public class TestMenu extends BaseContent
 	}
 	public function SubTallness1():void {
 		player.tallness -= 2;
-		if (player.basetallness < 42) player.tallness = 42;
+		if (player.tallness < 42) player.tallness = 42;
 		BodyStateMenu();
 	}
 	public function SubTallness2():void {
 		player.tallness -= 12;
-		if (player.basetallness < 42) player.tallness = 42;
+		if (player.tallness < 42) player.tallness = 42;
 		BodyStateMenu();
 	}
 	public function SubHairLength():void {
@@ -1708,7 +1882,7 @@ public class TestMenu extends BaseContent
 			//5
 			//6
 			addButton(7, "BerserkerSet", AddTheBBS).hint("Add set of items for Berserker set.");//7
-			addButton(8, "CheckWeapon", TestWeaponType).hint("Detect Weapon Type Equiped for sprite and battle testing.");
+			addButton(8, "CheckWeapon", TestWeaponType).hint("Detect Weapon Type Equipped for sprite and battle testing.");
 			addButton(9, "Ascensus", AddTheStaffs).hint("Add set of items for Ascensus.");
 			addButton(10, "YODrops", AddYukiOnnaStuff).hint("Add both Yuki Onna equipment drops for testing purposes.");
 			addButton(11, "SpikeShields", AddSpikedShields).hint("Add set of two spiked shields of various sizes and weight for testing purposes.");
@@ -1732,14 +1906,14 @@ public class TestMenu extends BaseContent
 			addButton(1, "CDI", AddCurrentDebugItem).hint("Add 1 Gun.");
 			addButton(2, "TrollFig", AddTrollFig).hint("Add 1 Troll Fig.");
 			addButton(3, "CyclopTF", AddEyedrop).hint("Add 1 cyclop TF.");
-			//addButton(4, "", ).hint("Add 1  .");
+			addButton(4, "BarometzTF", AddHornedFruit).hint("Add 1 Barometz TF.");
 			addButton(5, "ALICORN", AddAlicornium).hint("Add 1 Alicornium.");
 			addButton(6, "D.Fruit", AddDisplacerFruit).hint("Add 1 Displacer Fruit.");
 			addButton(7, "AbyssalSTooth", AddAbyssalSharkTooth).hint("Add 1 Abyssal Shark Tooth.");
 			//addButton(8, "", ).hint("Add 1 .");
-			//addButton(9, "", ).hint("Add 1 .");
+			addButton(9, "Lethicite", AddLethicite);
 			addButton(10, "SBMan", AddSoulBlastManual).hint("Add 1 Soul Blast manual.");
-			//addButton(11, "", ).hint("Add 1 .");
+			addButton(11, "E.Ichor", AddEIchor).hint("Add 1 E.Ichor.");
 			addButton(12, "-2-", NonEquipmentMenu, page + 1);
 			addButton(13, "-3-", NonEquipmentMenu, page + 2);
 			addButton(14, "Back", SoulforceCheats);
@@ -1779,6 +1953,15 @@ public class TestMenu extends BaseContent
 			addButton(14, "Back", SoulforceCheats);
 		}
 	}
+	
+	public function AddLethicite():void {
+		menu();
+		addButton(0, "Lethicite1", AddLethicite1).hint("Add 1 (light coooked) Lethicite.");
+		addButton(1, "Lethicite2", AddLethicite2).hint("Add 1 (medium coooked) Lethicite.");
+		addButton(2, "Lethicite3", AddLethicite3).hint("Add 1 (heavy coooked) Lethicite.");
+		addButton(3, "Lethicite4", AddLethicite4).hint("Add 1 (super heavy coooked) Lethicite.");
+		addButton(14, "Back", NonEquipmentMenu);
+	}
 
 	private function addConsumable(consumable: Consumable): void {
 		outputText("\n\n<b>(Gained 1 " + consumable.longName + "!)</b>\n\n");
@@ -1807,9 +1990,9 @@ public class TestMenu extends BaseContent
 		if (page == 2) {
 			addButton(0, "Skymetal", AddSkymetalOre).hint("Add 1 Skymetal Ore.");
 			addButton(1, "Moonstone", AddMoonstone).hint("Add 1 Moonstone.");
-			//addButton(2, "", ).hint("Add 1 .");
-			//addButton(3, "", ).hint("Add 1 .");
-			//addButton(4, "", ).hint("Add 1 .");
+			addButton(2, "Orichalcum", AddOrichalcumOre).hint("Add 1 Orichalcum.");
+			addButton(3, "Mithral", AddMithralOre).hint("Add 1 Mithral.");
+			addButton(4, "Adamantine", AddAdamantineOre).hint("Add 1 Adamantine.");
 			addButton(5, "E.Shard", AddElementalShard).hint("Add 1 E.Shard.");//addButton(5, "", ).hint("Add 1 .");
 			addButton(6, "UnicornHair", AddUnicornHair).hint("Add 1 Unicorn Hair.");
 			addButton(7, "GolemCore", AddGolemCore).hint("Add 1 Golem Core.");
@@ -1993,6 +2176,10 @@ public class TestMenu extends BaseContent
 		outputText("\n\n<b>(Gained 1 Cyclop TF)</b>\n\n");
 		inventory.takeItem(consumables.EYEDROP, curry(NonEquipmentMenu, 1));
 	}
+	public function AddHornedFruit():void {
+		outputText("\n\n<b>(Gained 1 Barometz TF)</b>\n\n");
+		inventory.takeItem(consumables.HORNFRU, curry(NonEquipmentMenu, 1));
+	}
 	public function AddDesertBerry():void {
 		outputText("\n\n<b>(Gained 1 Werefox TF)</b>\n\n");
 		inventory.takeItem(consumables.DESERTB, curry(NonEquipmentMenu, 2));
@@ -2125,6 +2312,18 @@ public class TestMenu extends BaseContent
 		outputText("\n\n<b>(Gained 1 Skymetal Ore!)</b>\n\n");
 		inventory.takeItem(useables.SKYMETA, curry(MaterialMenu, 2));
 	}
+	public function AddOrichalcumOre():void {
+		outputText("\n\n<b>(Gained 1 Orichalcum Ore!)</b>\n\n");
+		inventory.takeItem(useables.ORICHAL, curry(MaterialMenu, 2));
+	}
+	public function AddMithralOre():void {
+		outputText("\n\n<b>(Gained 1 Mithral Ore!)</b>\n\n");
+		inventory.takeItem(useables.MITHRAL, curry(MaterialMenu, 2));
+	}
+	public function AddAdamantineOre():void {
+		outputText("\n\n<b>(Gained 1 Adamantine Ore!)</b>\n\n");
+		inventory.takeItem(useables.ADAMANT, curry(MaterialMenu, 2));
+	}
 	public function AddMoonstone():void {
 		outputText("\n\n<b>(Gained 1 Moonstone!)</b>\n\n");
 		inventory.takeItem(useables.MOONSTO, curry(MaterialMenu, 2));
@@ -2151,7 +2350,7 @@ public class TestMenu extends BaseContent
 	}
 
 	public function TestWeaponType():void {
-		outputText("Weapon types: "+[player.isStaffTypeWeapon(),player.isSwordTypeWeapon(),player.isAxeTypeWeapon(),player.isMaceHammerTypeWeapon(),player.isSpearTypeWeapon(),player.isScytheTypeWeapon(),player.isDuelingTypeWeapon()].join());
+		outputText("Weapon types: "+[player.weapon.isStaffType(),player.weapon.isSwordType(),player.weapon.isAxeType(),player.weapon.isMaceHammerType(),player.weapon.isSpearType(),player.weapon.isScytheType(),player.weapon.isDuelingType()].join());
 	}
 
 	public function FightTheDummy():void {
@@ -2195,6 +2394,26 @@ public class TestMenu extends BaseContent
 		outputText("\n\n<b>(Gained 1 Soul Blast Manual!)</b>\n\n");
 		inventory.takeItem(consumables.SOBLMAN, curry(NonEquipmentMenu, 1));
 	}
+	public function AddEIchor():void {
+		outputText("\n\n<b>(Gained 1 E.Ichor!)</b>\n\n");
+		inventory.takeItem(useables.E_ICHOR, curry(NonEquipmentMenu, 1));
+	}
+	public function AddLethicite1():void {
+		outputText("\n\n<b>(Gained 1 (light coooked) Lethicite!)</b>\n\n");
+		inventory.takeItem(consumables.LETH0TE, AddLethicite);
+	}
+	public function AddLethicite2():void {
+		outputText("\n\n<b>(Gained 1 (medium coooked) Lethicite!)</b>\n\n");
+		inventory.takeItem(consumables.LETH1TE, AddLethicite);
+	}
+	public function AddLethicite3():void {
+		outputText("\n\n<b>(Gained 1 (heavy coooked) Lethicite!)</b>\n\n");
+		inventory.takeItem(consumables.LETH2TE, AddLethicite);
+	}
+	public function AddLethicite4():void {
+		outputText("\n\n<b>(Gained 1 (super heavy coooked) Lethicite!)</b>\n\n");
+		inventory.takeItem(consumables.LETH3TE, AddLethicite);
+	}
 	public function AddDisplacerFruit():void {
 		outputText("\n\n<b>(Gained 1 Displacer Fruit!)</b>\n\n");
 		inventory.takeItem(consumables.D_FRUIT, curry(NonEquipmentMenu, 1));
@@ -2233,7 +2452,7 @@ public class TestMenu extends BaseContent
 	}
 	public function EarlyAscension():void {
 		if (flags[kFLAGS.LETHICE_DEFEATED] == 1) {
-			outputText("\n\n<b>You already used this cheat code!</b>");
+			outputText("\n\n<b>You've already used this cheat code!</b>");
 		}
 		else {
 			flags[kFLAGS.LETHICE_DEFEATED] = 1;
@@ -2697,4 +2916,4 @@ public class TestMenu extends BaseContent
 		SceneLib.lily.lilyEncounter();
 	}
 	}
-}
+}

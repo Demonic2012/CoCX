@@ -43,7 +43,7 @@ public class AbstractBloodSoulSkill extends AbstractSoulSkill {
             return "You cannot use offensive soulskills against an opponent you cannot see or target.";
         }
 
-        if (player.isGargoyle()) {
+        if (player.isGargoyle() || player.isAutomata()) {
             return "You cannot use blood soulskills if you don't have blood at all."
         }
         
@@ -72,7 +72,7 @@ public class AbstractBloodSoulSkill extends AbstractSoulSkill {
         if (lastAttackType != 0)
 			flags[kFLAGS.LAST_ATTACK_TYPE] = lastAttackType;
             
-        HPChange(-sfCost(), false);
+        HPChange(-sfCost(), false, false);
 
         if (sfInfusion) {
             player.soulforce -= super.sfCost();

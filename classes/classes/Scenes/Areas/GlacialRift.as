@@ -6,6 +6,7 @@
 package classes.Scenes.Areas
 {
 import classes.*;
+import classes.GlobalFlags.kFLAGS;
 import classes.BodyParts.Arms;
 import classes.BodyParts.Ears;
 import classes.BodyParts.Face;
@@ -17,6 +18,7 @@ import classes.Scenes.API.ExplorationEntry;
 import classes.Scenes.API.GroupEncounter;
 import classes.Scenes.Areas.GlacialRift.*;
 import classes.Scenes.Camp.CampStatsAndResources;
+import classes.Scenes.Dungeons.RiverDungeon.IceElemental;
 import classes.Scenes.NPCs.EtnaFollower;
 import classes.Scenes.NPCs.Valeria;
 import classes.Scenes.SceneLib;
@@ -32,7 +34,7 @@ use namespace CoC;
 		public var winterwolfScene:WinterWolfScene = new WinterWolfScene();
 		public var wendigoScene:WendigoScene = new WendigoScene();
 		
-		public const areaLevel:int = 65;
+		public const areaLevel:int = 75;
 		public function isDiscovered():Boolean {
 			return SceneLib.exploration.counters.glacialRiftOuter > 0;
 		}
@@ -93,7 +95,7 @@ use namespace CoC;
 					return (flags[kFLAGS.ETNA_FOLLOWER] < 1 || EtnaFollower.EtnaInfidelity == 2)
 							&& flags[kFLAGS.ETNA_TALKED_ABOUT_HER] == 2
 							&& !player.hasStatusEffect(StatusEffects.EtnaOff)
-							&& (player.level >= 20);
+							&& (player.level >= 20 || flags[kFLAGS.HARDCORE_MODE] == 1);
 				},
 				chance: glacialRiftChance,
 				call  : function():void {
@@ -131,7 +133,7 @@ use namespace CoC;
 				unique: true,
 				chance: 0.20,
 				when: function():Boolean {
-					return (player.faceType == Face.WOLF || player.faceType == Face.ANIMAL_TOOTHS) && player.ears.type == Ears.WOLF && player.arms.type == Arms.WOLF && player.lowerBody == LowerBody.WOLF && player.tailType == Tail.WOLF && player.isFurCovered() && player.hairColor == "glacial white" && player.furColor == "glacial white" && player.hasKeyItem("Gleipnir Collar") < 0;
+					return player.racialScore(Races.WOLF) > 9 && player.hasKeyItem("Gleipnir Collar") < 0;
 				},
 				call: FenrirRuinedShrine
 			}, {
@@ -140,53 +142,59 @@ use namespace CoC;
 				kind : 'monster',
 				day : false,
 				call: function():void {
-					if (rand(2) == 0 && flags[kFLAGS.YU_SHOP] > 0) {
+					if (flags[kFLAGS.YU_SHOP] > 0) {
 						yukionnaScene.encounterYukiOnna();
 					} else {
-						outputText("You wander the frozen landscape of the Rift, frozen rocks, frosted hills and forested mountains your only landmarks. As you cross the peak of a rather large, lightly forested hill, you come face to gigantic face with a Frost Giant! He belches fiercely at you and you tumble back down the hill. He mostly steps over it as you come to your senses. You quickly draw your [weapon] and withdraw from the hill to prepare for battle.\n\n");
+						outputText("You wander the frozen landscape of the Rift, frozen rocks, frosted hills and forested mountains your only landmarks. As you cross the peak of a rather large, lightly forested hill, you come face to gigantic face with a Frost Giant! ");
+						outputText("He belches fiercely at you and you tumble back down the hill. He mostly steps over it as you come to your senses. You quickly draw your [weapon] and withdraw from the hill to prepare for battle.\n\n");
 						GlacialRiftConditions();
 						startCombat(new FrostGiant());
 					}
 				}
 			}, {
-				//Yeti (lvl 76)
+				//Yeti
 				name: "yeti",
 				label : "Yeti",
 				kind : 'monster',
 				call: encounterYeti
 			}, {
-				//Frost Giant (lvl 89)
+				//Frost Giant
 				name: "frostGiant",
 				label : "Frost gigant",
 				kind : 'monster',
 				night : false,
 				call: encounterFrostGiant
 			}, {
-				//Winter Wolf (lvl 99)
+				//Winter Wolf
 				name: "winterWolf",
 				label : "Winter Wolf",
 				kind : 'monster',
 				call: encounterWinterWolf
 			}, {
-				//Ice True Golems (lvl 80)
+				//Ice True Golems
 				name: "iceTrueGolems",
 				label : "True Ice Golems",
 				kind : 'monster',
 				call: encounterGolems
 			}, {
-				//Glacial Troll (M & F variants) (lvl 94)
+				//Glacial Troll
 				name: "troll",
 				label : "Glacial Troll",
 				kind : 'monster',
 				night : false,
 				call: encounterTroll
 			}, {
-				//Wendigo (lvl 84)
+				//Wendigo
 				name: "wendigo",
 				label : "Wendigo",
 				kind : 'monster',
 				day : false,
 				call: wendigoScene.encounterWendigo
+			}, {
+				name: "ice ele",
+				label : "Ice Elemental",
+				kind  : 'monster',
+				call: outerGlacialRiftIceElemental
 			}, {
 				//Valeria
 				name: "valeria",
@@ -205,6 +213,14 @@ use namespace CoC;
 				kind  : 'item',
 				chance: 0.33,
 				call: encounterItem
+			}, {
+				name: "findsnowflower",
+				label : "Snow Flower",
+				kind  : 'item',
+				when: function():Boolean {
+					return player.isAlraune();
+				},
+				call: findSnowFlower
 			}, {
 				//Ornate Chest or cache of gems/pile of stones
 				name: "chest",
@@ -247,6 +263,14 @@ use namespace CoC;
 			var temp:Number = 0.5;
 			temp *= player.npcChanceToEncounter();
 			return temp;
+		}
+	
+		private function outerGlacialRiftIceElemental():void {
+			clearOutput();
+			outputText("We awaits for... ");
+			outputText("Lia writing nice intro here.\n\n");//lvl 100
+			flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] = 6;
+			startCombat(new IceElemental());
 		}
 		
 		public function encounterNothing():void {
@@ -297,13 +321,15 @@ use namespace CoC;
 			}
 			endEncounter();
 		}
+
+		private function findSnowFlower():void {
+			clearOutput();
+			outputText("You stumble upon a strange white flower, which seems to grow in the rift heedless of the cold. You feel oddly drawn towards the plant, deciding to pick it up. ");
+			inventory.takeItem(consumables.SNOWFLO, explorer.done);
+		}
 		
 		public function encounterItem():void {
-			clearOutput();/*
-					if (rand(2) == 0) {
-						SceneLib.ariaScene.MelkieEncounter();
-					}
-					else {*/
+			clearOutput();
 			var itemChooser:Number = rand(2);
 			if (itemChooser == 0) {
 				outputText("As you cross one of the floating ice sheets that make up the bulk of the rift, your eyes are drawn to a bright glint amidst the white backdrop.  As you eagerly approach the gleam, you discover a single tiny spire of ice, jutting from the surrounding snow.  You pluck it gently from the ground, give it a quick glance over and, satisfied that it won’t try and kill you, drop it in your bag. ");
@@ -312,7 +338,6 @@ use namespace CoC;
 				outputText("As you make your way across the icy wastes, you notice a small corked ivory horns half-buried under the snow, filled with a thick sweet-looking liquor. You stop and dig it up, sniffing curiously at the liquid. The scent reminds you of the honey secreted by the bee-girls of Mareth, though with hints of alcohol and... something else. You place the horns of mead in your bag and continue on your way. ");
 				inventory.takeItem(consumables.GODMEAD, explorer.done);
 			}
-			//}
 		}
 		
 		public function encounterValeria():void {
@@ -380,12 +405,13 @@ use namespace CoC;
 		public function GlacialRiftConditions():void {
 			if (!player.headJewelry == headjewelries.SKIGOGG) player.createStatusEffect(StatusEffects.Snowstorms,0,0,0,0);
 			if (player.countMiscJewelry(miscjewelries.SNOWBOA) == 0) player.createStatusEffect(StatusEffects.Snow,0,0,0,0);
-			if (!player.hasPerk(PerkLib.ColdAffinity)) player.createStatusEffect(StatusEffects.SubZeroConditions,0,0,0,0);
+			if (!player.hasPerk(PerkLib.ColdAffinity)) player.createStatusEffect(StatusEffects.SubZeroConditions,2,0,0,0);
 		}
 
 		public function SubZeroConditionsTick():void {
-			var HPD:Number = 0.05;
-			if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) HPD *= 2;
+			var HPD:Number = 0.025;
+			HPD *= player.statusEffectv1(StatusEffects.SubZeroConditions);
+			if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.FireShadowAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) HPD *= 2;
 			HPD *= player.maxHP();
 			HPD = Math.round(HPD);
 			outputText("Cold environment slowly seeps into your body. ");
@@ -402,6 +428,7 @@ use namespace CoC;
 
 		private function FenrirRuinedShrine():void {
 			clearOutput();
+			menu();
 			if (flags[kFLAGS.FENRIR_COLLAR] == 2) {
 				outputText("Once more you are drawn into the Temple of Fenrir, and the collar stands before you on Fenrir's petrified form. The god does not speak, but you feel him watching you, silently posing his dreadful question again.\n\n");
 				outputText("Will you take the collar and inherit the dark god's will, or will you refuse, for now?\n\n");

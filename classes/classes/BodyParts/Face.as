@@ -3,6 +3,7 @@
  */
 package classes.BodyParts {
 import classes.Creature;
+import classes.PerkLib;
 import classes.internals.EnumValue;
 import classes.BodyParts.*;
 import classes.internals.Utils;
@@ -221,7 +222,7 @@ public class Face extends SaveableBodyPart {
 
 			if (creature.hasPlainSkinOnly()){
 				desc += " It looks a bit strange with no fur coverage.";
-			} 
+			}
 			else if (creature.hasScaleMaterial()) desc += " The presence of said scales gives your visage an eerie look, more reptile than mammal.";
 			else if (creature.hasChitinMaterial()) desc += " The presence of said chitin gives your visage an eerie look, more insect than mammal.";
 
@@ -568,7 +569,7 @@ public class Face extends SaveableBodyPart {
 	public static const YUKI_ONNA: int = 50;
 	EnumValue.add(Types, YUKI_ONNA, "YUKI_ONNA", {
 		name: "yuki onna",
-		appearanceDesc: "Your lips, as lacking in wamth as the rest of your body, are dyed blue by the cold.",
+		appearanceDesc: "Your lips, as lacking in warmth as the rest of your body, are dyed blue by the cold.",
 		humanShaped: true
 	});
 	public static const KUDERE: int = 51;
@@ -593,13 +594,13 @@ public class Face extends SaveableBodyPart {
 	public static const CRAZY: int = 54;
 	EnumValue.add(Types, CRAZY, "CRAZY", {
 		name: "crazy",
-		appearanceDesc: "Although your mouth is quite human-looking, your have a near constant toothy smile makes you look quite unhinged, and your canines are slightly longer and pointier than human ones.",
+		appearanceDesc: "Your mouth is human all right though your near constant crazy toothy smile isn't exactly helping to make you look sane.",
 		humanShaped: true
 	});
 	public static const SMUG: int = 55;
 	EnumValue.add(Types, SMUG, "SMUG", {
 		name: "smug",
-		appearanceDesc: "The length of your incisors gives your visage a hint of squirrel-like cuteness, and once in a while you can't help but smirk smuggly at your interlocutors.",
+		appearanceDesc: "The length of your incisors gives your visage a hint of squirrel-like cuteness, and once in a while you can't help but smirk smugly at your interlocutors.",
 		humanShaped: true
 	});
 	public static const SQUIRREL: int = 56;
@@ -647,7 +648,7 @@ public class Face extends SaveableBodyPart {
 			var desc: String = "";
 
 			desc += "You have a dog's face, complete with wet nose and panting tongue. You've got [skin coat], hiding your [skin base] underneath your furry visage. " +
-					"Flanking your main head are two more wich never truly fully agree with one another. You regularly need to put them back in their place and remind them who leads this body lest they start fighting each other.";
+					"Flanking your main head are two more which never truly fully agree with one another. You regularly need to put them back in their place and remind them who leads this body lest they start fighting each other.";
 			return desc;
 		},
 		bite: true,
@@ -687,8 +688,61 @@ public class Face extends SaveableBodyPart {
 	public static const DEMON: int = 64;
 	EnumValue.add(Types, DEMON, "DEMON", {
 		name: "demon",
-		appearanceDesc: "Your face is human in shape and structure albeith far too sexy to belong to one. With a face that hot, who would refuse you? Hidden behind your sensual lips is a pair of small fangs which betrays your fiendish nature.",
+		appearanceDesc: "Your face is human in shape and structure albeit far too sexy to belong to one. With a face that hot, who would refuse you? Hidden behind your sensual lips is a pair of small fangs which betrays your fiendish nature.",
 		bite: true
+	});
+	public static const TROLL: int = 65;
+	EnumValue.add(Types, TROLL, "TROLL", {
+		name: "troll",
+		appearanceDesc: "You have a face as that of a troll, covered in soft, green fur and a duo of tusks from your upper jaw that splits out from your mouth.",
+		bite: true,
+		humanShaped: true
+	});
+	public static const GLACIAL_TROLL: int = 66;
+	EnumValue.add(Types, GLACIAL_TROLL, "GLACIAL_TROLL", {
+		name: "g.troll",
+		appearanceDesc: "Your have a face as that of a glacial troll, covered in soft, white fur and a duo of tusks from your upper jaw that splits out from your mouth.",
+		bite: true,
+		humanShaped: true
+	});
+	public static const AUTOMATA: int = 67;
+	EnumValue.add(Types, AUTOMATA, "AUTOMATA", {
+		name: "automata",
+		appearanceDesc: "Your face is human in shape and structure with [skin coat] covered with synthetic skin for flexibility. You do not display your emotions naturally, instead relying on an advanced simulation program called social mode to convincingly replicate the expressions and conversational behavior of living beings.",
+		humanShaped: true
+	});
+	public static const WERESPIDER_FANGS: int = 68;
+	EnumValue.add(Types, WERESPIDER_FANGS, "WERESPIDER_FANGS", {
+		name: "werespider",
+		appearanceDesc: "A set of retractable, long and pointy vampire canines sit in place of your canines and are ready to dispense their venom or to pierce into victims and reach their blood.",
+		bite: true,
+		humanShaped: true
+	});
+	public static const HOLLOW_MASK: int = 69;
+	EnumValue.add(Types, HOLLOW_MASK, "HOLLOW_MASK", {
+		name: "hollow mask",
+		appearanceDescFunc: function(creature: *): String {
+			var desc: String = "";
+
+			desc += " upon your face rest a mask that seems to respond to your feels and even splitting itself wide open to give you fresh air.";
+			if (creature.hasPerk(PerkLib.ExanimationVI)) {
+				desc += " The mask fuses seamlessly into the flesh, appearing less like bone and more like armor. It stretches into smooth, symmetrical perfection that compliments your face. A grotesque caricature of humanity. Your [eyes] blaze with authority.";
+			} else if (creature.hasPerk(PerkLib.ExanimationV)) {
+				desc += " Sleek, jagged, and refined. What was once crude bone now resembles a predator’s perfect skull. Black lines and streaks etch across it, like veins of tar burned into ivory. The presence of this mask radiates an aura of terror.";
+			} else if (creature.hasPerk(PerkLib.ExanimationIV)) {
+				desc += " Large and grotesque, and facelike growths crown the head. The mask feels alive, pulsating faintly with each heartbeat.";
+			} else if (creature.hasPerk(PerkLib.ExanimationIII)) {
+				desc += " It is a complete skull, jagged and asymmetrical, grows across the entire head. Spikes and ridges erupt along its features, each one unique to your spirit. The eye-sockets are twin abysses, glowing faintly with the flame of your soul.";
+			} else if (creature.hasPerk(PerkLib.ExanimationII)) {
+				desc += " The mask closes over half of your face, an asymmetrical skull that mocks human expression. The eyehole is wider, blacker, and often weeps smoky trails. Teeth sharpen and overlap like a predator forcing its jaw into existence.";
+			} else {
+				desc += " Its a cracked, bone-white fragment clings to the cheek and brow. The edges are jagged, brittle, and faintly smoking with dark soulforce. Hollow eye-sockets flicker faintly but never fully open.";
+			}
+
+			return desc;
+		},
+		bite: true,
+		humanShaped: true
 	});
 
 	public function Face(creature:Creature) {

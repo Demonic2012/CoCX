@@ -187,7 +187,7 @@ public class Evangeline2 extends Monster
 			if (inte >= 101) temp += ((inte * 1.25) + rand(inte * 1.75));
 			temp *= SpellMod();
 			temp = Math.round(temp);
-			outputText("Evangeline flushes with success as her wounds begin to knit! <b>(<font color=\"#008000\">+" + temp + "</font>)</b>.");
+			outputText("Evangeline flushes with success as her wounds begin to knit! <b>([font-heal]+" + temp + "[/font])</b>.");
 			addHP(temp);
 			fatigue += spellCostHeal();
 			flags[kFLAGS.EVANGELINE_SPELLS_CASTED]++;
@@ -374,7 +374,7 @@ public class Evangeline2 extends Monster
 				this.createPerk(PerkLib.JobEnchanter, 0, 0, 0, 0);
 			}//nie gotowy etap
 			if (flags[kFLAGS.EVANGELINE_LVL_UP] == 10) {
-				this.long = "You are currently fighting Evangeline, which is a eight feet tall cow-morph bimbo. She's wearing lusty maiden's armor and using inscribed spellblade to attack.";
+				this.long = "You are currently fighting Evangeline, which is an eight feet tall cow-morph bimbo. She's wearing lusty maiden's armor and using inscribed spellblade to attack.";
 				createBreastRow(Appearance.breastCupInverse("F"));
 				this.tallness = 96;
 				this.hairColor = "crimson platinum";
@@ -401,7 +401,7 @@ public class Evangeline2 extends Monster
 				//this.createPerk(PerkLib., 0, 0, 0, 0);//tu powinien być dodany perk Battlemage dający autorzucanie might ale, że to npc to sie załatwi w kodzie to zamiast dodawać perk ;)
 			}
 			if (flags[kFLAGS.EVANGELINE_LVL_UP] == 11) {
-				this.long = "You are currently fighting Evangeline, which is a eight feet tall cow-morph bimbo. She's wearing lusty maiden's armor and using inscribed spellblade to attack.";
+				this.long = "You are currently fighting Evangeline, which is an eight feet tall cow-morph bimbo. She's wearing lusty maiden's armor and using inscribed spellblade to attack.";
 				createBreastRow(Appearance.breastCupInverse("F"));//succubus milk może teoretycznie w nieskończoność zwiekszać rozmiar biustu
 				this.tallness = 96;
 				this.hairColor = "crimson platinum";
@@ -438,6 +438,7 @@ public class Evangeline2 extends Monster
 			this.drop = NO_DROP;
 			this.buff("Wizard's Focus").addStat('spellpower', 0.5);
 			this.createPerk(PerkLib.EzekielBlessing, 0, 0, 0, 0);
+			this.createPerk(PerkLib.EnemyDragonType, 0, 0, 0, 0);
 			this.createPerk(PerkLib.JobGuardian, 0, 0, 0, 0);
 			this.createPerk(PerkLib.JobSorcerer, 0, 0, 0, 0);
 			this.createPerk(PerkLib.JobWarrior, 0, 0, 0, 0);

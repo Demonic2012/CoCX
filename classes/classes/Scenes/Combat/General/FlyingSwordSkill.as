@@ -131,6 +131,8 @@ public class FlyingSwordSkill extends AbstractGeneral {
 										break;
 			case TAG_PLASMA: 			damageFunc = doPlasmaDamage;
 										break;
+			case TAG_BLACKICE: 			damageFunc = doBlackIceDamage;
+										break;
 			default: 					damageFunc = doPhysicalDamage;
 										break;
 		}
@@ -162,7 +164,7 @@ public class FlyingSwordSkill extends AbstractGeneral {
 			if (player.hasPerk(PerkLib.MeleeWeaponsMasteryEx)) critCounter *= 2;
 		}
 		var meleeMasteryEXPgains:Number = baseMasteryXP * hitCounter * critCounter;
-		combat.swordXP(meleeMasteryEXPgains);
+		combat.swordXP(meleeMasteryEXPgains, false);
 		if (player.weaponFlyingSwords.perk == "Small") combat.weaponSmallMastery(meleeMasteryEXPgains);
 		else if (player.weaponFlyingSwords.perk == "Large") combat.weaponLargeMastery(meleeMasteryEXPgains);
 		else if (player.weaponFlyingSwords.perk == "Massive") combat.weaponMassiveMastery(meleeMasteryEXPgains);

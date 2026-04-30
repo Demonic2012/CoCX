@@ -4,7 +4,6 @@ import classes.BaseContent;
 import classes.EventParser;
 import classes.GlobalFlags.kFLAGS;
 import classes.Items.Consumable;
-import classes.Items.Vehicles;
 import classes.Items.Weapon;
 import classes.Scenes.SceneLib;
 import classes.StatusEffects;
@@ -453,7 +452,7 @@ import classes.room;
 			
 			outputText("You are back in the southern end of the Magpie Hall.  Without the bustle of activity below it is a gapingly empty and quiet place, the only sound the murmur of activity from elsewhere. There is a vast amount of collected junk below but it would take, well, an army of basilisks to sort through it to find anything worthwhile. You could check out the massive pile of eggs, though.");
 			
-			if (eggsAvailable() >= 0 || flags[kFLAGS.D3_DEMONIC_SCYTHE] == 0 || flags[kFLAGS.D3_GOBLIN_MECH_PRIME] == 0) addButton(2, "Eggs", goToEggPile);
+			if (eggsAvailable() >= 0 || flags[kFLAGS.D3_DEMONIC_SCYTHE] == 0) addButton(2, "Eggs", goToEggPile);
 			
 			return false;
 		}
@@ -485,7 +484,7 @@ import classes.room;
 		{
 			clearOutput();
 			outputText("You head down the stairs into the hall proper to inspect the ramble hoard of eggs the basilisks collected. They’re mostly unfertilised harpy ovum, but you quickly pick out a number of differently coloured transformative eggs stolen from Gods know who.");
-			if (flags[kFLAGS.D3_DEMONIC_SCYTHE] == 0) outputText(" When searching you even finds something that looks like scythe. Where does it come frome among all those eggs?");
+			if (flags[kFLAGS.D3_DEMONIC_SCYTHE] == 0) outputText(" When searching you even finds something that looks like scythe. Where does it come from among all those eggs?");
 			menu();
 			
 			var flagNum:int = flags[kFLAGS.D3_EGGS_AVAILABLE];
@@ -497,7 +496,6 @@ import classes.room;
 			if (!(flagNum & BROWN)) addButton(4, "Brown", takeEgg, BROWN);
 			if (!(flagNum & PURPLE)) addButton(5, "Purple", takeEgg, PURPLE);
 			if (flags[kFLAGS.D3_DEMONIC_SCYTHE] == 0) addButton(6, "Scythe", takeScythe);
-			if (flags[kFLAGS.D3_GOBLIN_MECH_PRIME] == 0) addButton(7, "Mech", takeMech);
 			
 			addButton(14, "Back", resumeFromFight);
 		}
@@ -534,23 +532,6 @@ import classes.room;
 			inventory.takeItem(item, playerMenu);
 		}
 		
-		private function takeMech():void
-		{
-			clearOutput();
-			outputText("A large goblin mech similar to the one you own but of a way better quality is parked amongst the pile of trash the basilisk’s gathered. ");
-			if (player.hasStatusEffect(StatusEffects.PCDaughtersWorkshop)) {
-				var item:Vehicles;
-				item = vehicles.GOBMPRI;
-				outputText("You decide to haul it back home and call on the walkie-talkie system in your mech to tell your daughters to come and pick it up for you. It should be at camp the next time you're there and ready to install any and all upgrades you already own.");
-				flags[kFLAGS.D3_GOBLIN_MECH_PRIME] = 1;
-				inventory.takeItem(item, playerMenu);
-			}
-			else {
-				outputText("Sadly you don't have the resources or the personnel to haul back this new mech at the time.");
-				doNext(playerMenu);
-			}
-		}
-		
 		private function fallbackFromMagpieHallS():void
 		{
 			clearOutput();
@@ -568,24 +549,13 @@ import classes.room;
 			if (flags[kFLAGS.D3_JEAN_CLAUDE_DEFEATED] == 0)
 			{
 				outputText("You find yourself back in the small booth, with the locked door leading out into the Magpie Hall. Just like the one on the opposite side, there is a darkened screen here through which you can see hundreds of basilisks milling down below, sorting through the vast amount of junk and eggs they have collected from the mountainside. They don’t seem to have taken any extra precautions following your narrow escape of them- the gantry remains free of any guards, and the door on the other side looks open.");
-				
 				menu();
-				
 				addButton(0, "Go!", jeanClaude.gogoFuckTheseBasilisksNorth);
 				addButton(1, "Stronghold", move, "tunnel2");
-				
 				return true;
 			}
-			
 			outputText("You are back in the northern end of the Magpie Hall. Without the bustle of activity below it is a gapingly empty and quiet place, the only sound the murmur of activity from elsewhere. There is a vast amount of collected junk below but it would take, well, an army of basilisks to sort through it to find anything worthwhile. You could check out the massive pile of eggs, though.");
-			
-			if (eggsAvailable() >= 0)
-			{
-				addButton(2, "Eggs", goToEggPile);
-			}
-			if (flags[kFLAGS.D3_DEMONIC_SCYTHE] == 0) addButton(3, "Scythe", takeScythe);
-			if (flags[kFLAGS.D3_GOBLIN_MECH_PRIME] == 0) addButton(4, "Mech", takeMech);
-			
+			if (eggsAvailable() >= 0 || flags[kFLAGS.D3_DEMONIC_SCYTHE] == 0) addButton(2, "Eggs", goToEggPile);
 			return false;
 		}
 		
@@ -681,14 +651,14 @@ import classes.room;
 		private function northwestcourtyardRoomFunc():Boolean
 		{
 			outputText("<b><u>Northwest Courtyard</u></b>\n");
-			outputText("The courtyard comes to an abrupt end here, hemmed in by a impressively high stone wall to the north, high enough to shame the walls in the other cardinal directions. The path is also bounded in by stonework to the west, forcing it to curve to the east and south around a bush that has been tastelessly shaped to resemble a turgid prick. The demons even went so far as to trim ivory flowers into a contiguous path along one side, very much looking like a stream of arboreal spunk.");
+			outputText("The courtyard comes to an abrupt end here, hemmed in by an impressively high stone wall to the north, high enough to shame the walls in the other cardinal directions. The path is also bounded in by stonework to the west, forcing it to curve to the east and south around a bush that has been tastelessly shaped to resemble a turgid prick. The demons even went so far as to trim ivory flowers into a contiguous path along one side, very much looking like a stream of arboreal spunk.");
 			return false;
 		}
 		
 		private function northcourtyardRoomFunc():Boolean
 		{
 			outputText("<b><u>North Courtyard</u></b>\n");
-			outputText("You stand before what can only be the entrance to Lethice’s throne room. It is unlabelled, but the immense door is unlike any you’ve seen in this world or the last. Constructed from some kind of pink-tinged metal and polished to a mirror sheen, this portal has had a lifetime of care poured into it. What’s more, intricate locking mechanisms overlap the edges of it, each one culminating in an intricately worked seal. Fortunately, each of the seals has been left opened. Security must not be much of a concern for the demon queen at this point in time. ");
+			outputText("You stand before what can only be the entrance to Lethice’s throne room. It is unlabeled, but the immense door is unlike any you’ve seen in this world or the last. Constructed from some kind of pink-tinged metal and polished to a mirror sheen, this portal has had a lifetime of care poured into it. What’s more, intricate locking mechanisms overlap the edges of it, each one culminating in an intricately worked seal. Fortunately, each of the seals has been left opened. Security must not be much of a concern for the demon queen at this point in time. ");
 			if (flags[kFLAGS.D3_GARDENER_DEFEATED] > 0 && flags[kFLAGS.D3_CENTAUR_DEFEATED] > 0 && flags[kFLAGS.D3_STATUE_DEFEATED] > 0)
 			{
 				outputText("The seal appears to be broken. You could move north and attempt to defeat Lethice for once and for all. Or you can move east and west through the courtyard, if you like.");

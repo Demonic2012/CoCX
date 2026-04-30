@@ -413,7 +413,7 @@ public class RearBodyTransformations extends MutationsHelper {
 
 				TransformationUtils.applyTFIfNotPresent(transformations.WingsNone, doOutput);
 
-				desc += "Pain lances through your neck as your [skin.type] flesh begins to ondulate and change. It hurts but thankfully the pain is short lived and as soon as you are relieved from it you press a hand behind your neck to check for the changes. It would appear the behind of your head all the way to the middle of your back is covered with one large fleshy hood not unlike that of a cobra. You will likely be able to intimidate your foes into submission with your brand new <b>Cobra hood!</b>";
+				desc += "Pain lances through your neck as your [skin.type] flesh begins to undulate and change. It hurts but thankfully the pain is short lived and as soon as you are relieved from it you press a hand behind your neck to check for the changes. It would appear the behind of your head all the way to the middle of your back is covered with one large fleshy hood not unlike that of a cobra. You will likely be able to intimidate your foes into submission with your brand new <b>Cobra hood!</b>";
 				player.rearBody.type = RearBody.COBRA_HOOD;
 
 				if (doOutput) outputText(desc);
@@ -431,7 +431,7 @@ public class RearBodyTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "You groan, slumping in pain. Almost immediately, you feel a tinge of regret for eating the tooth. Sweat streaks down your face as you struggle to swallow in air, your breathing staggers as your body begins shifting to accomodate the transformation. ";
+				desc += "You groan, slumping in pain. Almost immediately, you feel a tinge of regret for eating the tooth. Sweat streaks down your face as you struggle to swallow in air, your breathing staggers as your body begins shifting to accommodate the transformation. ";
 				desc += "You"+(player.isNaked()?"r shoulder blades move apart as fin-like protrusions form between them":" hastily remove your [armor] as your shoulder blades move apart as fin-like protrusions form between them")+". Just above your ass, another fin expels from your body, growing firmly into place. You examine the new appendages carefully, thinking about how armor you'll wear must be modified to withstand your new shapes.";
 				if (player.isNaked()) desc += " Though, perhaps armor is not the biggest concern you have with your new body.";
 				player.rearBody.type = RearBody.ABYSSAL_SHARK_FIN;
@@ -485,11 +485,44 @@ public class RearBodyTransformations extends MutationsHelper {
 				player.rearBody.type = RearBody.MOTH_COLLAR;
 
 				if (doOutput) outputText(desc);
-				//Metamorph.unlockMetamorph(RearBodyMem.getMemory(RearBodyMem.ABYSSAL_SHARK_FIN));
+				Metamorph.unlockMetamorph(RearBodyMem.getMemory(RearBodyMem.MOTH_COLLAR));
 			},
 			// is present
 			function (): Boolean {
 				return player.rearBody.type === RearBody.MOTH_COLLAR;
+			}
+	);
+
+	public const RearBodyMyconidBraAndNeck: Transformation = new SimpleTransformation("Myconid Bra and Neck",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "";
+
+				player.rearBody.type = RearBody.BRA_AND_NECK;
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(RearBodyMem.getMemory(RearBodyMem.BRA_AND_NECK));
+			},
+			// is present
+			function (): Boolean {
+				return player.rearBody.type === RearBody.BRA_AND_NECK;
+			}
+	);
+
+	public const RearBodySerialCode: Transformation = new SimpleTransformation("Serial Code",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "";
+
+				player.rearBody.type = RearBody.SERIAL_CODE;
+				if (doOutput) outputText(desc);
+			},
+			// is present
+			function (): Boolean {
+				return player.rearBody.type === RearBody.SERIAL_CODE;
 			}
 	);
 	/*

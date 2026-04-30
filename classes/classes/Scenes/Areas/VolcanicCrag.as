@@ -13,6 +13,7 @@ import classes.Scenes.API.ExplorationEntry;
 import classes.Scenes.API.GroupEncounter;
 import classes.Scenes.Areas.HighMountains.PhoenixScene;
 import classes.Scenes.Areas.VolcanicCrag.*;
+import classes.Scenes.Dungeons.RiverDungeon.FireElemental;
 import classes.Scenes.NPCs.EtnaFollower;
 import classes.Scenes.SceneLib;
 
@@ -20,12 +21,14 @@ public class VolcanicCrag extends BaseContent
 	{
 		public var behemothScene:BehemothScene = new BehemothScene();
 		public var phoenixScene:PhoenixScene = new PhoenixScene();
+		//public var lavaHotsprings:LavaHotspring = new LavaHotspring();
+		public var oreMerchants:SalamanderOreMerchants = new SalamanderOreMerchants();
 		
 		public function VolcanicCrag() {
 			onGameInit(init);
 		}
 		
-		public const areaLevel:int = 65;
+		public const areaLevel:int = 80;
 		public function isDiscovered():Boolean {
 			return SceneLib.exploration.counters.volcanicCragOuter > 0;
 		}
@@ -98,6 +101,14 @@ public class VolcanicCrag extends BaseContent
 				kind  : 'item',
 				call: findDrakeHeart
 			}, {
+				name: "findemberflower",
+				label : "Ember Flower",
+				kind  : 'item',
+				when: function():Boolean {
+					return player.isAlraune();
+				},
+				call: findEmberFlower
+			}, {
 				name: "truefiregolem",
 				label : "True Fire Golems",
 				kind : 'monster',
@@ -129,6 +140,19 @@ public class VolcanicCrag extends BaseContent
 				kind : 'monster',
 				call: behemothScene.behemothIntro
 			}, {
+				name: "fire ele",
+				label : "Fire Elemental",
+				kind  : 'monster',
+				call: outerVulcanicCragFireElemental
+			}, {
+				name: "hellcatK",
+				label : "Hellcat Kasha",
+				kind : 'monster',
+				when: function ():Boolean {
+					return flags[kFLAGS.WITCHES_SABBATH] >= 1;
+				},
+				call: SceneLib.ashlands.hellcatScene.HellCatKashaIntro
+			}, {
 				//Helia monogamy fucks
 				name  : "helcommon",
 				label : "Helia",
@@ -150,13 +174,33 @@ public class VolcanicCrag extends BaseContent
 					return (flags[kFLAGS.ETNA_FOLLOWER] < 1 || EtnaFollower.EtnaInfidelity == 2)
 							&& flags[kFLAGS.ETNA_TALKED_ABOUT_HER] == 2
 							&& !player.hasStatusEffect(StatusEffects.EtnaOff)
-							&& (player.level >= 20);
+							&& (player.level >= 20 || flags[kFLAGS.HARDCORE_MODE] == 1);
 				},
 				chance: volcanicCragChance,
 				call: function ():void {
 					VolcanicCragConditions();
 					SceneLib.etnaScene.repeatYandereEnc();
 				}
+			}, {
+				name: "SalamanderOreMerchants",
+				label : "OreMerchants",
+				kind  : 'npc',
+				chance: 0.5,
+				call: function ():void {
+					VolcanicCragConditions();
+					oreMerchants.introOreMerchant()
+				}
+//			}, {
+//				name: "LavaHotspring",
+//				label : "LavaHotspring",
+//				kind  : 'place',
+//				when: function ():Boolean {
+//					return ((player.hasCock() || player.hasVagina()))
+//				},
+//				call: function ():void {
+//					VolcanicCragConditions();
+//					lavaHotsprings.discoverLavaHotsprings()
+//				}
 			}, {
 				name: "demonProjects",
 				label : "DemLab Subject",
@@ -178,7 +222,7 @@ public class VolcanicCrag extends BaseContent
 			explorer.prompt = "You explore the infernal volcanic crag.";
 			explorer.onEncounter = function(e:ExplorationEntry):void {
 				SceneLib.exploration.counters.volcanicCragOuter++;
-				if (!player.hasPerk(PerkLib.FireAffinity) && !player.hasPerk(PerkLib.AffinityIgnis)) ConstantHeatConditionsTick();
+				if (!player.hasPerk(PerkLib.FireAffinity) && !player.hasPerk(PerkLib.FireShadowAffinity) && !player.hasPerk(PerkLib.AffinityIgnis)) ConstantHeatConditionsTick();
 			}
 			explorer.leave.hint("Leave the infernal volcanic crag");
 			explorer.skillBasedReveal(areaLevel, timesExplored());
@@ -189,6 +233,14 @@ public class VolcanicCrag extends BaseContent
 			var temp:Number = 0.5;
 			temp *= player.npcChanceToEncounter();
 			return temp;
+		}
+	
+		private function outerVulcanicCragFireElemental():void {
+			clearOutput();
+			outputText("As you wander vulcanic crag you stumble into a somewhat horrifying scene. A blazing woman is laughing maniacally as she sets a bunch of charred screaming humanoid creatures on fire. Whatever these were they are so burned out now that you can’t even identify their races anymore. ");
+			outputText("As the last victim screams its dying breath the fully grown Ignis suddenly realise you are here. She turns to face you, flames amassing in her palm as she prepares to add one more victim to her fiery rampage. You ready yourself for a fight as there is definitively no way you can resolve that issue peacefully.\n\n");
+			flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] = 6;
+			startCombat(new FireElemental());
 		}
 
 		private function findNothing():void {
@@ -208,6 +260,12 @@ public class VolcanicCrag extends BaseContent
 			inventory.takeItem(consumables.DRAKHRT, explorer.done);
 		}
 
+		private function findEmberFlower():void {
+			clearOutput();
+			outputText("You stumble upon a strange red flower, which seems to grow in the crag heedless of the unbearable heat. You feel oddly drawn towards the plant, deciding to pick it up. ");
+			inventory.takeItem(consumables.EMBER_F, explorer.done);
+		}
+
 		private function fireGolemEncounter():void {
 			clearOutput();
 			outputText("As you take a stroll, from nearby cracks emerge group of golems. Looks like you have encountered some true fire golems! You ready your [weapon] for a fight!");
@@ -216,11 +274,12 @@ public class VolcanicCrag extends BaseContent
 		}
 
 		public function VolcanicCragConditions():void {
-			if (!player.hasPerk(PerkLib.FireAffinity) && !player.hasPerk(PerkLib.AffinityIgnis)) player.createStatusEffect(StatusEffects.ConstantHeatConditions,0,0,0,0);
+			if (!player.hasPerk(PerkLib.FireAffinity) && !player.hasPerk(PerkLib.FireShadowAffinity) && !player.hasPerk(PerkLib.AffinityIgnis)) player.createStatusEffect(StatusEffects.ConstantHeatConditions,2,0,0,0);
 		}
 
 		public function ConstantHeatConditionsTick():void {
-			var HPD:Number = 0.05;
+			var HPD:Number = 0.025;
+			HPD *= player.statusEffectv1(StatusEffects.ConstantHeatConditions);
 			if (player.hasPerk(PerkLib.ColdAffinity)) HPD *= 2;
 			HPD *= player.maxHP();
 			HPD = Math.round(HPD);

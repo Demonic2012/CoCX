@@ -58,7 +58,7 @@ public class CancerAttack extends Monster
 			if (this.hasStatusEffect(StatusEffects.AlrauneEntangle))
 				outputText("The cancer would love to dig a path away from you but is currently entangled in your vines!");
 			else{
-				outputText("The cancer dig [monster his] way underground, disappearing from view.");
+				outputText("The cancer digs [monster his] way underground, disappearing from view.");
 				if (!player.hasStatusEffect(StatusEffects.MonsterDig)) player.createStatusEffect(StatusEffects.MonsterDig, 1 + rand(3), 0, 0, 0);
 				if (!player.hasStatusEffect(StatusEffects.MonsterInvisible)) player.createStatusEffect(StatusEffects.MonsterInvisible, 0, 0, 0, 0);
 			}
@@ -66,12 +66,12 @@ public class CancerAttack extends Monster
 
 		private function Grab():void {
 			if (Combat.playerWaitsOrDefends()){
-				outputText("By observing your environment and staying alert, you manage to dodge just in time as the pincer dig its way back up from under you. \n\n");
+				outputText("By observing your environment and staying alert, you manage to dodge just in time as the pincer digs its way back up from under you. \n\n");
 			} else if (player.isFlying()) {
-				outputText("You can’t help but chuckle at the cancer futile attempts to ambush you from beneath, simply flying way out of its reach. You taunt [monster him] still chuckling.\n\n" +
+				outputText("You can’t help but chuckle at the cancer's futile attempts to ambush you from beneath, simply flying well out of its reach. You taunt [monster him] still chuckling.\n\n" +
 						"<i>\"Hey, idiot! How do you plan to dig under and surprise that which does not even touch the ground!\"</i>\n\n");
 			} else {
-				outputText("The Cancer surge out of the sand under you, grabbing you in its pincer as [monster he] flatly adds.\n\n" +
+				outputText("The Cancer surges out of the sand beneath you, grabbing you in its pincer as [monster he] flatly adds.\n\n" +
 						"<i>\"Gotcha… You struggled, I don’t like it when they struggle, so I will crush you until you stop struggling.\"</i>\n\n");
 				player.createStatusEffect(StatusEffects.CancerMonsterGrab, 2 + rand(5), 0, 0, 0);
 			}
@@ -102,8 +102,7 @@ public class CancerAttack extends Monster
 		//(Wait)
 		public function cancerGrabWait():void {
 			clearOutput();
-			outputText("Why bother resisting?  Theres no way you can escape this iron grip anyway.");
-			outputText("\n\n");
+			outputText("Why bother resisting?  Theres no way you can escape this iron grip anyway.\n\n");
 			SceneLib.combat.enemyAIImpl();
 		}
 
@@ -126,8 +125,8 @@ public class CancerAttack extends Monster
 		}
 
 		private function BubbleSplash():void {
-			if (this.hasVagina()) outputText("The cancer gasps in pleasure as her mandible opens revealing her pussy. Out of nowhere, she suddenly splashes you right in the face with a powerful gushing jet of foaming juices. <b>You’re blinded!</b>\n\n");
-			if (this.hasCock()) outputText("The cancer gasps in pleasure as his mandible opens revealing his cock. Out of nowhere, he suddenly splashes you right in the face with a powerful gushing jet of foaming juices. <b>You’re blinded!</b>\n\n");
+			if (this.hasVagina()) outputText("The cancer gasps in pleasure as her mandibles open, revealing her pussy. Out of nowhere, she suddenly splashes you right in the face with a powerful gushing jet of foaming juices. <b>You’re blinded!</b>\n\n");
+			if (this.hasCock()) outputText("The cancer gasps in pleasure as his mandibles open, revealing his cock. Out of nowhere, he suddenly splashes you right in the face with a powerful gushing jet of foaming juices. <b>You’re blinded!</b>\n\n");
 			player.createStatusEffect(StatusEffects.Blind, 6, 0, 0, 0);
 		}
 		
@@ -136,9 +135,9 @@ public class CancerAttack extends Monster
 			this.a = "the ";
 			this.short = "cancer";
 			this.imageName = "cancer";
-			this.long= "You are fighting a cancer, a centaur mixing the upper body of a human with the bottom body of a large crab. " +
-					"Its pincers stands at the ready looking for the opportunity of a swift and likely fatal grapple. " +
-					"While your opponent torso is pretty bare it’s obvious the crab part is sturdier than any steel plating. " +
+			this.long= "You are fighting a cancer, a centaur-like creature with the upper body of a human and the lower body of a large crab. " +
+					"Its pincers stand at the ready, looking for the opportunity for a swift and likely fatal grapple. " +
+					"While your opponent's torso is mostly bare, it’s obvious the crab part is sturdier than any steel plating. " +
 					"The creepiest thing about all of this is that "+(IsFemale ? "her":"his")+" facial expression seems frozen in a constant blank state.";
 			if (IsFemale) {
 				this.createVagina(false, VaginaClass.WETNESS_SLICK, VaginaClass.LOOSENESS_LOOSE);
@@ -160,19 +159,19 @@ public class CancerAttack extends Monster
 			this.bodyColor = "light";
 			this.hairColor = "pale brown";
 			this.hairLength = 15;
-			initStrTouSpeInte(167, 185, 149, 42);
-			initWisLibSensCor(41, 144, 82, 30);
+			initStrTouSpeInte(501, 555, 447, 84);
+			initWisLibSensCor(82, 288, 164, -40);
 			this.weaponName = "pincers";
 			this.weaponVerb="pincer";
-			this.weaponAttack = 69;
+			this.weaponAttack = 369;
 			this.armorName = "chitin";
-			this.armorDef = 90;
-			this.armorMDef = 10;
-			this.bonusHP = 200;
-			this.bonusLust = 263;
+			this.armorDef = 900;
+			this.armorMDef = 100;
+			this.bonusHP = 2000;
+			this.bonusLust = 507;
 			this.lust = 30;
-			this.level = 37;
-			this.gems = rand(40)+40;
+			this.level = 55;
+			this.gems = rand(30)+50;
 			this.drop = new WeightedDrop().addMany(1, consumables.BUBBLEG);
 			this.tailType = Tail.NONE;
 			checkMonster();

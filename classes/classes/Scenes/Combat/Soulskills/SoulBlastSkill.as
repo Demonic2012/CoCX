@@ -34,9 +34,9 @@ public class SoulBlastSkill extends AbstractSoulSkill {
     }
 
 	public function calcDamage(monster:Monster):Number {
-		var damage:Number = scalingBonusStrength() * 3;
-		damage += scalingBonusIntelligence() * 3;
-		damage += scalingBonusWisdom() * 3;
+		var damage:Number = scalingBonusStrength() * 6;
+		damage += scalingBonusIntelligence() * 6;
+		damage += scalingBonusWisdom() * 6;
 		if (damage < 10) damage = 10;
 		
 		//soulskill mod effect
@@ -51,6 +51,7 @@ public class SoulBlastSkill extends AbstractSoulSkill {
 			if (player.hasPerk(PerkLib.Heroism) && (monster.hasPerk(PerkLib.EnemyBossType) || monster.hasPerk(PerkLib.EnemyHugeType))) damage *= 2;
 		}
 		if (player.perkv1(IMutationsLib.AnubiHeartIM) >= 4 && player.HP < Math.round(player.maxHP() * 0.5)) damage *= 1.5;
+		if (player.hasPerk(PerkLib.ExanimationI)) damage *= combat.hollowSkillsAndSoulskillsBoost();
 		return Math.round(damage);
 	}
 
@@ -80,6 +81,12 @@ public class SoulBlastSkill extends AbstractSoulSkill {
 		}
 		checkAchievementDamage(damage);
 		if (display) outputText("\n\n");
+		if (player.hasPerk(PerkLib.BrutalSpells) && monster.armorMDef > 0) {
+			outputText("Your soulskills are so brutal that you damage [themonster]'s magical resistance!\n\n");
+			var bbc:Number = (Math.round(monster.armorMDef * 0.1) + 5);
+			if (monster.armorMDef - bbc > 0) monster.armorMDef -= bbc;
+			else monster.armorMDef = 0;
+		}
 		if (!player.hasStatusEffect(StatusEffects.BloodCultivator) && flags[kFLAGS.IN_COMBAT_PLAYER_ANUBI_HEART_LEECH] == 0) anubiHeartLeeching(damage);
 		combat.heroBaneProc(damage);
     }

@@ -50,7 +50,7 @@ import classes.Scenes.SceneLib;
 				var heal:int = damageTotal * 10;
 				if (HP + heal > maxOverHP()) heal = maxOverHP() - HP;
 				HP += heal;
-				outputText("\n\nEach blow he lands seems to heal his wounds as if he drained the life out of you to replenish his own! <b>([font-heal]+" + heal + "</font>)</b>.\n\n");
+				outputText("\n\nEach blow he lands seems to heal his wounds as if he drained the life out of you to replenish his own! <b>([font-heal]+" + heal + "[/font])</b>.\n\n");
 			}
 		}
 
@@ -66,7 +66,7 @@ import classes.Scenes.SceneLib;
 		public function siegweirdStruggle():void {
 			clearOutput();
 			outputText("You try to struggle and get away from the bear..  ");
-			if (rand(player.str * 2) > str || player.hasPerk(PerkLib.FluidBody)) {
+			if (SceneLib.combat.struggleCentralizedCheck()) {
 				outputText("You manage to break out of Siegweird’s death grip\n\n");
 				player.removeStatusEffect(StatusEffects.SiegweirdGrapple);
 			}
@@ -196,7 +196,7 @@ import classes.Scenes.SceneLib;
 			this.armorDef = 700;
 			this.armorMDef = 700;
 			this.bonusHP = 7000;
-			this.lustVuln = 0;
+			this.lustVuln = 0.01;
 			this.level = 90;
 			this.gems = rand(300) + 700;
 			this.drop = NO_DROP;

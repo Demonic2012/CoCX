@@ -335,7 +335,7 @@ public class Vapula extends NPCAwareContent implements TimeAwareInterface
 
 			outputText("You tell Vapula that you want her hooked up to a milking machine whenever possible; you need her fluids.");
 
-			outputText("\n\n\"<i>Ooh, so that’s why you wanted me to come out here!</i>\" Vapula grins and her fingers reach for a breast, already fantasising about insistent pressure on her nipples.");
+			outputText("\n\n\"<i>Ooh, so that’s why you wanted me to come out here!</i>\" Vapula grins and her fingers reach for a breast, already fantasizing about insistent pressure on her nipples.");
 
 			if (flags[kFLAGS.FARM_UPGRADES_REFINERY] == 0) outputText("\"<i>It’ll sure as hell beat whatever disgusting thing the bitch would have me doing instead. Why don’t you make her build a concentration machine? Lethice has loads; makes one dose of cream go so much further.</i>\"");
 			else outputText("\"<i>As you insist, [master]. It’ll sure as hell beat working.</i>\"");
@@ -351,7 +351,7 @@ public class Vapula extends NPCAwareContent implements TimeAwareInterface
 
 			outputText("You tell Vapula to stop producing succubus milk; you’re practically drowning in the stuff.");
 
-			outputText("\n\n\"<i>Well, that was the whole idea, [master]. Sure you don’t want to drink some more? Alright, alright!</i>\" A familiarly sulky expression descends on the demon’s face as you deny her her second most favourite activity.");
+			outputText("\n\n\"<i>Well, that was the whole idea, [master]. Sure you don’t want to drink some more? Alright, alright!</i>\" A familiarly sulky expression descends on the demon’s face as you deny her her second most favorite activity.");
 
 			flags[kFLAGS.FOLLOWER_PRODUCTION_VAPULA] = 0;
 
@@ -474,7 +474,7 @@ public class Vapula extends NPCAwareContent implements TimeAwareInterface
 			else outputText("groin");
 			outputText(" with the other.  She sucks like a cock-hungry whore, treating your shaft like a straw as she slurps down your juices; her demonic throat feels incredibly hot and her saliva seems to make your [cock] grow even harder; her lips squeeze your meat in the most exquisite manner, sending you into short spasms of pleasure every time.");
 			outputText("\n\nShe works on it for what seems like hours.  You look down at your slut; she keeps staring at you with avid yet playful eyes, never breaking eye contact as she relentlessly throatfucks herself; you feel her lips curve a little as the shape of a ravenous smile appears on her face, and her eyes glitter with an insatiable need.  The naughty bitch! She knows she's going to get what she wants, whether you like it or not.  You wish you were able to control yourself, but the covetous succubus never lets go of your [cock], clinging to it like an animal.");
-			outputText("\n\nYour stamina is rapidly overwhelmed and you decide to reward her effort; you savagely press Vapula's head against your groin, effectively burying all " + num2Text(Math.round(player.cocks[0].cockLength)) + " inches of your [cock] in her waiting throat; her tongue keeps teasing your rod for a few seconds, and then you cum, brutally.  ");
+			outputText("\n\nYour stamina is rapidly overwhelmed and you decide to reward her effort; you savagely press Vapula's head against your groin, effectively burying all " + player.cockVsClitCockLenght(player, 0) + " inches of your [cock] in her waiting throat; her tongue keeps teasing your rod for a few seconds, and then you cum, brutally.  ");
 			if (player.hasBalls()) outputText("Your [balls] churn");
 			else outputText("Your [cock] twitches");
 			outputText(" as you release a sticky spooge fountain in her stomach.  Her lips keep squeezing your junk in order to milk everything you've got, and in your shuddering orgasm you're too eager to comply.  With a surrendering sigh, you abandon yourself to your climax and keep cumming, squirting your baby-batter to the last drop as the succubus keeps gulping it.  Her eyes are closed in an expression of complete satisfaction; she enjoys her meal to its full extent, filling her belly with your spooge");
@@ -494,10 +494,10 @@ public class Vapula extends NPCAwareContent implements TimeAwareInterface
 			outputText("Who do you invite?");
 			addButton(0, "Amily", vapulaAndAmilyThreesome)
 				.disableIf(!player.hasCock(), "You need a <b>REAL</b> cock for that.")
-				.disableIf(amilyScene.amilyFollower() && amilyScene.amilyCorrupt(),
+				.disableIf(!amilyScene.amilyCorrupt(),
 					"You need a corrupted mouse for this.", "???");
 			addButton(1, "Jojo", vapulaJojoThreesomes)
-				.disableIf(jojoScene.campCorruptJojo(), "You need a corrupted mouse with a dick.", "???");
+				.disableIf((!jojoScene.campCorruptJojo() || flags[kFLAGS.JOJO_BIMBO_STATE] == 3 || JojoScene.monk == JojoScene.JOJO_NOT_MET), "You need a corrupted mouse with a dick.", "???");
 			addButton(2, "Izma", vapulaAndIzmaThreeSome)
 				.disableIf(flags[kFLAGS.IZMA_NO_COCK], "Izma must have a cock.")
 				.disableIf(!izmaFollower(), "No sharks at your camp... yet?", "???");
@@ -506,7 +506,7 @@ public class Vapula extends NPCAwareContent implements TimeAwareInterface
 					"If you had some bimbo harpy, you could have some fun with her.", "???");
 			addButton(4, "Ceraph", vapulaCeraphThreesome)
 				.disableIf(!player.hasCock(), "You need a <b>REAL</b> cock for that.")
-				.disableIf(!ceraphFollowerScene.ceraphIsFollower(),
+				.disableIf((!ceraphFollowerScene.ceraphIsFollower() && !player.hasStatusEffect(StatusEffects.CeraphOff)),
 					"Sadly, you don't have any other demons in your submission.", "???");
 			addButton(14, "Back", callSlaveVapula);
 		}

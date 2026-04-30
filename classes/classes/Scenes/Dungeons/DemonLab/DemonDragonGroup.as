@@ -15,7 +15,7 @@ import classes.internals.WeightedDrop;
 
 /**
  * ...
- * @author ...
+ * @author Canadian Snas
  */
 public class DemonDragonGroup extends Monster {
 
@@ -23,7 +23,7 @@ public class DemonDragonGroup extends Monster {
         this.a = "the ";
         this.short = "Dragon Demons";
         //this.imageName = "goblinwarrior";
-        this.long = "Five crimson-scaled beings stand in front of you. Four are female, D-cup breasts and drooling cunts fully exposed. Small demonic horns jut from their foreheads, and their scaled tails are black and red, with a slight spade at the end. They grin at you, reptilian eyes wide with anticipation as they bob from side to side on taloned feet. In their hands are thin steel spears, and as they eye you, undisguised lust in their eyes. The final draconic being stands a half-foot taller than the next largest dragonoid, barrel-chested and heavily armoured, wielding a sword over eight feet long, he takes a step towards you. Bull-like horns on the top of his head glint in the firelight, and his scent, like burnt semen, washes over you.";
+        this.long = "Five crimson-scaled beings stand in front of you. Four are female, D-cup breasts and drooling cunts fully exposed. Small demonic horns jut from their foreheads, and their scaled tails are black and red, with a slight spade at the end. They grin at you, reptilian eyes wide with anticipation as they bob from side to side on taloned feet. In their hands are thin steel spears, and as they eye you, undisguised lust in their eyes. The final draconic being stands a half-foot taller than the next largest dragonoid, barrel-chested and heavily armored, wielding a sword over eight feet long, he takes a step towards you. Bull-like horns on the top of his head glint in the firelight, and his scent, like burnt semen, washes over you.";
         this.plural = true;
         if (player.hasCock()) this.long += "\n\nWhile the four dragonesses seem interested in your manmeat, the male seems angered by the attention you seem to be getting";
         this.createVagina(false, VaginaClass.WETNESS_DROOLING, VaginaClass.LOOSENESS_NORMAL);
@@ -57,12 +57,13 @@ public class DemonDragonGroup extends Monster {
         this.lustVuln = 0.44;
         this.level = 60;
         this.gems = rand(50) + 75;
-        this.drop = new WeightedDrop().add(useables.D_SCALE, 5).add(consumables.LETHITE, 2).add(jewelries.POWRRNG, 1);
+        this.drop = new WeightedDrop().add(useables.D_SCALE, 5).add(consumables.LETH1TE, 3).add(consumables.LETH2TE, 2).add(jewelries.POWRRNG, 1);
         this.createPerk(PerkLib.EnemyGroupType, 0, 0, 0, 0);
         this.createPerk(PerkLib.InhumanDesireI, 0, 0, 0, 0);
         this.createPerk(PerkLib.TankI, 0, 0, 0, 0);
         this.createPerk(PerkLib.LegendaryStrength, 0, 0, 0, 0);
         this.createPerk(PerkLib.MonsterRegeneration, 2, 0, 0, 0);
+		this.createPerk(PerkLib.EnemyDragonType, 0, 0, 0, 0);
         if (inDungeon) this.createPerk(PerkLib.EnemyBossType, 0, 0, 0, 0);
         checkMonster();
     }
@@ -71,7 +72,7 @@ public class DemonDragonGroup extends Monster {
         // when you use melee, chance is reduced to 50% if you’re flying
         if (!player.isFlying() || rand(2) == 0) {
             outputText("You rush towards the corrupted dragonoids, but before you can get near them, three of the succubi-dragons take a half-step forward, letting a sound somewhere between a moan and a belch escape their lips. A wall of flame erupts in your path. ");
-            if (player.hasPerk(PerkLib.FireAffinity)) outputText("You laugh, the dragon’s breath feeling like a warm breeze. You barrel through the flame.")
+            if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.FireShadowAffinity)) outputText("You laugh, the dragon’s breath feeling like a warm breeze. You barrel through the flame.")
             else player.takeFireDamage(((inte + wis) * 1.2) + rand(80), true);
             outputText("\n\n");
         }

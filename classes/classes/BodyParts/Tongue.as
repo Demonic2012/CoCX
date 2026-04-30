@@ -52,11 +52,11 @@ public class Tongue extends BodyPart{
 	public static const DOG: int = 7;
 	EnumValue.add(Types, DOG, "DOG", {
 		name:"dog",
-		appearanceDesc: "You sometime let your canine tongue out to vent heat."
+		appearanceDesc: "You sometimes let your canine tongue out to vent heat."
 	});
 	public static const CAVE_WYRM: int = 8;
 	EnumValue.add(Types, CAVE_WYRM, "CAVE_WYRM", {
-		name:"draconic",
+		name:"cave wyrm",
 		appearanceDesc: "A slowly undulating neon blue tongue that glow in the dark occasionally slips from between your lips. It hangs nearly two feet long when you let the whole thing slide out, though you can retract it to appear normal."
 	});
 	public static const GHOST: int = 9;
@@ -67,7 +67,7 @@ public class Tongue extends BodyPart{
 	public static const MELKIE: int = 10;
 	EnumValue.add(Types, MELKIE, "MELKIE", {
 		name:"melkie",
-		appearanceDesc: "Your voice is unnaturally beautiful and melodious; your mermaid-like song is capable of captivating the minds of those who listens to it."
+		appearanceDesc: "Your voice is unnaturally beautiful and melodious; your mermaid-like song is capable of captivating the minds of those who listen to it."
 	});
 	public static const RATATOSKR: int = 11;
 	EnumValue.add(Types, RATATOSKR, "RATATOSKR", {
@@ -102,7 +102,12 @@ public class Tongue extends BodyPart{
 	public static const ARIGEAN: int = 17;
 	EnumValue.add(Types, ARIGEAN, "ARIGEAN", {
 		name:"arigean",
-		appearanceDesc: "Your tongue is identical to that of a human’s save for it’s light blue color, most likely caused by your blue blood."
+		appearanceDesc: "Your tongue is identical to that of a human’s save for its light blue color, most likely caused by your blue blood."
+	});
+	public static const AUTOMATA: int = 18;
+	EnumValue.add(Types, AUTOMATA, "AUTOMATA", {
+		name:"automata",
+		appearanceDesc: "In your mouth sits a neon [eyecolor] tongue. Truthfully it acts mostly as a decoration seeing as an amp in your throat produces all the sounds you need to interact with organics. As for the kins, all messages are silently shared through the network thus rendering verbal communication obsolete. Still your tongue can be used along with your mouth as a toy for the user to play with. After all, you do have a full library of oral technique installed in your data bank."
 	});
 
 	public function Tongue(creature:Creature) {

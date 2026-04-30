@@ -28,6 +28,10 @@ public class RegenerateSpell extends AbstractBlackSpell {
 		return player.hasStatusEffect(StatusEffects.PlayerRegenerate);
 	}
 	
+	override public function isStackable():Boolean {
+		return true;
+	}
+	
 	override public function describeEffectVs(target:Monster):String {
 		return ""+calcHeal()+" HP for "+calcDuration()+" rounds"
 	}
@@ -35,20 +39,23 @@ public class RegenerateSpell extends AbstractBlackSpell {
 	public function calcHeal():Number {
 		var hpChange2:Number = player.inte;
 		if (player.hasPerk(PerkLib.WisenedHealer)) hpChange2 += player.wis;
+		if (player.hasPerk(PerkLib.DruidicFocus)) hpChange2 += player.tou;
 		hpChange2 *= healModBlack();
 		if (player.isRace(Races.UNICORN, 2)) hpChange2 *= 3;
 		if (player.isRace(Races.ALICORN)) hpChange2 *= 4;
 		if (player.armor == armors.NURSECL) hpChange2 *= 1.2;
 		if (player.weapon == weapons.U_STAFF) hpChange2 *= 1.5;
+		if (player.weapon == weapons.ANCIENTO) hpChange2 *= 1.25;
 		if (player.hasPerk(PerkLib.CloseToDeath) && player.HP < (player.maxHP() * 0.25)) {
 			if (player.hasPerk(PerkLib.CheatDeath) && player.HP < (player.maxHP() * 0.1)) hpChange2 *= 2.5;
 			else hpChange2 *= 1.5;
 		}
+		hpChange2 *= 2.5;
 		return Math.round(hpChange2);
 	}
 	
 	override public function calcDuration():int {
-		return 7;
+		return 3;
 	}
 	
 	override public function advance(display:Boolean):void {
@@ -65,9 +72,9 @@ public class RegenerateSpell extends AbstractBlackSpell {
 			}
 			var hpChange2:Number = calcHeal();
 			if (display) {
-				outputText("<b>Regenerate healing power spreading in your body. (<font color=\"#008000\">+" + hpChange2 + "</font>)</b>\n\n");
+				outputText("<b>Regenerate healing power spreading in your body. ([font-heal]+" + hpChange2 + "[/font])</b>\n\n");
 			}
-			HPChange(hpChange2, false);
+			HPChange(hpChange2, false, false);
 		}
 	}
 	
@@ -76,9 +83,13 @@ public class RegenerateSpell extends AbstractBlackSpell {
 			outputText("You focus on your body and its desire to end pain, trying to draw on your arousal without enhancing it.");
 		}
 		if (!backfired(display)) {
-			if (player.hasStatusEffect(StatusEffects.PlayerRegenerate)) player.addStatusValue(StatusEffects.PlayerRegenerate, 1, calcDuration());
-			else player.createStatusEffect(StatusEffects.PlayerRegenerate, 7, 0, 0, 0);
-			outputText(" This should hold up for about seven rounds.");
+			outputText(" This should hold up for about three ");
+			if (player.hasStatusEffect(StatusEffects.PlayerRegenerate)) {
+				player.addStatusValue(StatusEffects.PlayerRegenerate, 1, calcDuration());
+				outputText("more ");
+			}
+			else player.createStatusEffect(StatusEffects.PlayerRegenerate, calcDuration(), 0, 0, 0);
+			outputText("rounds.");
 		}
 		
 	}

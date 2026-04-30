@@ -3,6 +3,7 @@ import classes.BodyParts.*;
 import classes.GeneticMemories.EyesMem;
 import classes.Items.MutationsHelper;
 import classes.Races.GoblinRace;
+import classes.Races.GremlinRace;
 import classes.Scenes.Metamorph;
 import classes.Transformations.*;
 
@@ -368,7 +369,7 @@ public class EyesTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "You suddenly get the strangest case of double vision. Stumbling and blinking around, you clutch at your face, but you draw your hands back when you poke yourself in the eye. Wait, those fingers were on your forehead! You tentatively run your fingertips across your forehead, not quite believing what you felt. <b>There's a pair of eyes on your forehead, positioned just above your normal ones!</b> This will take some getting used to!";
+				desc += "You suddenly get the strangest case of tripple vision. Stumbling and blinking around, you clutch at your face, but you draw your hands back when you poke yourself in the eye. Wait, those fingers were on your forehead! You tentatively run your fingertips across your forehead, not quite believing what you felt. <b>There's a two pairs of eyes on your forehead, positioned just above your normal ones!</b> This will take some getting used to!";
 
 				player.eyes.type = Eyes.SPIDER;
 				if (doOutput) outputText(desc);
@@ -533,7 +534,7 @@ public class EyesTransformations extends MutationsHelper {
 
 				TransformationUtils.applyTFIfNotPresent(transformations.EyesChangeColor(["neon blue"]), false);
 
-				desc += "Something shift in your eyes as the level of light around you seems to increase. You go to check on what happened and discover your pupils not only changed to reptilian slits but now glow with a neon blue light. Well seeing in the dark will be easy with your <b>new dark blue iris with reptilian neon blue pupils that glow in the dark.</b>";
+				desc += "Something shift in your eyes as the level of light around you seems to increase. You go to check on what happened and discover your pupils not only changed to reptilian slits but now glow with a neon blue light. Well, seeing in the dark will be easy with your <b>new dark blue iris with reptilian neon blue pupils that glow in the dark.</b>";
 
 				player.eyes.type = Eyes.CAVE_WYRM;
 				if (doOutput) outputText(desc);
@@ -740,7 +741,8 @@ public class EyesTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "You suddenly stumble holding your head in pain with both hands as a massive headache overtakes you causing you to shortly fall unconscious. In your mind you see something not unlike a terrible beast of fur fang and claws with two green glowing eyes and as you begin to run away it starts chasing you. ";desc += "Catching up to you in no time it pounces on you and you get to watch in terror as it devours you alive! You wake up screaming with vivid memories of the events in your heart and mind. You wash your face in water to try and jare you fully awake when you notice your eyes. Within them a sinister green glow flashes every now and then like that of the now barely contained beast that lurks within your soul fighting to influence you into doing terrible things. <b>You now have the same feral eyes as a wild beast.</b>";
+				desc += "You suddenly stumble holding your head in pain with both hands as a massive headache overtakes you causing you to shortly fall unconscious. In your mind you see something not unlike a terrible beast of fur fang and claws with two green glowing eyes and as you begin to run away it starts chasing you. ";
+				desc += "Catching up to you in no time it pounces on you and you get to watch in terror as it devours you alive! You wake up screaming with vivid memories of the events in your heart and mind. You wash your face in water to try and jare you fully awake when you notice your eyes. Within them a sinister green glow flashes every now and then like that of the now barely contained beast that lurks within your soul fighting to influence you into doing terrible things. <b>You now have the same feral eyes as a wild beast.</b>";
 
 				player.eyes.type = Eyes.FERAL;
 				if (doOutput) outputText(desc);
@@ -791,16 +793,122 @@ public class EyesTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				//TransformationUtils.applyTFIfNotPresent(transformations.EyesChangeColor(["green"]), false);
-
-				desc += "your eyes suddenly feel strange as the world gets blurry on you, eventually your vision returns but the world seems more vivid, you rush over to the lake and you are shocked to see your eyes look like they belong on some sort of bug. <b>Your eyes are now like a moth’s eyes</b>";
+				desc += "your eyes suddenly feel strange as the world gets blurry on you, eventually your vision returns but the world seems more vivid, you rush over to the lake and you are shocked to see your eyes look like they belong on some sort of bug. <b>Your eyes are now like a moth’s eyes.</b>";
 				player.eyes.type = Eyes.MOTH;
+
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(EyesMem.getMemory(EyesMem.MOTH));
+			},
+			// is present
+			function (): Boolean {
+				return player.eyes.type === Eyes.MOTH;
+			}
+	);
+	public const EyesGremlin: Transformation = new SimpleTransformation("Gremlin Eyes",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "Aw gosh, you feel tired as hell, it’s like you spent the better part of yesterday night working on some stupid project. Truth is with those darkened eyelids of yours you might just have. That said, perhaps you should think of it less like a sign of fatigue and more like a sign of demonic nature because you easily imagine these on the faces of small fiends or possessed people too. <b>Seems like you have darkened eyelids now.</b>";
+				player.eyes.type = Eyes.GREMLIN;
+
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(EyesMem.getMemory(EyesMem.GREMLIN));
+			},
+			// is present
+			function (): Boolean {
+				return player.eyes.type === Eyes.GREMLIN;
+			}
+	);
+	public const EyesAutomata: Transformation = new SimpleTransformation("Automata Eyes",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				player.eyes.type = Eyes.AUTOMATA;
 
 				if (doOutput) outputText(desc);
 			},
 			// is present
 			function (): Boolean {
-				return player.eyes.type === Eyes.MOTH;
+				return player.eyes.type === Eyes.AUTOMATA;
+			}
+	);
+	public const EyesYggdrasil: Transformation = new SimpleTransformation("Yggdrasil Eyes",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "You suddenly get the strangest case of double vision. Stumbling and blinking around, you clutch at your face, but you draw your hands back when you poke yourself in the eye. Wait, those fingers were on your forehead! You tentatively run your fingertips across your forehead, not quite believing what you felt. <b>There's a pair of eyes on your forehead, positioned just above your normal ones!</b> It takes a moment for you to adapt to the weird sensory changes but once you recover you go to a puddle and notice all your four eyes now have a slitted pupil like that of a dragon.";
+
+				player.eyes.type = Eyes.YGGDRASIL;
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(EyesMem.getMemory(EyesMem.YGGDRASIL));
+			},
+			// is present
+			function (): Boolean {
+				return player.eyes.type === Eyes.YGGDRASIL;
+			}
+	);
+
+	public const EyesMarilith: Transformation = new SimpleTransformation("Marilith Eyes",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+				TransformationUtils.applyTFIfNotPresent(transformations.EyesHuman, doOutput);
+				TransformationUtils.applyTFIfNotPresent(transformations.EyesSnakeFiendish, doOutput);
+
+				desc += "You moan in delight as demonic corruption floods your body";
+				if (player.hasVagina()) desc += " your drenched pussy clenching around an invisible member";
+				if (player.gender > 2) desc += " while";
+				if (player.hasCock() && !player.hasVagina()) desc += " your veiny penis erupting with a stream of black cum";
+				if (player.gender > 2) desc += " your penis erupts with a stream of black cum";
+				desc += ". Humping the air while holding your head with both hands raw ecstasy flushes across your face as a body rapture builds up from within your mind. Coming to the forefront of it as the skin of your head splits open in a slit. Pleasure racing from your head to your groin as your new fiendish eyes gazing at the world in dark trembling desire. <b>Your concentration and senses have improved by two folds thanks to your fiendish third eye.</b>.";
+
+				player.eyes.type = Eyes.MARILITH;
+				player.eyes.colour = "yellow";
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(EyesMem.getMemory(EyesMem.MARILITH));
+			},
+			// is present
+			function (): Boolean {
+				return player.eyes.type === Eyes.MARILITH;
+			}
+	);
+
+	public const EyesWerespider: Transformation = new SimpleTransformation("Werespider Eyes",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "You suddenly stumble holding your head in pain with both hands as a massive headache overtakes you causing you to shortly fall unconscious. In your mind you see something not unlike a terrible beast of chitin many arms and claws with six green glowing eyes and as you begin to run away it starts chasing you. ";
+				desc += "Catching up to you in no time it pounces on you and you get to watch in terror as it devours you alive! You wake up screaming with vivid memories of the events in your heart and mind. You wash your face in water to try and jare you fully awake when you notice your eyes. Within their three pairs a sinister green glow flashes every now and then like that of the now barely contained beast that lurks within your soul fighting to influence you into doing terrible things. <b>You now have the same feral eyes as a wild arachnid.</b>";
+
+				player.eyes.type = Eyes.WERESPIDER;
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(EyesMem.getMemory(EyesMem.WERESPIDER));
+			},
+			// is present
+			function (): Boolean {
+				return player.eyes.type === Eyes.WERESPIDER;
+			}
+	);
+	
+	public const EyesHollow: Transformation = new SimpleTransformation("Hollow Eyes",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "Your vision shifts, colors inverse and you can see the faint aura traces of the living. It takes a moment for you to adapt to the weird sensory changes and control what colours you want to see but once you recover you go to a puddle and notice your eyes now have yellow pupils with sinister black sclera. <b>You now have Hollow eyes!</b>";
+
+				player.eyes.type = Eyes.HOLLOW;
+				player.eyes.colour = "yellow";
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(EyesMem.getMemory(EyesMem.HOLLOW));
+			},
+			// is present
+			function (): Boolean {
+				return player.eyes.type === Eyes.HOLLOW;
 			}
 	);
 
@@ -855,6 +963,17 @@ public class EyesTransformations extends MutationsHelper {
 			// is present
 			function (): Boolean {
 				return InCollection(player.eyes.colour, GoblinRace.GoblinEyeColors);
+			}
+	);
+
+	public const EyesGremlinColors: Transformation = new SimpleTransformation("Gremlin Eye Colors",
+			// apply effect
+			function (doOutput: Boolean): void {
+				transformations.EyesChangeColor(GremlinRace.GremlinEyeColors).applyEffect(doOutput);
+			},
+			// is present
+			function (): Boolean {
+				return InCollection(player.eyes.colour, GremlinRace.GremlinEyeColors);
 			}
 	);
 
@@ -965,6 +1084,17 @@ public class EyesTransformations extends MutationsHelper {
 			}
 	);
 
+	public const EyesBarometzColors: Transformation = new SimpleTransformation("Barometz Eye Colors",
+			// apply effect
+			function (doOutput: Boolean): void {
+				transformations.EyesChangeColor(["light green", "lime"]).applyEffect(doOutput);
+			},
+			// is present
+			function (): Boolean {
+				return InCollection(player.eyes.colour, ["light green", "lime"]);
+			}
+	);
+
 	public const EyesAlicornColors: Transformation = new SimpleTransformation("Alicorn Eye Colors",
 			// apply effect
 			function (doOutput: Boolean): void {
@@ -1006,6 +1136,17 @@ public class EyesTransformations extends MutationsHelper {
 			// is present
 			function (): Boolean {
 				return InCollection(player.eyes.colour, ["fiendish pink", "pink", "red", "yellow", "blue", "turquoise", "light green"]);
+			}
+	);
+
+	public const EyesYggdrasilColors: Transformation = new SimpleTransformation("Yggdrasil Eye Colors",
+			// apply effect
+			function (doOutput: Boolean): void {
+				transformations.EyesChangeColor(["green"]).applyEffect(doOutput);
+			},
+			// is present
+			function (): Boolean {
+				return InCollection(player.eyes.colour, ["green"]);
 			}
 	);
 	/*

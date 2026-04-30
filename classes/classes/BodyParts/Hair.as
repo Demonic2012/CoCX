@@ -152,7 +152,17 @@ public class Hair extends BodyPart {
 	EnumValue.add(Types, CRAZY, "CRAZY", {
 		name:"crazy",
 		shortDesc: "crazy {hair}",
-		appearanceDesc: "Your wild {hairInfo} is positively crazy, with spiked tips pointing outwards to your sides.",
+		appearanceDescFunc: function(creature: *): String {
+			var desc: String = "Your wild {hairInfo} is positively crazy. They are permanently stuck in a messed up spiky shape";
+
+			if (creature.headjewelryName == "Machinist Goggles" || creature.headjewelryName == "Scanner goggles" || creature.headjewelryName == "S.A Tech Goggles") {
+				desc += ". On top of them is your pair of trusty "+creature.headjewelryName+". You never remove them, even for sex";
+			}
+
+			desc += "."
+
+			return desc;
+		},
 		ignoresStyle: true
 	});
 
@@ -193,8 +203,8 @@ public class Hair extends BodyPart {
 	public static const COW:int = 21;
 	EnumValue.add(Types, COW, "COW", {
 		name:"cow like",
-		shortDesc: "dark spoted {hair}",
-		appearanceDesc: "Your {hairInfo} looks about normal except that they have darker spot reminding of cow fur."
+		shortDesc: "dark spotted {hair}",
+		appearanceDesc: "Your {hairInfo} looks about normal except that they have darker spot reminiscent of cow fur."
 	});
 
 	public static const DRIPPING:int = 22;
@@ -210,6 +220,20 @@ public class Hair extends BodyPart {
 		shortDesc: "peafowl feather-{hair}",
 		appearanceDesc: "Your {hairInfo} is made completely out of feathers rather than actual strands. A beautiful crest adorns your head with small feathers that stick straight up, like a Mohawk.",
 		ignoresStyle: true
+	});
+
+	public static const MYCONID:int = 24;
+	EnumValue.add(Types, MYCONID, "MYCONID", {
+		name:"f.filaments",
+		shortDesc: "glowing mushroom {hair}",
+		appearanceDesc: "Your {hairInfo} looks human at a quick glance but in truth are fungal filaments."
+	});
+
+	public static const SYNTHETIC:int = 25;
+	EnumValue.add(Types, SYNTHETIC, "SYNTHETIC", {
+		name:"synthetic",
+		shortDesc: "glowing synthetic {hair}",
+		appearanceDesc: "Your {hairInfo} with neon [eyecolor] tips looks good on you, accentuating your features well. It is actually made out of glowing synthetic fibers that carry electric signals and light allowing you to color your hairs however you want. You are not sure how you do it but you do somehow have an application in your database that can allow you to shorten and lengthen your synthetic hair as a living person would. For what purpose? Well only your fabricant would know."
 	});
 
 	// Additional modifiers for hair descriptions

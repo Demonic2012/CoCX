@@ -47,17 +47,14 @@ public class ManyBirdsSkill extends AbstractSoulSkill {
 	public function calcDamage(monster:Monster):Number {
 		var damage:Number = scalingBonusWisdom() * 2;
 		if (damage < 10) damage = 10;
-
 		//soulskill mod effect
 		damage *= soulskillMagicalMod();
-
 		//group enemies bonus
 		if (monster && monster.plural) damage *= 5;
-
 		//other bonuses
 		if (player.hasPerk(PerkLib.Heroism) && (monster && (monster.hasPerk(PerkLib.EnemyBossType) || monster.hasPerk(PerkLib.EnemyHugeType)))) damage *= 2;
 		if (player.perkv1(IMutationsLib.AnubiHeartIM) >= 4 && player.HP < Math.round(player.maxHP() * 0.5)) damage *= 1.5;
-
+		if (player.hasPerk(PerkLib.ExanimationI)) damage *= combat.hollowSkillsAndSoulskillsBoost();
 		return Math.round(damage);
 	}
 
@@ -68,9 +65,7 @@ public class ManyBirdsSkill extends AbstractSoulSkill {
 			outputText("You thrust your hand outwards with deadly intent, and in the blink of an eye a storm of crystals shoot towards [themonster].  ");
 			if (monsterDodgeSkill("crystal storm", display)) return;
 		}
-
 		var damage:Number = calcDamage(monster);
-
 		//Determine if critical hit!
 		var crit:Boolean = false;
 		var critChance:int = 5;
@@ -96,6 +91,12 @@ public class ManyBirdsSkill extends AbstractSoulSkill {
 		if (crit && display) outputText(" <b>*Critical Hit!*</b>");
 		checkAchievementDamage(damage);
 		if (display) outputText("\n\n");
+		if (player.hasPerk(PerkLib.BrutalSpells) && monster.armorMDef > 0) {
+			outputText("Your soulskills are so brutal that you damage [themonster]'s magical resistance!\n\n");
+			var bbc:Number = (Math.round(monster.armorMDef * 0.1) + 5);
+			if (monster.armorMDef - bbc > 0) monster.armorMDef -= bbc;
+			else monster.armorMDef = 0;
+		}
 		if (!player.hasStatusEffect(StatusEffects.BloodCultivator) && flags[kFLAGS.IN_COMBAT_PLAYER_ANUBI_HEART_LEECH] == 0) anubiHeartLeeching(damage);
 		combat.heroBaneProc(damage);
     }

@@ -29,7 +29,7 @@ use namespace CoC;
 		}
 		private function jinxBaseAttackDamage():void {
 			var damage:Number = 0;
-			damage += this.weaponRangeAttack * 20;
+			damage += this.weaponRangeAttack * 30;
 			player.takePhysDamage(damage, true);
 		}
 		private function jinxAyotechCanon():void {
@@ -45,13 +45,10 @@ use namespace CoC;
 			}
 			else {
 				var damage:Number = 0;
-				damage += this.weaponRangeAttack * 100;
+				damage += this.weaponRangeAttack * 150;
 				if (player.companionsInPCParty()) {
 					var splash:Number = 1;
-					if (flags[kFLAGS.PLAYER_COMPANION_0] != "") splash += 1;
-					if (flags[kFLAGS.PLAYER_COMPANION_1] != "") splash += 1;
-					if (flags[kFLAGS.PLAYER_COMPANION_2] != "") splash += 1;
-					if (flags[kFLAGS.PLAYER_COMPANION_3] != "") splash += 1;
+					splash += player.companionsInPcPartyCount();
 					damage *= splash;
 				}
 				player.takePhysDamage(damage, true);
@@ -66,7 +63,7 @@ use namespace CoC;
 			else this.weaponRangeName = "ayotech pistol";
 			outputText("Ayotech maniac casually fires " + this.weaponRangeName+" at you with high skill. ");
 			var damage:Number = 0;
-			damage += this.weaponRangeAttack * 20;
+			damage += this.weaponRangeAttack * 30;
 			player.takePhysDamage(damage, true);
 			if (player.buff("Zapped").isPresent()) player.buff("Zapped").addStats({spe: -20}).addDuration(2);
 			else player.buff("Zapped").addStats( {"spe": -20} ).withText("Zapped").combatTemporary(2);
@@ -87,13 +84,10 @@ use namespace CoC;
 			createStatusEffect(StatusEffects.AbilityCooldown1, 3, 0, 0, 0);
 			outputText("Ayotech maniac with high precision fires "+this.weaponRangeName+" at you. ");
 			var damage:Number = 0;
-			damage += this.weaponRangeAttack * 500;
+			damage += this.weaponRangeAttack * 750;
 			if (player.companionsInPCParty()) {
 				var splash:Number = 1;
-				if (flags[kFLAGS.PLAYER_COMPANION_0] != "") splash += 1;
-				if (flags[kFLAGS.PLAYER_COMPANION_1] != "") splash += 1;
-				if (flags[kFLAGS.PLAYER_COMPANION_2] != "") splash += 1;
-				if (flags[kFLAGS.PLAYER_COMPANION_3] != "") splash += 1;
+				splash += player.companionsInPcPartyCount();
 				damage *= splash;
 			}
 			player.takePhysDamage(damage, true);
@@ -123,7 +117,7 @@ use namespace CoC;
 			this.a = "the ";
 			this.short = "ayotech maniac";
 			this.imageName = "ayotech maniac";
-			this.long = "You're currently fighting gremlin ayotech maniac. For some weird reason she wears alot more belts than you would expect.";//change Jinx to Minx???
+			this.long = "You're currently fighting a gremlin ayotech maniac. For some weird reason, she wears a lot more belts than you would expect.";//change Jinx to Minx???
 			this.plural = false;
 			createBreastRow(Appearance.breastCupInverse("A"));
 			this.createVagina(false, VaginaClass.WETNESS_DRY, VaginaClass.LOOSENESS_TIGHT);
@@ -137,20 +131,20 @@ use namespace CoC;
 			this.skin.setBaseOnly({color:"olive"});//zmienić?
 			this.hairColor = "blue";//eyes: red
 			this.hairLength = 20;
-			initStrTouSpeInte(50, 50, 40, 40);
-			initWisLibSensCor(40, 20, 10, 50);
-			this.weaponName = "ayotech gaunlets";
+			initStrTouSpeInte(90, 100, 80, 110);
+			initWisLibSensCor(110, 80, 40, 100);
+			this.weaponName = "ayotech gauntlets";
 			this.weaponVerb = "smash";
-			this.weaponAttack = 16;
+			this.weaponAttack = 20;
 			if (EngineCore.silly()) this.weaponRangeName = "Pow-Pow";
 			else this.weaponRangeName = "ayotech minigun";
 			this.weaponRangeVerb = "shoot";
-			this.weaponRangeAttack = 12;
+			this.weaponRangeAttack = 60;
 			this.armorName = "light ayo armor";//zamienić na coś innego?
-			this.armorDef = 30;
-			this.armorMDef = 5;
-			this.bonusHP = 200;
-			this.bonusLust = 45;
+			this.armorDef = 150;
+			this.armorMDef = 150;
+			this.bonusHP = 500;
+			this.bonusLust = 135;
 			this.lustVuln = 0.85;
 			this.drop = NO_DROP;
 			//this.drop = new ChainedDrop()

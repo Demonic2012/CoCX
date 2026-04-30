@@ -5,12 +5,14 @@ import classes.Scenes.API.ExplorationEngine;
 import classes.Scenes.Areas.*;
 import classes.Scenes.Areas.Battlefield.DilapidatedShrine;
 import classes.Scenes.Areas.Bog.TrollScenes;
-import classes.Scenes.Areas.Caves.DisplacerBeastScene;
+import classes.Scenes.Areas.Caves.*;
 import classes.Scenes.Areas.DeepSea.AbyssalSharkScene;
 import classes.Scenes.Areas.Forest.ErlKingScene;
 import classes.Scenes.Areas.Forest.KitsuneScene;
 import classes.Scenes.Areas.GlacialRift.YuWinterGearShop;
+import classes.Scenes.Areas.LightlessReach.DisplacerBeastScene;
 import classes.Scenes.Areas.Ocean.ScyllaScene;
+import classes.Scenes.Areas.Plains.ZombieMummyScenes;
 import classes.Scenes.Camp.*;
 import classes.Scenes.Combat.Combat;
 import classes.Scenes.Dungeons.AnzuPalace.AnzuScene;
@@ -27,6 +29,7 @@ import classes.Scenes.Places.HeXinDao.AdventurerGuild;
 import classes.Scenes.Places.HeXinDao.JourneyToTheEast;
 import classes.Scenes.Places.TelAdre.Loppe;
 import classes.Scenes.Quests.UrtaQuest;
+import classes.Scenes.Places.RuinedTownRebuilt;
 
 public class SceneLib {
     public static var camp:Camp = new Camp(/*campInitialize*/);
@@ -89,6 +92,10 @@ public class SceneLib {
 
     public static var volcanicCrag:VolcanicCrag = new VolcanicCrag();
 
+    public static var lightlessReach:LightlessReach = new LightlessReach();
+
+    public static var cliffs:Cliffs = new Cliffs();
+
     public static var brigidScene:BrigidScene = new BrigidScene();
 
     public static var d3:D3 = new D3();
@@ -116,6 +123,10 @@ public class SceneLib {
     public static var aethertwins:AetherTwinsFollowers = new AetherTwinsFollowers();
 
     public static var alvinaFollower:AlvinaFollower = new AlvinaFollower();
+
+    public static var matangoScene:MatangoScene = new MatangoScene();
+
+    public static var automatonScene:AutomatonScene = new AutomatonScene();
 
     public static var amilyScene:AmilyScene = new AmilyScene();
 
@@ -147,7 +158,11 @@ public class SceneLib {
 
     public static var dinahScene:DinahFollower = new DinahFollower();
 
+    public static var ecihtelScene:EcihtelFollower = new EcihtelFollower();
+
     public static var electraScene:ElectraFollower = new ElectraFollower();
+
+    public static var eliseScene:EliseFollower = new EliseFollower();
 
     public static var emberScene:EmberScene = new EmberScene();
 	
@@ -177,13 +192,19 @@ public class SceneLib {
 
     public static var holliScene:HolliScene = new HolliScene();
 
+    public static var hollowScene:HollowScene = new HollowScene();
+
     public static var iridesianFollower:IridesianFollower = new IridesianFollower();
 
     public static var isabellaScene:IsabellaScene = new IsabellaScene();
 
     public static var isabellaFollowerScene:IsabellaFollowerScene = new IsabellaFollowerScene();
 
+    public static var ivanScene:IvanFollower = new IvanFollower();
+
     public static var izmaScene:IzmaScene = new IzmaScene();
+
+    public static var jinxFollower:JinxFollower = new JinxFollower();
 
     public static var jojoScene:JojoScene = new JojoScene();
 
@@ -241,6 +262,10 @@ public class SceneLib {
 
     public static var sophieScene:SophieScene = new SophieScene();
 
+    public static var stellaScene:StellaFollower = new StellaFollower();
+
+    public static var sythScene:SythFollower = new SythFollower();
+
     public static var tedScene:TedScenes = new TedScenes();
 
     public static var tifaFollower:TifaFollower = new TifaFollower();
@@ -283,6 +308,8 @@ public class SceneLib {
 
     public static var ghoulishVampireServant:GhoulishVampireServant = new GhoulishVampireServant();
 
+    public static var xuvielGiftSlave1:XuvielGiftSlaveFirst = new XuvielGiftSlaveFirst();
+
     public static var trollVillage:TrollVillage = new TrollVillage();
 
     public static var bazaar:Bazaar = new Bazaar();
@@ -298,6 +325,10 @@ public class SceneLib {
     public static var theTrench:TheTrench = new TheTrench();
 
     public static var ruinedTown:RuinedTownRebuilt = new RuinedTownRebuilt();
+
+    public static var domsdomain:DomsDomain = new DomsDomain();
+
+    public static var demonicLair:DemonLair = new DemonLair();
 
     public static var dungeons:DungeonEngine = new DungeonEngine();
 
@@ -348,5 +379,9 @@ public class SceneLib {
     public static var holidays:Holidays = new Holidays();
 
     public static var werewolfFemaleScene:WerewolfFemaleScene = new WerewolfFemaleScene();
+
+    public static var zombiesmummies:ZombieMummyScenes = new ZombieMummyScenes();
+
+    public static var tifaHive:TifaHive = new TifaHive();
 }
 }

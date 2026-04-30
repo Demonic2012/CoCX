@@ -60,19 +60,23 @@ public class JabberwockyRace extends Race {
 				.legType(LowerBody.JABBERWOCKY, +1)
 				.legType(NONE(LowerBody.FROSTWYRM, LowerBody.FEY_DRAGON, LowerBody.LION), 0, -1000)
 				.armType(Arms.JABBERWOCKY, +1)
-				.armType(NONE(Arms.DRACONIC, Arms.FEY_DRACONIC, Arms.LION), 0, -10)
+				.armType(NONE(Arms.DRACONIC, Arms.FEY_DRACONIC, Arms.LION, Arms.YGGDRASIL), 0, -10)
 				.hasCockOfType(CockTypesEnum.DRAGON, +1)
 				.gender(Gender.GENDER_FEMALE, +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addScoresAfter(5)
 				.hasPerk(PerkLib.DragonLustPoisonBreath, +1)
 				.hasPerk(PerkLib.Insanity, +1);
 		addScoresAfter(10)
-				.height(GREATER_THAN(120),+1);
+				.height(GREATER_THAN(120),+1)
+				.hasPerk(PerkLib.Dracoforce, +1);
 		
 		addBloodline(PerkLib.DragonsDescendant,PerkLib.BloodlineDragon);
-		addMutation(IMutationsLib.DraconicBonesIM);
-		addMutation(IMutationsLib.DraconicHeartIM);
+		addMutation(IMutationsLib.DrakeBloodIM);
+		addMutation(IMutationsLib.DrakeBonesIM);
+		addMutation(IMutationsLib.DrakeHeartIM);
 		addMutation(IMutationsLib.DrakeLungsIM);
+		addMutation(IMutationsLib.MightyLegsIM);
 		
 		buildTier(10, "lesser jabberwocky")
 				.namesTauric("lesser jabberwocky", "lesser jabberwocky-taur")

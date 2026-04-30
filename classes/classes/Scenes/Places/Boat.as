@@ -9,6 +9,7 @@ import classes.Scenes.API.Encounters;
 import classes.Scenes.API.ExplorationEntry;
 import classes.Scenes.API.GroupEncounter;
 import classes.Scenes.Areas.Lake.*;
+import classes.Scenes.Dungeons.RiverDungeon.WaterElemental;
 import classes.Scenes.NPCs.BelisaFollower;
 import classes.Scenes.NPCs.EtnaFollower;
 import classes.Scenes.Places.Boat.*;
@@ -24,7 +25,7 @@ public class Boat extends AbstractLakeContent
 			onGameInit(init);
 		}
 
-		public const discoverLevel:int = 0;
+		public const discoverLevel:int = 10;
 		public const areaLevel:int = 1;
 		public function isDiscovered():Boolean {
 			return SceneLib.exploration.counters.boat > 0;
@@ -67,7 +68,7 @@ public class Boat extends AbstractLakeContent
 				kind: 'npc',
 				unique: true,
 				when: function():Boolean {
-					return (flags[kFLAGS.ETNA_FOLLOWER] < 1 || EtnaFollower.EtnaInfidelity == 2) && flags[kFLAGS.ETNA_TALKED_ABOUT_HER] == 2 && !player.hasStatusEffect(StatusEffects.EtnaOff) && (player.level >= 20);
+					return (flags[kFLAGS.ETNA_FOLLOWER] < 1 || EtnaFollower.EtnaInfidelity == 2) && flags[kFLAGS.ETNA_TALKED_ABOUT_HER] == 2 && !player.hasStatusEffect(StatusEffects.EtnaOff) && (player.level >= 20 || flags[kFLAGS.HARDCORE_MODE] == 1);
 				},
 				call: SceneLib.etnaScene.repeatYandereEnc
 			}, {
@@ -111,12 +112,17 @@ public class Boat extends AbstractLakeContent
 					anemoneScene.mortalAnemoneeeeee();
 				}
 			}, {
+				name: "water ele",
+				label : "Water Elemental",
+				kind  : 'monster',
+				call: boatWaterElemental
+			}, {
 				name: 'zealot',
 				label: "Fetish Zealot",
 				kind: 'monster',
 				night: false,
 				when: function():Boolean {
-					return player.level > 2 && player.hasStatusEffect(StatusEffects.FetishOn)
+					return (player.level > 2 || flags[kFLAGS.HARDCORE_MODE] == 1) && player.hasStatusEffect(StatusEffects.FetishOn)
 				},
 				call: lake.fetishZealotScene.zealotBoat
 			}, {
@@ -134,7 +140,7 @@ public class Boat extends AbstractLakeContent
 				kind  : 'npc',
 				unique: true,
 				when: function():Boolean {
-					return player.level >= 5 && flags[kFLAGS.KAIJU_DISABLED] == 0 && !player.hasStatusEffect(StatusEffects.VenusOff);
+					return (player.level >= 5 || flags[kFLAGS.HARDCORE_MODE] == 1) && flags[kFLAGS.KAIJU_DISABLED] == 0 && !player.hasStatusEffect(StatusEffects.VenusOff);
 				},
 				call: kaiju.kaijuMeeting
 			})
@@ -155,6 +161,15 @@ public class Boat extends AbstractLakeContent
 			explorer.leave.hint("Return to the shore");
 			explorer.skillBasedReveal(areaLevel, timesExplored());
 			explorer.doExplore();
+		}
+		
+		private function boatWaterElemental():void {
+			clearOutput();
+			outputText("While wandering lake you are suddenly struck with the so-called call of nature and use the nearby water for release.\n\n");
+			outputText("Just as you gasp in release you hear a sound like that of a rock falling into a body of water as a small girl with blue translucent skin emerges from the liquid body you just delivered into. Fuck this is no good that water elemental just had her water poluted by your rejects and is giving you a glare that says she’s gunna add your blood to her fluid count!\n\n");
+			outputText("You slowly back away as the water around you suddenly begins to churn, mirroring her anger as she gushes toward you. It's a fight!");
+			flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] = 3;
+			startCombat(new WaterElemental());
 		}
 
 		private function fishing():void {

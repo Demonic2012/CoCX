@@ -10,6 +10,7 @@ import classes.PerkLib;
 import classes.Scenes.SceneLib;
 import classes.StatusEffects;
 import classes.StatusEffects.Combat.GardenerSapSpeedDebuff;
+import classes.internals.WeightedDrop;
 
 import coc.view.CoCButton;
 
@@ -46,8 +47,9 @@ import coc.view.CoCButton;
 			this.fatigue = 0;
 			this.gems = 400 + rand(50);
 			this.level = 70;
-			this.lustVuln = 0;
+			this.lustVuln = 0.01;
 			this.drop = NO_DROP;
+			drop = new WeightedDrop(consumables.LETH3TE, 1);
 			this.createPerk(PerkLib.ArchersStaminaI, 0, 0, 0, 0);
 			this.createPerk(PerkLib.InhumanDesireI, 0, 0, 0, 0);
 			this.createPerk(PerkLib.DemonicDesireI, 0, 0, 0, 0);
@@ -221,7 +223,7 @@ import coc.view.CoCButton;
 		{
 			clearOutput();
 			var numRounds:int = player.statusEffectv1(StatusEffects.Tentagrappled);
-			if ((rand(player.str) > this.str / (1 + (numRounds / 2))) || player.hasPerk(PerkLib.FluidBody))
+			if (SceneLib.combat.struggleCentralizedCheck())
 			{
 				outputText("You scrabble desperately against the tentacles enveloping your body, pulling against the cast-iron grip around your limbs. You tug against them again and again, and with one final mighty heave, you slip free of their grasp!");
 				player.removeStatusEffect(StatusEffects.Tentagrappled);

@@ -69,7 +69,7 @@ import classes.Scenes.NPCs.Galia;
 			clearOutput();
 			outputText("She hovers over you defiantly, \"<i>To the winners goes the spoils.</i>\"\n\n");
 			outputText("Before you're offered a chance to recover, Galia begins another round of beating, albeit slightly less violent than before.");
-			HPChange(player.maxHP() * 0.1, false);
+			HPChange(player.maxHP() * 0.1, false, false);
 			cleanupAfterCombat();
 		}
 		public function GaliaLostSparring():void {
@@ -84,17 +84,13 @@ import classes.Scenes.NPCs.Galia;
 					flags[kFLAGS.GALIA_DEFEATS_COUNTER] = 0;
 					flags[kFLAGS.GALIA_LVL_UP] = 2;
 				}
-				if (flags[kFLAGS.GALIA_DEFEATS_COUNTER] == 1 && flags[kFLAGS.GALIA_LVL_UP] == 2) {
-					if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers3)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers3, 2, player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction));
-					else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers3, 0, player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction), 0, 0);
-					flags[kFLAGS.GALIA_DEFEATS_COUNTER] = 0;
-					flags[kFLAGS.GALIA_LVL_UP] = 3;
-				}
-				if (flags[kFLAGS.GALIA_DEFEATS_COUNTER] == 2 && flags[kFLAGS.GALIA_LVL_UP] == 3) {
-					if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers3)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers3, 2, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 2));
-					else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers3, 0, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 2), 0, 0);
-					flags[kFLAGS.GALIA_DEFEATS_COUNTER] = 0;
-					flags[kFLAGS.GALIA_LVL_UP] = 4;
+				if (flags[kFLAGS.GALIA_LVL_UP] < 4) {
+					if (flags[kFLAGS.GALIA_DEFEATS_COUNTER] >= flags[kFLAGS.GALIA_LVL_UP] + 1) {
+						if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers3)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers3, 2, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * (flags[kFLAGS.GALIA_LVL_UP] - 1)));
+						else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers3, 0, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * (flags[kFLAGS.GALIA_LVL_UP] - 1)), 0, 0);
+						flags[kFLAGS.GALIA_DEFEATS_COUNTER] = 0;
+						flags[kFLAGS.GALIA_LVL_UP]++;
+					}
 				}/*
 				if (flags[kFLAGS.GALIA_DEFEATS_COUNTER] == 3 && flags[kFLAGS.GALIA_LVL_UP] == 4) {
 					if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers3)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers3, 2, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 2));

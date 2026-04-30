@@ -55,10 +55,14 @@ public class NagaRace extends Race {
 							return !(GorgonRace.isGorgonLike(body)
 									|| CouatlRace.isCouatlLike(body)
 									|| VouivreRace.isVouivreLike(body)
-									|| HydraRace.isHydraLike(body));
-						}, 0, -1000);
+									|| HydraRace.isHydraLike(body)
+									|| ApophisRace.isApophisLike(body)
+									|| MarilithRace.isMarilithLike(body));
+						}, 0, -1000)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		
 		addMutation(IMutationsLib.VenomGlandsIM);
+		addMutation(IMutationsLib.MightyLowerHalfIM);
 		
 		buildTier(8, "naga")
 				.buffs({

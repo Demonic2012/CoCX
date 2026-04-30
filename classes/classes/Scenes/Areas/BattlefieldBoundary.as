@@ -87,6 +87,18 @@ use namespace CoC;
 				chance: 0.4,
 				call: findMetalScrapBoundary
 			}, {
+				name: "d_cultivators",
+				label : "Dead cultivators",
+				kind  : 'item',
+				chance: 0.4,
+				call: deadCultivatorsBattlefieldBoundary
+			}, {
+				name: "d_demons",
+				label : "Dead demons",
+				kind  : 'item',
+				chance: 0.4,
+				call: deadDemonsBattlefieldBoundary
+			}, {
 				//Find Tripxi gun parts
 				name: "gunPart",
 				label : "Gun Parts",
@@ -132,8 +144,7 @@ use namespace CoC;
 				when: function ():Boolean {
 					return (flags[kFLAGS.ETNA_FOLLOWER] < 1 || EtnaFollower.EtnaInfidelity == 2)
 							&& flags[kFLAGS.ETNA_TALKED_ABOUT_HER] == 2
-							&& !player.hasStatusEffect(StatusEffects.EtnaOff)
-							&& (player.level >= 20);
+							&& !player.hasStatusEffect(StatusEffects.EtnaOff);
 				},
 				chance: battlefieldBoundaryChance,
 				call: SceneLib.etnaScene.repeatYandereEnc
@@ -166,7 +177,7 @@ use namespace CoC;
 				unique: true,
 				call: SceneLib.tedScene.introPostHiddenCave,
 				when: SceneLib.tedScene.canEncounterTed
-			}, SceneLib.exploration.commonEncounters.withChanceFactor(0.1), {
+			}, SceneLib.exploration.commonGroupEncounters.withChanceFactor(0.1), {
 				name: "zombies",
 				label : "Zombies",
 				kind : 'monster',
@@ -185,7 +196,7 @@ use namespace CoC;
 			});
 		}
 		
-		public const discoverLevel:int = 5;
+		public const discoverLevel:int = 15;
 		public const areaLevel:int = 16;
 		public function isDiscovered():Boolean {
 			return SceneLib.exploration.counters.battlefieldBoundary > 0;
@@ -239,13 +250,42 @@ use namespace CoC;
 			endEncounter();
 		}
 
+		private function deadCultivatorsBattlefieldBoundary():void {
+			clearOutput();
+			var item:ItemType;
+			if (rand(3) == 0) item = consumables.BAGOCB3;
+			else {
+				if (rand(2) == 0) item = consumables.BAGOCB1;
+				else item = consumables.BAGOCB2;
+			}
+			outputText("While exploring the battlefield you walk across the long decayed bones of ancient cultivators. While the law of nature in Mareth makes death by battle unlikely, most cultivators would rather blow up their core over having their precious soul harvested by the demons.\n\n");
+			outputText("To them death is preferable to losing everything that made them cultivators in the first place. ");
+			if (player.cor >= -20) outputText("You scoff at the cowardice of the cultivator warriors last you checked getting raped once or twice was hardly enough to cum your soul out from your point of view these guys were soft.");
+			else outputText("While you do feel sorry for the loss of life this is war and casualty are inevitable.");
+			outputText(" While looking around you find old loots left there by the victors it stands to reason that demons have no use for cultivation resources anyway.\n\n");
+			outputText("You found " + item.longName + " on the bodies.\n\n");
+			inventory.takeItem(item, explorer.done);
+		}
+		private function deadDemonsBattlefieldBoundary():void {
+			clearOutput();
+			var gems:Number = 250 + rand(51);
+			outputText("While exploring the battlefield you run across the decayed remains of demons.\n\nOn the rare occasion where golems and cultivators would exchange blows with the demonic horde all battle would be lethal. ");
+			outputText("While the demons would probably spare their opponent in order to corrupt them or turn them into sex toys the cultivator warriors have no such qualm to their demonic victims which they mercilessly execute given the chance."+(player.cor >= 50 ? " A chilling thought pass through your mind as thinking hard on it you realise if you crossed path with one of those cultivator they would probably try and kill you on the spot.":"")+"\n\n");
+			outputText("On the bodies you retrieve fragments of lethicites and " + gems + " gems.\n\n");
+			player.gems += gems;
+			if (player.level < 25) SceneLib.inventory.takeItem(CoC.instance.consumables.LETH0TE, explorer.done);
+			else if (player.level < 50) SceneLib.inventory.takeItem(CoC.instance.consumables.LETH1TE, explorer.done);
+			else if (player.level < 75) SceneLib.inventory.takeItem(CoC.instance.consumables.LETH2TE, explorer.done);
+			else SceneLib.inventory.takeItem(CoC.instance.consumables.LETH3TE, explorer.done);
+		}
+
 		private function findNothing():void {
 			clearOutput();
 			if (rand(4) == 0) {
 				outputText("You spend almost hour exploring this deserted battlefield but you don't manage to find anything interesting. After checking another pile of weapons you hear some noise coming from nearby. Intrigued you cautiously approach source of it, which turns to be... " + (rand(2) == 0 ? "demons" : "imps") + ". Whole group of them running straight at you. ");
 				outputText("As they approach you ready your [weapon] but... the first ones after reaching you jsut give you a short glance and just pass by. Then another one and one more pass you by almost looking like they just seen you as merely obstacle to avoid during their run. Then you hear some fragments of the words they seems to talks form time to time.\n\n");
 				outputText("\"<i>...ster or the fog will catch up to u...</i>\", \"<i>...ut there is <b>SOMETHING</b> insid...</i>\", \"<i>...us..t reeee....port b...</i>\"\n\n");
-				outputText("After last one of them pass you by they soon vanish into distance behind you. What just happened? Usualy laidback and horny " + (rand(2) == 0 ? "demons" : "imps") + " was actualy running away? From fog? As you thinking over it you notice something moving slightly in the direction they came. ");
+				outputText("After the last one of them passes you by, they soon vanish into the distance behind you. What just happened? Usually laid-back and horny " + (rand(2) == 0 ? "demons" : "imps") + " were actually running away? From fog? As you think over it, you notice something moving slightly in the direction they came. ");
 				outputText("Some grey, maybe black colored shape seemly wiggling as it like moving in your direction." + (silly() ? " Oh are you approaching me?" : "") + " Bit tired and on the edge due to meeting potential enemies moments ago you decide to return this time. Maybe next time you will check out closer that 'fog' or whatever it's.");
 			} else outputText("You spend an hour exploring this deserted battlefield but you don't manage to find anything interesting, yet this trip had made you a little wiser.");
 			dynStats("wis", .5);

@@ -61,12 +61,13 @@ public class SphinxRace extends Race {
 						}, +2)
 				.customRequirement("","more sphinx features than other magical feline",
 						CatRace.isSphinxSubrace,0,-1000
-				);
+				)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addConditionedScores(
 				function (body:BodyData):Boolean {
 					return body.isTaur && body.legType == LowerBody.CAT;
 				},"cat-legged taur;")
-				.tailType(Tail.CAT, +1)
+				.tailType(ANY(Tail.CAT, Tail.LION), +1)
 				.skinPlainOnly(+1)
 				.armType(Arms.SPHINX, +1)
 				.earType(Ears.LION, +1)
@@ -75,7 +76,7 @@ public class SphinxRace extends Race {
 				.hasPerk(PerkLib.Flexibility, +1);
 		
 		addMutation(IMutationsLib.TwinHeartIM, +2);
-		addMutation(IMutationsLib.CatLikeNimblenessIM, +1);
+		addMutation(IMutationsLib.CatLikeNimblenessIM);
 		addMutation(IMutationsLib.EyeOfTheTigerIM);
 		
 		buildTier(14, "sphinx")

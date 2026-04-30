@@ -92,6 +92,7 @@ use namespace CoC;
 				player.hasVagina(), "You could ride the drider's retractible demon-cock or her ovipositor.");
 			addButton(6, "RideOviAnal", victoryVSDriderRideOviAnal).hint("You could always ride her ovipositor anally...");
 			LustyMaidensArmor.addTitfuckButton(7);
+			addButtonIfTrue(12, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
 			addButton(14, "Leave", cleanupAfterCombat);
 			SceneLib.uniqueSexScene.pcUSSPreChecksV2(defeatDriderIntro);
 		}
@@ -433,7 +434,7 @@ use namespace CoC;
 				if (player.wetness() >= 3) outputText(" and drips");
 				outputText(" sympathetically with the sensation, and your " + clitDescript() + " peeks from the wet lips.");
 			}
-			outputText("  Yet you are not denied the anal pleasure you crave, as the widening bands now filling you are each pushing out harder than the one before.  At the stimulation, her own demonic clit swells as if posessed, nodulates, and hardens into dick form, poking up from her pussy and drooling a slime of pre-cum onto her abdomen.  The second ring rolls over your anal g-spot and you gasp, nearly losing your grip.  The third knocks your [legs] out from under you, and you collapse atop your partner, squeezing oozing dick");
+			outputText("  Yet you are not denied the anal pleasure you crave, as the widening bands now filling you are each pushing out harder than the one before.  At the stimulation, her own demonic clit swells as if possessed, nodulates, and hardens into dick form, poking up from her pussy and drooling a slime of pre-cum onto her abdomen.  The second ring rolls over your anal g-spot and you gasp, nearly losing your grip.  The third knocks your [legs] out from under you, and you collapse atop your partner, squeezing oozing dick");
 			if (player.hasCock()) outputText("s");
 			outputText(" between you");
 			if (player.hasVagina() && player.clitLength >= 4) outputText(", and pressing your monster chick-stick into it; the gooey heat sends a tingle of shock up your spine and your pussy convulses");

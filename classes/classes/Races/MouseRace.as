@@ -52,14 +52,17 @@ public class MouseRace extends Race {
 				.eyeTypeAndColor(Eyes.HINEZUMI, "blazing red", +1)
 				.hairType(Hair.BURNING, +1)
 				.hairColor1(ANY(MouseHairColors), +1)
-				.skinCoatType(Skin.FUR, +1);
+				.skinCoatType(Skin.FUR, +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addConditionedScores(function (body:BodyData): Boolean {
 			return body.skinCoatType == Skin.FUR;
 		}, "fur;")
 				.height(LESS_THAN(60), +1)
 				.height(LESS_THAN(52), +1);
 		
+		addBloodline(PerkLib.MousesDescendant, PerkLib.BloodlineMouse);
 		addMutation(IMutationsLib.HinezumiBurningBloodIM);
+		addMutation(IMutationsLib.BlazingHeartIM);
 		
 		buildTier(8, "mouse-morph")
 				.namesMaleFemaleMorphTaur("mouse-boy","mouse-girl","mouse-morph","mouse-taur")
@@ -74,7 +77,6 @@ public class MouseRace extends Race {
 				.namesTauric("fire mouse","fire mouse-taur")
 				.requireArmType(Arms.HINEZUMI)
 				.requireLegType(LowerBody.HINEZUMI)
-				.requireTailType(Tail.HINEZUMI)
 				.buffs({
 					"str.mult": +0.60,
 					"tou.mult": -0.10,
@@ -90,7 +92,8 @@ public class MouseRace extends Race {
 					"str.mult": +0.75,
 					"tou.mult": -0.10,
 					"spe.mult": +0.80,
-					"wis.mult": +0.80
+					"wis.mult": +0.80,
+					"maxsf_mult": +1.0
 				})
 				.end();
 	}

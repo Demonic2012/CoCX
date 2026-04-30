@@ -11,42 +11,12 @@ import classes.BodyParts.Hips;
 import classes.BodyParts.LowerBody;
 import classes.BodyParts.Skin;
 import classes.GlobalFlags.kFLAGS;
+import classes.Scenes.SceneLib;
 import classes.Stats.Buff;
 import classes.internals.*;
 
 public class CaiLin extends Monster
 	{
-		override protected function performCombatAction():void
-		{
-			var choice:Number = rand(6);
-			if (choice == 0) eAttack();
-			if (choice == 1) medusaPoisonBiteAttack();
-			if (choice == 2) {
-				if (player.hasStatusEffect(StatusEffects.NagaBind) || player.hasStatusEffect(StatusEffects.Stunned)) TailWhip();
-				else medusaConstrict();
-			}
-			if (choice == 3) {
-				if (player.hasStatusEffect(StatusEffects.Stunned)) castSpell();
-				else if (player.hasStatusEffect(StatusEffects.NagaBind)) medusaPoisonBiteAttack();
-				else TailWhip();
-			}
-			if (choice == 4) {
-				if (player.hasStatusEffect(StatusEffects.Stunned)) castSpell();
-				else if (player.hasStatusEffect(StatusEffects.NagaBind)) {
-					if (rand(2) == 0) medusaPoisonBiteAttack();
-					else TailWhip();
-				}
-				else {
-					if (player.hasStatusEffect(StatusEffects.AbilityCooldown1)) {
-						if (rand(2) == 0) medusaPoisonBiteAttack();
-						else TailWhip();
-					}
-					else petrify();
-				}
-			}
-			if (choice == 5) castSpell();
-		}
-		
 		public function medusaPoisonBiteAttack():void {
 			//(Deals damage over 4-5 turns, invariably reducing 
 			//your speed. It wears off once combat is over.)
@@ -55,8 +25,8 @@ public class CaiLin extends Monster
 			outputText("'s strikes with the speed of a cobra, sinking her fangs into your flesh!  ");
 			if(!player.hasStatusEffect(StatusEffects.MedusaVenom)) {
 				outputText("The venom's effects are almost instantaneous; your body begins to weaken and even your mind becoming muddled.");
-				if(player.str > 8 && player.tou > 8 && player.spe > 8 && player.inte > 8) {
-					player.statStore.addBuffObject({"str":-2,"tou":-2,"spe":-2,"int":-1},"Poison", {text:"Poisoned!",time:Buff.RATE_HOURS, tick:4})
+				if(player.str > 7 && player.tou > 7 && player.spe > 7 && player.inte > 5) {
+					player.statStore.addBuffObject({"str":-4,"tou":-4,"spe":-4,"int":-2},"Poison", {text:"Poisoned!",time:Buff.RATE_HOURS, tick:4})
 					showStatDown( 'str' );
 					showStatDown( 'tou' );
 					showStatDown( 'spe' );
@@ -65,22 +35,22 @@ public class CaiLin extends Monster
 				}
 				else {
 					player.createStatusEffect(StatusEffects.MedusaVenom,2,1,0,0);
-					player.takePoisonDamage(5+rand(5));
+					player.takePoisonDamage(25+rand(25));
 				}
-				player.takePoisonDamage(5+rand(5));
+				player.takePoisonDamage(25+rand(25));
 			}
 			else {
 				outputText("The venom's effects intensify causing yor body and mind further weaker and mind even more muddled.");
-				if(player.str > 7 && player.tou > 7 && player.spe > 7 && player.inte > 7) {
-					player.statStore.addBuffObject({"str":-4,"tou":-4,"spe":-4,"int":-2},"Poison", {text:"Poisoned!",time:Buff.RATE_HOURS, tick:4})
+				if(player.str > 9 && player.tou > 9 && player.spe > 9 && player.inte > 7) {
+					player.statStore.addBuffObject({"str":-6,"tou":-6,"spe":-6,"int":-3},"Poison", {text:"Poisoned!",time:Buff.RATE_HOURS, tick:4})
 					showStatDown( 'str' );
 					showStatDown( 'tou' );
 					showStatDown( 'spe' );
 					showStatDown( 'inte' );
 					player.addStatusValue(StatusEffects.MedusaVenom,1,1);
 				}
-				else player.takePoisonDamage(5+rand(5));
-				player.takePoisonDamage(5+rand(5));
+				else player.takePoisonDamage(25+rand(25));
+				player.takePoisonDamage(25+rand(25));
 			}
 		}
 		
@@ -88,7 +58,7 @@ public class CaiLin extends Monster
 			if (game.flags[kFLAGS.CAILIN_AFFECTION] >= 10) outputText("Cai'Lin");
 			else outputText("The gorgon");
 			outputText(" draws close and suddenly wraps herself around you, binding you in place! You can't help but feel strangely aroused by the sensation of her scales rubbing against your body. All you can do is struggle as she begins to squeeze tighter!");
-			player.createStatusEffect(StatusEffects.NagaBind,0,0,0,0); 
+			player.createStatusEffect(StatusEffects.PlayerBoundPhysical,0,0,0,0); 
 			if (!player.hasPerk(PerkLib.Juggernaut) && armorPerk != "Heavy") {
 				player.takePhysDamage(3+rand(6));
 			}
@@ -106,7 +76,7 @@ public class CaiLin extends Monster
 				if (game.flags[kFLAGS.CAILIN_AFFECTION] >= 10) outputText("Cai'Lin");
 				else outputText("the gorgon's");
 				outputText(" tail slams into you and knocking over. You fast pick yourself up, wincing at the pain in your side. ");
-				var damage:Number = str;
+				var damage:Number = str * 1.5;
 				if(player.armorDef < 100) damage += 100 - player.armorDef;
 				damage += rand(30);
 				damage = player.takePhysDamage(damage, true);
@@ -114,10 +84,10 @@ public class CaiLin extends Monster
 		}
 		
 		public function petrify():void {
-			outputText("With a moment of concentration she awakens normaly dormant snake hair that starts to hiss and then casual glance at you. Much to your suprise you noticing your fingers then hands starting to pertify... ");
+			outputText("With a moment of concentration she awakens normally dormant snake hair that starts to hiss and then casual glance at you. Much to your surprise you notice your fingers then hands starting to petrify... ");
 			player.createStatusEffect(StatusEffects.Stunned, 1, 0, 0, 0);
 			createStatusEffect(StatusEffects.AbilityCooldown1, 3, 0, 0, 0);
-			if (player.hasStatusEffect(StatusEffects.NagaBind)) player.removeStatusEffect(StatusEffects.NagaBind);
+			if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical)) player.removeStatusEffect(StatusEffects.PlayerBoundPhysical);
 		}
 		
 		public function spellCostWhitefire():Number {
@@ -140,14 +110,7 @@ public class CaiLin extends Monster
 		}
 		
 		public function WhiteFireSpell():void {
-			var damage:int = (inte/3 + rand(inte/2));
-			if (inte >= 21 && inte < 41) damage += (inte / 2 + rand((inte * 3) / 4));
-			if (inte >= 41 && inte < 61) damage += ((inte * 2) / 3 + rand(inte));
-			if (inte >= 61 && inte < 81) damage += ((inte * 5) / 6 + rand(inte * 1.25));
-			if (inte >= 81 && inte < 101) damage += (inte + rand(inte * 1.5));
-			if (inte >= 101 && inte < 151) damage += ((inte * 1.25) + rand(inte * 1.75));
-			if (inte >= 151 && inte < 201) damage += ((inte * 1.5) + rand(inte * 2));
-			if (inte >= 201) damage += ((inte * 1.75) + rand(inte * 2.25));
+			var damage:int = eBaseIntelligenceDamage();
 			damage *= SpellMod();
 			if (player.hasStatusEffect(StatusEffects.Blizzard)) {
 			player.addStatusValue(StatusEffects.Blizzard, 1, -1);
@@ -167,13 +130,73 @@ public class CaiLin extends Monster
 			}
 			damage = Math.round(damage);
 			player.takeFireDamage(damage, true);
-			fatigue += spellCostWhitefire();
+			mana -= spellCostWhitefire();
 			flags[kFLAGS.CAILIN_SPELLS_CASTED]++;
 		}
 		
 		public function castSpell():void {
-			if (fatigue < (maxFatigue() - spellCostWhitefire())) WhiteFireSpell();//później jak dodam ice, lighting spells rozbudować wybór zakleć
+			if (mana < (maxMana() - spellCostWhitefire())) WhiteFireSpell();//później jak dodam ice, lighting spells rozbudować wybór zakleć
 			else eAttack();
+		}
+		
+		override public function combatStatusesUpdateWhenBound():void{
+			nagaBindUpdateWhenBound();
+		}
+
+		override public function playerBoundStruggle():Boolean{
+			clearOutput();
+			if (SceneLib.combat.struggleCentralizedCheck()) {
+				outputText("You wriggle and squirm violently, tearing yourself out from within [themonster]'s coils.");
+				player.removeStatusEffect(StatusEffects.PlayerBoundPhysical);
+			} else {
+				if (flags[kFLAGS.CAILIN_AFFECTION] >= 10) outputText("Cai'Lin");
+				else outputText("The [monster name]");
+				outputText("'s grip on you tightens as you struggle to break free from the stimulating pressure.");
+				player.takeLustDamage(player.effectiveSensitivity() / 5 + 2, true);
+				player.takePhysDamage(100 + rand(8));
+			}
+			return true;
+		}
+
+		override public function playerBoundWait():Boolean{
+			clearOutput();
+			if (flags[kFLAGS.CAILIN_AFFECTION] >= 10) outputText("Cai'Lin");
+			else outputText("The [monster name]");
+			outputText("'s grip on you tightens as you relax into the stimulating pressure.");
+			player.takeLustDamage(player.effectiveSensitivity() / 3 + 5, true);
+			player.takePhysDamage(50 + rand(5));
+			return true;
+		}
+
+		override protected function performCombatAction():void
+		{
+			var choice:Number = rand(6);
+			if (choice == 0) eAttack();
+			if (choice == 1) medusaPoisonBiteAttack();
+			if (choice == 2) {
+				if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical) || player.hasStatusEffect(StatusEffects.Stunned)) TailWhip();
+				else medusaConstrict();
+			}
+			if (choice == 3) {
+				if (player.hasStatusEffect(StatusEffects.Stunned)) castSpell();
+				else if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical)) medusaPoisonBiteAttack();
+				else TailWhip();
+			}
+			if (choice == 4) {
+				if (player.hasStatusEffect(StatusEffects.Stunned)) castSpell();
+				else if (player.hasStatusEffect(StatusEffects.PlayerBoundPhysical)) {
+					if (rand(2) == 0) medusaPoisonBiteAttack();
+					else TailWhip();
+				}
+				else {
+					if (player.hasStatusEffect(StatusEffects.AbilityCooldown1)) {
+						if (rand(2) == 0) medusaPoisonBiteAttack();
+						else TailWhip();
+					}
+					else petrify();
+				}
+			}
+			if (choice == 5) castSpell();
 		}
 		
 		public function CaiLin() 
@@ -195,26 +218,25 @@ public class CaiLin extends Monster
 				createBreastRow(Appearance.breastCupInverse("A"));
 				this.tallness = 5*12+10;
 				this.hairLength = 10;
-				initStrTouSpeInte(75, 100, 95, 50);
-				initWisLibSensCor(50, 30, 20, 40);
-				this.weaponAttack = 45;
-				this.armorDef = 40;
-				this.armorMDef = 30;
-				this.bonusHP = 300;
-				this.bonusLust = 70;
+				initStrTouSpeInte(319, 350, 328, 220);
+				initWisLibSensCor(220, 252, 230, -20);
+				this.weaponAttack = 81;
+				this.armorDef = 250;
+				this.armorMDef = 100;
+				this.bonusHP = 2000;
+				this.bonusLust = 527;
 				this.lustVuln = .9;
-				this.level = 20;
+				this.level = 45;
 			}
 			if (flags[kFLAGS.CAILIN_LVL_UP] == 1) {
 				this.long = "You are fighting Cai'Lin. Despite that she not looking exactly the same as other gorgon due to huge parts of her skin not covered in seven-colored scales, striped in a pattern reminiscent of the dunes around you. Scaleless areas includes most of her face, front torso and abdomen. Instead of bifurcating into legs, her hips elongate into a snake's body which stretches far out behind her, leaving a long and curving trail in the sand.  She's wearing only make-shift bra over her A-cup breasts and simple loincloth. In her mouth you can see a pair of sharp, venomous fangs and a long forked tongue moving rapidly as she hisses at you.";
 				this.createVagina(false, VaginaClass.WETNESS_WET, VaginaClass.LOOSENESS_NORMAL);//każde 2 lvl up podwyższają wetness
 				this.createStatusEffect(StatusEffects.BonusVCapacity, 40, 0, 0, 0);//zwieksza sie czy tez nie?
 				createBreastRow(Appearance.breastCupInverse("B"));//wpierw wzrost do B na 1,2 lvl-up potem do C na 3,4 i do D na 5,6 a dodtkowe urośnicie jak użyje jakiś TF - albo zostaje na A i potem użycie itemów zmienić może rozmiar tylko (first increase to B at level-up 1 and 2, then to C at levels 3 and 4, and to D at levels 5 and 6. Additional growth occurs when using specific TF (Transformation) - either stay at A and later use items to change size.)
-
 				this.tallness = 6*12;//potem z każdą zmianą dodawać jej 2 wzrostu tak aby ostatecznie osiągneła coś koło 6*12+10 (then with each change, add 2 units of growth so that eventually she reaches something around 6*12+10.)
 				this.hairLength = 12;
 				initStrTouSpeInte(90, 120, 110, 70);//lvl-up daje +15, +20, +15, +20
-				initWisLibSensCor(70, 45, 30, 40);//lvl-up daje +20, +15, +10, +0
+				initWisLibSensCor(70, 45, 30, -20);//lvl-up daje +20, +15, +10, +0
 				this.weaponAttack = 45;
 				this.armorDef = 40;
 				this.armorMDef = 30;
@@ -245,6 +267,7 @@ public class CaiLin extends Monster
 					add(consumables.GORGOIL,4);
 			this.faceType = Face.SNAKE_FANGS;
 			this.createPerk(PerkLib.JobSorcerer, 0, 0, 0, 0);
+			this.createPerk(PerkLib.EnemyDragonType, 0, 0, 0, 0);
 			checkMonster();
 		}
 		

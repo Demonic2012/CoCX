@@ -16,7 +16,7 @@ public class DarknessElemental extends Monster
 		public function baseElementalAttack():void {
 			outputText(""+(flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4?"Blackened doppelganger":"The darkness elemental")+" envelops its fists within inky shadows before throwing a punch toward you.");
 			var damage:Number = inte + wis;
-			if (player.hasPerk(PerkLib.DarknessAffinity)) damage *= 0.3;
+			if (player.hasPerk(PerkLib.DarknessAffinity) || player.hasPerk(PerkLib.FireShadowAffinity)) damage *= 0.3;
 			if (player.hasPerk(PerkLib.LightningAffinity)) damage *= 3;
 			damage *= ((flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] + 1) * 2);
 			damage = Math.round(damage);
@@ -33,7 +33,7 @@ public class DarknessElemental extends Monster
 		public function fluffyOfPunches():void {
 			outputText(""+(flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4?"Blackened doppelganger":"The darkness elemental")+" wraps its fists in wicks of darkness before zeroing in for a flurry of punches.");
 			var damage:Number = inte + wis;
-			if (player.hasPerk(PerkLib.DarknessAffinity)) damage *= 0.3;
+			if (player.hasPerk(PerkLib.DarknessAffinity) || player.hasPerk(PerkLib.FireShadowAffinity)) damage *= 0.3;
 			if (player.hasPerk(PerkLib.LightningAffinity)) damage *= 3;
 			damage *= ((flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] + 1) * 1.5);
 			damage = Math.round(damage);
@@ -53,8 +53,8 @@ public class DarknessElemental extends Monster
 			if (player.getEvasionRoll()) outputText(" You slide underneath the barrage!");
 			else {
 				var damage:Number = inte + wis;
-				if (player.hasPerk(PerkLib.FromTheFrozenWaste) || player.hasPerk(PerkLib.ColdAffinity)) damage *= 0.3;
-				if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) damage *= 3;
+				if (player.hasPerk(PerkLib.DarknessAffinity) || player.hasPerk(PerkLib.FireShadowAffinity)) damage *= 0.3;
+				if (player.hasPerk(PerkLib.LightningAffinity)) damage *= 3;
 				damage *= 3.75;
 				damage = Math.round(damage);
 				if (hasStatusEffect(StatusEffects.Provoke)) damage = Math.round(damage * statusEffectv2(StatusEffects.Provoke));
@@ -103,14 +103,20 @@ public class DarknessElemental extends Monster
 		
 		override public function defeated(hpVictory:Boolean):void
 		{
-			if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4) SceneLib.dungeons.riverdungeon.defeatDarknessElementalSubBoss();
+			if (inDungeon) {
+				if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4) SceneLib.dungeons.riverdungeon.defeatDarknessElementalSubBoss();
+				else cleanupAfterCombat();
+			}
 			else cleanupAfterCombat();
 		}
 		
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
 		{
-			if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4) SceneLib.dungeons.riverdungeon.defeatedByDarknessElementalSubBoss();
-			else SceneLib.dungeons.riverdungeon.defeatedByDarknessElemental();
+			if (inDungeon) {
+				if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4) SceneLib.dungeons.riverdungeon.defeatedByDarknessElementalSubBoss();
+				else SceneLib.dungeons.riverdungeon.defeatedByDarknessElemental();
+			}
+			else cleanupAfterCombat();
 		}
 		
 		public function DarknessElemental() 
@@ -120,13 +126,13 @@ public class DarknessElemental extends Monster
 				this.imageName = "darkness elemental";
 				this.long = "You're currently fighting darkness elemental. It's a four feet tall body of darkness shaped into a humanoid form. It's using bare fists to fight.";
 				this.tallness = 48;
-				initStrTouSpeInte(22, 32, 52, 110);
-				initWisLibSensCor(110, 10, 55, 50);
-				this.weaponAttack = 12;
-				this.armorDef = 12;
-				this.armorMDef = 65;
+				initStrTouSpeInte(44, 64, 104, 220);
+				initWisLibSensCor(220, 20, 110, 0);
+				this.weaponAttack = 24;
+				this.armorDef = 24;
+				this.armorMDef = 130;
 				this.level = 26;
-				this.bonusHP = 750;
+				this.bonusHP = 1500;
 				this.additionalXP = 185;
 			}
 			else if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 1) {
@@ -134,13 +140,13 @@ public class DarknessElemental extends Monster
 				this.imageName = "darkness elemental";
 				this.long = "You're currently fighting darkness elemental. It's a four foot, three inch tall body of darkness shaped into a humanoid form. It's using bare fists to fight.";
 				this.tallness = 51;
-				initStrTouSpeInte(25, 35, 55, 125);
-				initWisLibSensCor(125, 10, 65, 50);
-				this.weaponAttack = 14;
-				this.armorDef = 14;
-				this.armorMDef = 75;
+				initStrTouSpeInte(50, 70, 110, 250);
+				initWisLibSensCor(250, 20, 130, 0);
+				this.weaponAttack = 28;
+				this.armorDef = 28;
+				this.armorMDef = 150;
 				this.level = 28;
-				this.bonusHP = 850;
+				this.bonusHP = 1700;
 				this.additionalXP = 215;
 			}
 			else if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 2) {
@@ -148,13 +154,13 @@ public class DarknessElemental extends Monster
 				this.imageName = "darkness elemental";
 				this.long = "You're currently fighting darkness elemental. It's a four and half foot tall body of darkness shaped into a humanoid form. It's using bare fists to fight.";
 				this.tallness = 54;
-				initStrTouSpeInte(28, 38, 58, 140);
-				initWisLibSensCor(140, 10, 75, 50);
-				this.weaponAttack = 16;
-				this.armorDef = 16;
-				this.armorMDef = 85;
+				initStrTouSpeInte(56, 76, 116, 280);
+				initWisLibSensCor(280, 20, 150, 0);
+				this.weaponAttack = 32;
+				this.armorDef = 32;
+				this.armorMDef = 170;
 				this.level = 30;
-				this.bonusHP = 950;
+				this.bonusHP = 1900;
 				this.additionalXP = 245;
 			}
 			else if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 3) {
@@ -162,13 +168,13 @@ public class DarknessElemental extends Monster
 				this.imageName = "darkness elemental";
 				this.long = "You're currently fighting darkness elemental. It's four foot, nine inch tall body of darkness shaped into a humanoid form. It's using bare fists to fight.";
 				this.tallness = 57;
-				initStrTouSpeInte(31, 41, 61, 155);
-				initWisLibSensCor(155, 10, 85, 50);
-				this.weaponAttack = 18;
-				this.armorDef = 18;
-				this.armorMDef = 95;
+				initStrTouSpeInte(62, 82, 122, 310);
+				initWisLibSensCor(310, 20, 170, 0);
+				this.weaponAttack = 36;
+				this.armorDef = 36;
+				this.armorMDef = 190;
 				this.level = 32;
-				this.bonusHP = 1050;
+				this.bonusHP = 2100;
 				this.additionalXP = 275;
 			}
 			else if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4) {
@@ -176,18 +182,32 @@ public class DarknessElemental extends Monster
 				this.imageName = "unique darkness elemental";
 				this.long = "You're currently fighting unique darkness elemental. It's a nine foot tall creature that looks exactly like you. Its body is wrapped in an darkness cloak, almost completely concealing its form as it using its bare fists to fight.";
 				this.tallness = 108;
-				initStrTouSpeInte(46, 60, 99, 230);
-				initWisLibSensCor(230, 15, 127, 50);
-				this.weaponAttack = 22;
-				this.armorDef = 25;
-				this.armorMDef = 125;
+				initStrTouSpeInte(92, 120, 198, 460);
+				initWisLibSensCor(460, 30, 254, 0);
+				this.weaponAttack = 44;
+				this.armorDef = 50;
+				this.armorMDef = 250;
 				this.level = 37;
-				this.bonusHP = 1575;
+				this.bonusHP = 3150;
 				this.additionalXP = 600;
+			}
+			else if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 5) {
+				this.short = "darkness elemental";
+				this.imageName = "darkness elemental";
+				this.long = "You're currently fighting darkness elemental. It's a four foot, nine inch tall body of darkness shaped into a humanoid form. It's using bare fists to fight.";
+				this.tallness = 57;
+				initStrTouSpeInte(236, 256, 296, 1180);
+				initWisLibSensCor(1180, 20, 750, 0);
+				this.weaponAttack = 252;
+				this.armorDef = 304;
+				this.armorMDef = 1540;
+				this.level = 90;
+				this.bonusHP = 7900;
+				this.additionalXP = 1145;
 			}
 			this.a = "the ";
 			this.plural = false;
-			this.lustVuln = 0;
+			this.lustVuln = 0.01;
 			this.createBreastRow(0, 1);
 			initGenderless();
 			this.weaponName = "fists";
@@ -195,16 +215,25 @@ public class DarknessElemental extends Monster
 			this.armorName = "skin of the darkness";
 			this.createPerk(PerkLib.EnemyElementalType, 0, 0, 0, 0);
 			this.createPerk(PerkLib.DarknessNature, 0, 0, 0, 0);
-			if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4) {
-				this.createPerk(PerkLib.EnemyHugeType, 0, 0, 0, 0);
-				this.drop = new WeightedDrop()
-					.add(useables.ELCRYST, 3)
-					.add(useables.LELSHARD, 1);
+			if (inDungeon) {
+				if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4) {
+					this.createPerk(PerkLib.EnemyHugeType, 0, 0, 0, 0);
+					this.createPerk(PerkLib.EnemyChampionType, 0, 0, 0, 0);
+					this.drop = new WeightedDrop()
+						.add(useables.ELCRYST, 3)
+						.add(useables.LELSHARD, 1);
+				}
+				else {
+					this.createPerk(PerkLib.EnemyEliteType, 0, 0, 0, 0);
+					this.drop = new WeightedDrop()
+						.add(useables.ELSHARD, 3)
+						.add(useables.LELSHARD, 1);
+				}
 			}
 			else {
 				this.drop = new WeightedDrop()
-					.add(useables.ELSHARD, 3)
-					.add(useables.LELSHARD, 1);
+					.add(useables.ELCRYST, 3)
+					.add(useables.LELCRYST, 1);
 			}
 			checkMonster();
 		}

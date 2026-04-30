@@ -8,7 +8,7 @@ import classes.GlobalFlags.kFLAGS;
 import classes.Scenes.Combat.Combat;
 
 public class BladeHailSkill extends AbstractSoulSkill {
-	//Skill name, number of attacks, status effect to sjow knowledge of skill, base SF cost, cooldown, number of attack rounds, hits per attack round
+	//Skill name, number of attacks, status effect to show knowledge of skill, base SF cost, cooldown, number of attack rounds, hits per attack round
 	private var hailArray:Array = [
 		["Hail of Blades", "six", StatusEffects.KnowsHailOfBlades, 50, 0, 6, 1],
 		["Grandiose Hail Of Blades", "eighteen", StatusEffects.KnowsGrandioseHailOfBlades, 200, 3, 9, 2],
@@ -71,22 +71,20 @@ public class BladeHailSkill extends AbstractSoulSkill {
 	}
 
 	private function calcHailDamage():Number {
-		var damage:Number = player.wis * 0.5;
-		damage += scalingBonusWisdom() * 0.5;
+		var damage:Number = player.wis;
+		damage += scalingBonusWisdom() * 2;
 		if (damage < 10) damage = 10;
-
 		//soulskill mod effect
 		damage *= soulskillMagicalMod();
-
 		//other bonuses
 		if (player.hasPerk(PerkLib.Heroism) && (monster && (monster.hasPerk(PerkLib.EnemyBossType) || monster.hasPerk(PerkLib.EnemyHugeType)))) damage *= 2;
 		if (player.perkv1(IMutationsLib.AnubiHeartIM) >= 4 && player.HP < Math.round(player.maxHP() * 0.5)) damage *= 1.5;
+		if (player.hasPerk(PerkLib.ExanimationI)) damage *= combat.hollowSkillsAndSoulskillsBoost();
 		return damage;
 	}
 
 	private function fireHail(hits:int = 1, display:Boolean = true):void {
 		var damage:Number = calcHailDamage();
-
 		//Determine if critical hit!
 		var crit:Boolean = false;
 		var critChance:int = 5;
@@ -96,11 +94,9 @@ public class BladeHailSkill extends AbstractSoulSkill {
 			crit = true;
 			damage *= 1.75;
 		}
-
 		var d2:Number = 0.9;
 		d2 += (rand(21) * 0.01);
 		damage *= d2;
-
 		if (display) outputText(" ");
 		doMagicDamage(damage, true, display);
 		if (crit && display) outputText(" <b>*Critical Hit!*</b>");
@@ -122,24 +118,24 @@ public class BladeHailSkill extends AbstractSoulSkill {
 			if (crit && display) outputText(" <b>*Critical Hit!*</b>");
 			damage *= 4;
 		}
-
 		checkAchievementDamage(damage);
 		if (player.hasStatusEffect(StatusEffects.HeroBane)) flags[kFLAGS.HERO_BANE_DAMAGE_BANK] += damage;
 		if (player.hasStatusEffect(StatusEffects.EruptingRiposte)) flags[kFLAGS.ERUPTING_RIPOSTE_DAMAGE_BANK] += monster.tou + monster.inte + monster.wis;
 	}
 
     override public function doEffect(display:Boolean = true):void {
-		if (display) outputText("Letting soulforce leak out around you, you form " + hailArray[hailSelection][1] +
-			" ethereal two meter long weapons in four rows. You thrust your hand outwards and in the blink of an eye, weapons shoot forwards [themonster].  ");
-
+		if (display) outputText("Letting soulforce leak out around you, you form " + hailArray[hailSelection][1] + " ethereal two meter long weapons in four rows. You thrust your hand outwards and in the blink of an eye, weapons shoot forwards [themonster].  ");
 		if (monsterDodgeSkill("weapons", display)) return;
-
 		if (display) outputText("Weapons hits [themonster], dealing ");
-
 		var rounds:Number = hailArray[hailSelection][5];
 		while (rounds-->0) fireHail(hailArray[hailSelection][6], display);
 		if (display) outputText(" damage!\n\n");
-
+		if (player.hasPerk(PerkLib.BrutalBlows) && player.str > 75) {
+            if (monster.armorDef > 0) outputText("Your hits are so brutal that you damage [themonster]'s defenses!\n\n");
+            var bbc:Number = (Math.round(monster.armorDef * 0.1) + 5);
+			if (monster.armorDef - bbc > 0) monster.armorDef -= bbc;
+            else monster.armorDef = 0;
+        }
 		if (!player.hasStatusEffect(StatusEffects.BloodCultivator) && flags[kFLAGS.IN_COMBAT_PLAYER_ANUBI_HEART_LEECH] == 0) anubiHeartLeeching(flags[kFLAGS.HERO_BANE_DAMAGE_BANK]);
 		combat.heroBaneProc2();
 		combat.EruptingRiposte2();

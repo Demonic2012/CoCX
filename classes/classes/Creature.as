@@ -1,4 +1,4 @@
-//CoC Creature.as
+﻿//CoC Creature.as
 package classes
 {
 import classes.BodyParts.Antennae;
@@ -38,6 +38,7 @@ import classes.Stats.StatStore;
 import classes.internals.Utils;
 import classes.lists.BreastCup;
 import classes.lists.Gender;
+import classes.Scenes.Places.DomsDomain;
 
 import flash.errors.IllegalOperationError;
 import classes.Scenes.Combat.CombatAbilities;
@@ -108,6 +109,21 @@ public class Creature extends Utils
 		public function set weaponVerb(value:String):void { _weaponVerb = value; }
 		public function set weaponAttack(value:Number):void { _weaponAttack = value; }
 		public function set weaponValue(value:Number):void { _weaponValue = value; }
+		//Weapon melee (offhand)
+		private var _weaponOffhandName:String = "";
+		private var _weaponOffhandVerb:String = "";
+		private var _weaponOffhandAttack:Number = 0;
+		private var _weaponOffhandType:String = "";
+		private var _weaponOffhandValue:Number = 0;
+		public function get weaponOffhandName():String { return _weaponOffhandName; }
+		public function get weaponOffhandVerb():String { return _weaponOffhandVerb; }
+		public function get weaponOffhandAttack():Number { return _weaponOffhandAttack; }
+		public function get weaponOffhandType():String { return _weaponOffhandType; }
+		public function get weaponOffhandValue():Number { return _weaponOffhandValue; }
+		public function set weaponOffhandName(value:String):void { _weaponOffhandName = value; }
+		public function set weaponOffhandVerb(value:String):void { _weaponOffhandVerb = value; }
+		public function set weaponOffhandAttack(value:Number):void { _weaponOffhandAttack = value; }
+		public function set weaponOffhandValue(value:Number):void { _weaponOffhandValue = value; }
 		//Weapon range
 		private var _weaponRangeName:String = "";
 		private var _weaponRangeVerb:String = "";
@@ -143,7 +159,14 @@ public class Creature extends Utils
 		//Clothing/Armor
 		private var _armorName:String = "";
 		private var _armorDef:Number = 0;
+		private var _armorDefSlashing:Number = 0;
+		private var _armorDefPiercing:Number = 0;
+		private var _armorDefBludgeoning:Number = 0;
 		private var _armorMDef:Number = 0;
+		private var _armorMDefFire:Number = 0;
+		private var _armorMDefIce:Number = 0;
+		private var _armorMDefLightning:Number = 0;
+		private var _armorMDefDarkness:Number = 0;
 		private var _armorPerk:String = "";
 		private var _armorValue:Number = 0;
 		public function get armorName():String { return _armorName; }
@@ -158,7 +181,14 @@ public class Creature extends Utils
 		public function set armorValue(value:Number):void { _armorValue = value; }
 		public function set armorName(value:String):void { _armorName = value; }
 		public function set armorDef(value:Number):void { _armorDef = value; }
+		public function set armorDefSlashing(value:Number):void { _armorDefSlashing = value; }
+		public function set armorDefPiercing(value:Number):void { _armorDefPiercing = value; }
+		public function set armorDefBludgeoning(value:Number):void { _armorDefBludgeoning = value; }
 		public function set armorMDef(value:Number):void { _armorMDef = value; }
+		public function set armorMDefFire(value:Number):void { _armorMDefFire = value; }
+		public function set armorMDefIce(value:Number):void { _armorMDefIce = value; }
+		public function set armorMDefLightning(value:Number):void { _armorMDefLightning = value; }
+		public function set armorMDefDarkness(value:Number):void { _armorMDefDarkness = value; }
 		public function set armorPerk(value:String):void { _armorPerk = value; }
 		//Misc Jewelry
 		private var _miscjewelryName:String = "";
@@ -353,13 +383,14 @@ public class Creature extends Utils
 		public var wisStat:PrimaryStat;
 		public var libStat:PrimaryStat;
 		public var sensStat:BuffableStat;
-		
+
 		// auxiliary stats
 		public var minLustStat: BuffableStat;
 		public var minLustXStat: BuffableStat; // min lust as factor of max lust, 0.5 = 50%
 		public var maxHpBaseStat: BuffableStat;
 		public var maxHpPerLevelStat: BuffableStat;
 		public var maxHpMultStat: BuffableStat;
+		public var hpRegenStat:BuffableStat;
 		public var maxLustBaseStat: BuffableStat;
 		public var maxLustPerLevelStat: BuffableStat;
 		public var maxLustPerLibStat: BuffableStat;
@@ -380,12 +411,14 @@ public class Creature extends Utils
 		public var maxSfPerLevelStat: BuffableStat;
 		public var maxSfPerWisStat: BuffableStat;
 		public var maxSfMultStat: BuffableStat;
-		
+
 		public var defStat: BuffableStat; // raw values (1pt = 1%)
 		public var mdefStat: BuffableStat; // raw values (1pt = 1%)
 		public var rangedAccuracyStat: BuffableStat; // raw values (2pt = 1%)
 		public var spellpowerStat: BuffableStat; // multiplier (1pt = 100%)
+		public var spellpowerwhiteStat: BuffableStat; // multiplier (1pt = 100%)
 		public var spellcostStat: BuffableStat; // multiplier (1pt = 100%)
+		public var spellcostwhiteStat: BuffableStat; // multiplier (1pt = 100%)
 		public var psoulskillPowerStat: BuffableStat; // multiplier (1pt = 100%)
 		public var msoulskillPowerStat: BuffableStat; // multiplier (1pt = 100%)
 		public var soulskillcostStat: BuffableStat; // multiplier (1pt = 100%)
@@ -404,6 +437,8 @@ public class Creature extends Utils
 		public var resWaterStat: BuffableStat;
 		public var resEarthStat: BuffableStat;
 		public var resAcidStat: BuffableStat;
+		public var resPsychicStat: BuffableStat;
+		public var resTrueStat: BuffableStat;
 		public var resStat: BuffableStat;
 
 		private var _stats: StatStore;
@@ -416,9 +451,13 @@ public class Creature extends Utils
 				return touStat.value;
 			}
 		}
-
 		public function get spe():Number { return speStat.value; }
-		public function get inte():Number { return intStat.value; }
+		public function get inte():Number {if (this.statStore.hasBuff("Atavism")) {
+			return 1;
+			} else {
+				return intStat.value;
+			}
+		}
 		public function get wis():Number { return Math.round(wisStat.value); }
 		public function get lib():Number { return Math.round(libStat.value); }
 
@@ -426,7 +465,7 @@ public class Creature extends Utils
 			var stat:PrimaryStat = statStore.findStat(statName) as PrimaryStat;
 			return stat.train.value < limit;
 		}
-		
+
 		/**
 		 * Increase stat `statName`'s train component by `amount`, up to `limit`.
 		 * @return true if stat was changed
@@ -445,45 +484,66 @@ public class Creature extends Utils
 			return false;
 		}
 		public function trainStatCap(statName: String, limit: Number):Number {
-			var cap:Number = limit;
-			//cap += 2 * host.perkv1(PerkLib.AscensionTranshumanism);
-			if (game.player.hasPerk(PerkLib.MunchkinAtBioLab)) cap += 10;
+			var train:Number = 100;
+			var train2:Number = limit;
+			//train += 2 * host.perkv1(PerkLib.AscensionTranshumanism);
+			if (game.player.hasPerk(PerkLib.MunchkinAtBioLab)) train += 10;
+			if (game.player.hasPerk(PerkLib.BasicAllRounderTraining)) train += 5;
+			if (game.player.hasPerk(PerkLib.IntermediateAllRounderTraining)) train += 5;
+			if (game.player.hasPerk(PerkLib.AdvancedAllRounderTraining)) train += 5;
+			if (game.player.hasPerk(PerkLib.ExpertAllRounderTraining)) train += 5;
+			if (game.player.hasPerk(PerkLib.MasterAllRounderTraining)) train += 10;
+			if (game.player.hasPerk(PerkLib.GrandMasterAllRounderTraining)) train += 10;
+			if (game.player.hasPerk(PerkLib.SemiEpicAllRounderTraining)) train += 15;
+			if (game.player.hasPerk(PerkLib.EpicAllRounderTraining)) train += 15;
 			switch (statName) {
 				case "str":
+					if (game.player.hasPerk(PerkLib.AllRounderPhysicalTraining)) train += 10;
 					var str:Number = 1;
 					if (game.player.perkv1(IMutationsLib.HumanBonesIM) >= 3) str += 0.2;
-					cap *= str;
+					if (game.player.perkv1(IMutationsLib.HumanBonesIM) >= 4) str += 0.1;
+					train *= str;
 					break;
 				case "tou":
+					if (game.player.hasPerk(PerkLib.AllRounderPhysicalTraining)) train += 10;
 					var tou:Number = 1;
 					if (game.player.perkv1(IMutationsLib.HumanBonesIM) >= 3) tou += 0.2;
-					cap *= tou;
+					if (game.player.perkv1(IMutationsLib.HumanBonesIM) >= 4) tou += 0.1;
+					train *= tou;
 					break;
 				case "spe":
+					if (game.player.hasPerk(PerkLib.AllRounderPhysicalTraining)) train += 10;
 					var spe:Number = 1;
 					if (game.player.perkv1(IMutationsLib.HumanBloodstreamIM) >= 3) spe += 0.2;
-					cap *= spe;
+					if (game.player.perkv1(IMutationsLib.HumanBloodstreamIM) >= 4) spe += 0.1;
+					train *= spe;
 					break;
 				case "int":
+					if (game.player.hasPerk(PerkLib.AllRounderMentalTraining)) train += 10;
 					var inte:Number = 1;
 					if (game.player.perkv1(IMutationsLib.HumanSmartsIM) >= 3) inte += 0.2;
-					cap *= inte;
+					if (game.player.perkv1(IMutationsLib.HumanSmartsIM) >= 4) inte += 0.1;
+					train *= inte;
 					break;
 				case "wis":
-					//cap += 16 * host.perkv1(PerkLib.AscensionTranshumanismWis);
-					//cap += host.perkv1(PerkLib.SoulTempering);
+					if (game.player.hasPerk(PerkLib.AllRounderMentalTraining)) train += 10;
+					//train += 16 * host.perkv1(PerkLib.AscensionTranshumanismWis);
+					//train += host.perkv1(PerkLib.SoulTempering);
 					var wis:Number = 1;
 					if (game.player.perkv1(IMutationsLib.HumanSmartsIM) >= 3) wis += 0.2;
-					cap *= wis;
+					if (game.player.perkv1(IMutationsLib.HumanSmartsIM) >= 4) wis += 0.1;
+					train *= wis;
 					break;
 				case "lib":
+					if (game.player.hasPerk(PerkLib.AllRounderMentalTraining)) train += 10;
 					var lib:Number = 1;
 					if (game.player.perkv1(IMutationsLib.HumanBloodstreamIM) >= 3) lib += 0.2;
-					cap *= lib;
+					if (game.player.perkv1(IMutationsLib.HumanBloodstreamIM) >= 4) lib += 0.1;
+					train *= lib;
 					break;
 			}
-			cap = Math.round(cap);
-			return cap;
+			train = Math.round(train*train2*0.01);
+			return train;
 		}
 
 		/**
@@ -578,6 +638,7 @@ public class Creature extends Utils
 		public var fatigue:Number = 0;
 		public var mana:Number = 0;
 		public var soulforce:Number = 0;
+		public var demonicenergy:Number = 0;
 
 		//Combat Stats
 		public var HP:Number = 0;
@@ -589,26 +650,26 @@ public class Creature extends Utils
 		private var _xp:Number = 0
 		public function get XP():Number { return _xp; } //Returns the object
 		public function set XP(value:Number):void { _xp = value; }
-		
+
 		// public var level:Number = 0;
 		private var _level:Number = 0;
 		public function get level():Number { return _level; }
 		public function set level(value:Number):void { _level = value; }
 		// Can't imagine why you would want to do this but it's there to bypass player override
 		public function setLevelDirectly(value:Number):void { _level = value; }
-		
+
 		// TODO: (lvl) Implement stat scaling to negative levels -- and for monsters? Maybe some kind of level drain mechanics?
 		private var _negativeLevel:Number = 0;
 		public function get negativeLevel():Number { return _negativeLevel; }
 		public function set negativeLevel(value:Number):void { _negativeLevel = value; }
-		
+
 		//public var additionalXP:Number = 0;
 		private var _additionalXP:Number = 0;
 		public function get additionalXP():Number { return _additionalXP; }
 		public function set additionalXP(value:Number):void { _additionalXP = value; }
 		public var gems:Number = 0;
-		
-		
+
+
 		public function get str100():Number { return 100*str/strStat.max; }
 		public function get tou100():Number { return 100*tou/touStat.max; }
 		public function get spe100():Number { return 100*spe/speStat.max; }
@@ -630,7 +691,7 @@ public class Creature extends Utils
 		public function restoreHPRatio():void {
 			HP = _savedHPRatio*maxHP();
 		}
-		
+
 		public function minLust():Number {
 			var max:Number = maxLust();
 			return boundFloat(0, minLustStat.value + max*minLustXStat.value, max);
@@ -644,14 +705,22 @@ public class Creature extends Utils
 		protected function maxHP_base():Number {
 			var max:Number = maxHpBaseStat.value;
 			var multimax:Number = maxHpMultStat.value;
+			var dmmmm:Number = 0;
+			var dmmmml:Number = 0.1;
 			if (hasPerk(PerkLib.IcyFlesh)) {
 				max += int(inte * 2 + 50);
 				if (inte >= 21) max += Math.round(inte);
 				if (inte >= 41) max += Math.round(inte);
 				if (inte >= 61) max += Math.round(inte);
 				if (inte >= 81) max += Math.round(inte);
-				if (inte >= 101) max += Math.round(inte) * Math.floor( (inte-100)/50 + 1);
-				if (perkv1(IMutationsLib.FrozenHeartIM) >= 3) max *= 1.5;
+				if (inte >= 101) max += Math.round(inte) * Math.floor( (inte-100) / 50 + 1);
+				if (perkv1(IMutationsLib.FrozenHeartIM) >= 2) {
+					if (perkv1(IMutationsLib.FrozenHeartIM) >= 3) {
+						if (perkv1(IMutationsLib.FrozenHeartIM) >= 4) max *= 1.75;
+						else max *= 1.5;
+					}
+					else max *= 1.25;
+				}
 			}
 			else if (hasPerk(PerkLib.HaltedVitals) || hasPerk(PerkLib.Undeath)) {
 				max += int(lib * 2 + 50);
@@ -678,21 +747,18 @@ public class Creature extends Utils
 				}
 			}
 			if (hasPerk(PerkLib.IcyFlesh)) {
-				if (perkv1(IMutationsLib.FrozenHeartIM) >= 3) {
-					if (hasPerk(PerkLib.TankI)) max += Math.round(inte*18);
-					if (hasPerk(PerkLib.TankII)) max += Math.round(inte*18);
-					if (hasPerk(PerkLib.TankIII)) max += Math.round(inte*18);
-					if (hasPerk(PerkLib.TankIV)) max += Math.round(inte*18);
-					if (hasPerk(PerkLib.TankV)) max += Math.round(inte*18);
-					if (hasPerk(PerkLib.TankVI)) max += Math.round(inte*18);
-				}
-				else {
-					if (hasPerk(PerkLib.TankI)) max += Math.round(inte*12);
-					if (hasPerk(PerkLib.TankII)) max += Math.round(inte*12);
-					if (hasPerk(PerkLib.TankIII)) max += Math.round(inte*12);
-					if (hasPerk(PerkLib.TankIV)) max += Math.round(inte*12);
-					if (hasPerk(PerkLib.TankV)) max += Math.round(inte*12);
-					if (hasPerk(PerkLib.TankVI)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankI)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankII)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankIII)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankIV)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankV)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankVI)) max += Math.round(inte * 12);
+				if (perkv1(IMutationsLib.FrozenHeartIM) >= 2) {
+					if (perkv1(IMutationsLib.FrozenHeartIM) >= 3) {
+						if (perkv1(IMutationsLib.FrozenHeartIM) >= 4) max *= 1.75;
+						else max *= 1.5;
+					}
+					else max *= 1.25;
 				}
 			}
 			else {
@@ -701,7 +767,7 @@ public class Creature extends Utils
 				if (hasPerk(PerkLib.TankIII)) max += Math.round(tou*12);
 				if (hasPerk(PerkLib.TankIV)) max += Math.round(tou*12);
 				if (hasPerk(PerkLib.TankV)) max += Math.round(tou*12);
-				if (hasPerk(PerkLib.TankVI)) max += Math.round(tou * 12);
+				if (hasPerk(PerkLib.TankVI)) max += Math.round(tou*12);
 				if (hasPerk(PerkLib.DeathPriest)) {
 					if (hasPerk(PerkLib.TankI)) max += Math.round(wis*12);
 					if (hasPerk(PerkLib.TankII)) max += Math.round(wis*12);
@@ -722,7 +788,36 @@ public class Creature extends Utils
 			if (hasPerk(PerkLib.CheetahIII)) max += Math.round(spe*4);
 			if (hasPerk(PerkLib.CheetahIV)) max += Math.round(spe*4);
 			if (hasPerk(PerkLib.CheetahV)) max += Math.round(spe*4);
-			if (hasPerk(PerkLib.CheetahVI)) max += Math.round(spe*4);
+			if (hasPerk(PerkLib.CheetahVI)) max += Math.round(spe * 4);
+			if (hasPerk(PerkLib.SeducerResilience)) {
+				max += Math.round(lib*12);
+				max += Math.round(sens*12);
+			}
+			if (perkv1(IMutationsLib.StillHeartIM) >= 4) {
+				if (hasPerk(PerkLib.Undeath)) max += Math.round(lib*0.5);
+				else max += Math.round(lib*0.25);
+			}
+			if (perkv1(IMutationsLib.SoulCoreIM) >= 4) {
+				max += int(inte * 2 + 50);
+				if (inte >= 21) max += Math.round(inte);
+				if (inte >= 41) max += Math.round(inte);
+				if (inte >= 61) max += Math.round(inte);
+				if (inte >= 81) max += Math.round(inte);
+				if (inte >= 101) max += Math.round(inte) * Math.floor( (inte-100)/50 + 1);
+				if (hasPerk(PerkLib.TankI)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankII)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankIII)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankIV)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankV)) max += Math.round(inte*12);
+				if (hasPerk(PerkLib.TankVI)) max += Math.round(inte*12);
+			}
+			if (perkv1(IMutationsLib.FrozenHeartIM) >= 2 && !hasPerk(PerkLib.IcyFlesh) && !hasPerk(PerkLib.IcyFlesh)) {
+				if (perkv1(IMutationsLib.FrozenHeartIM) >= 3) {
+					if (perkv1(IMutationsLib.FrozenHeartIM) >= 4) max += Math.round(inte*21);
+					else max += Math.round(inte*18);
+				}
+				else max += Math.round(inte*15);
+			}
 			if (hasPerk(PerkLib.ElementalBondFlesh)) {
 				if (hasStatusEffect(StatusEffects.SummonedElementalsAir)) max += maxHP_ElementalBondFleshMulti() * 4 * statusEffectv2(StatusEffects.SummonedElementalsAir);
 				if (hasStatusEffect(StatusEffects.SummonedElementalsEarth)) max += maxHP_ElementalBondFleshMulti() * 4 * statusEffectv2(StatusEffects.SummonedElementalsEarth);
@@ -743,6 +838,29 @@ public class Creature extends Utils
 				if (hasStatusEffect(StatusEffects.SummonedElementalsWaterE)) max += maxHP_ElementalBondFleshMulti() * 20 * statusEffectv2(StatusEffects.SummonedElementalsWaterE);
 			}
 			if (hasPerk(PerkLib.JobGuardian)) max += 120;
+			if (hasPerk(PerkLib.FleshBodyVoLApprenticeStage)) {
+				if (hasPerk(PerkLib.SoulApprentice)) max += (1000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+				if (hasPerk(PerkLib.SoulPersonage)) max += (1000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+				if (hasPerk(PerkLib.SoulWarrior)) max += (1000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+			}
+			if (hasPerk(PerkLib.FleshBodyVoLWarriorStage)) {
+				if (hasPerk(PerkLib.SoulSprite)) max += (2000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+				if (hasPerk(PerkLib.SoulScholar)) max += (2000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+				if (hasPerk(PerkLib.SoulGrandmaster)) max += (2000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+			}
+			if (hasPerk(PerkLib.FleshBodyVoLElderStage)) {
+				if (hasPerk(PerkLib.SoulElder)) max += (3000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+				if (hasPerk(PerkLib.SoulExalt)) max += (3000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+				if (hasPerk(PerkLib.SoulOverlord)) max += (3000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+			}
+			if (hasPerk(PerkLib.FleshBodyVoLOverlordStage)) {
+				if (hasPerk(PerkLib.SoulTyrant)) max += (4000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+				if (hasPerk(PerkLib.SoulKing)) max += (4000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+				if (hasPerk(PerkLib.SoulEmperor)) max += (4000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+			}
+			if (hasPerk(PerkLib.FleshBodyVoLTyrantStage)) {
+				if (hasPerk(PerkLib.SoulAncestor)) max += (5000 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
+			}
 			if (hasPerk(PerkLib.FleshBodyApprenticeStage)) {
 				if (hasPerk(PerkLib.SoulApprentice)) max += (400 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
 				if (hasPerk(PerkLib.SoulPersonage)) max += (400 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]) * game.player.humanBodyCultivators());
@@ -774,7 +892,7 @@ public class Creature extends Utils
 			if (hasPerk(PerkLib.AscensionHardiness)) max += perkv1(PerkLib.AscensionHardiness) * 400;
 			if (hasPerk(PerkLib.ChiReflowDefense)) max += UmasShop.NEEDLEWORK_DEFENSE_EXTRA_HP;
 			max += level * maxHpPerLevelStat.value;
-			if (level <= 6) max += level * 60;
+			if (level <= 9) max += level * 60;
 			if (hasPerk(PerkLib.UnlockBody)) max += level * 60;
 			if (hasPerk(PerkLib.UnlockBody2ndStage)) max += level * 60;
 			if (hasPerk(PerkLib.UnlockBody3rdStage)) max += level * 60;
@@ -793,7 +911,14 @@ public class Creature extends Utils
 			if (hasPerk(PerkLib.RefinedBodyVI)) multimax += 0.05;
 			if (hasPerk(PerkLib.LimitBreakerBody1stStage)) multimax += 0.05;
 			if (hasPerk(PerkLib.LimitBreakerBody2ndStage)) multimax += 0.1;
+			if (hasPerk(PerkLib.LimitBreakerBody3rdStage)) multimax += 0.15;
 			if (hasPerk(PerkLib.DeityJobMunchkin)) multimax += 0.2;
+			if (level > 9) dmmmml += 0.1;
+			if (level > 24) dmmmml += 0.1;
+			if (level > 56) dmmmml += 0.1;
+			if (this.touStat.core.value > 0) dmmmm += this.touStat.core.value * dmmmml;
+			if (this.touStat.train.value > 0) dmmmm += this.touStat.train.value * dmmmml;
+			if (dmmmm > 1) multimax *= dmmmm;
 			max *= multimax;
 			max = Math.round(max);
 			return max;
@@ -803,33 +928,53 @@ public class Creature extends Utils
 			maxHP_mult1 += (countCockSocks("green") * 0.02);
 			if (game.player.vehiclesName == "Goblin Mech Alpha") {
 				if (game.player.hasKeyItem("Upgraded Armor plating 1.0") >= 0) maxHP_mult1 += 0.2;
-				if (game.player.hasKeyItem("Upgraded Armor plating 2.0") >= 0) maxHP_mult1 += 0.35;
-				if (game.player.hasKeyItem("Upgraded Armor plating 3.0") >= 0) maxHP_mult1 += 0.5;
+				if (game.player.hasKeyItem("Upgraded Armor plating 2.0") >= 0) maxHP_mult1 += 0.4;
+				if (game.player.hasKeyItem("Upgraded Armor plating 3.0") >= 0) maxHP_mult1 += 0.6;
+				if (game.player.hasKeyItem("Upgraded Armor plating 4.0") >= 0) maxHP_mult1 += 0.8;
+				if (game.player.hasKeyItem("Upgraded Armor plating 5.0") >= 0) maxHP_mult1 += 1;
+				if (game.player.hasKeyItem("Upgraded Armor plating 6.0") >= 0) maxHP_mult1 += 1.2;
 			}
 			if (game.player.vehiclesName == "Goblin Mech Prime") {
 				if (game.player.hasKeyItem("Upgraded Armor plating 1.0") >= 0) maxHP_mult1 += 0.4;
-				if (game.player.hasKeyItem("Upgraded Armor plating 2.0") >= 0) maxHP_mult1 += 0.7;
-				if (game.player.hasKeyItem("Upgraded Armor plating 3.0") >= 0) maxHP_mult1 += 1;
+				if (game.player.hasKeyItem("Upgraded Armor plating 2.0") >= 0) maxHP_mult1 += 0.8;
+				if (game.player.hasKeyItem("Upgraded Armor plating 3.0") >= 0) maxHP_mult1 += 1.2;
+				if (game.player.hasKeyItem("Upgraded Armor plating 4.0") >= 0) maxHP_mult1 += 1.6;
+				if (game.player.hasKeyItem("Upgraded Armor plating 5.0") >= 0) maxHP_mult1 += 2;
+				if (game.player.hasKeyItem("Upgraded Armor plating 6.0") >= 0) maxHP_mult1 += 2.4;
 			}
 			if (game.player.vehiclesName == "Giant Slayer Mech") {
 				if (game.player.hasKeyItem("Upgraded Armor plating 1.0") >= 0) maxHP_mult1 += 0.25;
 				if (game.player.hasKeyItem("Upgraded Armor plating 2.0") >= 0) maxHP_mult1 += 0.5;
 				if (game.player.hasKeyItem("Upgraded Armor plating 3.0") >= 0) maxHP_mult1 += 0.75;
+				if (game.player.hasKeyItem("Upgraded Armor plating 4.0") >= 0) maxHP_mult1 += 1;
+				if (game.player.hasKeyItem("Upgraded Armor plating 5.0") >= 0) maxHP_mult1 += 1.25;
+				if (game.player.hasKeyItem("Upgraded Armor plating 6.0") >= 0) maxHP_mult1 += 1.5;
 				if (game.player.hasKeyItem("Upgraded Leather Insulation 1.0") >= 0) maxHP_mult1 += 0.25;
 				if (game.player.hasKeyItem("Upgraded Leather Insulation 2.0") >= 0) maxHP_mult1 += 0.5;
 				if (game.player.hasKeyItem("Upgraded Leather Insulation 3.0") >= 0) maxHP_mult1 += 0.75;
 			}
 			if (game.player.vehiclesName == "Howling Banshee Mech") {
-				if (game.player.hasKeyItem("Upgraded Armor plating 1.0") >= 0) maxHP_mult1 += 0.25;
-				if (game.player.hasKeyItem("Upgraded Armor plating 2.0") >= 0) maxHP_mult1 += 0.5;
-				if (game.player.hasKeyItem("Upgraded Armor plating 3.0") >= 0) maxHP_mult1 += 0.75;
+				if (game.player.hasKeyItem("HB Armor Plating") >= 1) maxHP_mult1 += 0.25;
+				if (game.player.hasKeyItem("HB Armor Plating") >= 2) maxHP_mult1 += 0.5;
+				if (game.player.hasKeyItem("HB Armor Plating") >= 3) maxHP_mult1 += 0.75;
+				if (game.player.hasKeyItem("HB Armor Plating") >= 4) maxHP_mult1 += 1;
+				if (game.player.hasKeyItem("HB Armor Plating") >= 5) maxHP_mult1 += 1.25;
+				if (game.player.hasKeyItem("HB Armor Plating") >= 6) maxHP_mult1 += 1.5;
+				if (game.player.hasKeyItem("HB Armor Plating") >= 7) maxHP_mult1 += 1.75;
+				if (game.player.hasKeyItem("HB Leather Insulation") >= 1) maxHP_mult1 += 0.25;
+				if (game.player.hasKeyItem("HB Leather Insulation") >= 2) maxHP_mult1 += 0.5;
+				if (game.player.hasKeyItem("HB Leather Insulation") >= 3) maxHP_mult1 += 0.75;
+				if (game.player.hasKeyItem("HB Leather Insulation") >= 4) maxHP_mult1 += 1;
+				if (game.player.hasKeyItem("HB Leather Insulation") >= 5) maxHP_mult1 += 1.25;
+				if (game.player.hasKeyItem("HB Leather Insulation") >= 6) maxHP_mult1 += 1.5;
+				if (game.player.hasKeyItem("HB Leather Insulation") >= 7) maxHP_mult1 += 1.75;
 			}
 			if (game.player.hasPerk(PerkLib.SharedPower) && game.player.perkv1(PerkLib.SharedPower) > 0) maxHP_mult1 += (0.1*game.player.perkv1(PerkLib.SharedPower));
 			return maxHP_mult1;
 		}
 		public function maxHP():Number {
 			var max:Number = Math.round(maxHP_base()*maxHP_mult());
-			return Math.min(19999999,max);
+			return Math.min(19999999999,max);
 		}
 		public function maxOverHP():Number {
 			var maxOver:Number = maxHP();
@@ -850,11 +995,38 @@ public class Creature extends Utils
 				if (bonus > limit) bonus = limit;
 				maxOver2 += (0.01 * bonus);
 			}
+			if (hasPerk(PerkLib.FleshBodyVoLApprenticeStage)) {
+				if (hasPerk(PerkLib.SoulApprentice)) maxOver2 += 0.01;
+				if (hasPerk(PerkLib.SoulPersonage)) maxOver2 += 0.01;
+				if (hasPerk(PerkLib.SoulWarrior)) maxOver2 += 0.01;
+			}
+			if (hasPerk(PerkLib.FleshBodyVoLWarriorStage)) {
+				if (hasPerk(PerkLib.SoulSprite)) maxOver2 += 0.02;
+				if (hasPerk(PerkLib.SoulScholar)) maxOver2 += 0.02;
+				if (hasPerk(PerkLib.SoulGrandmaster)) maxOver2 += 0.02;
+			}
+			if (hasPerk(PerkLib.FleshBodyVoLElderStage)) {
+				if (hasPerk(PerkLib.SoulElder)) maxOver2 += 0.03;
+				if (hasPerk(PerkLib.SoulExalt)) maxOver2 += 0.03;
+				if (hasPerk(PerkLib.SoulOverlord)) maxOver2 += 0.03;
+			}
+			if (hasPerk(PerkLib.FleshBodyVoLOverlordStage)) {
+				if (hasPerk(PerkLib.SoulTyrant)) maxOver2 += 0.04;
+				if (hasPerk(PerkLib.SoulKing)) maxOver2 += 0.04;
+				if (hasPerk(PerkLib.SoulEmperor)) maxOver2 += 0.04;
+			}
+			if (hasPerk(PerkLib.FleshBodyVoLTyrantStage)) {
+				if (hasPerk(PerkLib.SoulAncestor)) maxOver2 += 0.05;
+			}
 			if (perkv1(IMutationsLib.LizanMarrowIM) >= 4) maxOver2 += 0.1;
 			if (perkv1(IMutationsLib.FerasBirthrightIM) >= 4) maxOver2 += 0.2;
+			if (perkv1(IMutationsLib.HumanBonesIM) >= 4) maxOver2 += 0.1;
+			if (hasPerk(PerkLib.Soulless)) maxOver2 += (0.01 * level);
+			if (hasStatusEffect(StatusEffects.CrimsonOverflowImperfect)) maxOver2 += 0.1;
+			if (hasStatusEffect(StatusEffects.CrimsonOverflow)) maxOver2 += (0.05 * statusEffectv1(StatusEffects.CrimsonOverflow));
 			maxOver *= maxOver2;//~270%
 			maxOver = Math.round(maxOver);
-			return Math.min(54999999,maxOver);
+			return Math.min(54999999999,maxOver);
 		}
 		public function minHP():Number {
 			return 0;
@@ -925,10 +1097,10 @@ public class Creature extends Utils
 				if (bonus > limit) bonus = limit;
 				max2 += (0.01 * bonus);
 			}
-			if (perkv1(IMutationsLib.MinotaurTesticlesIM) >= 4) max2 += 0.1;
-			if (perkv1(IMutationsLib.LactaBovinaOvariesIM) >= 4) max2 += 0.1;
-			if (perkv1(IMutationsLib.HumanTesticlesIM) >= 4) max2 += 0.1;
-			if (perkv1(IMutationsLib.HumanOvariesIM) >= 4) max2 += 0.1;
+			if (perkv1(IMutationsLib.MinotaurTesticlesIM) >= 4 && hasCock()) max2 += 0.1;
+			if (perkv1(IMutationsLib.LactaBovinaOvariesIM) >= 4 && hasVagina()) max2 += 0.1;
+			if (perkv1(IMutationsLib.HumanTesticlesIM) >= 4 && hasCock()) max2 += 0.1;
+			if (perkv1(IMutationsLib.HumanOvariesIM) >= 4 && hasVagina()) max2 += 0.1;
 			max1 *= max2;//~230%
 			max1 = Math.round(max1);
 			return Math.min(1609999,max1);
@@ -955,6 +1127,9 @@ public class Creature extends Utils
 			return 0;
 		}
 		public function maxOverMana():Number {
+			return 0;
+		}
+		public function maxDemonicEnergy():Number {
 			return 0;
 		}
 		/**
@@ -1071,7 +1246,7 @@ public class Creature extends Utils
 			HP = oldHPratio * maxHP();
 
 			// Keep values in bounds (lust and HP handled above)
-			fatigue = Math.min(fatigue, maxFatigue());
+			fatigue = Math.min(fatigue, maxOverFatigue());
 			mana = Math.min(mana, maxOverMana());
 			soulforce = Math.min(soulforce, maxOverSoulforce());
 			wrath = Math.min(wrath,maxOverWrath());
@@ -1080,7 +1255,7 @@ public class Creature extends Utils
 		public function lustPercent():Number {
 			return 100;
 		}
-		public function takePhysDamage(damage:Number, display:Boolean = false):Number {
+		public function takePhysDamage(damage:Number, display:Boolean = false, hit:Number = 1, soulskilluse:Boolean = false):Number {
 			HP = boundFloat(0,HP-Math.round(damage),HP);
 			return (damage > 0 && damage < 1) ? 1 : damage;
 		}
@@ -1121,6 +1296,14 @@ public class Creature extends Utils
 			return (damage > 0 && damage < 1) ? 1 : damage;
 		}
 		public function takeAcidDamage(damage:Number, display:Boolean = false):Number {
+			HP = boundFloat(0,HP-Math.round(damage),HP);
+			return (damage > 0 && damage < 1) ? 1 : damage;
+		}
+		public function takePsychicDamage(damage:Number, display:Boolean = false):Number {
+			HP = boundFloat(0,HP-Math.round(damage),HP);
+			return (damage > 0 && damage < 1) ? 1 : damage;
+		}
+		public function takeTrueDamage(damage:Number, display:Boolean = false):Number {
 			HP = boundFloat(0,HP-Math.round(damage),HP);
 			return (damage > 0 && damage < 1) ? 1 : damage;
 		}
@@ -1177,30 +1360,23 @@ public class Creature extends Utils
 		}
 
 		private var _tallness:Number = 0;
-		public function get tallness():Number {
-			var multiplier:Number = 1;
-			if (hasPerk(PerkLib.TitanicSize)) multiplier = 5;
-			return basetallness*multiplier;
-		}
+		public function get tallness():Number { return _tallness; }
+		public function set tallness(value:Number):void { _tallness = value; }
 
 		public function get basetallness():Number {
-			return _tallness;
-		}
-
-		public function get effectiveTallness():Number {
 			var multiplier:Number = 1;
-			if (hasPerk(PerkLib.GiantMight)) multiplier += 4;
+			if (hasPerk(PerkLib.GiantSize)) multiplier += 2;
 			if (hasPerk(PerkLib.TitanicSize)) multiplier += 4;
 			return tallness*multiplier;
 		}
 
-		public function set tallness(value:Number):void {
+		public function get effectiveTallness():Number {
 			var multiplier:Number = 1;
-			if (hasPerk(PerkLib.TitanicSize)) multiplier = 5;
-			_tallness = value/multiplier;
-			//_tallness = value;
+			if (hasPerk(PerkLib.GiantMight)) multiplier += 1.5;
+			if (hasPerk(PerkLib.TitanicMight)) multiplier += 3;
+			return basetallness*multiplier;
 		}
-		
+
 		public var bodyMaterials:/*BodyMaterial*/Array = [];
 		public var hairType:Number                     = Hair.NORMAL;
 		public var hairStyle:Number                    = Hair.NORMAL;
@@ -1532,12 +1708,13 @@ public class Creature extends Utils
 			wisStat = new PrimaryStat(this,'wis');
 			libStat = new PrimaryStat(this,'lib');
 			sensStat = new BuffableStat(this,'sens', {base:15, min:0});
-			
+
 			minLustStat = new BuffableStat(this, 'minlust', {base:0});
 			minLustXStat = new BuffableStat(this, 'minlustx', {base:0});
 			maxHpBaseStat = new BuffableStat(this, 'maxhp_base', {base:0});
 			maxHpPerLevelStat = new BuffableStat(this, 'maxhp_perlevel', {base:60});
 			maxHpMultStat = new BuffableStat(this, 'maxhp_mult', {base:1});
+			hpRegenStat = new BuffableStat(this, 'hp_regen', {base:0});
 			maxLustBaseStat = new BuffableStat(this, 'maxlust_base', {base:100});
 			maxLustPerLevelStat = new BuffableStat(this, 'maxlust_perlevel', {base:3});
 			maxLustPerLibStat = new BuffableStat(this, 'maxlust_perlib', {base:0});
@@ -1558,12 +1735,14 @@ public class Creature extends Utils
 			maxSfPerLevelStat = new BuffableStat(this, 'maxsf_perlevel', {base:5});
 			maxSfPerWisStat = new BuffableStat(this, 'maxsf_perwis', {base:0});
 			maxSfMultStat = new BuffableStat(this, 'maxsf_mult', {base:1});
-			
+
 			defStat = new BuffableStat(this, 'def', {base:0});
 			mdefStat = new BuffableStat(this, 'mdef', {base:0});
 			rangedAccuracyStat = new BuffableStat(this, 'rangedaccuracy', {base:0});
 			spellpowerStat = new BuffableStat(this, 'spellpower', {base:1});
+			spellpowerwhiteStat = new BuffableStat(this, 'spellpowerwhite', {base:1});
 			spellcostStat = new BuffableStat(this, 'spellcost', {base:1});
+			spellcostwhiteStat = new BuffableStat(this, 'spellcostwhite', {base:0});
 			psoulskillPowerStat = new BuffableStat(this, 'psoulskillpower', {base:1});
 			msoulskillPowerStat = new BuffableStat(this, 'msoulskillpower', {base:1});
 			soulskillcostStat = new BuffableStat(this, 'soulskillcost', {base:1});
@@ -1582,6 +1761,8 @@ public class Creature extends Utils
 			resWaterStat = new BuffableStat(this, 'res_water', {base:0});
 			resEarthStat = new BuffableStat(this, 'res_earth', {base:0});
 			resAcidStat = new BuffableStat(this, 'res_acid', {base:0});
+			resPsychicStat = new BuffableStat(this, 'res_psychich', {base:0});
+			resTrueStat = new BuffableStat(this, 'res_true', {base:0});
 
 			_stats = new StatStore([
 				strStat,
@@ -1591,12 +1772,13 @@ public class Creature extends Utils
 				wisStat,
 				libStat,
 				sensStat,
-				
+
 				minLustStat,
 				minLustXStat,
 				maxHpBaseStat,
 				maxHpPerLevelStat,
 				maxHpMultStat,
+				hpRegenStat,
 				maxLustBaseStat,
 				maxLustPerLevelStat,
 				maxLustPerLibStat,
@@ -1617,18 +1799,20 @@ public class Creature extends Utils
 				maxSfPerLevelStat,
 				maxSfPerWisStat,
 				maxSfMultStat,
-				
+
 				defStat,
 				mdefStat,
 				rangedAccuracyStat,
 				spellpowerStat,
+				spellpowerwhiteStat,
 				spellcostStat,
+				spellcostwhiteStat,
 				psoulskillPowerStat,
 				msoulskillPowerStat,
 				soulskillcostStat,
 				teaseDmgStat,
 				evadeStat,
-				
+
 				resPhysicalStat,
 				resMagicStat,
 				resLustStat,
@@ -1641,8 +1825,10 @@ public class Creature extends Utils
 				resWaterStat,
 				resEarthStat,
 				resAcidStat,
+				resPsychicStat,
+				resTrueStat,
 			]);
-			
+
 			for (var i:int = 0; i<BodyMaterial.Types.length; i++) {
 				bodyMaterials[i] = new BodyMaterial(this, i);
 			}
@@ -1740,7 +1926,7 @@ public class Creature extends Utils
 				// Allow weaponAttack to be negative as a penalty to strength-calculated damage
 				// Same with armorDef, bonusHP, additionalXP
 				"weaponValue", "armorValue",
-				"lust", "fatigue", "soulforce", "mana", "wrath",
+				"lust", "fatigue", "soulforce", "mana", "wrath", "demonicenergy",
 				"level", "gems",
 				"tailCount", "tailVenom", "tailRecharge", "horns.type",
 				"HP", "XP"
@@ -2032,14 +2218,6 @@ public class Creature extends Utils
 		public function hasAnyStatusEffect(...stypes:Array):Boolean {
 			return stypes.some(function(stype:StatusEffectType, index:int, array:Array):Boolean { return hasStatusEffect(stype); });
 		}
-		/**
-		 * Check if this creature has all of the specified status effects.
-		 * @param stypes {Array - StatusEffectType}
-		 * @return {Boolean} True if creature has all of the status effects, otherwise false.
-		 */
-		public function hasStatusEffects(...stypes:Array):Boolean {
-			return stypes.all(function(stype:StatusEffectType, index:int, array:Array):Boolean { return hasStatusEffect(stype); });
-		}
 		public function changeStatusValue(stype:StatusEffectType, statusValueNum:Number = 1, newNum:Number = 0):void
 		{
 			return this._statusEffects.changeStatusValue(stype, statusValueNum, newNum);
@@ -2315,28 +2493,29 @@ public class Creature extends Utils
         /**
         * Returns the count of the cocks which meet the requirements
         * Assumes that TENTACLE type is the same as STAMEN (because it's the same, isn't it?)
-        * @param    type        Cock type, UNDEFINED = "any"
+        * @param    cockType    Cock type, UNDEFINED = "any"
         * @param    minSize     Minimum size, 0/-1 = no checking
         * @param    maxSize     Maximum size, -1 = no checking
         * @param    compareBy   The measurement to compare by, "area", "length" or "thickness"
         * @return   The count of matching dicks
         */
-        public function countCocksWithType(type:CockTypesEnum, minSize:Number = -1, maxSize:Number = -1, compareBy:String = "area"):int {
-            if (compareBy != "area" && compareBy != "length" && compareBy != "thickness") //sanity check
+        public function countCocksWithType(cockType:CockTypesEnum, minSize:Number = -1, maxSize:Number = -1, compareBy:String = "area"):int {
+            var cockCompareMethod:Array = ["area", "length",  "thickness"]
+			if (cockCompareMethod.indexOf(compareBy) < 0) //sanity check
                 throw new Error("Wrong compareBy value!");
             var cnt:int = 0;
-            var tent:Boolean = (type == CockTypesEnum.STAMEN || type == CockTypesEnum.TENTACLE || type == CockTypesEnum.SCYLLATENTACLE);
+            var tent:Boolean = (cockType == CockTypesEnum.STAMEN || cockType == CockTypesEnum.TENTACLE || cockType == CockTypesEnum.SCYLLATENTACLE);
             for (var i:int = 0; i < cocks.length; ++i) {
                 var isize:Number = compareBy == "length" ? cocks[i].cockLength :
                                 compareBy == "thickness" ? cocks[i].cockThickness :
                                 cockArea(i);
                 if ((isize >= minSize || minSize < 0) && (isize < maxSize || maxSize < 0)
-                && (cocks[i].cockType == type || tent && cockIsTentacle(i) || type == CockTypesEnum.UNDEFINED))
+                && (cocks[i].cockType == cockType || tent && cockIsTentacle(i) || cockType == CockTypesEnum.UNDEFINED))
                     ++cnt;
             }
             return cnt;
         }
-		
+
 		public function countCocks(minSize:Number = -1, maxSize:Number = -1, compareBy:String = "area"):int {
 			return countCocksWithType(CockTypesEnum.UNDEFINED, minSize, maxSize, compareBy);
 		}
@@ -2371,7 +2550,7 @@ public class Creature extends Utils
                                 compareBy == "thickness" ? cocks[sorted[j]].cockThickness :
                                 cockArea(sorted[j]);
                         if (jsize < nsize) {
-                            sorted.insertAt(j, num);
+                            sorted.splice(j, 0, num);
                             break;
                         }
                     }
@@ -2388,7 +2567,7 @@ public class Creature extends Utils
                 return sorted[sorted.length + biggest];
 			return sorted[0];
         }
-		
+
 		public function findCock(biggest:int = 1, minSize:Number = -1, maxSize:Number = -1, compareBy:String = "area"):int {
 			return findCockWithType(CockTypesEnum.UNDEFINED, biggest, minSize, maxSize, compareBy);
 		}
@@ -2418,7 +2597,39 @@ public class Creature extends Utils
 		}
 
 		public function cockDescript(cockIndex:int = 0):String {
-			return Appearance.cockDescript(this, cockIndex);
+			if (!hasCock()){
+				return Appearance.vaginaCockDescript(this);
+			}
+			else
+			{
+				return Appearance.cockDescript(this, cockIndex);
+			}
+		}
+
+		public function cockVsClitCockLenght(i_creature:Creature, i_cockIndex:Number =0):String{
+			if (i_creature.cocks.length >= 1){
+				return ""+num2Text(Math.round(i_creature.cocks[i_cockIndex].cockLength))+"";
+			}
+			if (i_creature.vaginas.length >= 0){
+				return ""+i_creature.clitLength+"";
+			}
+			else{
+				CoC_Settings.error("<B>Error: No vagina or cock availlable</b>");
+				return "<B>Error: No vagina or cock availlable for cockVsClitCockLenght</b>";
+			}
+		}
+
+		public function cockVsClitCockLenghtNumber(i_creature:Creature, i_cockIndex:Number =0):Number{
+			if (i_creature.cocks.length >= 1){
+				return i_creature.cocks[i_cockIndex].cockLength;
+			}
+			if (i_creature.vaginas.length >= 0){
+				return i_creature.clitLength;
+			}
+			else{
+				CoC_Settings.error("<B>Error: No vagina or cock availlable</b>");
+				return 1;
+			}
 		}
 
 		public function cockAdjective(index:Number = -1):String {
@@ -2698,6 +2909,8 @@ public class Creature extends Utils
 				percent += 0.03;
 			if (hasPerk(PerkLib.MagicalVirility))
 				percent += 0.05 + (perkv1(PerkLib.MagicalVirility) * 0.01);
+			if (perkv1(IMutationsLib.FiendishBallsIM) >= 1)
+				percent += (((perkv1(IMutationsLib.FiendishBallsIM)*2)+2)*0.1);
 			if (perkv1(IMutationsLib.HumanTesticlesIM) >= 1 && game.player.racialScore(Races.HUMAN) > 17)
 				percent += (0.05 * perkv1(IMutationsLib.HumanTesticlesIM));
 			//Messy Orgasms?
@@ -2708,16 +2921,18 @@ public class Creature extends Utils
 				percent += (jewelryEffectMagnitude / 100);
 			if (hasPerk(PerkLib.AscensionVirility))
 				percent += perkv1(PerkLib.AscensionVirility) * 0.05;
+			if (DomsDomain.SteakEaten > 0) {
+				percent += (0.5 * (DomsDomain.SteakEaten));
+			}
 			if (percent > 1)
 				percent = 1;
 			if (percent < 0)
 				percent = 0;
-
 			return percent;
 		}
 
 		//Calculate cum return
-		public function cumQ():Number
+		public function cumQ(ballskip:Boolean = false):Number
 		{
 			if (!hasCock())
 				return 0;
@@ -2726,24 +2941,18 @@ public class Creature extends Utils
 			//Other things that affect it:
 			//lust - 50% = normal output.  0 = half output. 100 = +50% output.
 			//trace("CUM ESTIMATE: " + int(1.25*2*cumMultiplier*2*(lust + 50)/10 * (hoursSinceCum+10)/24)/10 + "(no balls), " + int(ballSize*balls*cumMultiplier*2*(lust + 50)/10 * (hoursSinceCum+10)/24)/10 + "(withballs)");
-			var lustCoefficient:Number = (lust + 50) / 10;
+			var lustCoefficient:Number = lust / 10;
 			//If realistic mode is enabled, limits cum to capacity.
 			if (flags[kFLAGS.HUNGER_ENABLED] >= 1)
 			{
-				lustCoefficient = (lust + 50) / 5;
-				if (hasPerk(PerkLib.PilgrimsBounty)) lustCoefficient = 30;
+				lustCoefficient = lust / 5;
 				var percent:Number = 0;
 				percent = lustCoefficient + (hoursSinceCum + 10);
 				if (percent > 100)
 					percent = 100;
-				if (quantity > cumCapacity())
-					quantity = cumCapacity();
-				return (percent / 100) * cumCapacity();
+				return (percent / 100) * cumCapacity(ballskip);
 			}
-			//Pilgrim's bounty maxes lust coefficient
-			if (hasPerk(PerkLib.PilgrimsBounty))
-				lustCoefficient = 150 / 10;
-			if (balls == 0)
+			if (ballskip || balls == 0)
 				quantity = int(1.25 * 2 * cumMultiplier * 2 * lustCoefficient * (hoursSinceCum + 10) / 24) / 10;
 			else
 				quantity = int(ballSize * balls * cumMultiplier * 2 * lustCoefficient * (hoursSinceCum + 10) / 24) / 10;
@@ -2763,6 +2972,8 @@ public class Creature extends Utils
 				if (perkv1(IMutationsLib.MinotaurTesticlesIM) >= 4) quantity *= 3;
 				else quantity *= 2.5;
 			}
+			if (perkv1(IMutationsLib.FiendishBallsIM) >= 2)
+				quantity *= (1 + (0.25 * perkv1(IMutationsLib.FiendishBallsIM)));
 			if (hasPerk(PerkLib.MaraesGiftStud))
 				quantity += 350;
 			if (hasPerk(PerkLib.FerasBoonAlpha))
@@ -2810,14 +3021,14 @@ public class Creature extends Utils
 		}
 
 		//Limits how much cum you can produce. Can be altered with perks, ball size, and multiplier. Only applies to realistic mode.
-		public function cumCapacity():Number
+		public function cumCapacity(ballskip:Boolean = false):Number
 		{
 			if (!hasCock()) return 0;
 			var cumCap:Number = 0;
 			//Alter capacity by balls.
 			var balls:Number = this.balls;
 			var ballSize:Number = this.ballSize;
-			if (balls == 0) {
+			if (ballskip || balls == 0) {
 				balls = 2;
 				ballSize = 1;
 			}
@@ -2928,8 +3139,12 @@ public class Creature extends Utils
 			return countCocksOfType(CockTypesEnum.HUMAN);
 		}
 
-		public function tentacleCocks():int { //How many tentaclecocks?
+		public function tentacleCocks():int { //How many all tentaclecocks?
 			return countCocksOfType(CockTypesEnum.TENTACLE) + countCocksOfType(CockTypesEnum.STAMEN) + countCocksOfType(CockTypesEnum.SCYLLATENTACLE);
+		}
+
+		public function tentacleOnlyCocks():int { //How many tentaclecocks?
+			return countCocksOfType(CockTypesEnum.TENTACLE);
 		}
 
 		public function stamenCocks():int { //How many stamencocks?
@@ -2950,6 +3165,10 @@ public class Creature extends Utils
 
 		public function insectCocks():int { //How many insectcocks?
 			return countCocksOfType(CockTypesEnum.INSECT);
+		}
+
+		public function barometzCocks():int { //How many insectcocks?
+			return countCocksOfType(CockTypesEnum.BAROMETZ);
 		}
 
 
@@ -3012,6 +3231,12 @@ public class Creature extends Utils
 		//Boolean alternate
 		public function hasCock():Boolean
 		{
+			return cocks.length >= 1 ? true : vaginas.length >= 1 ? ((vaginas[0].type == VaginaClass.SHROOM) && clitLength >= 5) : false;
+		}
+
+		public function hasCockCockOnly():Boolean
+		{
+			//Only checks for cocks do not check for clitcock
 			return cocks.length >= 1;
 		}
 
@@ -3097,8 +3322,9 @@ public class Creature extends Utils
 		//PC can swim underwater?
 		public function canSwimUnderwater():Boolean
 		{
-			if (gills.type != Gills.NONE || lowerBody == LowerBody.SCYLLA || lowerBody == LowerBody.KRAKEN || lowerBody == LowerBody.MELKIE || tailType == Tail.ARIGEAN_GREEN || tailType == Tail.ARIGEAN_RED || rearBody.type == RearBody.ORCA_BLOWHOLE || hasStatusEffect(StatusEffects.Airweed) ||
-				game.player.necklaceName == "Magic coral and pearl necklace" || game.player.headjewelryName == "Aqua breather" || (game.player.isInGoblinMech() && game.player.hasKeyItem("Safety bubble") >= 0) || game.player.hasPerk(PerkLib.AffinityUndine) || game.player.hasPerk(PerkLib.Undeath))
+			if (gills.type != Gills.NONE || lowerBody == LowerBody.SCYLLA || lowerBody == LowerBody.KRAKEN || lowerBody == LowerBody.MELKIE || tailType == Tail.ARIGEAN_GREEN || tailType == Tail.ARIGEAN_RED || tailType == Tail.ARIGEAN_YELLOW || tailType == Tail.ARIGEAN_PRINCESS ||
+				rearBody.type == RearBody.ORCA_BLOWHOLE || hasStatusEffect(StatusEffects.Airweed) || game.player.necklaceName == "Magic coral and pearl necklace" || game.player.headjewelryName == "Aqua breather" ||
+				(game.player.isInGoblinMech() && game.player.hasKeyItem("Safety bubble") >= 0) || (perkv1(IMutationsLib.HumanLungsIM) >= 4 && game.player.racialScore(Races.HUMAN) > 17) || game.player.hasPerk(PerkLib.AffinityUndine) || game.player.hasPerk(PerkLib.Undeath))
 				return true;	//efekt of itemów dające oddych. pod wodą
 			return false;
 		}
@@ -3112,12 +3338,20 @@ public class Creature extends Utils
 				bonusStr += 30 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
 				bonusSpe += 30 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
 			}
+			if (perkv1(IMutationsLib.ScyllaInkGlandsIM) >= 3) {
+				bonusStr *= (perkv1(IMutationsLib.ScyllaInkGlandsIM) - 1);
+				bonusSpe *= (perkv1(IMutationsLib.ScyllaInkGlandsIM) - 1);
+			}
 			if (game.player.hasPerk(PerkLib.AffinityUndine)) bonusSpe += 50 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
 			if (game.player.armorName == "Sexy Aquamarine Bikini" || game.player.armorName == "Sexy Black Bikini" || game.player.armorName == "Sexy Blue Bikini" || game.player.armorName == "Sexy Green Bikini" || game.player.armorName == "Sexy Pink Bikini" || game.player.armorName == "Sexy Red Bikini" || game.player.armorName == "Sexy White Bikini" || game.player.armorName == "Sexy Yellow Bikini") {
 				bonusStr += 20 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
 				bonusSpe += 20 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
 			}
 			if (game.player.necklaceName == "Magic coral and pearl necklace") bonusSpe += 10 * (1 + flags[kFLAGS.NEW_GAME_PLUS_LEVEL]);
+			if (perkv1(IMutationsLib.ScyllaInkGlandsIM) >= 4) {
+				bonusStr *= 2;
+				bonusSpe *= 2;
+			}
 			game.player.buff("UnderwaterCombatBoost").addStats({str:bonusStr,spe:bonusSpe}).withText("Fighting Underwater").combatPermanent();
 			HP = oldHPratio * maxHP();
 			if (game.player.hasPerk(PerkLib.AffinityIgnis)) createStatusEffect(StatusEffects.UnderwaterAndIgnis, 0, 0, 0, 0);
@@ -3154,7 +3388,7 @@ public class Creature extends Utils
 		{
 			return hasPerk(PerkLib.BlindImmunity) || hasPerk(PerkLib.TrueSeeing);
 		}
-  
+
 		//check for vagoo
 		public function hasVagina():Boolean
 		{
@@ -3577,6 +3811,13 @@ public class Creature extends Utils
 				counter += 30;
 			if (hasPerk(PerkLib.MagicalFertility))
 				counter += 10 + (perkv1(PerkLib.MagicalFertility) * 5);
+			if (DomsDomain.FishEaten > 0) {
+				counter += ((DomsDomain.FishEaten) * 2);
+			}
+			if (perkv1(IMutationsLib.GoblinOvariesIM) >= 1)
+				counter += (10 * perkv1(IMutationsLib.GoblinOvariesIM));
+			if (perkv1(IMutationsLib.FiendishOvariesIM) >= 1)
+				counter += (((perkv1(IMutationsLib.FiendishOvariesIM)*2)+2)*10);
 			if (perkv1(IMutationsLib.HumanOvariesIM) >= 1 && game.player.racialScore(Races.HUMAN) > 17)
 				counter += (15 * perkv1(IMutationsLib.HumanOvariesIM));
 			counter += perkv2(PerkLib.ElvenBounty);
@@ -3602,6 +3843,9 @@ public class Creature extends Utils
 		public function isFeatherCovered():Boolean { return skin.isFeatherCovered(); }
 		public function hasMostlyPlainSkin():Boolean { return skin.hasMostlyPlainSkin(); }
 		public function hasPlainSkinOnly():Boolean { return skin.hasPlainSkinOnly(); }
+		public function hasPartialCoatOfType(...coat_types:Array):Boolean {
+			return skin.hasPartialCoatOfType(coat_types);
+		}
 		public function hasPartialCoat(coat_type:int):Boolean { return skin.hasPartialCoatOfType(coat_type); }
 		public function hasAnyPartialCoat():Boolean { return skin.hasPartialCoat(); }
 		public function hasRubberSkin():Boolean { return skin.hasRubberSkin(); }
@@ -3609,7 +3853,8 @@ public class Creature extends Utils
 		public function isGooSkin():Boolean { return skin.isGooSkin(); }
 		public function isGhostSkin():Boolean { return skin.isGhostSkin(); }
 		public function isBarkSkin():Boolean { return skin.hasBark(); }
-		public function isGargoyle():Boolean { return skin.hasBaseOnly(Skin.STONE); }
+		public function isGargoyle():Boolean { return hasPerk(PerkLib.GargoyleCorrupted) || hasPerk(PerkLib.GargoylePure); }
+		public function isAutomata():Boolean { return hasPerk(PerkLib.AlphaProtocol); }
 		public function skinDescript():String { return skin.describe('base'); }
 		public function skinFurScales():String { return skin.describe('coat'); }
 
@@ -3620,6 +3865,7 @@ public class Creature extends Utils
 		// </mod>
 
 		public function hasFourArms():Boolean { return arms.hasFourArms(); }
+		public function arm():String { return arms.arms(); }
 		public function legs():String { return lowerBodyPart.legs(); }
 		public function leg():String { return lowerBodyPart.leg(); }
 		public function feet():String { return lowerBodyPart.feet(); }
@@ -3676,14 +3922,19 @@ public class Creature extends Utils
 			return eggs() >= 10 && hasPerk(PerkLib.AntOvipositor) && tail.type == Tail.ANT_ABDOMEN;
 		}
 
+		public function canOvipositMoth():Boolean
+		{
+			return eggs() >= 10 && hasPerk(PerkLib.MothOvipositor) && tail.type == Tail.MOTH_ABDOMEN;
+		}
+
 		public function canOviposit():Boolean
 		{
-			return canOvipositSpider() || canOvipositBee() || canOvipositMantis() || canOvipositAnt();
+			return canOvipositSpider() || canOvipositBee() || canOvipositMantis() || canOvipositAnt() || canOvipositMoth();
 		}
 
 		public function eggs():int
 		{
-			if (!hasPerk(PerkLib.SpiderOvipositor) && !hasPerk(PerkLib.BeeOvipositor) && !hasPerk(PerkLib.MantisOvipositor) && !hasPerk(PerkLib.AntOvipositor))
+			if (!hasPerk(PerkLib.SpiderOvipositor) && !hasPerk(PerkLib.BeeOvipositor) && !hasPerk(PerkLib.MantisOvipositor) && !hasPerk(PerkLib.AntOvipositor) && !hasPerk(PerkLib.MothOvipositor))
 				return -1;
 			else if (hasPerk(PerkLib.SpiderOvipositor))
 				return perkv1(PerkLib.SpiderOvipositor);
@@ -3691,6 +3942,8 @@ public class Creature extends Utils
 				return perkv1(PerkLib.BeeOvipositor);
 			else if (hasPerk(PerkLib.MantisOvipositor))
 				return perkv1(PerkLib.MantisOvipositor);
+			else if (hasPerk(PerkLib.MothOvipositor))
+				return perkv1(PerkLib.MothOvipositor);
 			else
 				return perkv1(PerkLib.AntOvipositor);
 			}
@@ -3708,19 +3961,20 @@ public class Creature extends Utils
 		}
 
 		public function dumpEggs():void {
-			if (!hasPerk(PerkLib.SpiderOvipositor) && !hasPerk(PerkLib.BeeOvipositor) && !hasPerk(PerkLib.MantisOvipositor) && !hasPerk(PerkLib.AntOvipositor))
+			if (!hasPerk(PerkLib.SpiderOvipositor) && !hasPerk(PerkLib.BeeOvipositor) && !hasPerk(PerkLib.MantisOvipositor) && !hasPerk(PerkLib.AntOvipositor) && !hasPerk(PerkLib.MothOvipositor))
 				return;
 			if (hasPerk(PerkLib.TransformationImmunityBeeHandmaiden)) {
 				addPerkValue(PerkLib.BeeOvipositor, 1, -25);
-				if (getPerkValue(PerkLib.BeeOvipositor, 1) > 0) EngineCore.outputText("\n\nWith no further space left to unload within your current incubator you sigh and stand up to be on your way. You will need more incubators to deliver your remaining eggs to.");
+				if (getPerkValue(PerkLib.BeeOvipositor, 1) > 0) EngineCore.outputText("\n\nWith no further space left to unload within your current incubator you sigh and stand up to be on your way. You will need more incubators in which to deliver your remaining eggs.");
 				else EngineCore.outputText("\n\nYou will need to go see Tifa for a reload but you have a nice idea of where you could store the eggs from now on.");
 				buff("Oviposition").addStats({"spe.mult": 0.1}).withText("Relief after the oviposition").forDays(1); //give that speed buff
+				SceneLib.tifaHive.ovipositClutch();
 			} else setEggs(0);
 			fertilizeEggs(); //Sets fertile eggs = regular eggs
 		}
 
 		private function getOviPerk():PerkType {
-			var oviPerks:Array = [PerkLib.SpiderOvipositor, PerkLib.BeeOvipositor, PerkLib.MantisOvipositor, PerkLib.AntOvipositor];
+			var oviPerks:Array = [PerkLib.SpiderOvipositor, PerkLib.BeeOvipositor, PerkLib.MantisOvipositor, PerkLib.AntOvipositor, PerkLib.MothOvipositor];
 			for each (var perk:PerkType in oviPerks)
 				if (hasPerk(perk)) return perk;
 			return null;
@@ -4058,8 +4312,14 @@ public class Creature extends Utils
 
 		public function cockHead(cockNum:int = 0):String {
 			if (cockNum < 0 || cockNum > cocks.length - 1) {
-				CoC_Settings.error("");
-				return "ERROR";
+				if (hasCock()){
+					if(vaginaType() == 20) return "mushroom-like tip";
+					else return "ERROR this cock clit head lack a description!";
+				}
+				else{
+					CoC_Settings.error("");
+					return "ERROR";
+				}
 			}
 			switch (cocks[cockNum].cockType) {
 				case CockTypesEnum.CAT:
@@ -4204,7 +4464,7 @@ public class Creature extends Utils
 		 * Echidna 1 ft long (i'd consider it barely qualifying), demonic 2 ft long, draconic 4 ft long
 		 */
 		public function hasLongTongue():Boolean {
-			return tongue.type == Tongue.DEMONIC || tongue.type == Tongue.DRACONIC || tongue.type == Tongue.ECHIDNA;
+			return tongue.type == Tongue.DEMONIC || tongue.type == Tongue.DRACONIC || tongue.type == Tongue.ECHIDNA || tongue.type == Tongue.SNAKE;
 		}
 
 		public function hairOrFur():String
@@ -4349,6 +4609,18 @@ public class Creature extends Utils
 			if (mult < 20) mult = 20;
 			return mult;
 		}
+		public function damagePsychicPercent():Number {
+			var mult:Number = 100;
+			mult -= resPsychicStat.value;
+			if (mult < 20) mult = 20;
+			return mult;
+		}
+		public function damageTruePercent():Number {
+			var mult:Number = 100;
+			mult -= resTrueStat.value;
+			if (mult < 20) mult = 20;
+			return mult;
+		}
 
 		/**
 		* Look into perks and special effects and @return summery extra chance to avoid attack granted by them.
@@ -4356,18 +4628,14 @@ public class Creature extends Utils
 		public function getEvasionChance():Number
 		{
 			var chance:Number = 0;
-
 			if (hasPerk(PerkLib.GreaterEvade)) chance += 15;
 			else if (hasPerk(PerkLib.ImprovedEvade)) chance += 10;
 			else if (hasPerk(PerkLib.Evade)) chance += 5;
-
 			if (hasPerk(PerkLib.JobRogue)) chance += 5;
 			if (hasPerk(PerkLib.Spectre) && hasPerk(PerkLib.Incorporeality)) chance += 10;
 			if (hasPerk(PerkLib.ElvenSense)) chance += 5;
-
 			if (perkv1(IMutationsLib.ElvishPeripheralNervSysIM) >= 3) chance += 15;
 			else if (perkv1(IMutationsLib.ElvishPeripheralNervSysIM) >= 2) chance += 10;
-
 			if (isFlying()) {
 				if (hasPerk(PerkLib.GreaterAerialCombat)) chance += 20;
 				else if (hasPerk(PerkLib.AdvancedAerialCombat)) chance += 10;
@@ -4375,24 +4643,19 @@ public class Creature extends Utils
 			} else {
 				chance += (evadeStat.value * (game.time.hours < 7 || game.time.hours > 19? 2:1));
 			}
-
 			if (perkv1(IMutationsLib.CatLikeNimblenessIM) >= 4) chance += 20;
 			else if (perkv1(IMutationsLib.CatLikeNimblenessIM) >= 3) chance += 15;
 			else if (perkv1(IMutationsLib.CatLikeNimblenessIM) >= 2) chance += 10;
 			else if (perkv1(IMutationsLib.CatLikeNimblenessIM) >= 1) chance += 5;
-
 			if (hasPerk(PerkLib.Flexibility)) chance += 6;
-
 			if (hasPerk(PerkLib.SmallFrame)) chance += 6;
-
 			if (hasPerk(PerkLib.JunglesWanderer)) chance += 35;
-
 			if (hasStatusEffect(StatusEffects.Illusion)) {
 				var illDodgeChance:int = 10;
 				if (perkv1(IMutationsLib.KitsuneThyroidGlandIM) >= 3) illDodgeChance += 20;
 				chance += illDodgeChance;
 			}
-
+			if (this.statStore.hasBuff("Atavism")) chance += 10;
 			if (hasStatusEffect(StatusEffects.BladeDance)) chance += 30;
 			return chance;
 		}
@@ -4427,7 +4690,7 @@ public class Creature extends Utils
 		public function getEvasionReason(considerBlindSpeed:Boolean = true, attackSpeed:int = int.MIN_VALUE, hitModifier:int = 0, dodgeArray:Array = null):String {
 			var evasionReason:String;
 			if (!dodgeArray) dodgeArray = [];
-			
+
 			if (hasStatusEffect(StatusEffects.GreenCovenant)) return null;
 			if (considerBlindSpeed && attackSpeed != int.MIN_VALUE && spe - attackSpeed > 0 && calcSpeedDodge(attackSpeed) > 0) return EVASION_SPEED;
 
@@ -4486,7 +4749,7 @@ public class Creature extends Utils
 			if (currentDodgeSum < 100) dodgeArray.push([(100 - currentDodgeSum), null]);
 
 			evasionReason = Utils.weightedRandom(dodgeArray);
-			
+
 			return evasionReason;
 		}
 
@@ -4566,7 +4829,7 @@ public class Creature extends Utils
 		public function get vagorass():IOrifice {
 			return hasVagina() ? vaginas[0] : ass;
 		}
-		
+
 		/**
 		 * Generate increments for stats
 		 *
@@ -4824,4 +5087,4 @@ public class Creature extends Utils
 			//Do nothing
 		}
 	}
-}
+}

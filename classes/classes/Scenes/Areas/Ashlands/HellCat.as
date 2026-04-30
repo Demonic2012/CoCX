@@ -17,23 +17,23 @@ import classes.internals.*;
 		
 		public function castArouse():void {
 			outputText("She makes a series of arcane gestures, drawing on her lust to inflict it upon you! ");
-			var lustDamage:int = (inte / 5) + rand(10);
+			var lustDamage:int = (inte / 2) + rand(50);
 			player.takeLustDamage(lustDamage);
 			mana -= spellCostArouse;
 		}
 		
 		public function hellcatFireball():void
 		{
-			var damage:int = (inte * 1.1) + rand(25);
+			var damage:int = (inte * 3) + rand(125);
 			damage = Math.round(damage);
-			outputText("The hellcat holds out her hand, a fireball forming in her palm. She launches the ball of molten heat your way.");
+			outputText("The hellcat holds out her hand, a fireball forming in her palm. She launches the ball of molten heat towards you.");
 			player.takeFireDamage(damage, true);
 		}
 		
 		public function hellcatInfernalClaw():void
 		{
 			outputText("The hellcat growls at you, unsheathing her claws. She crouches, her claws beginning to glow with orange-red heat. The smell of molten iron fills the air as she pounces at you, claws outstretched. ");
-			var firedamage:int = (inte * 0.45) + rand(10);
+			var firedamage:int = (inte * 1.5) + rand(50);
 			firedamage = Math.round(firedamage);
 			player.takeFireDamage(firedamage, true);
 			if (!player.immuneToBurn()) {
@@ -47,12 +47,12 @@ import classes.internals.*;
 				if (player.hasStatusEffect(StatusEffects.Hemorrhage)) player.addStatusValue(StatusEffects.Hemorrhage, 1, 1);
 				else player.createStatusEffect(StatusEffects.Hemorrhage, SceneLib.combat.debuffsOrDoTDuration(3), 0.05, 0, 0);
 			}
-			outputText(" Reeling in pain you begin to bleed and burn at the same time.");
+			outputText(" Reeling in pain, you begin to bleed and burn at the same time.");
 		}
 		
 		public function hellcatFelineCurse():void
 		{
-			outputText("The hellcat incants a curse. Your head reels as the world around you seems to grow. You fall, unable to balance as your [legs] give way. After a few seconds, you open your eyes, trying to rub them...but your arm isn't moving right. You look down and see...fuzzy paws. Cat paws. To your growing horror, you realize what she did. You're now a housecat!");
+			outputText("The hellcat incants a curse. Your head reels as the world around you appears to expand. You fall, unable to balance as your [legs] give way. After a few seconds, you open your eyes, trying to rub them...but your arm isn't moving properly. You look down and see...fuzzy paws. Cat paws. To your growing horror, you realize what she did. You're now a housecat!");
 			player.createStatusEffect(StatusEffects.Polymorphed, 3, 0, 0, 0);
 			createStatusEffect(StatusEffects.AbilityCooldown1, 8, 0, 0, 0);
 		}
@@ -110,28 +110,28 @@ import classes.internals.*;
 			this.bodyColor = "ashen";
 			this.hairColor = "midnight black";
 			this.hairLength = 13;
-			initStrTouSpeInte(70, 70, 150, 210);
-			initWisLibSensCor(140, 145, 50, 80);
+			initStrTouSpeInte(140, 140, 300, 630);
+			initWisLibSensCor(210, 290, 100, 70);
 			this.weaponName = "claws";
 			this.weaponVerb="slash";
-			this.weaponAttack = 2;
+			this.weaponAttack = 10;
 			this.armorName = "hooded cape";
-			this.armorDef = 3;
-			this.armorMDef = 50;
+			this.armorDef = 30;
+			this.armorMDef = 500;
 			this.armorPerk = "";
 			this.armorValue = 50;
-			this.bonusHP = 222;
-			this.bonusLust = 241;
+			this.bonusHP = 777;
+			this.bonusLust = 460;
 			this.lust = 20;
 			this.lustVuln = .1;
-			this.level = 46;
-			this.gems = rand(55) + 40;
+			this.level = 70;
+			this.gems = rand(55) + 140;
 			this.drop = new WeightedDrop().addMany(5,
 					consumables.W_FRUIT,
-					weapons.H_WAND,
-					null)
+					weapons.H_WAND)
 					.add(shields.NEKONOM, 1);
 			this.createPerk(PerkLib.FireNature, 0, 0, 0, 0);
+			this.createPerk(PerkLib.Flexibility, 0, 0, 0, 0);
 			checkMonster();
 		}
 	}

@@ -2,6 +2,7 @@ package classes.Races {
 import classes.BodyData;
 import classes.BodyParts.*;
 import classes.IMutations.IMutationsLib;
+import classes.PerkLib;
 import classes.Race;
 import classes.StatusEffects;
 import classes.VaginaClass;
@@ -53,7 +54,10 @@ public class CancerRace extends Race{
 							return body.player.foamingCocks()>0 || body.vaginaType == VaginaClass.CANCER
 						}, +1
 						)
-				.biggestTitSize(AT_MOST(3), +1);
+				.biggestTitSize(AT_MOST(3), +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
+		
+		addBloodline(PerkLib.CancersDescendant, PerkLib.BloodlineCancer);
 		addMutation(IMutationsLib.TwinHeartIM, +2);
 		
 		buildTier(13, "lesser cancer")

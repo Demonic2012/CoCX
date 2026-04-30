@@ -479,7 +479,7 @@ public class EarsTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "Whoa, something messed up is going about with your ears. They migrate slowly up your head, elongating and distorting as they get covered in [haircolor] fur. When you go check what the hell happened to them you discover instead of human ears you now have a pair of cute animal ears up on your head. Well these sure will give you a cute look. <b>You now have gremlin ears!</b>";
+				desc += "Whoa, something messed up is going about with your ears. They migrate slowly up your head, elongating and distorting as they get covered in [haircolor] fur. When you go check what the hell happened to them you discover instead of human ears you now have a pair of cute animal ears up on your head. Well, these sure will give you a cute look. <b>You now have gremlin ears!</b>";
 				player.ears.type = Ears.GREMLIN;
 				if (doOutput) outputText(desc);
 				Metamorph.unlockMetamorph(EarsMem.getMemory(EarsMem.GREMLIN));
@@ -812,6 +812,105 @@ public class EarsTransformations extends MutationsHelper {
 			// is present
 			function (): Boolean {
 				return player.ears.type === Ears.JACKAL;
+			}
+	);
+
+	public const EarsTroll: Transformation = new SimpleTransformation("Troll Ears",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "Your ears prickle and itch as you feel the cartilage shift and contort as your skin is stretched taut. You can feel your ears growing, gaining an acute sense of hearing as fur starts to coat your ears. <b>Your hand reaches up as the transformation stops and you realize that you now have troll ears!</b>";
+
+				player.ears.type = Ears.TROLL;
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(EarsMem.getMemory(EarsMem.TROLL));
+			},
+			// is present
+			function (): Boolean {
+				return player.ears.type === Ears.TROLL;
+			}
+	);
+
+	public const EarsGlacialTroll: Transformation = new SimpleTransformation("Glacial Troll Ears",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "Your ears prickle and itch as you feel the cartilage shift and contort as your skin is stretched taut. You can feel your ears growing, gaining an acute sense of hearing as a heavy coat of fur starts to coat your ears. <b>Your hand reaches up as the transformation stops and you realize that you now have glacial troll ears!</b>";
+
+				player.ears.type = Ears.GLACIAL_TROLL;
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(EarsMem.getMemory(EarsMem.GLACIAL_TROLL));
+			},
+			// is present
+			function (): Boolean {
+				return player.ears.type === Ears.GLACIAL_TROLL;
+			}
+	);
+
+	public const EarsAutomataFennecFox: Transformation = new SimpleTransformation("Automata Fennec Fox Ears",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "";
+
+				player.ears.type = Ears.AUTOMATA_FOX;
+				if (doOutput) outputText(desc);
+			},
+			// is present
+			function (): Boolean {
+				return player.ears.type === Ears.AUTOMATA_FOX;
+			}
+	);
+
+	public const EarsAutomataCat: Transformation = new SimpleTransformation("Automata Cat Ears",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "";
+
+				player.ears.type = Ears.AUTOMATA_CAT;
+				if (doOutput) outputText(desc);
+			},
+			// is present
+			function (): Boolean {
+				return player.ears.type === Ears.AUTOMATA_CAT;
+			}
+	);
+
+	public const EarsAutomataBunny: Transformation = new SimpleTransformation("Automata Bunny Ears",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "";
+
+				player.ears.type = Ears.AUTOMATA_BUNNY;
+				if (doOutput) outputText(desc);
+			},
+			// is present
+			function (): Boolean {
+				return player.ears.type === Ears.AUTOMATA_BUNNY;
+			}
+	);
+
+	public const EarsBarometz: Transformation = new SimpleTransformation("Barometz Ears",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "Your ears elongate and flatten on your head. You flap them a little and discover they have turned into something similar to the ears of a sheep. The fur on them however is strange, it feels like fur to the touch but really it's actually a coverage of moss. <b>You now have barometz ears!</b>";
+
+				player.ears.type = Ears.BAROMETZ;
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(EarsMem.getMemory(EarsMem.BAROMETZ));
+			},
+			// is present
+			function (): Boolean {
+				return player.ears.type === Ears.BAROMETZ;
 			}
 	);
 	/*

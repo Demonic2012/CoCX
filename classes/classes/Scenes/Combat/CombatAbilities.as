@@ -16,12 +16,16 @@ public class CombatAbilities {
 	public static const FlyingSwordAttack:FlyingSwordSkill		= new FlyingSwordSkill();
 	public static const WillOfTheWisp:WillOfTheWispSkill		= new WillOfTheWispSkill();
 	public static const MummyAttack:MummyAttackSkill			= new MummyAttackSkill();
+	public static const ZombieAttack:ZombieAttackSkill			= new ZombieAttackSkill();
+	public static const MatangoAttack:MatangoAttackSkill		= new MatangoAttackSkill();
 	public static const Tease:TeaseSkill						= new TeaseSkill();
 	public static const GoblinLustBomb:GoblinLustBombSkill		= new GoblinLustBombSkill();
 	public static const ALL_GENERAL_SKILLS:/*CombatAbility*/Array = [
 		FlyingSwordAttack,
 		WillOfTheWisp,
 		MummyAttack,
+		ZombieAttack,
+		MatangoAttack,
 		Tease,
 		GoblinLustBomb
 	];
@@ -287,6 +291,7 @@ public class CombatAbilities {
 	public static const ElementIce:CreateElementSkill								= new CreateElementSkill("Ice", 2);
 	public static const ElementLightning:CreateElementSkill							= new CreateElementSkill("Lightning", 2);
 	public static const ElementDarkness:CreateElementSkill							= new CreateElementSkill("Darkness", 2);
+	public static const Sunrise:SunriseSkill										= new SunriseSkill();
 	public static const SoulDrain:SoulDrainSkill									= new SoulDrainSkill();
 	public static const Trance:TranceSkill											= new TranceSkill();
 	public static const VioletPupilTransformation:VioletPupilTransformationSkill	= new VioletPupilTransformationSkill();
@@ -300,8 +305,9 @@ public class CombatAbilities {
 	public static const BloodRequiem:BloodReqiuemSkill								= new BloodReqiuemSkill();
 	public static const BloodRequiemSF:BloodReqiuemSkill							= new BloodReqiuemSkill(true);
 	public static const ScarletSpiritCharge:ScarletSpiritChargeSkill				= new ScarletSpiritChargeSkill();
+	public static const CrimsonOverflow:CrimsonOverflowSkill						= new CrimsonOverflowSkill();
 	public static const KillingIntent:KillingIntentSkill							= new KillingIntentSkill();
-
+	public static const SoulFist:SoulFistSkill										= new SoulFistSkill();
 
 
 	public static const ALL_SOULSKILLS:/*CombatAbility*/Array = [
@@ -338,6 +344,7 @@ public class CombatAbilities {
 		ElementIce,
 		ElementLightning,
 		ElementWater,
+		Sunrise,
 		SoulDrain,
 		Trance,
 		VioletPupilTransformation,
@@ -351,7 +358,9 @@ public class CombatAbilities {
 		BloodRequiem,
 		BloodRequiemSF,
 		ScarletSpiritCharge,
-		KillingIntent
+		CrimsonOverflow,
+		KillingIntent,
+		SoulFist
 	]
 
 	public static const BPBloodSwipe:BloodSwipePuppiesSkill = new BloodSwipePuppiesSkill();

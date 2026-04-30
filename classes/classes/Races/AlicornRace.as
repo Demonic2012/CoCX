@@ -68,7 +68,8 @@ public class AlicornRace extends Race {
 							if (body.hornType == Horns.UNICORN) return body.wingType == Wings.FEATHERED_ALICORN;
 							if (body.hornType == Horns.BICORN) return body.wingType == Wings.NIGHTMARE;
 							return false;
-						}, 0, -1000);
+						}, 0, -1000)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		
 		addConditionedScores(
 				function(body:BodyData):Boolean {
@@ -104,7 +105,8 @@ public class AlicornRace extends Race {
 				.hasPerk(PerkLib.AvatorOfCorruption, +1);
 		
 		addMutation(IMutationsLib.TwinHeartIM, +2);
-		addMutation(IMutationsLib.EclipticMindIM, +1);
+		addMutation(IMutationsLib.EclipticMindIM);
+		addMutation(IMutationsLib.EquineMuscleIM);
 		
 		buildTier(8, "Half Alicorn/Nightmare")
 				.customNamingFunction(Utils.curry(nameFn,1))

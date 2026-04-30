@@ -15,23 +15,21 @@ import classes.internals.*;
 	{
 		public function soulskillCostEnergyProjection():Number {
 			var cost:Number = 20;
-			//if (hasPerk(PerkLib.DaoistApprenticeStage)) cost -= 2;
-			//if (hasPerk(PerkLib.DaoistWarriorStage)) cost -= 2;
 			if (hasStatusEffect(StatusEffects.TrueFormAngel)) cost *= 2;
 			return cost;
 		}
 		/*
 		public function SoulskillMod():Number {
 			var mod1:Number = 1;
-			if (hasPerk(PerkLib.DaoistApprenticeStage)) {
-				if (hasPerk(PerkLib.SoulApprentice)) mod1 += .3;
+			if (hasPerk(PerkLib.DaoistMDHiFApprenticeStage)) {
+				if (hasPerk(PerkLib.SoulApprentice)) mod1 += 1.25;
 				if (hasPerk(PerkLib.SoulPersonage)) mod1 += .3;
 				if (hasPerk(PerkLib.SoulWarrior)) mod1 += .3;
 			}
-			if (hasPerk(PerkLib.DaoistWarriorStage)) {
-				if (hasPerk(PerkLib.SoulSprite)) mod1 += .6;
-				if (hasPerk(PerkLib.SoulScholar)) mod1 += .6;
-				if (hasPerk(PerkLib.SoulGrandmaster)) mod1 += .6;
+			if (hasPerk(PerkLib.DaoistMDHiFWarriorStage)) {
+				if (hasPerk(PerkLib.SoulSprite)) mod1 += 2.5;
+				if (hasPerk(PerkLib.SoulScholar)) mod1 += 2.5;
+				if (hasPerk(PerkLib.SoulGrandmaster)) mod1 += 2.5;
 			}
 			return mod1;
 		}
@@ -139,7 +137,7 @@ import classes.internals.*;
 			this.bonusLust = 58;
 			this.bonusWrath = 50;
 			this.bonusSoulforce = 100;
-			this.lustVuln = 0;
+			this.lustVuln = 0.01;
 			this.lust = 30;
 			this.level = 18;
 			this.gems = rand(15) + 10;

@@ -1,6 +1,7 @@
 package classes.Scenes.Combat.SpellsBlack {
 import classes.Monster;
 import classes.PerkLib;
+import classes.IMutations.IMutationsLib;
 import classes.Scenes.Combat.AbstractBlackSpell;
 import classes.Scenes.Combat.Combat;
 import classes.StatusEffects;
@@ -31,13 +32,21 @@ public class NosferatuSpell extends AbstractBlackSpell {
 	}
 	
 	override public function calcCooldown():int {
-		var calcC:int = 4;
-		calcC += spellGenericCooldown();
+		var calcC:int = 0;
+		calcC += spellBlackTier2Cooldown();
+		if (player.weaponRange == weaponsrange.RB_TOME && player.level < 24) {
+			if (player.level < 6) calcC -= 1;
+			if (player.level < 12) calcC -= 1;
+			if (player.level < 18) calcC -= 1;
+			calcC -= 1;
+		}
+		if (player.hasPerk(PerkLib.VampiricMagic)) calcC -= 1;
+		if (calcC < 0) calcC = 0;
 		return calcC;
 	}
 	
 	public function calcDamage(monster:Monster, randomize:Boolean = true, casting:Boolean = true):Number { //casting - Increase Elemental Counter while casting (like Raging Inferno)
-		var damage:Number = 5 * scalingBonusIntelligence(randomize);
+		var damage:Number = damageCalculationTier2Spells(randomize);
 		if (player.hasPerk(PerkLib.WisenedHealer)) damage += scalingBonusWisdom();
 		return adjustSpellDamage(damage, DamageType.DARKNESS, CAT_SPELL_BLACK, monster, true, casting);
 	}
@@ -45,6 +54,10 @@ public class NosferatuSpell extends AbstractBlackSpell {
 	public function calcHeal(monster:Monster, randomize:Boolean = true):Number { //casting - Increase Elemental Counter while casting (like Raging Inferno)
 		var amountToHeal:Number = 5 * scalingBonusIntelligence(randomize);
 		if (player.hasPerk(PerkLib.WisenedHealer)) amountToHeal += scalingBonusWisdom();
+		if (player.hasPerk(PerkLib.DruidicFocus)) amountToHeal += scalingBonusToughness();
+		if (player.perkv1(IMutationsLib.StillHeartIM) >= 1) amountToHeal *= (1 + (0.25 * player.perkv1(IMutationsLib.StillHeartIM)));
+		if (player.perkv1(IMutationsLib.StillHeartIM) >= 3) amountToHeal += Math.round(player.maxHP() * 0.01 * (player.perkv1(IMutationsLib.StillHeartIM) - 2));
+		if (player.weapon == weapons.ANCIENTO) amountToHeal *= 1.25;
 		return amountToHeal * healModBlack();
 	}
 	
@@ -58,7 +71,8 @@ public class NosferatuSpell extends AbstractBlackSpell {
 			}
 			damage = critAndRepeatDamage(display, damage, DamageType.DARKNESS);
 			var amountToHeal:Number = Math.round(calcHeal(monster, true));
-			HPChange(amountToHeal, display);
+			if (player.perkv1(IMutationsLib.StillHeartIM) >= 2) HPChange(amountToHeal, display, true);
+			else HPChange(amountToHeal, display, false);
 			checkAchievementDamage(damage);
 			combat.heroBaneProc(damage);
 		}

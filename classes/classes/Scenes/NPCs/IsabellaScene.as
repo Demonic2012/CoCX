@@ -202,7 +202,7 @@ public function isabellaGreeting():void {
 		outputText("You easily brush through the tall grasses and stride into Isabella the cow-girl's camp.  It looks like she was sitting in her chair mending a blanket when you arrived, and you take a moment to watch her hunched posture squeeze her breasts tightly against the gauzy silk top she's so fond of wearing.  The outline of a single areola is clearly visible through the diaphanous material, but most striking is that each areola has four VERY prominent nipple-tips.  She looks at you, first in fright, and then in embarrassment as she recognizes you AND realizes what you were doing in a single instant.\n\n");
 		//(+lust!)
 		dynStats("lus", 10+rand(10), "scale", false);
-		outputText("Isabella complains, \"<i>Vere you just checking me out?  Vell I must confess, I liked you better ven you were shorter.  Maybe if you ask nicely I might give you a peak and a drink.  That vould be nice, nein?\n\n");
+		outputText("Isabella complains, \"<i>Vere you just checking me out?  Vell, I must confess, I liked you better ven you were shorter.  Maybe if you ask nicely I might give you a peak and a drink.  That vould be nice, nein?\n\n");
         isabellaFollowerScene.isabellaAffection(-5); //unhappy, but she knows you already
 		flags[kFLAGS.ISABELLA_OKAY_WITH_TALL_FOLKS]++;
 		if(player.hasCock()) {
@@ -461,6 +461,7 @@ public function nomOnMommaIzzysTits():void {
 	if(flags[kFLAGS.ISABELLA_MILKED_YET] > 0) flags[kFLAGS.ISABELLA_MILKED_YET] = 0;
 	player.slimeFeed();
 	player.refillHunger(40);
+	if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
 	//(Chance of thickening body to 75, chance of softening body if PC has a vag)
 	if(rand(2) == 0) outputText(player.modThickness(75,4));
 	if(rand(2) == 0 && player.hasVagina()) outputText(player.modTone(0,4));
@@ -743,6 +744,7 @@ public function IsabellaWinsAndSpanks():void {
 		outputText("You go back to sleep, your backside bruised and your belly full of Isabella's milk.\n\n");
 		//(+4 sensitivity, -100 lust if masochist, -40 fatigue)
 		player.refillHunger(30);
+		if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
 		fatigue(-40);
 		dynStats("sen", 4);
 		if(player.hasPerk(PerkLib.Masochist)) player.orgasm();
@@ -805,6 +807,7 @@ public function IsabellaWinsAndSpanks():void {
 		//(+4 sensitivity, -100 lust if masochist, -40 fatigue)
         //she doesn't like you
 		player.refillHunger(30);
+		if (player.hasPerk(PerkLib.EmptyVessel) || player.hasPerk(PerkLib.SpiritualHunger)) player.hollowFeed(1);
 		fatigue(-40);
 		dynStats("sen", 4);
 		if(player.hasPerk(PerkLib.Masochist)) player.orgasm();
@@ -1014,7 +1017,7 @@ public function defeatIsabella():void {
 	if (flags[kFLAGS.SPARRABLE_NPCS_TRAINING] == 2 && flags[kFLAGS.ISABELLA_FOLLOWER_ACCEPTED] == 1) {
 		if (flags[kFLAGS.ISABELLA_DEFEATS_COUNTER] >= 1) flags[kFLAGS.ISABELLA_DEFEATS_COUNTER]++;
 		else flags[kFLAGS.ISABELLA_DEFEATS_COUNTER] = 1;
-		if (flags[kFLAGS.ISABELLA_LVL_UP] < 13 &&  flags[kFLAGS.ISABELLA_DEFEATS_COUNTER] >= flags[kFLAGS.ISABELLA_LVL_UP] + 4) {
+		if (flags[kFLAGS.ISABELLA_LVL_UP] < 18 && flags[kFLAGS.ISABELLA_DEFEATS_COUNTER] >= flags[kFLAGS.ISABELLA_LVL_UP] + 6) {
 			var vAdd:int = player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * flags[kFLAGS.ISABELLA_DEFEATS_COUNTER];
 			if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers1)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers1, 2, vAdd);
 			else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers1, 0, vAdd, 0, 0);
@@ -1160,7 +1163,7 @@ public function victoryLactation69():void {
 //[VICTORY BUTTSEX]
 public function PCVictoryOnIsabellaButtsex():void {
 	var x:Number = player.cockThatFits(monster.analCapacity());
-	var y:Number = player.cockThatFits2(monster.analCapacity());
+	var y:Number = player.cockThatFits2(monster.vaginalCapacity());
 	clearOutput();
 	if (y < 0) sceneHunter.print("You could use another one!");
 	outputText("Milk, huh?  No, that won't do.  You tell the ");

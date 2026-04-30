@@ -172,7 +172,7 @@ public class Holli extends Monster
 				player.removeStatusEffect(StatusEffects.HolliConstrict);
 			}
 			//else if normal str-based success
-			else if ((player.str / 10 + rand(20) + 1 + player.statusEffectv1(StatusEffects.HolliConstrict) > 30) || player.hasPerk(PerkLib.FluidBody)) {
+			else if (SceneLib.combat.struggleCentralizedCheck()) {
 				outputText("You manage to force the roots open when the distracted Holli begins to stroke her plant-shaft, pulling out of the bindings just as a drop of sap oozes out and falls where you were standing.  You're free!");
 				//sap rose pls go
 				player.removeStatusEffect(StatusEffects.HolliConstrict);
@@ -225,13 +225,13 @@ public class Holli extends Monster
 		}
 
 
-		override public function teased(lustDelta:Number, isNotSilent:Boolean = true, display:Boolean = true):void
+		override public function teased(lustDelta:Number, isNotSilent:Boolean = true, display:Boolean = true, aura:Boolean = false):void
 		{
 			if (hasStatusEffect(StatusEffects.HolliBurning)) {
 				outputText("Holli doesn't even seem to notice, so concerned is she with defeating you before the mounting bonfire causes her any more pain.");
 				lustDelta = 0;
 			}
-			applyTease(lustDelta, display);
+			applyTease(lustDelta, display, aura);
 		}
 
 		public function Holli()
@@ -272,7 +272,6 @@ public class Holli extends Monster
 			this.level = 20;
 			this.gems = 0;
 			this.drop = NO_DROP;
-			this.createPerk(PerkLib.FireVulnerability, 0, 0, 0, 0);
 			this.createPerk(PerkLib.EnemyPlantType, 0, 0, 0, 0);
 			this.createPerk(PerkLib.UniqueNPC, 0, 0, 0, 0);
 			checkMonster();

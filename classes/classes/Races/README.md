@@ -4,7 +4,7 @@
 
 Each **Race** consists of:
 * **RacialRequirement**'s. Requirements are single checks that add/deduct racial score points. They have: 
-  * name (ex. "fox ears"), displayed in race DB page
+  * name (ex. "fox ears") or name function (to compute the name when the requirement is shown), displayed in race DB page
   * check function (`player.ears.type == Ears.FOX`)
   * pass score (ex. +1), granted if check function passes
   * fail score (ex. -1, default 0), applied if check function fails
@@ -101,13 +101,14 @@ public class ZzzRace extends Race {
         /*Perks*/		"Human"];
         
     public function ZzzRace(id:int) {
-        super("Zzz", id, RaceBody);
+        super("Zzz", id, []);//RaceBody);
+		disabled = true;
     }
     
     public override function setup():void {
         addScores()
-                .//start ctrl-spacing here
-                ;
+                //.start ctrl-spacing here
+                .hasPerk(PerkLib.GOBXChemical, -1000);
 
         buildTier(1000, "tierName")
                 .buffs({

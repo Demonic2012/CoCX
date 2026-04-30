@@ -422,14 +422,14 @@ public class CockTransformations extends MutationsHelper {
 					var cock:int = cockIndex(index, CockTypesEnum.CANCER);
 
 					if (player.cocks.length > cock) {
-						desc += "Your [cock] begins foaming bubbles... well guess thats going to take some time to get used to? <b>Your penis is now foaming bubbles like that of a Cancer!</b>";
+						desc += "Your [cock] begins foaming bubbles... well, guess thats going to take some time to get used to? <b>Your penis is now foaming bubbles like that of a Cancer!</b>";
 						//(REMOVE SHEATH IF NECESSARY)
 						if (player.hasSheath())
 							desc +="[pg]Your sheath tightens and starts to smooth out, revealing ever greater amounts of your [cock "+(cock+1)+"]'s lower portions.  After a few moments <b>your groin is no longer so animalistic – the sheath is gone.</b>";
 					}
 					else {
 						desc += GrowCockGenericText();
-						desc += "your cock begins foaming bubbles... well guess thats going to take some time to get used to? <b>Your penis is now foaming bubbles like that of a Cancer!</b>";
+						desc += "your cock begins foaming bubbles... well, guess thats going to take some time to get used to? <b>Your penis is now foaming bubbles like that of a Cancer!</b>";
 						player.createCock();
 					}
 					if (doOutput) outputText(desc);
@@ -1093,12 +1093,12 @@ public class CockTransformations extends MutationsHelper {
 					var cock:int = cockIndex(index, CockTypesEnum.GRYPHON);
 
 					if (player.cocks.length > cock){
-						desc += "Your nethers tingle under its effect.[pg]Giving them a glimpse, the first thing that becomes obvious if that your " + cockDescript(cock) + " becames a bit ticker, but albeit it retained it’s avian, tapered shape, it’s slightly wavy form became more straight. ";
+						desc += "Your nethers tingle under its effect.[pg]Giving them a glimpse, the first thing that becomes obvious is that your " + cockDescript(cock) + " becomes a bit thicker, but albeit it retained its avian, tapered shape; its slightly wavy form became more straight. ";
 						desc += "It’s reddish-pink color became pink and it’s tip became more conical. Nevertheless, the main chance manifested across its length, where small, soft barbs grew, giving your member an the appearance of an avian-feline hybrid one.  <b>You'll have to try around your new gryphon cock to know how’ they’ll feel to use,</b> but you’re sure that it’ll be pleasant both for you and your partners.";
 					}
 					else {
 						desc += GrowCockGenericText();
-						desc += "your cock becames a bit ticker, but albeit it retained it’s avian, tapered shape, it’s slightly wavy form became more straight. " +
+						desc += "your cock becomes a bit thicker, but albeit it retained it’s avian, tapered shape, it’s slightly wavy form became more straight. " +
 								"It’s reddish-pink color became pink and it’s tip became more conical. Nevertheless, the main chance manifested across its length, where small, soft barbs grew, giving your member an the appearance of an avian-feline hybrid one.  <b>You'll have to try around your new gryphon cock to know how they’ll feel to use,</b> but you’re sure that it’ll be pleasant both for you and your partners.";
 						player.createCock();
 					}
@@ -1292,6 +1292,98 @@ public class CockTransformations extends MutationsHelper {
 				// is present
 				function ():Boolean {
 					return isPresentCock(index, CockTypesEnum.INSECT)
+				}
+		);
+	}
+
+	public function CockShroom(index:int = 0, length:Number = 5.5, thickness:Number = 1): Transformation {
+		return new SimpleTransformation("Shroom Cock",
+				// apply effect
+				function (doOutput:Boolean):void {
+					var desc:String = "[pg]";
+					var cock:int = cockIndex(index, CockTypesEnum.SHROOM);
+
+					if (player.cocks.length > cock){
+						desc += "[pg]<b>HOW THE HELL, IT DOES NOT EXIST YET</b>[pg]" +
+								"<b> You now have a Shroom cock!</b>";
+					}
+					else {
+						desc += GrowCockGenericText();
+						desc += "[pg]<b>HOW THE HELL, IT DOES NOT EXIST YET</b>[pg]" +
+								"<b> You now have a Shroom cock!</b>";
+						player.createCock();
+					}
+					if (doOutput) outputText(desc);
+					if (length != 5.5)
+						player.cocks[cock].cockLength = length;
+					if (thickness != 1)
+						player.cocks[cock].cockThickness = thickness;
+					player.cocks[cock].cockType = CockTypesEnum.SHROOM;
+
+					transformations.UnlockCocks();
+				},
+				// is present
+				function ():Boolean {
+					return isPresentCock(index, CockTypesEnum.SHROOM)
+				}
+		);
+	}
+
+	public function CockAutomata(index:int = 0, length:Number = 5.5, thickness:Number = 1): Transformation {
+		return new SimpleTransformation("Automata Cock",
+				// apply effect
+				function (doOutput:Boolean):void {
+					var desc:String = "[pg]";
+					var cock:int = cockIndex(index, CockTypesEnum.AUTOMATA);
+
+					if (player.cocks.length > cock){
+						desc += "[pg]<b>HOW THE HELL, IT DOES NOT EXIST YET</b>[pg]" +
+								"<b> You now have an Automata cock!</b>";
+					}
+					else {
+						desc += GrowCockGenericText();
+						desc += "[pg]<b>HOW THE HELL, IT DOES NOT EXIST YET</b>[pg]" +
+								"<b> You now have an Automata cock!</b>";
+						player.createCock();
+					}
+					if (doOutput) outputText(desc);
+					if (length != 5.5)
+						player.cocks[cock].cockLength = length;
+					if (thickness != 1)
+						player.cocks[cock].cockThickness = thickness;
+					player.cocks[cock].cockType = CockTypesEnum.AUTOMATA;
+
+					transformations.UnlockCocks();
+				},
+				// is present
+				function ():Boolean {
+					return isPresentCock(index, CockTypesEnum.AUTOMATA)
+				}
+		);
+	}
+
+	public function CockBarometz(index:int = 0, length:Number = 5.5, thickness:Number = 1): Transformation {
+		return new SimpleTransformation("Barometz Cock",
+				// apply effect
+				function (doOutput:Boolean):void {
+					var desc:String = "[pg]";
+
+					if (player.cockTotal() > 1) desc += "You moan loudly as your many peckers suddenly orgasm, emptying of their seeds as they shrink and vanish into your body, leaving you with one single remaining penis.";
+					else desc += "You double over, panting with desire as your [cock] is suddenly overcome with changes.";
+					if (!player.hasSheath()) desc += "The skin at the base of your shaft begins to accumulate and tighten, pulling your member into its brand new warm sheath.";
+					desc += " You instinctively thrust forward and moan as your shaft bursts out of its containment, growing longer and dwarfing its previous size as the now flared head leaks a steady stream of musky cum. Just as your brand new and improved tool settles down, pleasure overwhelms you and you unleash a thick rope of warm seed, painting the ground beneath. The flesh of your penis begins to fill up with plant-like vitality as the";
+					desc += " color changes from [skin color] to a verdant dark green. Accompanying this change, your eyes roll as tiny bursts of pleasure erupting within the confines of your sheath while four girthy green tentacles tipped with dripping tips join your brand new tool, wrapping instinctively around it to jerk you off. Overwhelmed, you whiny up as your green horsecock explodes into a deluge of splooge. <b>You now have a brand new Barometz set of cocks.</b>";
+					player.createCock(12, 1.6, CockTypesEnum.BAROMETZ);
+					player.createCock(11, 1.5, CockTypesEnum.TENTACLE);
+					player.createCock(11, 1.5, CockTypesEnum.TENTACLE);
+					player.createCock(11, 1.5, CockTypesEnum.TENTACLE);
+					player.createCock(11, 1.5, CockTypesEnum.TENTACLE);
+
+					transformations.UnlockCocks();
+				},
+				// is present
+				function ():Boolean {
+					return isPresentCock(index, CockTypesEnum.BAROMETZ)
 				}
 		);
 	}

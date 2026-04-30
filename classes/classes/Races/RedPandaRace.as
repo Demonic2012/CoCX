@@ -51,7 +51,10 @@ public class RedPandaRace extends Race{
 							return body.player.furColor1 == "russet" && body.player.furColor2 == "black"
 						}, +1)
 				.skinCoatType(Skin.FUR, +1)
-				.height(GREATER_THAN(72), +2);
+				.height(GREATER_THAN(72), +2)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
+		
+		addBloodline(PerkLib.UrsinesDescendant, PerkLib.BloodlineUrsine);
 		
 		buildTier(10, "red panda")
 				.namesMaleFemaleMorphTaur("red-panda-boy","red-panda-girl",

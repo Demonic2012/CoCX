@@ -16,6 +16,7 @@ import classes.Scenes.API.GroupEncounter;
 import classes.Scenes.API.SimpleEncounter;
 import classes.Scenes.Areas.HighMountains.*;
 import classes.Scenes.Areas.Mountain.*;
+import classes.Scenes.Dungeons.RiverDungeon.AirElemental;
 import classes.Scenes.Monsters.LightElfScene;
 import classes.Scenes.NPCs.DivaScene;
 import classes.Scenes.NPCs.EtnaFollower;
@@ -39,9 +40,7 @@ public class Mountain extends BaseContent
 		public var basiliskScene:BasiliskScene = new BasiliskScene();
 		public var harpyScene:HarpyScene = new HarpyScene();
 		
-		
-		
-		public const areaLevelHills:int = 5;
+		public const areaLevelHills:int = 20;
 		public function isDiscoveredHills():Boolean {
 			return SceneLib.exploration.counters.hills > 0;
 		}
@@ -54,12 +53,11 @@ public class Mountain extends BaseContent
 		public function discoverHills():void {
 			SceneLib.exploration.counters.hills = 1;
 			clearOutput();
-			outputText("As you walk the large open wasteland of mareth you begin to notice an elevation in the ground. Far in the distance you can see a mountain chain but from where you stand is a hillside. Well you got tired of the monotony of the flat land anyway maybe going up will yield new interesting discoveries.\n\n<b>You found the Hills!</b>");
+			outputText("As you walk the large open wasteland of Mareth you begin to notice an elevation in the ground. Far in the distance you can see a mountain chain but from where you stand is a hillside. Well, you got tired of the monotony of the flat land anyway maybe going up will yield new interesting discoveries.\n\n<b>You found the Hills!</b>");
 			endEncounter();
 		}
 		
-		
-		public const areaLevelLow:int = 15;
+		public const areaLevelLow:int = 32;
 		public function isDiscoveredLow():Boolean {
 			return SceneLib.exploration.counters.mountainsLow > 0;
 		}
@@ -70,7 +68,7 @@ public class Mountain extends BaseContent
 			return SceneLib.exploration.counters.mountainsLow;
 		}
 		
-		public const areaLevelMid:int = 30;
+		public const areaLevelMid:int = 51;
 		public function isDiscoveredMid():Boolean {
 			return SceneLib.exploration.counters.mountainsMid > 0;
 		}
@@ -85,9 +83,9 @@ public class Mountain extends BaseContent
 		{
 			onGameInit(init);
 		}
-		//Hills: lvl 10-15
-		//Low Mountains: lvl 20-30
-		//Mountains: lvl 35-55
+		//Hills: lvl 23-30
+		//Low Mountains: lvl 35-49
+		//Mountains: lvl 54-74
 		private var _hillsEncounter:GroupEncounter = null;
 		private var _lowmountainEncounter:GroupEncounter = null;
 		private var _midMountainEncounter:GroupEncounter = null;
@@ -103,8 +101,8 @@ public class Mountain extends BaseContent
 		private function init():void {
             const fn:FnHelpers    = Encounters.fn;
 			_hillsEncounter       = Encounters.group("hills",
-					SceneLib.exploration.commonEncounters.withChanceFactor(0.1),
-					SceneLib.exploration.angelEncounters.wrap(fn.ifLevelMin(5), [0.05]),
+					SceneLib.exploration.commonEncounters.withChanceFactor(0.025),
+					SceneLib.exploration.angelEncounters.wrap(fn.ifLevelMin(5), [0.0125]),
 			{
 				//Helia monogamy fucks
 				name  : "helcommon",
@@ -122,8 +120,7 @@ public class Mountain extends BaseContent
 				unique: true,
 				when  : function():Boolean {
 					return (flags[kFLAGS.ETNA_FOLLOWER] < 1 || EtnaFollower.EtnaInfidelity == 2)
-						   && !player.hasStatusEffect(StatusEffects.EtnaOff)
-						   && (player.level >= 20);
+						   && !player.hasStatusEffect(StatusEffects.EtnaOff);
 				},
 				chance: mountainChance,
 				call  : function ():void {
@@ -138,8 +135,7 @@ public class Mountain extends BaseContent
 				unique: true,
 				when  : function():Boolean {
 					return (flags[kFLAGS.ETNA_FOLLOWER] >= 2 && EtnaFollower.EtnaInfidelity == 0)
-						   && !player.hasStatusEffect(StatusEffects.EtnaOff)
-						   && (player.level >= 20);
+						   && !player.hasStatusEffect(StatusEffects.EtnaOff);
 				},
 				chance: mountainChance,
 				call  : function ():void {
@@ -152,8 +148,7 @@ public class Mountain extends BaseContent
 				unique: true,
 				when  : function():Boolean {
 					return (flags[kFLAGS.ETNA_FOLLOWER] >= 2 && EtnaFollower.EtnaInfidelity == 1)
-						   && !player.hasStatusEffect(StatusEffects.EtnaOff)
-						   && (player.level >= 20);
+						   && !player.hasStatusEffect(StatusEffects.EtnaOff);
 				},
 				chance: 0.5,
 				call  : function ():void {
@@ -232,15 +227,20 @@ public class Mountain extends BaseContent
 				night : false,
 				chance: mountainChance,
 				when:function ():Boolean {
-					return !SceneLib.ceraphFollowerScene.ceraphIsFollower();
+					return !SceneLib.ceraphFollowerScene.ceraphIsFollower() && !player.hasStatusEffect(StatusEffects.CeraphOff);
 				},
 				call:ceraphFn,
 				mods:[fn.ifLevelMin(2)]
-			},{
-				name: "lightelf",
-				label : "Light Elf",
-				kind : 'monster',
-				call: lightelfScene.introLightELfScout
+			}, {
+				name: "coccoon",
+				label : "Coccoon",
+				kind  : 'event',
+				unique: true,
+				when: function():Boolean {
+					return flags[kFLAGS.ECIHTEL_FOLLOWER] < 2;
+				},
+				chance: mountainChance,
+				call: SceneLib.ecihtelScene.coccoonFounded
 			}, {
 				name: "lactoblasters",
 				label : "Gun Parts",
@@ -268,8 +268,7 @@ public class Mountain extends BaseContent
 				name: "mimic",
 				label : "Mimic",
 				kind : 'monster',
-				chance:0.25,
-				when: fn.ifLevelMin(3),
+				chance:0.1,
 				call: curry(SceneLib.mimicScene.mimicTentacleStart,2)
 			}, {
 				name: "demonProjects",
@@ -282,7 +281,7 @@ public class Mountain extends BaseContent
 				call: SceneLib.exploration.demonLabProjectEncounters
 			});
 			_lowmountainEncounter = Encounters.group("low mountains",
-					SceneLib.exploration.commonEncounters.withChanceFactor(0.1), {
+					SceneLib.exploration.commonEncounters.withChanceFactor(0.025), {
 				//Helia monogamy fucks
 				name  : "helcommon",
 				label : "Helia",
@@ -423,7 +422,7 @@ public class Mountain extends BaseContent
 				},
 				chance: mountainChance,
 				call: DivaScene.instance.encounter
-			},{
+			}, {
 				name: "quarry",
 				label : "Quarry",
 				kind  : 'place',
@@ -432,12 +431,12 @@ public class Mountain extends BaseContent
 				},
 				chance: 4,
 				call: camp.cabinProgress.quarrySite
-			},{
+			}, {
 				name: "lightelf",
 				label : "Light Elf",
-				kind  : 'monster',
-				call: lightelfScene.introLightELfSlaver
-			},{
+				kind : 'monster',
+				call: lightelfScene.introLightELfScout
+			}, {
 				name: "derpnade launcher",
 				label : "Gun Parts",
 				kind  : 'item',
@@ -484,7 +483,7 @@ public class Mountain extends BaseContent
 				name: "mimic",
 				label : "Mimic",
 				kind : 'monster',
-				chance:0.25,
+				chance:0.1,
 				when: fn.ifLevelMin(3),
 				call: curry(SceneLib.mimicScene.mimicTentacleStart,2)
 			}, {
@@ -620,6 +619,11 @@ public class Mountain extends BaseContent
 				kind : 'monster',
 				call: basiliskScene.basiliskGreeting
 			}, {
+				name: "wind ele",
+				label : "Wind Elemental",
+				kind  : 'monster',
+				call: mountainWindElemental
+			}, {
 				name: "sophie",
 				label : "Sophie",
 				kind  : 'npc',
@@ -633,11 +637,11 @@ public class Mountain extends BaseContent
 				},
 				chance: mountainChance,
 				call: SceneLib.sophieScene.sophieRouter
-			}, {
+			},{
 				name: "lightelf",
 				label : "Light Elf",
-				kind : 'monster',
-				call: lightelfScene.introLightELfRanger
+				kind  : 'monster',
+				call: lightelfScene.introLightELfSlaver
 			}, {/*
 				name: "lactoblasters",
 				when: function ():Boolean {
@@ -658,13 +662,6 @@ public class Mountain extends BaseContent
 				kind  : 'walk',
 				chance:0.2,
 				call:hike
-			}, {
-				name: "mimic",
-				label : "Mimic",
-				kind : 'monster',
-				chance:0.25,
-				when: fn.ifLevelMin(3),
-				call: curry(SceneLib.mimicScene.mimicTentacleStart,2)
 			}, {
 				name: "harpychicken",
 				label : "Harpy Chicken",
@@ -739,7 +736,7 @@ public class Mountain extends BaseContent
 				/* [INTERMOD:8chan]
 				&& kGAMECLASS.fetishManager.compare(FetishManager.FETISH_EXHIBITION)
 				else */
-				&& flags[kFLAGS.PC_FETISH] > 0 /**/
+				&& flags[kFLAGS.PC_FETISH] > 0
 			) SceneLib.ceraphScene.friendlyNeighborhoodSpiderManCeraph();
 			else SceneLib.ceraphScene.encounterCeraph();
 		}
@@ -830,7 +827,7 @@ public class Mountain extends BaseContent
 					return;
 				}
 				//Rare Minotaur Lord
-				if (rand(5) == 0 && player.level >= 10) {
+				if (rand(5) == 0 && (player.level >= 10 || flags[kFLAGS.HARDCORE_MODE] == 1)) {
 					if (player.isRaceCached(Races.CERBERUS)) {
 						minotaurScene.minotaurEncounterAsCerberus(true);
 						return;
@@ -897,6 +894,12 @@ public class Mountain extends BaseContent
 				dynStats("tou", .2, "spe", .4, "lib", .2, "lus", player.lib / 12);
 			}
 			endEncounter();
+		}
+		private function mountainWindElemental():void {
+			clearOutput();
+			outputText("While exploring the mountain a sudden gust of wind sends you sprawling to the ground. Lifting your head up you see what appears to be a green skinned woman of which the ethereal frame moves and swirls like a small cyclone as various debris are carried in her wake. This is a fully manifested Sylpheed and the capricious elemental has definitively decided to pick on you to stave her boredom. Knowing full well you can’t reason with this aerial prankster you prepare to fight.\n");
+			flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] = 6;
+			startCombat(new AirElemental());
 		}
 		//\"<i>Chicken Harpy</i>\" by Jay Gatsby and not Savin he didn't do ANYTHING
 		//Initial Intro

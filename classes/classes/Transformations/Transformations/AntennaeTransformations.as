@@ -162,14 +162,28 @@ public class AntennaeTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += " you suddenly feel a headache as you look around the world, you suddenly feel calm as if the headache you had before was never there,  you look in the lake and see 2 antennae sticking out of your head. <b>You now have Antennae</b>";
+				desc += "You suddenly feel a headache as you look around the world, you suddenly feel calm as if the headache you had before was never there,  you look in the lake and see two antennae sticking out of your head. <b>You now have Moth Antennae.</b>";
 				player.antennae.type = Antennae.MOTH;
 				if (doOutput) outputText(desc);
-				//Metamorph.unlockMetamorph(AntennaeMem.getMemory(AntennaeMem.JABBERWOCKY));
+				Metamorph.unlockMetamorph(AntennaeMem.getMemory(AntennaeMem.MOTH));
 			},
 			// is present
 			function (): Boolean {
 				return player.antennae.type === Antennae.MOTH;
+			}
+	);
+	public const AntennaeAutomata: Transformation = new SimpleTransformation("Automata Antennae",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "";
+				player.antennae.type = Antennae.AUTOMATA;
+				if (doOutput) outputText(desc);
+			},
+			// is present
+			function (): Boolean {
+				return player.antennae.type === Antennae.AUTOMATA;
 			}
 	);
 	/*

@@ -12,8 +12,8 @@ import classes.Scenes.Areas.BlightRidge.Incubus;
 import classes.Scenes.Areas.BlightRidge.Omnibus;
 import classes.Scenes.Areas.BlightRidge.Succubus;
 import classes.Scenes.Areas.Caves.DarkSlime;
-import classes.Scenes.Areas.Caves.DisplacerBeast;
 import classes.Scenes.Areas.Forest.TentacleBeast;
+import classes.Scenes.Areas.LightlessReach.DisplacerBeast;
 import classes.Scenes.Areas.Mountain.Minotaur;
 import classes.Scenes.Dungeons.EbonLabyrinth.*;
 import classes.Scenes.NPCs.CelessScene;
@@ -153,7 +153,7 @@ public class EbonLabyrinth extends DungeonAbstractContent {
         addButtonIfTrue(0, "Sleep", doSleepEL, "It's still too early to go to sleep.",
                 isNightTime,  "Turn yourself in for the night. May result in monster ambush!");
         SceneLib.masturbation.masturButton(5);
-		if (room == 1) addButtonIfTrue(7, "Cat", shortcuts, "You not even beaten ANY boss yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 50, "Talk to the cat only if you plan skip some rooms.");
+		if (room == 1) addButtonIfTrue(7, "Cat", shortcuts, "you've not even beaten ANY boss yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 50, "Talk to the cat only if you plan skip some rooms.");
         addButton(9, "Inventory", inventory.inventoryMenu);
         addButton(14, "Exit", confirmExit);
         dungeons.setTopButtons();
@@ -164,20 +164,27 @@ public class EbonLabyrinth extends DungeonAbstractContent {
         outputText("<b>Are you sure about that?</b>");
         doYesNo(exitDungeon, playerMenu);
     }
-	
+
 	public function shortcuts():void {
 		statScreenRefresh();
         hideUpDown();
         spriteSelect(null);
-		outputText("\n\nYou are facing a cat-morph. She would looks quite averange if not for black stripes on purple fur. Without any sound she points behind her and then vanishing.");
+		outputText("\n\nYou are facing a cat-morph. She would looks quite average if not for black stripes on purple fur. Without any sound she points behind her and then vanishing.");
         menu();
 		addButton(0, "50", navigateToRoomEL050).hint("Skip 50 rooms but beware of the boss at the end of this detour.");
-		addButtonIfTrue(1, "100", navigateToRoomEL100, "You not even beaten 2 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 100, "Skip 100 rooms but beware of the boss at the end of this detour.");
-		addButtonIfTrue(2, "150", navigateToRoomEL150, "You not even beaten 3 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 150, "Skip 150 rooms but beware of the boss at the end of this detour.");
-		addButtonIfTrue(3, "200", navigateToRoomEL200, "You not even beaten 4 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 200, "Skip 200 rooms but beware of the boss at the end of this detour.");
-		addButtonIfTrue(4, "250", navigateToRoomEL250, "You not even beaten 5 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 250, "Skip 250 rooms but beware of the boss at the end of this detour.");
-		addButtonIfTrue(5, "300", navigateToRoomEL300, "You not even beaten 6 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 300, "Skip 300 rooms but beware of the boss at the end of this detour.");
-		addButtonIfTrue(6, "350", navigateToRoomEL350, "You not even beaten 7 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 350, "Skip 350 rooms but beware of the boss at the end of this detour.");
+		addButtonIfTrue(1, "100", navigateToRoomEL100, "you've not even beaten 2 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 100, "Skip 100 rooms but beware of the boss at the end of this detour.");
+		addButtonIfTrue(2, "150", navigateToRoomEL150, "you've not even beaten 3 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 150, "Skip 150 rooms but beware of the boss at the end of this detour.");
+		addButtonIfTrue(3, "200", navigateToRoomEL200, "you've not even beaten 4 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 200, "Skip 200 rooms but beware of the boss at the end of this detour.");
+		addButtonIfTrue(4, "250", navigateToRoomEL250, "you've not even beaten 5 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 250, "Skip 250 rooms but beware of the boss at the end of this detour.");
+		addButtonIfTrue(5, "300", navigateToRoomEL300, "you've not even beaten 6 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 300, "Skip 300 rooms but beware of the boss at the end of this detour.");
+		addButtonIfTrue(6, "350", navigateToRoomEL350, "you've not even beaten 7 bosses yet.", flags[kFLAGS.EBON_LABYRINTH_RECORD] >= 350, "Skip 350 rooms but beware of the boss at the end of this detour.");
+	}
+
+	public function returnFromDraculinaRoom():void {
+		clearOutput();
+		outputText("You not open boss room door and return to previous room.");
+		room -= 1;
+		doNext(playerMenu);
 	}
 
     //Player menu. Doesn't start any encounters.
@@ -408,10 +415,10 @@ public class EbonLabyrinth extends DungeonAbstractContent {
     private function encountersLootChest():void {
         clearOutput();
         //adjusting rewards to enemy level. Sounds fair to me
-		var exp:int = int(2000 * Math.exp(0.2*enemyLevelMod));
-		var gems:int = int(500 * Math.exp(0.2*enemyLevelMod));
-        player.XP += exp;
-        player.gems += gems;
+		var exp:Number = Number(2000 * Math.exp(0.2*enemyLevelMod));
+		var gems:Number = Number(500 * Math.exp(0.2*enemyLevelMod));
+        player.XP += (exp < 0 || player.XP + exp < 0 ? Number.MAX_VALUE - player.XP : exp);
+        player.gems += (gems < 0 || player.gems + gems < 0 ? Number.MAX_VALUE - player.gems : gems);
         outputText("As you explore the labyrinth you stumble upon what appears to be a room filled with gems and a pillar upon which sits a single jewel. Grabbing the jewel, you see green mist swirl out of the stone then around you before entering your body. Memories not your own flash through your mind. ");
         outputText("Battles of the present and the past. You know you've learned from these battles and as you gather the gems and leave the room you do so with new enriching experiences. (+" + exp + " EXP, +" + gems + " gems)\n\n");
         doNext(roomStatic); //easier to implement.
@@ -419,7 +426,7 @@ public class EbonLabyrinth extends DungeonAbstractContent {
 
     //Selects the boss. Tier (1,2) selects the boss pool. 0 - includes ALL tiers
     private function bossSelector(tier:int = 0):void {
-        //Make the pool of encounters
+		//Make the pool of encounters
         var choices:Array = [];
         var boss:int;
         for (boss = 0; boss < bossPool[tier].length; ++boss) //[bit_num, function]
@@ -539,11 +546,12 @@ public class EbonLabyrinth extends DungeonAbstractContent {
             SceneLib.uniqueSexScene.AlrauneDungeonBadEnd();
             return;
         }
-        outputText("Defeated you fall to the ground and look up just in time to see a mace coming for your head. When you wake up, you're standing on a podium somewhere else. There's demon everywhere around you screaming numbers. Those demons are brandishing gems around for some reasons.\n\n");
-        outputText("\"<i>One hundred did I hear one hundred for this " + (player.gender == 3 ? "herm" : player.gender == 1 ? "man" : "woman") + "? One hundred one?!</i>\"\n\n");
-        outputText("You realise what's going on now, they're actually auctioning you at the slave market! You try and break free but your bonds are too tight. Eventually you're sold to an Omnibus who just so happen to be collecting human pets. As time passes she eventually sells you to a new master and then you're sold again to another. It never ends. ");
-        outputText("Guess you will spend the rest of your life in bondage pleasing some demon until it gets bored and sell you off. Maybe, if your lucky, one will fuck you hard enough that you will cum your soul out and you will actualy get to enjoy rather than loath your slave status.\n\n");
+        outputText("Defeated, you fall to the ground and look up just in time to see a mace coming for your head. When you wake up, you're standing on a podium somewhere else. There are demons everywhere around you, screaming numbers. Those demons are brandishing gems for some reason.\n\n");
+        outputText("\"<i>One hundred! Did I hear one hundred for this " + (player.gender == 3 ? "herm" : player.gender == 1 ? "man" : "woman") + "? One hundred one?!</i>\"\n\n");
+        outputText("You realize what's going on now; they're actually auctioning you at the slave market! You try to break free, but your bonds are too tight. Eventually, you're sold to an Omnibus who just happens to be collecting human pets. As time passes, she eventually sells you to a new master, and then you're sold again to another. It never ends.");
+        outputText("Guess you will spend the rest of your life in bondage pleasing some demon until it gets bored and sells you off. Maybe, if you're lucky, one will fuck you hard enough that you will cum your soul out and you will actually get to enjoy rather than loathe your slave status.\n\n");
         EventParser.gameOver();
     }
 }
 }
+

@@ -127,6 +127,7 @@ private function resistKeltsBSBreakHimIntro():void {
 		//[if (PC doesn't have items)
 		if(!(player.hasItem(consumables.SUCMILK,15) || (player.hasItem(consumables.SUCMILK,10) && hasPinkEgg()) || (player.hasItem(consumables.P_S_MLK,10) && hasPinkEgg()) || player.hasItem(consumables.P_S_MLK,15))) {
 			outputText(" Unfortunately, you don't have anything that could be useful to tame his arrogant maleness.  You want items that would make his disgracious horsecock and balls shrink.  A nice set of breasts on his human chest would be fine, too.  You know you're going to need A LOT of such items - or very potent ones.");
+			sceneHunter.print("15 Succubus Milk should be enough")
 			menu();
 			addButton(0,"Next",farm.farmExploreEncounter);
 		}
@@ -712,7 +713,7 @@ private function kellyAppearance():void {
 		}
 	}
 
-	//Kids flavour text
+	//Kids flavor text
 	if(flags[kFLAGS.KELLY_KIDS] > 0) {
 		if(flags[kFLAGS.KELLY_KIDS] == 1) {
 			outputText("\nKelly's ");
@@ -741,7 +742,7 @@ private function approachKelly():void {
 		return;
 	}
 	
-	//Descriptions and Flavour Text
+	//Descriptions and Flavor Text
 	if (flags[kFLAGS.FARM_CORRUPTION_STARTED] == 0) outputText("You aren't welcome on the farm proper, but you can go visit Kelly's field.");
 	
 	//09:00-11:00, 2 or more children:
@@ -817,12 +818,12 @@ private function kellySexMenu():void {
 			addButtonDisabled(1, "TOO BIG!", "<b>You're too big to fuck her vagina.</b>");
 			addButtonDisabled(2, "TOO BIG!", "<b>You're too big to fuck her vagina.</b>");
 		}
-		addButtonIfTrue(3, "TentaFuck", tentaFuckKelly, "Req. at least 2 tentacle cocks.", player.countCocksWithType(CockTypesEnum.TENTACLE) >= 2);
 		addButtonIfTrue(2, "Titfuck", kellyTitJob, player.isTaur() ? "<b>You can't be a taur for this one.</b>" :
 			"<b>You're too big to fuck her tits.  Maybe if you gave her something to make her grow more...</b>",
 			!player.isTaur() && (flags[kFLAGS.KELLY_BONUS_BOOB_ROWS] == 0 || player.cockThatFits(18,"length") >= 0));
 		addButton(3, "Blowjob", kellyBJsAhoy);
 		addButton(4, "Talk And HJ", talkNHandToKelly);
+		addButtonIfTrue(5, "TentaFuck", tentaFuckKelly, "Req. at least 2 tentacle cocks.", player.countCocksWithType(CockTypesEnum.TENTACLE) >= 2);
 	}
 	addButton(14,"Back",approachKelly);
 	
@@ -1576,7 +1577,7 @@ private function kellyPreggers():void {
 	var x:int = Math.round(player.cumQ() / 20);
 	if (x > 80) x = 80;
 	if (flags[kFLAGS.KELLY_HEAT_TIME] > 0) x += 15;
-	if (x <= 80) {
+	if (x <= 80 || player.hasPerk(PerkLib.PilgrimsBounty)) {
 		pregnancy.knockUpForce(PregnancyStore.PREGNANCY_PLAYER, PregnancyStore.INCUBATION_CENTAUR - 84);
 		if (flags[kFLAGS.SCENEHUNTER_PRINT_CHECKS]) outputText("\n<b>Kelly is pregnant!</b>");
 		trace("Kelly knocked up.");
@@ -1997,7 +1998,7 @@ private function giveKellyAppleSauce():void {
 	outputText("your aching cock still weakly clenching.  In a beatific daze you listen to the sound of a tongue eagerly exploring every inch of a metal surface, before a bowl hits the ground.  A hand is offered to you and woozily you take it.  As soon as you are up Kelly pulls you into a fervent, passionate kiss, her soft lips pushing into yours.  The smell of apples envelops you.  You tense for a moment but decide to allow it.  It's her treat, after all.");
 	outputText("\n\nYou bend your head, sink your fingers into her hair and gently tangle your tongue with hers.  ");
 	if(player.cor < 60) outputText("The taste of cum glazing her apple breath is off-putting but what did you really expect?");
-	else outputText("You don't like to admit it but you do taste pretty good, even to yourself.  You push your tongue further into Kelly's mouth hungrily, working your jaw as you savage her mouth with your lips and tongue in search of that fruity, horny flavour, making her 'mmm' with delight and respond in kind.");
+	else outputText("You don't like to admit it but you do taste pretty good, even to yourself.  You push your tongue further into Kelly's mouth hungrily, working your jaw as you savage her mouth with your lips and tongue in search of that fruity, horny flavor, making her 'mmm' with delight and respond in kind.");
 	
 	//First:
 	if(flags[kFLAGS.KELLY_TIMES_APPLESAUCED]  == 0) {

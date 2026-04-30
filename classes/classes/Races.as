@@ -142,13 +142,29 @@ public class Races {
 	public static const ARIGEAN:ArigeanRace                = new ArigeanRace(117);
 	public static const DRACULA:DraculaRace                = new DraculaRace(118);
 	public static const MOTH:MothRace                      = new MothRace(119);
+	public static const GLACIAL_TROLL:GlacialTrollRace     = new GlacialTrollRace(120);
+	public static const LAQUINE:LaquineRace                = new LaquineRace(121);
+	public static const MUMMY:MummyRace             	   = new MummyRace(122);
+	public static const LICH:LichRace             		   = new LichRace(123);
+	public static const MYCONID:MyconidRace				   = new MyconidRace(124);
+	public static const AUTOMATA:AutomataRace			   = new AutomataRace(125);
+	public static const MARILITH:MarilithRace			   = new MarilithRace(126);
+	public static const BAROMETZ:BarometzRace			   = new BarometzRace(127);
+	public static const WEREBAT:WerebatRace				   = new WerebatRace(128);
+	public static const WERECAT:WerecatRace				   = new WerecatRace(129);
+	public static const WERERAVEN:WereravenRace			   = new WereravenRace(130);
+	public static const WEREBEAR:WerebearRace			   = new WerebearRace(131);
+	public static const RAT:RatRace						   = new RatRace(132);
+	public static const ABYSSAL_ELF:AbyssalElfRace		   = new AbyssalElfRace(133);
+	public static const SHEEP:SheepRace					   = new SheepRace(134);
+	public static const HOLLOW:HollowRace				   = new HollowRace(135);
 
 	// Racial groups
 	public static const CatlikeRaces:/*Race*/Array   = [
 			CAT, NEKOMATA, DISPLACERBEAST, HELLCAT, CHESHIRE, SPHINX, MANTICORE, DRAGONNE
 	];
 	public static const SnakelikeRaces:/*Race*/Array = [
-			NAGA, GORGON, VOUIVRE, COUATL, HYDRA, APOPHIS
+			NAGA, GORGON, VOUIVRE, COUATL, HYDRA, APOPHIS, MARILITH
 	];
 	public static const InsectRaces:/*Race*/Array = [
 			BEE, MANTIS, SCORPION, SPIDER, ANT, OOMUKADE, CANCER, ATLACH_NACHA, SANDWORM, WERESPIDER, MOTH
@@ -161,6 +177,18 @@ public class Races {
 	];
 	public static const KitsunelikeRaces:/*Race*/Array = [
 			KITSUNE, KITSHOO, RAISUNE
+	];
+	public static const UndeadRaces:/*Race*/Array = [
+			YUKIONNA, JIANGSHI, DRACULA, MUMMY, LICH
+	];
+	public static const PlantRaces:/*Race*/Array = [
+			PLANT, ALRAUNE, YGGDRASIL, BAROMETZ
+	];
+	public static const WerebeastRaces:/*Race*/Array = [
+			WEREWOLF, WEREFOX, WERESPIDER, WERESHARK, WEREBAT, WERECAT, WERERAVEN, WEREBEAR
+	];
+	public static const GhostlikeRaces:/*Race*/Array = [
+			POLTERGEIST, BANSHEE, WENDIGO, HOLLOW
 	];
 	public static const RacesForRandomEnchantments:/*Race*/Array = [
 			// populated in load() as AllVisibleRaces - RacesExcludedFromRandomEnchantments

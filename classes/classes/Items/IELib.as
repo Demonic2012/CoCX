@@ -1,9 +1,12 @@
 package classes.Items {
 import classes.ItemType;
 import classes.Items.Effects.DescriptionFnItemEffect;
+import classes.Items.Effects.RaceTfItemEffect;
 import classes.Items.Effects.SimpleItemEffect;
+import classes.Player;
 import classes.Race;
 import classes.Races;
+import classes.Stats.StatUtils;
 import classes.internals.Utils;
 
 /**
@@ -52,14 +55,46 @@ public class IELib extends ItemConstants {
 	// All equipables //
 	//================//
 	
+	/**
+	 * Add (power) to buffable stat.
+	 * * value1:String = buffable stat id
+	 */
+	public static const Buff:ItemEffectType = mkfn("Buff",
+			// descripion
+			function (ie:ItemEffect, item:ItemType):String {
+				return StatUtils.explainBuff(ie.value1 as String, ie.power)
+			}, 80,
+			// on equip
+			function (player:Player, item:Equipable, effect:ItemEffect):void {
+				trace("EQUIP",item, effect.description(item));
+				player.buff(item.tagForBuffs)
+						.addStat(effect.value1 as String, effect.power)
+						.withText(item.name)
+						.withOptions({save:false});
+			},
+			// on unequip
+			function (player:Player, item:Equipable, effect:ItemEffect):void {
+				trace("UNEQUIP",item, effect.description(item));
+				if (player.countSameEquippedItems(item) == 0) {
+					player.buff(item.tagForBuffs).removeFromStat(effect.value1 as String)
+				} else {
+					player.buff(item.tagForBuffs).subtractStat(effect.value1 as String, effect.power)
+				}
+			}).withFlags(IEF_ONEQUIP);
 	/** must have corruption >= (power) to equip */
 	public static const Require_Cor:ItemEffectType = mk("Require_Cor", "Requires corruption {power} or more").withFlags(IEF_REQUIREMENT);
 	/** must have corruption < (power) to equip */
 	public static const Require_CorBelow:ItemEffectType = mk("Require_CorBelow", "Requires coruption less than {power}").withFlags(IEF_REQUIREMENT);
 	/** Change min femininity by (+power) */
-	public static const MinFem:ItemEffectType = mk("MinFem", "Min. femininity {power;+d}")
+	public static const MinFem:ItemEffectType = mk("MinFem", "Min. femininity {power;+d}", 80,
+			function(player:Player,item:ItemType,effect:ItemEffect):void {
+				player.fixFemininity();
+			})
 	/** Change max femininity by (power). Power should be negative */
-	public static const MaxFem:ItemEffectType = mk("MaxFem", "Max. femininity {power;+d}")
+	public static const MaxFem:ItemEffectType = mk("MaxFem", "Max. femininity {power;+d}", 80,
+			function(player:Player,item:ItemType,effect:ItemEffect):void {
+				player.fixFemininity();
+			})
 	/** increase XP gain by (power)% */
 	public static const BonusXp:ItemEffectType = mk("BonusXp", "XP gain {power;+d}%")
 	/** power doesn't matter */
@@ -94,6 +129,7 @@ public class IELib extends ItemConstants {
 					race: (ie.value1 as Race).name
 				})
 			});
+	public static const RaceTf:ItemEffectType = new RaceTfItemEffect();
 	
 	//===================//
 	// Shields and armor //
@@ -113,11 +149,12 @@ public class IELib extends ItemConstants {
 	// Weapons (melee and ranged) //
 	//============================//
 	
-	
 	//=================//
 	// Weapons (melee) //
 	//=================//
 	
+	public static const SelfCorr:ItemEffectType = mk("SelfCorr", "Corrupts the wielder with use");
+	public static const SelfLust:ItemEffectType = mk("SelfLust", "Induces lust in the wielder with use");
 	/** reduce enemy armor by (power) % */
 	public static const ArmorPenetration:ItemEffectType = mk("ArmorPenetration", "Armor Penetration {power}%");
 	/** subtract (power) from enemy armor */
@@ -126,6 +163,8 @@ public class IELib extends ItemConstants {
 	public static const Stun:ItemEffectType = mk("Stun", "Stun {power;+d}%");
 	/** power = bleed chance in % */
 	public static const Bleed:ItemEffectType = mk("Bleed", "Bleed {power;+d}%");
+	/** power = lust damage, v1 - bonus to it = pc.corruption*v1 */
+	public static const LustDamage:ItemEffectType = mk("LustDamage", "{power;+d} Lust dmg on hit");
 	/** Add (power*corruption) to base attack. Can be negative. */
 	public static const AttackBonus_Cor:ItemEffectType = mk("AttackBonus_Cor", "{power;+2F} attack per corruption").withFlags(IEF_ATTACK);
 	/** Add (power*(100-corruption)) to base attack. Can be negative. */
@@ -134,6 +173,7 @@ public class IELib extends ItemConstants {
 	public static const AttackBonus_Fem:ItemEffectType = mk("AttackBonus_Fem", "{power;+2F} attack per femininity").withFlags(IEF_ATTACK);
 	/** Add (power*(100-femininity))% to base attack. Can be negative. */
 	public static const AttackBonus_Masc:ItemEffectType = mk("AttackBonus_Masc", "{power;+2F} attack per masculinity").withFlags(IEF_ATTACK);
+
 	/**
 	 * Add (power) to attack per racial tier.
 	 * - value1:Race = race to check (Races.XXXX, not race id)
@@ -151,6 +191,16 @@ public class IELib extends ItemConstants {
 	public static const AttackMult_RaceTier:ItemEffectType  = mkfn("AttackMult_RaceTier",
 			function (ie:ItemEffect, item:ItemType):String {
 				return Utils.substitute("{power;+d}% attack per {race} racial tier", ie, {
+					race: (ie.value1 as Race).name
+				})
+			}).withFlags(IEF_ATTACK);
+	/**
+	 * Add (power)% to attack per racial tier.
+	 * - value1:Race = race to check (Races.XXXX, not race id)
+	 */
+	public static const VenomMult_RaceTier:ItemEffectType  = mkfn("VenomMult_RaceTier",
+			function (ie:ItemEffect, item:ItemType):String {
+				return Utils.substitute("{power;+d}% venom effect per {race} racial tier", ie, {
 					race: (ie.value1 as Race).name
 				})
 			}).withFlags(IEF_ATTACK);
@@ -196,11 +246,29 @@ public class IELib extends ItemConstants {
 		throw new Error("This class should not be instantiated");
 	}
 	
-	private static function mk(name:String, descPattern:String, priority:int = 80):ItemEffectType {
-		return new SimpleItemEffect(name, descPattern, priority);
+	/**
+	 *
+	 * @param name
+	 * @param descPattern
+	 * @param priority
+	 * @param onEquipFn `function(player:Player, item:Equipable, effect:ItemEffect):void`
+	 * @param onUnequipFn `function(player:Player, item:Equipable, effect:ItemEffect):void`
+	 * @return
+	 */
+	private static function mk(name:String, descPattern:String, priority:int = 80, onEquipFn:Function = null, onUnequipFn:Function = null):ItemEffectType {
+		return new SimpleItemEffect(name, descPattern, priority, onEquipFn, onUnequipFn);
 	}
-	private static function mkfn(name:String, descFn:Function, priority:int = 80):ItemEffectType {
-		return new DescriptionFnItemEffect(name, descFn, priority);
+	/**
+	 *
+	 * @param name
+	 * @param descFn
+	 * @param priority
+	 * @param onEquipFn `function(player:Player, item:Equipable, effect:ItemEffect):void`
+	 * @param onUnequipFn `function(player:Player, item:Equipable, effect:ItemEffect):void`
+	 * @return
+	 */
+	private static function mkfn(name:String, descFn:Function, priority:int = 80, onEquipFn:Function = null, onUnequipFn:Function = null):ItemEffectType {
+		return new DescriptionFnItemEffect(name, descFn, priority, onEquipFn, onUnequipFn);
 	}
 }
 }

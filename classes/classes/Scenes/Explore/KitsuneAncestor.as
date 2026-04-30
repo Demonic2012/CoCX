@@ -32,10 +32,10 @@ import classes.internals.*;
 		
 		public function kitsunesoulskillMod():Number {
 			var kmodss:Number = 1;//bonusy 3x
-			if (hasPerk(PerkLib.DaoistApprenticeStage)) kmodss += .9;
-			if (hasPerk(PerkLib.DaoistWarriorStage)) kmodss += 1.8;
-			if (hasPerk(PerkLib.DaoistElderStage)) kmodss += 3;
-			if (hasPerk(PerkLib.DaoistOverlordStage)) kmodss += 4.2;
+			if (hasPerk(PerkLib.DaoistMDHiFApprenticeStage)) kmodss += 3.75;
+			if (hasPerk(PerkLib.DaoistMDHiFWarriorStage)) kmodss += 7.5;
+			if (hasPerk(PerkLib.DaoistMDHiFElderStage)) kmodss += 11.25;
+			if (hasPerk(PerkLib.DaoistMDHiFOverlordStage)) kmodss += 15;
 			return kmodss;
 		}
 		
@@ -59,12 +59,12 @@ import classes.internals.*;
 		public function KitsuneCastsComet():void {
 			soulforce -= 216;
 			outputText("He raises a hand, focusing with intensity.  From above comes a crystalline meteor, which you barely manage to dodge.  The crystal shatters upon contact with the ground, sending a shower of splinters that you cannot avoid. ");
-			if (player.armorName == "Drider-weave Armor" || player.armorPerk == "Heavy" || player.armorPerk == "Light Ayo" || player.armorPerk == "Heavy Ayo" || player.armorPerk == "Ultra Heavy Ayo") outputText("Thankfully, your armor manages to absorb most of the impact. ");
+			if (player.isInHeavyArmor() || player.isInAyoArmor()) outputText("Thankfully, your armor manages to absorb most of the impact. ");
 			var damage:Number = 0;
 			damage += inteligencescalingbonus();
 			damage *= kitsunesoulskillMod();
 			if (player.hasPerk(PerkLib.FromTheFrozenWaste) || player.hasPerk(PerkLib.ColdAffinity)) damage *= 3;
-			if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) damage *= 0.3;
+			if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.FireShadowAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) damage *= 0.3;
 			if (player.armorPerk != "Heavy" && player.armorPerk != "Light Ayo" && player.armorPerk != "Heavy Ayo" && player.armorPerk != "Ultra Heavy Ayo") damage *= 2;
 			damage = Math.round(damage);
 			player.takeMagicDamage(damage, true);
@@ -73,7 +73,7 @@ import classes.internals.*;
 		private function kitsuneSealAttack():void
 		{
 			var resist:int = 0;
-			if (player.inte < 30) resist = Math.round(player.inte);
+			if (player.intStat.core.value < 30) resist = Math.round(player.intStat.core.value);
 			else resist = 30;
 			if (player.hasPerk(PerkLib.Whispered)) resist += 20;
 			if ((player.hasPerk(PerkLib.HistoryReligious) || player.hasPerk(PerkLib.PastLifeReligious)) && player.cor < 20) resist += 20 - player.cor;
@@ -187,7 +187,7 @@ import classes.internals.*;
 			this.hairColor = "grey";
 			this.hairLength = 31 + rand(10);
 			initStrTouSpeInte(95, 160, 420, 330);
-			initWisLibSensCor(330, 160, 190, 45);
+			initWisLibSensCor(330, 160, 190, -10);
 			this.weaponName = "worn down staff";
 			this.weaponVerb="smack";
 			this.weaponAttack = 8;
@@ -221,10 +221,10 @@ import classes.internals.*;
 			this.createPerk(PerkLib.SoulTyrant, 0, 0, 0, 0);
 			this.createPerk(PerkLib.SoulKing, 0, 0, 0, 0);
 			this.createPerk(PerkLib.SoulEmperor, 0, 0, 0, 0);
-			this.createPerk(PerkLib.DaoistApprenticeStage, 0, 0, 0, 0);
-			this.createPerk(PerkLib.DaoistWarriorStage, 0, 0, 0, 0);
-			this.createPerk(PerkLib.DaoistElderStage, 0, 0, 0, 0);
-			this.createPerk(PerkLib.DaoistOverlordStage, 0, 0, 0, 0);
+			this.createPerk(PerkLib.DaoistMDHiFApprenticeStage, 0, 0, 0, 0);
+			this.createPerk(PerkLib.DaoistMDHiFWarriorStage, 0, 0, 0, 0);
+			this.createPerk(PerkLib.DaoistMDHiFElderStage, 0, 0, 0, 0);
+			this.createPerk(PerkLib.DaoistMDHiFOverlordStage, 0, 0, 0, 0);
 			this.createPerk(PerkLib.JobSorcerer, 0, 0, 0, 0);
 			this.createPerk(PerkLib.Spellpower, 0, 0, 0, 0);
 			this.createPerk(PerkLib.Mage, 0, 0, 0, 0);

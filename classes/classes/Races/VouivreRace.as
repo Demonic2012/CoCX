@@ -66,13 +66,16 @@ public class VouivreRace extends Race {
 									|| GorgonRace.isGorgonLike(body)
 									|| CouatlRace.isCouatlLike(body)
 									|| HydraRace.isHydraLike(body)
-									|| ApophisRace.isApophisLike(body));
-						}, 0, -1000);
+									|| ApophisRace.isApophisLike(body)
+									|| MarilithRace.isMarilithLike(body));
+						}, 0, -1000)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addScoresAfter(11)
 				.hasPerk(PerkLib.DragonFireBreath,+1);
 		
 		addMutation(IMutationsLib.VenomGlandsIM);
 		addMutation(IMutationsLib.DrakeLungsIM);
+		addMutation(IMutationsLib.MightyLowerHalfIM);
 		
 		buildTier(11, "lesser vouivre")
 				.buffs({

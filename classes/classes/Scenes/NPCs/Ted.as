@@ -20,16 +20,15 @@ use namespace CoC;
 		private function tedSpecialAttackOne():void {
 			var damage:Number = 0;
 			if (player.getEvasionRoll()) {
-				outputText("You barely manage to avoid a wide sweeping attack from dragon-boy by rolling under it.");//Ted's
+				outputText("You barely manage to avoid a wide sweeping attack from "+short+" by rolling under it.");
 				return;
 			}
-			damage = int((str + 60 + weaponAttack) - Math.random()*(player.tou) - player.armorDef);
-			damage /= 2;
+			damage = int((str + 150 + weaponAttack) - Math.random()*(player.tou) - player.armorDef);
 			if (damage <= 0) {
 				damage = 0;
-				outputText("You easily deflect and block the damage from dragon boy wide swing.");//Ted's
+				outputText("You easily deflect and block the damage from "+short+" wide swing.");
 			}
-			else outputText((flags[kFLAGS.TED_LVL_UP] >= 3 ?"Ted":"Dragon-boy")+" easily hits you with a wide, difficult to avoid swing.  ");//Ted
+			else outputText(short+" easily hits you with a wide, difficult to avoid swing.  ");
 			if(damage > 0) player.takePhysDamage(damage, true);
 		}
 		private function tedSpecialAttackTwo():void {
@@ -38,13 +37,14 @@ use namespace CoC;
 				outputText("You manage to roll out of the way of a massive overhand swing.");
 				return;
 			}
-			damage = int((str + 30 + weaponAttack) - Math.random()*(player.tou) - player.armorDef);
+			damage = int((str + 75 + weaponAttack) - Math.random()*(player.tou) - player.armorDef);
+			damage *= 2;
 			if (damage <= 0) {
 				damage = 0;
-				outputText("You somehow manage to deflect and block dragon-boy massive overhead swing.");//Ted's
+				outputText("You somehow manage to deflect and block "+short+" massive overhead swing.");
 			}
 			if (damage > 0) {
-				outputText("You are struck by a two-handed overhead swing from the enraged dragon-boy.  ");//Ted
+				outputText("You are struck by a two-handed overhead swing from the enraged "+short+".  ");
 				damage = player.takePhysDamage(damage, true);
 			}
 		}//poniżej ataki jakie bedzie używać w dodatku do 2 powyżej w czasie spotkań po Hidden Cave
@@ -94,38 +94,39 @@ use namespace CoC;
 		public function Ted() 
 		{
 			if (flags[kFLAGS.TED_LVL_UP] < 1) {
-				initStrTouSpeInte(30, 50, 50, 30);
-				initWisLibSensCor(30, 20, 40, 50);
-				this.weaponAttack = 8;
-				this.armorDef = 5;
-				this.armorMDef = 50;
+				initStrTouSpeInte(60, 100, 100, 30);
+				initWisLibSensCor(30, 20, 40, 0);
+				this.weaponAttack = 16;
+				this.armorDef = 10;
+				this.armorMDef = 100;
 				this.bonusLust = 69;
 				this.level = 9;
+				this.createPerk(PerkLib.EnemyBossType, 0, 0, 0, 0);
 			}
 			if (flags[kFLAGS.TED_LVL_UP] == 1) {
-				initStrTouSpeInte(40, 70, 70, 40);
-				initWisLibSensCor(40, 25, 50, 50);
-				this.weaponAttack = 10;
-				this.armorDef = 10;
-				this.armorMDef = 55;
+				initStrTouSpeInte(80, 140, 140, 40);
+				initWisLibSensCor(40, 25, 50, 0);
+				this.weaponAttack = 20;
+				this.armorDef = 20;
+				this.armorMDef = 110;
 				this.bonusLust = 90;
 				this.level = 15;
 			}
 			if (flags[kFLAGS.TED_LVL_UP] == 2) {
-				initStrTouSpeInte(50, 90, 90, 50);
-				initWisLibSensCor(50, 30, 60, 50);
-				this.weaponAttack = 12;
-				this.armorDef = 15;
-				this.armorMDef = 60;
+				initStrTouSpeInte(100, 180, 180, 50);
+				initWisLibSensCor(50, 30, 60, 0);
+				this.weaponAttack = 24;
+				this.armorDef = 30;
+				this.armorMDef = 120;
 				this.bonusLust = 111;
 				this.level = 21;
 			}
 			if (flags[kFLAGS.TED_LVL_UP] == 3) {
-				initStrTouSpeInte(63, 115, 115, 62);
-				initWisLibSensCor(62, 35, 70, 50);
-				this.weaponAttack = 15;
-				this.armorDef = 21;
-				this.armorMDef = 66;
+				initStrTouSpeInte(126, 230, 230, 62);
+				initWisLibSensCor(62, 35, 70, 0);
+				this.weaponAttack = 30;
+				this.armorDef = 42;
+				this.armorMDef = 132;
 				this.bonusLust = 132;
 				this.level = 27;
 			}
@@ -141,7 +142,7 @@ use namespace CoC;
 			else if (flags[kFLAGS.TED_LVL_UP] >= 3 && flags[kFLAGS.TED_LVL_UP] < 6) this.drop = new WeightedDrop(consumables.BAGOCA2, 1);
 			else this.drop = new WeightedDrop(consumables.BAGOCA1, 1);
 			this.imageName = "mysterious dragon-boy";
-			this.long = "Before you stands a dragon-boy.  He stands only six and half feet tall and is covered in lean muscle. He moves with a grace akin to a skilled balet dancer.  He wears armor made of green dragon scales and fight using an oversized hammer that got inscribed on it words 'bam' and 'hammer'. As you glance over it, the word 'bam' looks like it was orginaly word 'ban'.";
+			this.long = "Before you stands a dragon-boy.  He stands only six and half feet tall and is covered in lean muscle. He moves with a grace akin to a skilled ballet dancer.  He wears armor made of green dragon scales and fight using an oversized hammer that got inscribed on it words 'bam' and 'hammer'. As you glance over it, the word 'bam' looks like it was originally word 'ban'.";
 			// this.plural = false;
 			this.createCock(4,1);
 			this.balls = 2;
@@ -169,7 +170,7 @@ use namespace CoC;
 			this.createPerk(PerkLib.Regeneration, 0, 0, 0, 0);
 			this.createPerk(PerkLib.LizanRegeneration, 0, 0, 0, 0);
 			this.createPerk(IMutationsLib.LizanMarrowIM, 1, 0, 0, 0);
-			this.createPerk(PerkLib.EnemyBossType, 0, 0, 0, 0);
+			this.createPerk(PerkLib.EnemyDragonType, 0, 0, 0, 0);
 			this.createPerk(PerkLib.UniqueNPC, 0, 0, 0, 0);
 			IMutationsLib.LizanMarrowIM.acquireMutation(this, "none");
 			checkMonster();

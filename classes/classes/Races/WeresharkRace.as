@@ -45,14 +45,14 @@ public class WeresharkRace extends Race {
 	public override function setup():void {
 		
 		addScores()
-				.faceType(Face.SHARK_TEETH,1)
+				.faceType(Face.SHARK_TEETH, +1)
 				.eyeType(Eyes.FERAL, +2)
 				.gillType(Gills.FISH, +1)
 				.earType(Ears.SHARK, +1)
 				.tongueType(Tongue.HUMAN, +1)
 				.rearType(RearBody.SHARK_FIN, +1)
 				.armType(Arms.SHARK, +1)
-				.legType(LowerBody.WERESHARK, +3)
+				.legType(LowerBody.WERESHARK, +3, -1000)
 				.hairTypeAndColor1(Hair.NORMAL, "silver", +2)
 				.skinCoatType(ANY(Skin.SCALES, Skin.AQUA_SCALES, Skin.DRAGON_SCALES), +1)
 				.scaleColor1(ANY(WeresharkScaleColors), +1)
@@ -61,7 +61,9 @@ public class WeresharkRace extends Race {
 				.corruption(AT_LEAST(20), +1)
 				.corruption(AT_LEAST(50), +1)
 				.corruption(AT_LEAST(80), +1)
-				.hasAnyPerk([PerkLib.Selachimorphanthropy, PerkLib.SelachimorphanthropyDormant], +2, -11);
+				.hasPerk(PerkLib.SelachimorphanthropyDormant, +1)
+				.hasPerk(PerkLib.Selachimorphanthropy, +2, -10)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		
 		addBloodline(PerkLib.WeresharksDescendant,PerkLib.BloodlineWereshark);
 		addMutation(IMutationsLib.FerasBirthrightIM);

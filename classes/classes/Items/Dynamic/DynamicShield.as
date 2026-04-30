@@ -76,6 +76,8 @@ public class DynamicShield extends Shield implements IDynamicItem {
 		var perk:Array          = (subtype.perk || []).slice();
 		var tags:Array          = subtype.tags || [];
 		var block:Number        = subtype.block;
+		var itemEffects:Array   = subtype.effects || [];
+		var qitemEffects:Array  = subtype.qeffects || [];
 		if (parsedParams.error) {
 			trace("[ERROR] Failed to parse " + id + " with error " + parsedParams.error);
 			name      = "ERROR " + name;
@@ -84,7 +86,7 @@ public class DynamicShield extends Shield implements IDynamicItem {
 			desc      = "INVALID ITEM:\n" + parsedParams.error + "\n" + desc;
 		}
 		
-		block *= (1.0 + quality * subtype.qattack);
+		block *= (1.0 + quality * subtype.qblock);
 		
 		super(
 				id,
@@ -97,7 +99,7 @@ public class DynamicShield extends Shield implements IDynamicItem {
 				perk.join(", ")
 		);
 		
-		DynamicItems.postConstruct(this, tags, buffs);
+		DynamicItems.postConstruct(this, tags, buffs, itemEffects, qitemEffects, quality);
 	}
 	
 	override public function effectDescriptionParts():Array {
@@ -166,21 +168,21 @@ public class DynamicShield extends Shield implements IDynamicItem {
 		DynamicItems.equipText(this);
 	}
 	
-	override public function beforeEquip(doOutput:Boolean):Equipable {
+	override public function beforeEquip(doOutput:Boolean, slot:int):Equipable {
 		if (!identified) {
-			return (identifiedCopy() as Equipable).beforeEquip(doOutput);
+			return (identifiedCopy() as Equipable).beforeEquip(doOutput, slot);
 		}
-		return super.beforeEquip(doOutput);
+		return super.beforeEquip(doOutput, slot);
 	}
 	
-	override public function afterEquip(doOutput:Boolean):void {
-		super.afterEquip(doOutput);
+	override public function afterEquip(doOutput:Boolean, slot:int):void {
+		super.afterEquip(doOutput, slot);
 		for each (var e:Enchantment in effects) {
 			e.onEquip(game.player, this);
 		}
 	}
-	override public function afterUnequip(doOutput:Boolean):void {
-		super.afterUnequip(doOutput);
+	override public function afterUnequip(doOutput:Boolean, slot:int):void {
+		super.afterUnequip(doOutput, slot);
 		for each (var e:Enchantment in effects) {
 			e.onUnequip(game.player, this);
 		}
@@ -198,27 +200,39 @@ public class DynamicShield extends Shield implements IDynamicItem {
 	 * - (optional) tags: Array of item tags (ItemTag.XXXX)
 	 * - (optional) quality: force quality
 	 * - block: Base attack power
-	 * - qdef: quality-per-defence (0.25 = +25% per +1 qualiity)
+	 * - qblock: quality-per-defence (0.25 = +25% per +1 qualiity)
 	 * - value: Base cost in gems
 	 */
 	public static const Subtypes:Object = {
+		"ambershield": {
+			chance:    0,
+			name:      "Amber Shield",
+			shortName: "AmberShield",
+			desc:      "This shield of Chitin and hardened amber grants excellent protection against magic, but also fluid attacks such as acid, aphrodisiacs and other nasty liquids. A small cache in the shield allows a bee wielder to shower in fresh honey for restoration mid battle, healing the wielder over time as well as on blocks",
+			effect:    [
+				[IELib.Buff, 10, "mdef"]
+			],
+			block:     25,
+			qblock:    0.2,
+			value:     120
+		},
 		"shield": {
-			chance: 1,
-			name: "Shield",
+			chance:    1,
+			name:      "Shield",
 			shortName: "Shield",
-			desc: "This is a basic light shield.",
-			block: 4,
-			qattack: 0.25,
-			value: 120
+			desc:      "This is a basic light shield.",
+			block:     4,
+			qblock:    0.25,
+			value:     120
 		},
 		"tome": {
-			chance: 1,
-			name: "Tome",
+			chance:    1,
+			name:      "Tome",
 			shortName: "Tome",
-			desc: "This is a basic tome of knowledge.",
-			block: 4,
-			qattack: 0.25,
-			value: 120
+			desc:      "This is a basic tome of knowledge.",
+			block:     4,
+			qblock:    0.25,
+			value:     120
 		}
 	}
 }

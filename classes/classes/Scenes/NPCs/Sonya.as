@@ -45,7 +45,7 @@ use namespace CoC;
 			else {
 				this.a = "the ";
 				this.short = "glacial bull";
-				this.long = "The glacial bull is twelve feet tall, much taller and muscular than any other bull you've seen before. Additionaly it seems to be heavy corrupted having much less human traits than other minotaurs you meet. Weirdly he seems to have his chest covered by piece of cloth too in addition to typicaly used by his brothers loincloth, but that not distracts you from the pair of large hammers it wields.";
+				this.long = "The glacial bull is twelve feet tall, much taller and muscular than any other bull you've seen before. Additionally, it seems to be heavily corrupted, having much less human traits than other minotaurs you meet. Weirdly, he seems to have his chest covered by a piece of cloth too, in addition to the typically used loincloth by his brother, but that does not distract you from the pair of large hammers it wields.";
 			}
 			createVagina(true,VaginaClass.WETNESS_NORMAL,VaginaClass.LOOSENESS_TIGHT);
 			this.createStatusEffect(StatusEffects.BonusVCapacity,60,0,0,0);
@@ -63,10 +63,10 @@ use namespace CoC;
 			initWisLibSensCor(180, 50, 50, 100);
 			this.weaponName = "twin hammers";
 			this.weaponVerb="smash";
-			this.weaponAttack = 70;
+			this.weaponAttack = 140;
 			this.armorName = "thick fur";
-			this.armorDef = 30;
-			this.armorMDef = 0;
+			this.armorDef = 120;
+			this.armorMDef = 40;
 			this.bonusHP = 100;
 			this.bonusLust = 130;
 			this.lust = 30;

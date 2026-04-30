@@ -412,6 +412,7 @@ public class HairTransformations extends MutationsHelper {
 
 				if (doOutput) outputText(desc);
 				player.hairType = Hair.PRISMATIC;
+                Metamorph.unlockMetamorph(HairMem.getMemory(HairMem.PRISMATIC));
 			},
 			// is present
 			function (): Boolean {
@@ -454,6 +455,7 @@ public class HairTransformations extends MutationsHelper {
 
 				if (doOutput) outputText(desc);
 				player.hairType = Hair.COW;
+                Metamorph.unlockMetamorph(HairMem.getMemory(HairMem.COW));
 			},
 			// is present
 			function (): Boolean {
@@ -491,6 +493,35 @@ public class HairTransformations extends MutationsHelper {
 			// is present
 			function (): Boolean {
 				return player.hairType === Hair.PEAFOWL;
+			}
+	);
+
+	public const HairGlowingMushroom: Transformation = new SimpleTransformation("Glowing Mushroom Hair",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				if (doOutput) outputText(desc);
+				player.hairType = Hair.MYCONID;
+                Metamorph.unlockMetamorph(HairMem.getMemory(HairMem.MYCONID));
+			},
+			// is present
+			function (): Boolean {
+				return player.hairType === Hair.MYCONID;
+			}
+	);
+
+	public const HairGlowingSynthetic: Transformation = new SimpleTransformation("Glowing Synthetic Hair",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				if (doOutput) outputText(desc);
+				player.hairType = Hair.SYNTHETIC;
+			},
+			// is present
+			function (): Boolean {
+				return player.hairType === Hair.SYNTHETIC;
 			}
 	);
 

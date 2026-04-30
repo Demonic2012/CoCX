@@ -89,12 +89,12 @@ public class OnikiriSake extends Consumable {
 				if (player.cocks[selectedCock].cockThickness < 4) {
 					temp = player.growCock(selectedCock, 2 + rand(4));
 					temp += player.thickenCock(selectedCock, 1);
-					outputText("\n\nYour cock suddenly hardens, blood pumping in as it enlarges, growing both longer and thicker! The pleasure of the change cause you to orgasm, a big load of cum splattering the ground below you.");
+					outputText("\n\nYour cock suddenly hardens, blood pumping in as it enlarges, growing both longer and thicker! The pleasure of the change causes you to orgasm, a big load of cum splattering the ground below you.");
 					outputText("  To your delight and surprise, you discover it has grown slightly thicker as well!");
 				}
 				else {
 					temp = player.growCock(selectedCock, 2 + rand(4));
-					outputText("\n\nYour cock suddenly hardens, blood pumping in as it enlarges, growing both longer and thicker! The pleasure of the change cause you to orgasm, a big load of cum splattering the ground below you.");
+					outputText("\n\nYour cock suddenly hardens, blood pumping in as it enlarges, growing both longer and thicker! The pleasure of the change causes you to orgasm, a big load of cum splattering the ground below you.");
 				}
 				changes++;
 			}
@@ -182,9 +182,9 @@ public class OnikiriSake extends Consumable {
 			CoC.instance.transformations.SkinPlain.applyEffect();
 		}
 		//Taller
-		if (changes < changeLimit && rand(3) == 0 && player.basetallness < 132) {
+		if (changes < changeLimit && rand(3) == 0 && player.tallness < 132) {
 			temp = rand(5) + 3;
-			if (player.basetallness > 117) temp = Math.floor(temp / 2);
+			if (player.tallness > 117) temp = Math.floor(temp / 2);
 			if (temp == 0) temp = 1;
 			if (temp < 5) outputText("\n\nYou shift uncomfortably as you realize you feel off balance.  Gazing down, you realize you have grown SLIGHTLY taller.");
 			if (temp >= 5 && temp < 7) outputText("\n\nYou feel dizzy and slightly off, but quickly realize it's due to a sudden increase in height.");

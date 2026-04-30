@@ -30,7 +30,7 @@ public class ChargeWeaponSpell extends AbstractWhiteSpell {
 	}
 	
 	override public function manaCost():Number {
-		return super.manaCost() * costMultiplier();
+		return baseManaCost * costMultiplier();
 	}
 	
 	override public function advance(display:Boolean):void {
@@ -38,9 +38,8 @@ public class ChargeWeaponSpell extends AbstractWhiteSpell {
 			player.removeStatusEffect(StatusEffects.ChargeWeapon);
 			if (player.hasPerk(PerkLib.SelfbuffsProficiencyEx) && player.mana >= CombatAbilities.ChargeWeapon.manaCost()) CombatAbilities.ChargeWeapon.autocast();
 			else if (display) outputText("<b>Charged Weapon effect wore off!</b>\n\n");
-		} else {
-			if (!player.hasPerk(PerkLib.PureMagic)) player.addStatusValue(StatusEffects.ChargeWeapon, 2, -1);
 		}
+		else player.addStatusValue(StatusEffects.ChargeWeapon, 2, -1);
 	}
 	
 	override protected function usabilityCheck():String {
@@ -54,22 +53,22 @@ public class ChargeWeaponSpell extends AbstractWhiteSpell {
 		return "";
 	}
 	
-	private function weaponSizeBoost():Number {
-		var ab12:Number = 1;
-		if (player.weapon.isHybrid()) ab12 *= 2.5;
-		else if (player.weapon.isMedium()) ab12 *= 2;
-		else if (player.weapon.isLarge()) ab12 *= 3;
-		else if (player.weapon.isMassive()) ab12 *= 4;
+	private function weaponBoost():Number {
+		var ab12:Number = 2;
 		if (player.weapon == weapons.MGSWORD) ab12 *= 2;
 		return ab12;
 	}
 	
 	private function weaponSizeManaCost():Number {
-		var ba21:Number = 1;
-		if (player.weapon.isHybrid()) ba21 *= 3;
-		else if (player.weapon.isDualSmall() || player.weapon.isSingleMedium()) ba21 *= 2;
-		else if (player.weapon.isDualMedium() || player.weapon.isSingleLarge()) ba21 *= 4;
-		else if (player.weapon.isDualLarge() || player.weapon.isSingleMassive()) ba21 *= 8;
+		var ba21:Number = 0;
+		if (player.weapon.isHybrid()) ba21 += 3;
+		if (player.weapon.isSingleMedium()) ba21 += 2;
+		if (player.weaponOff.isSingleMedium()) ba21 += 2;
+		if (player.weapon.isSingleLarge()) ba21 += 4;
+		if (player.weaponOff.isSingleLarge()) ba21 += 4;
+		if (player.weapon.isSingleMassive()) ba21 += 8;
+		if (player.weaponOff.isSingleMassive()) ba21 += 8;
+		if (ba21 < 1) ba21 = 1;
 		return ba21;
 	}
 	
@@ -88,9 +87,9 @@ public class ChargeWeaponSpell extends AbstractWhiteSpell {
 		var ChargeWeaponBoostCap:Number = 4;
 		var ChargeWeaponBoost:Number = 5;
 		if (player.hasPerk(PerkLib.SelfbuffsProficiency)) {
-			var capB:Number = 1.2;
-			if (player.hasPerk(PerkLib.SelfbuffsProficiencyEx)) capB += 0.8;
-			if (player.hasPerk(PerkLib.SelfbuffsProficiencySu)) capB *= 5;
+			var capB:Number = 1.5;
+			if (player.hasPerk(PerkLib.SelfbuffsProficiencyEx)) capB += 1;
+			if (player.hasPerk(PerkLib.SelfbuffsProficiencySu)) capB *= 7.5;
 			ChargeWeaponBoostCap *= capB;
 		}
 		ChargeWeaponBoostCap *= ChargeWeaponBoost;
@@ -103,7 +102,7 @@ public class ChargeWeaponSpell extends AbstractWhiteSpell {
 		ChargeWeaponBoost *= spellModWhite();
 		//ChargeWeaponBoost = FnHelpers.FN.logScale(ChargeWeaponBoost,ChargeWeaponABC,10);
 		if (ChargeWeaponBoost > ChargeWeaponBoostCap) ChargeWeaponBoost = ChargeWeaponBoostCap;
-		ChargeWeaponBoost *= weaponSizeBoost();
+		ChargeWeaponBoost *= weaponBoost();
 		ChargeWeaponBoost = Math.round(ChargeWeaponBoost);
 		var ChargeWeaponDuration:Number = 5;
 		ChargeWeaponDuration += combat.magic.perkRelatedDurationBoosting();

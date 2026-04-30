@@ -7,6 +7,7 @@ package classes.IMutations
 import classes.IMutationPerkType;
 import classes.Creature;
 import classes.PerkClass;
+import classes.Races;
 
     public class MutationTemplate extends IMutationPerkType
     {
@@ -24,6 +25,9 @@ import classes.PerkClass;
                 descS += ", ";
             }
             if (pTier >= 3){
+                descS += ", ";
+            }
+            if (pTier >= 4){
                 descS += ", ";
             }
             if (descS != "")descS += ".";
@@ -68,7 +72,7 @@ import classes.PerkClass;
 
         public function MutationTemplate() {
             // replace SLOT_NONE with other SLOT_XXXX constant
-            super(mName + " IM", mName, SLOT_NONE, 3, true);
+            super(mName + " IM", mName, SLOT_NONE, 3);
         }
 
     }

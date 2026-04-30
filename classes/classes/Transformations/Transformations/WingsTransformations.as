@@ -520,7 +520,7 @@ public class WingsTransformations extends MutationsHelper {
 				var desc: String = "";
 
 				desc += "Winds begin to amass around you as if the prelude to a gathering storm. At first you think you are about to be attacked before you realise it’s all your doing. Merely by thinking about it the wind suddenly blows into a raging tornado carrying you up before you seize control and give it just enough strength to uplift you into its currents. "+
-						"It would seem you have gained the infamous wind control power of the kamaitachi achieving mastery over it. Well this is going to be fun to play with. <b>You now have the ability to control winds as the Kamaitachi do using your windy aura!</b>";
+						"It would seem you have gained the infamous wind control power of the kamaitachi achieving mastery over it. Well, this is going to be fun to play with. <b>You now have the ability to control winds as the Kamaitachi do using your windy aura!</b>";
 
 				player.wings.type = Wings.WINDY_AURA;
 				if (doOutput) outputText(desc);
@@ -665,7 +665,7 @@ public class WingsTransformations extends MutationsHelper {
 				var desc: String = "";
 				if ((player.wings.type == Wings.NONE)) {
 					desc += "You keel in pain as you feel something penetrating your back. No, nothing is stabbing your back. More so, something is about to burst from within you. The trauma subsides as large bones emerge. A thin yet sturdy layer of skin covers your wings are covered as they fall into place behind you.\n\nAs you examine the fleshy appendage, you realize it's covered in bug like cells. "+
-							"It seems your wings are a mix between butterfly and dragon. The insides display several small dots and is segmented like that of a bug yet the shape is definitively draconic. Just like those of a jabberwock actualy. <b>You can now fly at great speed with your brand new jabberwocky wings!</b>";
+							"It seems your wings are a mix between butterfly and dragon. The insides display several small dots and are segmented like that of a bug, yet the shape is definitively draconic. Just like those of a jabberwock, actually. <b>You can now fly at great speed with your brand new jabberwocky wings!</b>";
 				}
 				else {
 					desc += "You ain't even noticing as something messed up happen in your wings. They shrivel and change taking on a delicate almost fairy like appearance and you flap them in awe as they not only feel strong but also agile. You now have a set of <b>jabberwocky wings.</b>";
@@ -742,6 +742,46 @@ public class WingsTransformations extends MutationsHelper {
 			}
 	);
 
+	public const WingsYggdrasilOctupleHuge: Transformation = new SimpleTransformation("Huge Octuple Yggdrasil Wings",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				TransformationUtils.applyTFIfNotPresent(transformations.WingsYggdrasilHuge, doOutput);
+
+				desc += "You hear the song of the world tree, extending your massive wings wide. Closing your [eyes], you spread your arms and wings in anticipation. To your surprise, your shoulders grow thicker, a painful nub forming under your [skin]. You kneel, as you had before, and to your surprise, another pair of vines shoot from your back. "+
+						"Years of growth seem to happen in an instant, and when your body stops shaking, a fourth pair of leafy wings have grown from you, no smaller than your first three pairs. <b>You now have four large, majestic pairs of plant-like wings!</b>";
+				player.wings.type = Wings.YGGDRASIL_HUGE_4;
+
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(WingsMem.getMemory(WingsMem.YGGDRASIL_HUGE_X8));
+			},
+			// is present
+			function (): Boolean {
+				return player.wings.type === Wings.YGGDRASIL_HUGE_4;
+			}
+	);
+
+	public const WingsYggdrasilSextupleHuge: Transformation = new SimpleTransformation("Huge Sextuple Yggdrasil Wings",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				TransformationUtils.applyTFIfNotPresent(transformations.WingsYggdrasilHuge, doOutput);
+
+				desc += "You hear the song of the world tree, extending your massive wings wide. Closing your [eyes], you spread your arms and wings in anticipation. To your surprise, your shoulders grow thicker, a painful nub forming under your [skin]. You kneel, as you had before, and to your surprise, another pair of vines shoot from your back. "+
+						"Years of growth seem to happen in an instant, and when your body stops shaking, a third pair of leafy wings have grown from you, no smaller than your first two pairs. <b>You now have three large, majestic pairs of plant-like wings!</b>";
+				player.wings.type = Wings.YGGDRASIL_HUGE_3;
+
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(WingsMem.getMemory(WingsMem.YGGDRASIL_HUGE_X6));
+			},
+			// is present
+			function (): Boolean {
+				return player.wings.type === Wings.YGGDRASIL_HUGE_3;
+			}
+	);
+
 	public const WingsYggdrasilQuadrupleHuge: Transformation = new SimpleTransformation("Huge Quadruple Yggdrasil Wings",
 			// apply effect
 			function (doOutput: Boolean): void {
@@ -750,7 +790,7 @@ public class WingsTransformations extends MutationsHelper {
 				TransformationUtils.applyTFIfNotPresent(transformations.WingsYggdrasilHuge, doOutput);
 
 				desc += "You hear the song of the world tree, extending your massive wings wide. Closing your [eyes], you spread your arms and wings in anticipation. To your surprise, your shoulders grow thicker, a painful nub forming under your [skin]. You kneel, as you had before, and to your surprise, a second pair of vines shoot from your back. "+
-						"Years of growth seem to happen in an instant, and when your body stops shaking, a second pair of leafy wings have grown from you, only slightly smaller than your first pair. <b>You now have two large, majestic pairs of plant-like wings!</b>";
+						"Years of growth seem to happen in an instant, and when your body stops shaking, a second pair of leafy wings have grown from you, no smaller than your first pair. <b>You now have two large, majestic pairs of plant-like wings!</b>";
 				player.wings.type = Wings.YGGDRASIL_HUGE_2;
 
 				if (doOutput) outputText(desc);
@@ -812,10 +852,10 @@ public class WingsTransformations extends MutationsHelper {
 				if ((player.wings.type != Wings.NONE)) {
 					desc += "Your wings feel…warm, lethargic, almost. They begin to sag, ignoring your commands. They wither, turning to a dark, putrid brown before falling off your body. ";
 				}
-				desc += "your back hurts as you suddenly feel something burst out your shoulder blades, reaching back you feel 2 small silky things like wings.\n\n <b>You now have small Moth Wings.</b>";
+				desc += "your back hurts as you suddenly feel something burst out your shoulder blades, reaching back you feel 2 small silky things like wings. <b>You now have small Moth Wings.</b>";
 
 				player.wings.type = Wings.MOTH_SMALL;
-				//Metamorph.unlockMetamorph(WingsMem.getMemory(WingsMem.YGGDRASIL_LARGE));
+				Metamorph.unlockMetamorph(WingsMem.getMemory(WingsMem.MOTH_SMALL));
 				if (doOutput) outputText(desc);
 			},
 			// is present
@@ -836,12 +876,28 @@ public class WingsTransformations extends MutationsHelper {
 				desc += " you suddenly feel a burst of pain in your back before the pain goes away, looking over you see the large white moth wings sticking out your back, with a flex of your muscles you find out that you can flap them. <b>You now have Large Moth Wings.</b>";
 
 				player.wings.type = Wings.MOTH_LARGE;
-				//Metamorph.unlockMetamorph(WingsMem.getMemory(WingsMem.YGGDRASIL_LARGE));
+				Metamorph.unlockMetamorph(WingsMem.getMemory(WingsMem.MOTH_LARGE));
 				if (doOutput) outputText(desc);
 			},
 			// is present
 			function (): Boolean {
 				return player.wings.type === Wings.MOTH_LARGE;
+			}
+	);
+
+	public const WingsJetThrusters: Transformation = new SimpleTransformation("Jet Thrusters Wings",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "";
+
+				player.wings.type = Wings.JET_THRUSTERS;
+				if (doOutput) outputText(desc);
+			},
+			// is present
+			function (): Boolean {
+				return player.wings.type === Wings.JET_THRUSTERS;
 			}
 	);
 

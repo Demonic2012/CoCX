@@ -18,7 +18,7 @@ public class Tail extends SaveableBodyPart {
 	 * Entry properties:
 	 * - value: numerical id (0, 1)
 	 * - id: name of the constant ("NONE", "HORSE")
-	 * - name: human-readable default name, ("non-existant", "horse")
+	 * - name: human-readable default name, ("non-existent", "horse")
 	 *
 	 * - hairy: has hair material
 	 * - fur: has fur material
@@ -33,13 +33,14 @@ public class Tail extends SaveableBodyPart {
 	 *
 	 * - stinger: whether part has a stringer
 	 * - tailSlam: whether part enables tail slam
-	 * - isLong: Wwhether the tail is long
+	 * - isLong: Whether the tail is long
+	 * - bite: whether the part allows attacking with teeth
 	 */
 	public static var Types:/*EnumValue*/Array = [];
 
 	public static const NONE: int = 0;
 	EnumValue.add(Types, NONE, "NONE", {
-		name:"non-existant",
+		name:"non-existent",
 		appearanceDesc: ""
 	});
 	public static const HORSE: int = 1;
@@ -365,7 +366,7 @@ public class Tail extends SaveableBodyPart {
 	public static const BURNING: int = 39;
 	EnumValue.add(Types, BURNING, "BURNING", {
 		name:"burning",
-		appearanceDesc: "A blazing cat tail pokes out from your [butt]. It has a tendency to light things on fire if you are not careful, but at least it assists with your balance.",
+		appearanceDesc: "A blazing cat tail pokes out from above your [butt]. It has a tendency to light things on fire if you are not careful but at least It assists with your balance.",
 		isLong: true,
 		feline: true,
 		fur: true
@@ -420,7 +421,6 @@ public class Tail extends SaveableBodyPart {
 		name:"ushi-oni",
 		appearanceDescFunc: function(player: *): String {
 			var desc: String = "You have an ushi-oni tail whose furred member is " + (player.tallness > 72 ? "five" : "four") + " feet long and prehensile. Its tip can shoot very thick and strong web strings which double as an aphrodisiac when in contact with the victim.";
-
 			return desc;
 		}
 	});
@@ -485,34 +485,75 @@ public class Tail extends SaveableBodyPart {
 	EnumValue.add(Types, ARIGEAN_GREEN, "ARIGEAN_GREEN", {
 		name:"arigean (G)",
 		appearanceDesc: "A duo of black, parasitic-like organisms seem to sprout from the end of your tailbone with an additional skeletal tail sporting green highlights, each seems to sport a large set of teeth, and are covered in black armor-like skin with glowing green markings. You seem to feel everything they feel.",
-		//tailSlam: true,
+		tailSlam: true,
+		bite: true,
 		isLong: true
 	});
 	public static const ARIGEAN_RED: int = 58;
 	EnumValue.add(Types, ARIGEAN_RED, "ARIGEAN_RED", {
 		name:"arigean (R)",
 		appearanceDesc: "Your duo of slack Symbiotes sprout from the end of your tailbone with an additional skeletal tail bearing red highlights, each seems to sport a large set of teeth, and are covered in black armor-like skin with glowing red markings. You feel everything they feel and are able to communicate with ease.",
-		//tailSlam: true,
+		tailSlam: true,
+		bite: true,
 		isLong: true
 	});
 	public static const ARIGEAN_YELLOW: int = 59;
 	EnumValue.add(Types, ARIGEAN_YELLOW, "ARIGEAN_YELLOW", {
 		name:"arigean (Y)",
 		appearanceDesc: "Your duo of black, Beautiful Symbiotes sprout from the end of your tailbone with an additional skeletal bearing yellow highlights, each sports a lovely, large set of lethal teeth to bite through foes, and are covered in reliable black armor-like skin with glowing yellow markings. You're able to coordinate with them as if they were just extra limbs.",
-		//tailSlam: true,
+		tailSlam: true,
+		bite: true,
 		isLong: true
 	});
 	public static const ARIGEAN_PRINCESS: int = 60;
 	EnumValue.add(Types, ARIGEAN_PRINCESS, "ARIGEAN_PRINCESS", {
 		name:"a. princess",
 		appearanceDesc: "Your large, glorious tail-like mouth is attached to you at the end of your tailbone, you can’t help but giggle at the thought of a foe being crushed by the large teeth found in your lipless extra mouth, your able to easily and comfortably rest upon its strong natural armor-like hide. You silently exhale a blue haze through its teeth every few seconds.",
-		//tailSlam: true,
+		tailSlam: true,
+		bite: true,
 		isLong: true
 	});
 	public static const MOTH_ABDOMEN: int = 61;
 	EnumValue.add(Types, MOTH_ABDOMEN, "MOTH_ABDOMEN", {
 		name:"moth abdomen",
-		appearanceDesc: "You have a moth abdomen"
+		appearanceDesc: "A small, spherical moth abdomen has grown out from your backside, covered in shiny [fur color] fur."
+	});
+	public static const TROLL: int = 62;
+	EnumValue.add(Types, TROLL, "TROLL", {
+		name:"troll",
+		appearanceDesc: "Your long, green silky troll tail extends out from just above your [butt]. The fur is luxurious, especially in the tuft of hair at the tip of your tail.",
+		isLong: true
+	});
+	public static const GLACIAL_TROLL: int = 63;
+	EnumValue.add(Types, GLACIAL_TROLL, "GLACIAL_TROLL", {
+		name:"glacial troll",
+		appearanceDesc: "Your long, white silky troll tail extends out from just above your [butt]. The fur is luxurious, especially in the tuft of hair at the tip of your tail.",
+		isLong: true
+	});
+	public static const DEMONICCHAINED: int = 64;
+	EnumValue.add(Types, DEMONICCHAINED, "DEMONICCHAINED", {
+		name:"demonic chained",
+		appearanceDesc: "A narrow tail ending in a spaded tip curls down from your [butt], wrapping around your [leg] sensually at every opportunity. Thick magical silver chains coils around your tail, the proof of your absolute devotion to your dark goddess.",
+		isLong: true
+	});
+	public static const AUTOMATA_TAIL_CABLE: int = 65;
+	EnumValue.add(Types, AUTOMATA_TAIL_CABLE, "AUTOMATA_TAIL_CABLE", {
+		name:"automata tail cable",
+		appearanceDesc: "A long flexible cable with a shiny tip at the end extends from your butt like a tail. It can be used to deliver electric discharges in order to neutralize and pacify a target.",
+		isLong: true
+	});
+	public static const BAROMETZ: int = 66;
+	EnumValue.add(Types, BAROMETZ, "BAROMETZ", {
+		name:"barometz",
+		appearanceDesc: "The long trail of vine and leafs that compose your verdant tail hangs from your [butt].",
+		isLong: true
+	});
+	public static const HOLLOW: int = 67;
+	EnumValue.add(Types, HOLLOW, "HOLLOW", {
+		name:"hollow",
+		appearanceDesc: "A long prehensile muscular tail swings behind your [ass]. It's covered in smooth bone-white plating with a bladed tip on its end.",
+		tailSlam: true,
+		isLong: true
 	});
 
 	override public function set type(value:int):void {

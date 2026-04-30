@@ -33,8 +33,16 @@ use namespace CoC;
 		
 		public function onisunetwinsoulskillMod():Number {
 			var kmodss:Number = 1;
-			if (hasPerk(PerkLib.DaoistApprenticeStage)) kmodss += .3;
-			if (hasPerk(PerkLib.DaoistWarriorStage)) kmodss += .6;
+			if (hasPerk(PerkLib.DaoistMDHiFApprenticeStage)) {
+				if (hasPerk(PerkLib.SoulApprentice)) kmodss += 1.25;
+				if (hasPerk(PerkLib.SoulPersonage)) kmodss += 1.25;
+				if (hasPerk(PerkLib.SoulWarrior)) kmodss += 1.25;
+			}
+			if (hasPerk(PerkLib.DaoistMDHiFWarriorStage)) {
+				if (hasPerk(PerkLib.SoulSprite)) kmodss += 2.5;
+				if (hasPerk(PerkLib.SoulScholar)) kmodss += 2.5;
+				if (hasPerk(PerkLib.SoulGrandmaster)) kmodss += 2.5;
+			}
 			return kmodss;
 		}
 		
@@ -58,12 +66,12 @@ use namespace CoC;
 		public function onisunetwinCastsComet():void {
 			soulforce -= 162;
 			outputText("He raises a hand, focusing with intensity.  From above comes a crystalline meteor, which you barely manage to dodge.  The crystal shatters upon contact with the ground, sending a shower of splinters that you cannot avoid. ");
-			if (player.armorName == "Drider-weave Armor" || player.armorPerk == "Heavy" || player.armorPerk == "Light Ayo" || player.armorPerk == "Heavy Ayo" || player.armorPerk == "Ultra Heavy Ayo") outputText("Thankfully, your armor manages to absorb most of the impact. ");
+			if (player.isInHeavyArmor() || player.isInAyoArmor()) outputText("Thankfully, your armor manages to absorb most of the impact. ");
 			var damage:Number = 0;
 			damage += inteligencescalingbonus();
 			damage *= onisunetwinsoulskillMod();
 			if (player.hasPerk(PerkLib.FromTheFrozenWaste) || player.hasPerk(PerkLib.ColdAffinity)) damage *= 3;
-			if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) damage *= 0.3;
+			if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.FireShadowAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) damage *= 0.3;
 			if (player.armorPerk != "Heavy" && player.armorPerk != "Light Ayo" && player.armorPerk != "Heavy Ayo" && player.armorPerk != "Ultra Heavy Ayo") damage *= 2;
 			damage = Math.round(damage);
 			player.takeMagicDamage(damage, true);
@@ -72,7 +80,7 @@ use namespace CoC;
 		private function onisunetwinSealAttack():void
 		{
 			var resist:int = 0;
-			if (player.inte < 30) resist = Math.round(player.inte);
+			if (player.intStat.core.value < 30) resist = Math.round(player.intStat.core.value);
 			else resist = 30;
 			if (player.hasPerk(PerkLib.Whispered)) resist += 20;
 			if ((player.hasPerk(PerkLib.HistoryReligious) || player.hasPerk(PerkLib.PastLifeReligious)) && player.cor < 20) resist += 20 - player.cor;
@@ -236,16 +244,16 @@ use namespace CoC;
 			this.hairLength = 10;
 			this.horns.type = Horns.ONI_X2;
 			this.horns.count = 2;
-			initStrTouSpeInte(190, 225, 280, 210);
-			initWisLibSensCor(290, 280, 190, 80);
-			this.weaponAttack = 54;
+			initStrTouSpeInte(380, 450, 560, 420);
+			initWisLibSensCor(580, 560, 380, 60);
+			this.weaponAttack = 108;
 			this.weaponName = "Oni Tetsubo";
 			this.weaponVerb="smash";
 			this.armorName = "kimono";
-			this.armorDef = 50;
-			this.armorMDef = 100;
-			this.bonusHP = 1000;
-			this.bonusLust = 525;
+			this.armorDef = 150;
+			this.armorMDef = 300;
+			this.bonusHP = 2000;
+			this.bonusLust = 995;
 			this.lust = 30;
 			this.lustVuln = .8;
 			this.level = 55;
@@ -253,7 +261,7 @@ use namespace CoC;
 			this.drop = new WeightedDrop().
 					add(consumables.FOXJEWL,3).
 					add(consumables.ONISAKE,2).
-					add(useables.EL_CORE,1);
+					add(useables.LELCRYST,1);
 			this.arms.type = Arms.ONI;
 			this.lowerBody = LowerBody.ONI;
 			this.tailType = Tail.FOX;
@@ -269,8 +277,8 @@ use namespace CoC;
 			this.createPerk(PerkLib.SoulSprite, 0, 0, 0, 0);
 			this.createPerk(PerkLib.SoulScholar, 0, 0, 0, 0);
 			this.createPerk(PerkLib.SoulGrandmaster, 0, 0, 0, 0);
-			this.createPerk(PerkLib.DaoistApprenticeStage, 0, 0, 0, 0);
-			this.createPerk(PerkLib.DaoistWarriorStage, 0, 0, 0, 0);
+			this.createPerk(PerkLib.DaoistMDHiFApprenticeStage, 0, 0, 0, 0);
+			this.createPerk(PerkLib.DaoistMDHiFWarriorStage, 0, 0, 0, 0);
 			this.createPerk(PerkLib.JobSorcerer, 0, 0, 0, 0);
 			this.createPerk(PerkLib.Spellpower, 0, 0, 0, 0);
 			this.createPerk(PerkLib.Mage, 0, 0, 0, 0);

@@ -29,8 +29,8 @@ public class IceRainSpell extends AbstractBlackSpell {
 	}
 	
 	public function calcDamage(monster:Monster, randomize:Boolean = true, casting:Boolean = true):Number { //casting - Increase Elemental Counter while casting (like Raging Inferno)
-		var baseDamage:Number = 6 * scalingBonusIntelligence(randomize);
-		if (player.weaponRangeName == "Artemis") baseDamage *= 1.5;
+		var baseDamage:Number = damageCalculationTier2Spells(randomize);
+		daaamageaddons(baseDamage);
 		return adjustSpellDamage(baseDamage, DamageType.ICE, CAT_SPELL_BLACK, monster, true, casting);
 	}
 	

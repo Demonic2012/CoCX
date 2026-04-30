@@ -12,7 +12,6 @@ import classes.Transformations.TransformationGroupAny;
  */
 public class GoblinRace extends Race {
 	public static const GoblinSkinColors:/*String*/Array = ["pale yellow", "grayish-blue", "green", "dark green", "emerald"];
-	public static const GoblinRareSkinColors:/*String*/Array = ["red", "orange","pale purple", "royal purple", "light purple"];
 	public static const GoblinEyeColors:/*String*/Array = ["red", "yellow", "purple"];
 	public static const GoblinHairColors:/*String*/Array = ["red", "purple", "green", "blue", "pink", "orange"];
     public static const RaceBody:/*String*/Array = [
@@ -75,7 +74,7 @@ public class GoblinRace extends Race {
 				.hasPerk(PerkLib.GoblinoidBlood, +1)
 				.hasPerk(PerkLib.BouncyBody, +1)
 				.skinPlainOnly(+1)
-				.skinColor1(ANY(GoblinSkinColors, GoblinRareSkinColors), +1, -1000)
+				.skinColor1(ANY(GoblinSkinColors), +1, -1000)
 				.hasVagina(+1);
 		addConditionedScores(
 				function (body:BodyData):Boolean {
@@ -91,13 +90,45 @@ public class GoblinRace extends Race {
 		
 		addBloodline(PerkLib.GoblinsDescendant, PerkLib.BloodlineGoblin);
 		addMutation(IMutationsLib.NaturalPunchingBagIM);
+		addMutation(IMutationsLib.GoblinOvariesIM);
 		
 		buildTier(10, "goblin")
 				.buffs({
 					"str.mult": -0.50,
-					"spe.mult": +0.75,
+					"spe.mult": +0.60,
 					"int.mult": +1.00,
-					"lib.mult": +0.25
+					"lib.mult": +0.40
+				})
+				.end();
+		
+		buildTier(10, "goblin")
+				.requirePerk(PerkLib.GOBXChemical)
+				.buffs({
+					"str.mult": -1.50,
+					"spe.mult": +1.80,
+					"int.mult": +3.00,
+					"lib.mult": +1.20
+				})
+				.end();
+		
+		buildTier(20, "broodmother goblin")
+				.buffs({
+					"str.mult": -0.60,
+					"spe.mult": +1.20,
+					"int.mult": +2.00,
+					"lib.mult": +0.80,
+					"sens": +40
+				})
+				.end();
+		
+		buildTier(20, "broodmother goblin")
+				.requirePerk(PerkLib.GOBXChemical)
+				.buffs({
+					"str.mult": -1.80,
+					"spe.mult": +3.60,
+					"int.mult": +6.00,
+					"lib.mult": +2.40,
+					"sens": +120
 				})
 				.end();
 	}

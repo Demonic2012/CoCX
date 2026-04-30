@@ -20,7 +20,7 @@ public class Hel extends Monster
 			}
 			else
 			{
-				damage = int((str + weaponAttack) - rand(player.tou/2) - player.armorDef/2);
+				damage = int(((str + weaponAttack)*3) - rand(player.tou/2) - player.armorDef/2);
 				//No damage
 				if(damage <= 0) {
 					damage = 0;
@@ -55,7 +55,7 @@ public class Hel extends Monster
 				return;
 			}
 			//Determine damage - str modified by enemy toughness!
-			damage = int((str) - rand(player.tou) - player.armorDef);
+			damage = int((str*3) - rand(player.tou) - player.armorDef);
 			damage = Math.round(damage);
 			//No damage
 			if(damage <= 0) {
@@ -85,7 +85,7 @@ public class Hel extends Monster
 			//Attack 3 – Lust – Cleavage (Failure)
 			else {
 				outputText("To your surprise, the salamander suddenly yanks up her top, letting her hefty breasts hang free in the air; her small, bright pink nipples quickly harden from either arousal or temperature.  Before you can take your eyes off her impressive rack, she jumps at you.  One of her scaled arms encircles your waist, and the other forcefully shoves your face into her cleavage.  She jiggles her tits around your face for a moment before you're able to break free, though you can feel a distinct heat rising in your loins.  As quickly as they were revealed, the breasts are concealed again and your opponent is ready for more combat!");
-				var lust:Number = 20 + rand(10) + player.effectiveSensitivity()/10 + rand(player.lib/20);
+				var lust:Number = 200 + rand(20) + player.effectiveSensitivity()/5 + rand(player.lib/10);
 				player.takeLustDamage(lust, true);
 			}
 		}
@@ -120,15 +120,16 @@ public class Hel extends Monster
 				this.short = "mist salamander";
 				this.long = "You are fighting a (literally) smoking hot mist salamander – a seven foot tall woman with crimson scales covering her legs, back, and forearms, purple veins covering all unprotected by scales parts fo the body, with a tail swishing menacingly behind her, ablaze with a red-hot fire.  Her violet hair whips wildly around her slender shoulders, occasionally flitting over her hefty E-cup breasts, only just concealed within a scale-covered bikini top.  Bright purple eyes focus on you from an almost-human face as she circles you, ready to close in for the kill.  Her brutal, curved sword is raised to her side, feinting at you between genuine attacks.";
 				this.hairColor = "violet";
-				initStrTouSpeInte(240, 220, 205, 120);
-				initWisLibSensCor(120, 140, 75, 30);
-				this.weaponAttack = 26;
-				this.armorDef = 88;
-				this.armorMDef = 12;
-				this.bonusHP = 1200;
-				this.bonusLust = 274;
+				initStrTouSpeInte(480, 440, 410, 240);
+				initWisLibSensCor(240, 280, 150, -60);
+				this.weaponAttack = 52;
+				this.armorDef = 176;
+				this.armorMDef = 24;
+				this.bonusHP = 2400;
+				this.bonusLust = 489;
 				this.level = 54;
 				this.gems = 75 + rand(12);
+				this.createPerk(PerkLib.EnemyEliteType, 0, 0, 0, 0);
 				this.drop = new ChainedDrop().
 						add(weapons.SCIMITR, 0.3).
 						add(consumables.SALAMFW, 0.7).
@@ -144,14 +145,14 @@ public class Hel extends Monster
 				}
 				this.long = "You are fighting a (literally) smoking hot salamander – a seven foot tall woman with crimson scales covering her legs, back, and forearms, with a tail swishing menacingly behind her, ablaze with a red-hot fire.  Her red hair whips wildly around her slender shoulders, occasionally flitting over her hefty E-cup breasts, only just concealed within a scale-covered bikini top.  Bright red eyes focus on you from an almost-human face as she circles you, ready to close in for the kill.  Her brutal, curved sword is raised to her side, feinting at you between genuine attacks.";
 				this.hairColor = "red";
-				initStrTouSpeInte(90, 80, 75, 60);
-				initWisLibSensCor(60, 70, 25, 30);
-				this.weaponAttack = 26;
-				this.armorDef = 22;
-				this.armorMDef = 3;
-				this.bonusHP = 300;
-				this.bonusLust = 116;
-				this.level = 21;
+				initStrTouSpeInte(180, 160, 150, 120);
+				initWisLibSensCor(120, 140, 50, -60);
+				this.weaponAttack = 52;
+				this.armorDef = 220;
+				this.armorMDef = 30;
+				this.bonusHP = 500;
+				this.bonusLust = 226;
+				this.level = 36;
 				this.gems = 15 + rand(8);
 				this.drop = new ChainedDrop().
 						add(armors.CHBIKNI,1/20).

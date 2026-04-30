@@ -1,6 +1,7 @@
 package classes.Races {
 import classes.BodyData;
 import classes.BodyParts.*;
+import classes.PerkLib;
 import classes.Race;
 import classes.StatusEffects;
 import classes.internals.race.RaceUtils;
@@ -47,7 +48,8 @@ public class CyclopRace extends Race {
 				.customRequirement("","not a gazer",
 						function(body:BodyData):Boolean {
 							return !(body.rearType == RearBody.TENTACLE_EYESTALKS && body.player.statusEffectv1(StatusEffects.GazerEyeStalksPlayer) >= 2);
-						}, 0, -10);
+						}, 0, -10)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addConditionedScores(
 				RaceUtils.checkSlotFn(BodyData.SLOT_EYE_TYPE, Eyes.MONOEYE),
 				"monoeye;")
@@ -60,6 +62,8 @@ public class CyclopRace extends Race {
 				.height(GREATER_THAN(96), +1);
 		addScoresAfter(8)
 				.height(GREATER_THAN(120), +1);
+		
+		addBloodline(PerkLib.CyclopsDescendant, PerkLib.BloodlineCyclop);
 		
 		buildTier(12, "cyclop")
 				.buffs({

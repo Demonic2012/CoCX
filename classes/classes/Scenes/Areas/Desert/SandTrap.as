@@ -56,7 +56,7 @@ public class SandTrap extends Monster
 				outputText("  Moving artfully with the flow rather than against it, you are able to avoid the trap's fluids, which splash harmlessly into the dune.");
 			}
 			else {
-				var damage:Number = (10 + player.lib/10);
+				var damage:Number = (20 + player.lib/5);
 				outputText("  Despite ducking away from the jet of fluid as best you can, you cannot avoid some of the stuff splashing upon your arms and face.  The substance feels oddly warm and oily, and though you quickly try to wipe it off it sticks resolutely to your skin and the smell hits your nose.  Your heart begins to beat faster as warmth radiates out from it; you feel languid, light-headed and sensual, eager to be touched and led by the hand to a sandy bed...  Shaking your head, you try to stifle what the foreign pheromones are making you feel.");
 				player.takeLustDamage(damage, true);
 			}
@@ -130,7 +130,7 @@ public class SandTrap extends Monster
 			else
 				this.short = "sandtrap";
 			this.imageName = "sandtrap";
-			this.long = "You are fighting the sandtrap.  It sits half buried at the bottom of its huge conical pit, only its lean human anatomy on show, leering at you from beneath its shoulder length black hair with its six equally sable eyes.  You cannot say whether its long, soft face with its pointed chin is very pretty or very handsome - every time the creature's face moves, its gender seems to shift.  Its lithe, brown flat-chested body supports four arms, long fingers playing with the rivulets of powder sand surrounding it.  Beneath its belly you occasionally catch glimpses of its insect half: a massive sand-coloured abdomen which anchors it to the desert, with who knows what kind of anatomy.";
+			this.long = "You are fighting the sandtrap.  It sits half buried at the bottom of its huge conical pit, only its lean human anatomy on show, leering at you from beneath its shoulder length black hair with its six equally sable eyes.  You cannot say whether its long, soft face with its pointed chin is very pretty or very handsome - every time the creature's face moves, its gender seems to shift.  Its lithe, brown flat-chested body supports four arms, long fingers playing with the rivulets of powder sand surrounding it.  Beneath its belly you occasionally catch glimpses of its insect half: a massive sand-colored abdomen which anchors it to the desert, with who knows what kind of anatomy.";
 			// this.plural = false;
 			this.createCock(10,2,CockTypesEnum.HUMAN);
 			this.balls = 2;
@@ -146,24 +146,23 @@ public class SandTrap extends Monster
 			this.bodyColor = "fair";
 			this.hairColor = "black";
 			this.hairLength = 15;
-			initStrTouSpeInte(55, 15, 45, 55);
-			initWisLibSensCor(50, 60, 45, 50);
+			initStrTouSpeInte(110, 30, 90, 55);
+			initWisLibSensCor(50, 83, 61, 0);
 			this.weaponName = "claws";
 			this.weaponVerb="claw";
-			this.weaponAttack = 10;
+			this.weaponAttack = 20;
 			this.armorName = "chitin";
-			this.armorDef = 20;
-			this.armorMDef = 2;
-			this.bonusHP = 100;
-			this.bonusLust = 110;
+			this.armorDef = 100;
+			this.armorMDef = 10;
+			this.bonusHP = 300;
+			this.bonusLust = 157;
 			this.lust = 20;
 			this.lustVuln = .55;
-			this.level = 5;
+			this.level = 13;
 			this.gems = 5 + rand(5);
 			this.drop = new ChainedDrop(consumables.TRAPOIL).add(consumables.OVIELIX,1/3);
 			this.tailType = Tail.DEMONIC;
 			createStatusEffect(StatusEffects.Level, 4, 0, 0, 0);
-			this.createPerk(PerkLib.EnemyForBeginnersType, 0, 0, 0, 0);
 			checkMonster();
 		}
 		

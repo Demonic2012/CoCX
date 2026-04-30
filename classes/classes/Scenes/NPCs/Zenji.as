@@ -29,6 +29,10 @@ use namespace CoC;
 				if (this.level > 99) boost += 1;
 				if (this.level > 124) boost += 1;
 				if (this.level > 149) boost += 1;
+				if (this.level > 174) boost += 1;
+				if (this.level > 199) boost += 1;
+				if (this.level > 224) boost += 1;
+				boost *= 2;
 				damage = int(((str + 60 + weaponAttack) * boost) - Math.random()*(player.tou) - player.armorDef);
 				outputText("he strikes you directly before you have a chance to avoid the oncoming attack for ");
 				if (damage > 0) player.takePhysDamage(damage, true);
@@ -50,6 +54,10 @@ use namespace CoC;
 				if (this.level > 99) boost += 0.4;
 				if (this.level > 124) boost += 0.4;
 				if (this.level > 149) boost += 0.4;
+				if (this.level > 174) boost += 0.4;
+				if (this.level > 199) boost += 0.4;
+				if (this.level > 224) boost += 0.4;
+				boost *= 2;
 				damage = int(((str + 50 + weaponAttack) * boost) - Math.random() * (player.tou) - player.armorDef);
 				if (flags[kFLAGS.ZENJI_PROGRESS] == -1) outputText(", he strikes you for ");
 				else outputText(". He strikes you for ");
@@ -67,6 +75,10 @@ use namespace CoC;
 			if (this.level > 99) boost += 2.5;
 			if (this.level > 124) boost += 2.5;
 			if (this.level > 149) boost += 2.5;
+			if (this.level > 174) boost += 2.5;
+			if (this.level > 199) boost += 2.5;
+			if (this.level > 224) boost += 2.5;
+			boost *= 2;
 			damage = int(((str + 100 + weaponAttack) * boost) - Math.random() * (player.tou / 2) - player.armorDef);
 			if (this.short == "Zenji") outputText("Zenji yells with primal wrath, he's fully intent on decimating");
 			else if (flags[kFLAGS.ZENJI_PROGRESS] == -1) outputText("The troll yells with primal wrath, he's fully intent on killing");
@@ -99,13 +111,17 @@ use namespace CoC;
 				if (this.level > 99) boost += 0.4;
 				if (this.level > 124) boost += 0.4;
 				if (this.level > 149) boost += 0.4;
+				if (this.level > 174) boost += 0.4;
+				if (this.level > 199) boost += 0.4;
+				if (this.level > 224) boost += 0.4;
+				boost *= 2;
 				damage = int(((str + 50 + weaponAttack) * boost) - Math.random() * (player.tou) - player.armorDef);
 				outputText(", you do your best to dodge, but the spear is moving too fast for you to move out of the way in time, it punctures you for ");
 				if (this.short == "Zenji") {
 					if (damage < player.maxHP() * 0.35) {
 						damage = player.maxHP() * 0.35;
 						player.HP -= damage;
-						outputText("<b>(<font color=\"#800000\">" + damage + "</font>)</b>");
+						outputText("<b>([font-damage]" + damage + "[/font])</b>");
 					}
 					else damage = player.takePhysDamage(damage, true);
 				}
@@ -175,11 +191,11 @@ use namespace CoC;
 		
 		override public function defeated(hpVictory:Boolean):void
 		{
-			if (flags[kFLAGS.ZENJI_PROGRESS] == 8) SceneLib.zenjiScene.followerZenjiSparZenjiDefeated();
-			else if (flags[kFLAGS.ZENJI_PROGRESS] > 5) SceneLib.zenjiScene.part2TrollEncounterRepeatFightZenjiDefeated();
-			else if (flags[kFLAGS.ZENJI_PROGRESS] == 5) SceneLib.zenjiScene.part2TrollEncounterFirstFightZenjiDefeated();
-			else if (flags[kFLAGS.ZENJI_PROGRESS] == -1) SceneLib.zenjiScene.part1TrollEncounterFightTOTHEDEATHZenjiDefeated();
-			else SceneLib.zenjiScene.part1TrollEncounterFightZenjiDefeated();
+			if (flags[kFLAGS.ZENJI_PROGRESS] == 8) SceneLib.zenjiScene.followerZenjiSparZenjiDefeated(hpVictory);
+			else if (flags[kFLAGS.ZENJI_PROGRESS] > 5) SceneLib.zenjiScene.part2TrollEncounterRepeatFightZenjiDefeated(hpVictory);
+			else if (flags[kFLAGS.ZENJI_PROGRESS] == 5) SceneLib.zenjiScene.part2TrollEncounterFirstFightZenjiDefeated(hpVictory);
+			else if (flags[kFLAGS.ZENJI_PROGRESS] == -1) SceneLib.zenjiScene.part1TrollEncounterFightTOTHEDEATHZenjiDefeated(hpVictory);
+			else SceneLib.zenjiScene.part1TrollEncounterFightZenjiDefeated(hpVictory);
 		}
 		
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
@@ -194,52 +210,57 @@ use namespace CoC;
 		public function Zenji() 
 		{
 			if (flags[kFLAGS.ZENJI_PROGRESS] >= 1 && (flags[kFLAGS.ZENJI_PROGRESS] < 8 || flags[kFLAGS.ZENJI_PROGRESS] == 10)) {
-				initStrTouSpeInte(145, 140, 135, 125);
-				initWisLibSensCor(135, 20, 40, 0);
+				initStrTouSpeInte(290, 280, 270, 250);
+				initWisLibSensCor(270, 40, 80, -100);
 				this.weaponAttack = 50;
 				this.armorDef = 50;
 				this.armorMDef = 200;
+				this.bonusLust = 145;
 				this.level = 25;
 			}
 			if (flags[kFLAGS.ZENJI_PROGRESS] == -1 || flags[kFLAGS.ZENJI_PROGRESS] == 8 || flags[kFLAGS.ZENJI_PROGRESS] == 9) {
-				initStrTouSpeInte(145, 140, 135, 125);
-				initWisLibSensCor(135, 20, 40, 0);
+				initStrTouSpeInte(290, 280, 270, 250);
+				initWisLibSensCor(270, 40, 80, -100);
 				this.weaponAttack = 50;
 				this.armorDef = 50;
 				this.armorMDef = 200;
+				this.bonusLust = 145;
 				this.additionalXP = 125;
-				if (player.level > 25 && player.level < 185) {
+				if (player.level > 25 && player.level < 230) {
 					this.level = player.level;
-					this.strStat.core.value += 29 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.touStat.core.value += 28 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.speStat.core.value += 27 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.intStat.core.value += 25 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.wisStat.core.value += 27 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.weaponAttack += 5 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.armorDef += 5 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.armorMDef += 20 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.bonusLust += this.level * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.strStat.core.value += 44 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.touStat.core.value += 42 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.speStat.core.value += 41 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.intStat.core.value += 39 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.wisStat.core.value += 41 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.weaponAttack += 15 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.armorDef += 15 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.armorMDef += 60 * Math.round((player.level - 20) / 5) * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
 					this.additionalXP += 25 * Math.round((player.level - 20) / 5);
 				}
-				else if (player.level >= 185) {
-					this.level = 185;
-					this.strStat.core.value += 957 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.touStat.core.value += 924 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.speStat.core.value += 891 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.intStat.core.value += 825 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.wisStat.core.value += 891 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.weaponAttack += 165 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.armorDef += 165 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.armorMDef += 660 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
-					this.additionalXP += 825;
+				else if (player.level >= 233) {
+					this.level = 233;
+					this.bonusLust += 233 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.strStat.core.value += 1874.4 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.touStat.core.value += 1789.2 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.speStat.core.value += 1746.6 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.intStat.core.value += 1661.4 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.wisStat.core.value += 1746.6 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.weaponAttack += 639 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.armorDef += 639 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.armorMDef += 2556 * flags[kFLAGS.NEW_GAME_PLUS_LEVEL];
+					this.additionalXP += 1065;
 				}
 				else this.level = 25;
 			}
 			if (flags[kFLAGS.ZENJI_PROGRESS] == 5) {
-				initStrTouSpeInte(145, 140, 135, 125);
-				initWisLibSensCor(135, 20, 40, 0);
+				initStrTouSpeInte(290, 280, 270, 250);
+				initWisLibSensCor(270, 40, 80, -100);
 				this.weaponAttack = 50;
 				this.armorDef = 50;
 				this.armorMDef = 200;
+				this.bonusLust = 145;
 				this.level = 25;
 			}
 			if (flags[kFLAGS.ZENJI_PROGRESS] < 5) {
@@ -279,10 +300,12 @@ use namespace CoC;
 			this.drop = NO_DROP;
 			this.createPerk(PerkLib.RefinedBodyI, 0, 0, 0, 0);
 			this.createPerk(PerkLib.TankI, 0, 0, 0, 0);
-			this.createPerk(PerkLib.HydraRegeneration, 0.5, 0, 0, 0);
+			this.createPerk(PerkLib.TrollRegeneration, 6, 0, 0, 0);
 			this.createPerk(PerkLib.JobSorcerer, 0, 0, 0, 0);
 			this.createPerk(PerkLib.UniqueNPC, 0, 0, 0, 0);
 			if ((flags[kFLAGS.ZENJI_PROGRESS] == 8 || flags[kFLAGS.ZENJI_PROGRESS] == 9) && this.level >= 40) this.createPerk(PerkLib.Resolute, 0, 0, 0, 0);
+			if (this.level >= 100 && this.level < 200) this.createPerk(PerkLib.EnemyEliteType, 0, 0, 0, 0);
+			if (this.level >= 200) this.createPerk(PerkLib.EnemyChampionType, 0, 0, 0, 0);
 			checkMonster();
 		}
 		

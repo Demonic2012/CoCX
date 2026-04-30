@@ -19,8 +19,6 @@ import classes.Items.Weapon;
 import classes.Items.WeaponRange;
 import classes.Scenes.Camp.Garden;
 import classes.Scenes.Camp.UniqueCampScenes;
-import classes.Scenes.NPCs.HolliPureScene;
-import classes.Scenes.NPCs.MagnoliaFollower;
 import classes.Scenes.Places.HeXinDao.AdventurerGuild;
 
 import coc.view.ButtonDataList;
@@ -56,10 +54,6 @@ use namespace CoC;
 		private var callNext:Function;		//These are used so that we know what has to happen once the player finishes with an item
 		private var callOnAbandon:Function;	//They simplify dealing with items that have a sub menu. Set in inventoryMenu and in takeItem
 		private var currentItemSlot:ItemSlotClass;	//The slot previously occupied by the current item - only needed for stashes and items with a sub menu.
-		private var maxSFCapacity:Number = 0;
-		public var HolliPure:HolliPureScene = new HolliPureScene();
-		public var Gardening:UniqueCampScenes = new UniqueCampScenes();
-		public var Magnolia:MagnoliaFollower = new MagnoliaFollower();
 
 		public function Inventory(saveSystem:Saves) {
 			itemStorage = [];
@@ -69,7 +63,7 @@ use namespace CoC;
 		}
 		
 		public function pearlStorageSize():int {
-			if (player.hasKeyItem("Sky Poison Pearl") < 0) return 0;
+			if (player.hasKeyItem("Sky Poison Pearl") < 0 && player.hasKeyItem("Dimensional Pocket") < 0) return 0;
 			var x:int = 14;
 			var y:Number = 0;
 			if (player.hasPerk(PerkLib.AscensionSkyPoisonPearlMasteryStageX)) y += (6 * player.perkv1(PerkLib.AscensionSkyPoisonPearlMasteryStageX));
@@ -126,26 +120,51 @@ use namespace CoC;
 			mainView.linkHandler = showItemTooltipLinkHandler;
 			EngineCore.displayHeader("Inventory");
 			outputText("<b><u>Equipment:</u></b>\n");
-			outputText("<b>Weapon (Melee):</b> "+mkLink(player.weapon.name, player.weapon.id)+" (Attack: " + player.weaponAttack + ")");
-			if (player.isGauntletWeapon()) outputText(" (Gauntlet-type weapon)");
-			if (player.isSwordTypeWeapon()) outputText(" (Sword-type weapon)");
-			if (player.isAxeTypeWeapon()) outputText(" (Axe-type weapon)");
-			if (player.isMaceHammerTypeWeapon()) outputText(" (Mace/Hammer-type weapon)");
-			if (player.isDuelingTypeWeapon()) outputText(" (Dueling Sword-type weapon)");
-			if (player.isSpearTypeWeapon()) outputText(" (Spear-type weapon)");
-			if (player.isDaggerTypeWeapon()) outputText(" (Dagger-type weapon)");
-			if (player.isWhipTypeWeapon()) outputText(" (Whip-type weapon)");
-			if (player.isRibbonTypeWeapon()) outputText(" (Ribbon-type weapon)");
-			if (player.isExoticTypeWeapon()) outputText(" (Exotic-type weapon)");
+			outputText("<b>Weapon (Melee main hand):</b> "+mkLink(player.weapon.name, player.weapon.id)+" (Attack: " + player.weaponAttack + ")");
+			if (player.isGauntletWeapon()) {
+				outputText(" (Gauntlet-type weapon)");
+				outputText("\n");
+				outputText("<b>Weapon (Melee off hand):</b> "+mkLink(player.weapon.name, player.weapon.id)+" (Attack: " + player.weaponAttack + ") (Gauntlet-type weapon)");
+			}
+			if (player.weapon.isSwordType()) outputText(" (Sword-type weapon)");
+			if (player.weapon.isAxeType()) outputText(" (Axe-type weapon)");
+			if (player.weapon.isMaceHammerType()) outputText(" (Mace/Hammer-type weapon)");
+			if (player.weapon.isDuelingType()) outputText(" (Dueling Sword-type weapon)");
+			if (player.weapon.isSpearType()) outputText(" (Spear-type weapon)");
+			if (player.weapon.isScytheType()) outputText(" (Scythe-type weapon)");
+			if (player.weapon.isDaggerType()) outputText(" (Dagger-type weapon)");
+			if (player.weapon.isStaffType()) outputText(" (Staff-type weapon)");
+			if (player.weapon.isWandType()) outputText(" (Wand-type weapon)");
+			if (player.weapon.isWhipType()) outputText(" (Whip-type weapon)");
+			if (player.weapon.isRibbonType()) outputText(" (Ribbon-type weapon)");
+			if (player.weapon.isExoticType()) outputText(" (Exotic-type weapon)");
+			if (!player.weaponOff.isNothing) {
+				outputText("\n");
+				outputText("<b>Weapon (Melee off hand):</b> "+mkLink(player.weaponOff.name, player.weaponOff.id)+" (Attack: " + player.weaponOffhandAttack + ")");
+				if (player.weaponOff.isSwordType()) outputText(" (Sword-type weapon)");
+				if (player.weaponOff.isAxeType()) outputText(" (Axe-type weapon)");
+				if (player.weaponOff.isMaceHammerType()) outputText(" (Mace/Hammer-type weapon)");
+				if (player.weaponOff.isDuelingType()) outputText(" (Dueling Sword-type weapon)");
+				if (player.weaponOff.isSpearType()) outputText(" (Spear-type weapon)");
+				if (player.weaponOff.isScytheType()) outputText(" (Scythe-type weapon)");
+				if (player.weaponOff.isDaggerType()) outputText(" (Dagger-type weapon)");
+				if (player.weaponOff.isStaffType()) outputText(" (Staff-type weapon)");
+				if (player.weaponOff.isWandType()) outputText(" (Wand-type weapon)");
+				if (player.weaponOff.isWhipType()) outputText(" (Whip-type weapon)");
+				if (player.weaponOff.isRibbonType()) outputText(" (Ribbon-type weapon)");
+				if (player.weaponOff.isExoticType()) outputText(" (Exotic-type weapon)");
+			}
+			else {
+				outputText("\n");
+				outputText("<b>Shield:</b> " + mkLink(player.shield.name, player.shield.id) + " (Block Rating: " + player.shieldBlock + ")");
+				if (player.shieldPerk == "Large") outputText(" (Large)");
+				if (player.shieldPerk == "Massive") outputText(" (Massive)");
+			}
 			outputText("\n");
 			outputText("<b>Weapon (Range):</b> " + mkLink(player.weaponRange.name, player.weaponRange.id) + " (Attack: " + player.weaponRangeAttack + ")");
 			if (player.weaponRangePerk == "Bow" || player.weaponRangePerk == "Crossbow") outputText(" (Bow/Crosbow-type weapon)");
 			if (player.weaponRangePerk == "Throwing") outputText(" (Throwing weapon-type weapon)");
 			if (player.isFirearmTypeWeapon()) outputText(" (Firearms-type weapon)");
-			outputText("\n");
-			outputText("<b>Shield:</b> " + mkLink(player.shield.name, player.shield.id) + " (Block Rating: " + player.shieldBlock + ")");
-			if (player.shieldPerk == "Large") outputText(" (Large)");
-			if (player.shieldPerk == "Massive") outputText(" (Massive)");
 			outputText("\n");
 			outputText("<b>Armour:</b> " + mkLink(player.armor.name, player.armor.id) + " (Physical / Magical Defense: " + player.armorDef + " / " + player.armorMDef + ")\n");
 			outputText("<b>Upper underwear:</b> " + mkLink(player.upperGarment.name, player.upperGarment.id) + "\n");
@@ -227,19 +246,21 @@ use namespace CoC;
 				addButton(13, "Next", inventoryMenu, page - 4);
 			}
             if (!CoC.instance.inCombat) {
-                addButton(10, "Unequip/Misc", manageEquipmentmiscitemsMenu);
+                addButton(10, "Unequip", manageEquipment);
 				if (player.hasKeyItem("Bag of Cosmos") >= 0) {
-					if (player.hasPerk(PerkLib.Soulless)) addButtonDisabled(11, "Bag of Cosmos", "Without soul nor SF you can'y open Bag of Cosmos.");
+					if (player.hasPerk(PerkLib.Soulless)) addButtonDisabled(11, "Bag of Cosmos", "Without soul nor SF you can't open Bag of Cosmos.");
 					else addButton(11, "Bag of Cosmos", BagOfCosmosMenuv2);
 				}
 				if (player.hasKeyItem("Sky Poison Pearl") >= 0) {
-					if (player.hasPerk(PerkLib.Soulless)) addButtonDisabled(12, "Sky P. Pearl", "Without soul nor SF you can't open Sky Poison Pearl.");
-					else addButton(12, "Sky P. Pearl", SkyPoisonPearlMenuv2);
+					addButton(12, "Sky P. Pearl", SkyPoisonPearlMenuv2);
+				}
+				if (player.hasKeyItem("Dimensional Pocket") >= 0) {
+					addButton(12, "Dimensional P.", DimensionalPocketMenuv2);
 				}
 			}
 			//Button for alchemical items during combat
 			if (CoC.instance.inCombat) {
-				addButton(11, "Potions", SceneLib.garden.PotionMenu).disableIf(Garden.PotionsBagSlot01Cap == 0, "You not have any potions bag.");
+				addButton(11, "Potions", SceneLib.garden.PotionMenu).disableIf(Garden.PotionsBagSlot01Cap == 0, "You not have any Potion Bag.");
 			}
             if (CoC.instance.inCombat && player.hasStatusEffect(StatusEffects.Sealed) && player.statusEffectv1(StatusEffects.Sealed) == 3) {
 				outputText("\nYou reach for your items, but you just can't get your pouches open.  <b>Your ability to use items was sealed, and now you've wasted a chance to attack!</b>\n\n");
@@ -268,148 +289,16 @@ use namespace CoC;
 			}
 		}
 
-		public function manageEquipmentmiscitemsMenu():void {
-			menu();
-			if (!inDungeon && !inRoomedDungeon && !flags[kFLAGS.IN_INGNAM]) {
-				var miscNieve:Boolean = Holidays.nieveHoliday() && flags[kFLAGS.NIEVE_STAGE] > 0 && flags[kFLAGS.NIEVE_STAGE] < 5;
-                var miscHolli:Boolean = flags[kFLAGS.FUCK_FLOWER_KILLED] == 0 && (flags[kFLAGS.FUCK_FLOWER_LEVEL] >= 1 && flags[kFLAGS.FUCK_FLOWER_LEVEL] < 4 || flags[kFLAGS.FLOWER_LEVEL] >= 1 && flags[kFLAGS.FLOWER_LEVEL] < 4);
-				if (miscNieve || miscHolli || player.hasKeyItem("Dragon Egg") >= 0 || (player.hasKeyItem("Rathazul's Purity Elixir") >= 0 && player.perkv1(PerkLib.PurityElixir) < 5)
-					|| flags[kFLAGS.ANEMONE_KID] > 0 || flags[kFLAGS.ALRAUNE_SEEDS] > 0 || (flags[kFLAGS.CHRISTMAS_TREE_LEVEL] > 0 && flags[kFLAGS.CHRISTMAS_TREE_LEVEL] < 8)) {
-					if (miscNieve) {
-						if (flags[kFLAGS.NIEVE_STAGE] == 1)
-							outputText("\nThere's some odd snow here that you could do something with...\n");
-                        else outputText("\nYou have a snow" + Holidays.nieveMF("man", "woman") + " here that seems like it could use a little something...\n");
-                    }
-					if (player.hasKeyItem("Dragon Egg") >= 0) {
-                        SceneLib.emberScene.emberCampDesc();
-						addButton(3, "Egg", SceneLib.emberScene.emberEggInteraction);
-					}
-					if (flags[kFLAGS.ANEMONE_KID] > 0) {
-						SceneLib.kidAScene.anemoneBarrelDescription();
-						if (model.time.hours >= 6) addButton(4, "Anemone", SceneLib.kidAScene.approachAnemoneBarrel);
-					}
-					if (flags[kFLAGS.ALRAUNE_SEEDS] > 0) {
-						outputText("\nYou have " + flags[kFLAGS.ALRAUNE_SEEDS] + " alraune seeds planted in your garden.");
-						if (flags[kFLAGS.ALRAUNE_GROWING] > 14) outputText(" Some have already grown to adulthood.");
-						outputText("\n");
-					}
-					if (Holidays.nieveHoliday()) {
-						if (flags[kFLAGS.NIEVE_STAGE] > 0 && flags[kFLAGS.NIEVE_STAGE] < 5) addButton(1, "Snow", SceneLib.holidays.nieveBuilding);
-						if (flags[kFLAGS.CHRISTMAS_TREE_LEVEL] == 1 && player.hasKeyItem("Mysterious Seed") >= 0) addButton(7, "Mysterious Seed", Magnolia.treeMenu);
-						if (flags[kFLAGS.CHRISTMAS_TREE_LEVEL] > 2 && flags[kFLAGS.CHRISTMAS_TREE_LEVEL] < 9) {
-							if (flags[kFLAGS.CHRISTMAS_TREE_LEVEL] == 7 && player.hasKeyItem("Decorations") >= 0) addButton(7, "Decorate Tree", Magnolia.treeMenu);
-							else addButton(7, (flags[kFLAGS.CHRISTMAS_TREE_LEVEL] >= 8 ? "Ch. Tree" : "Green Tree"), Magnolia.treeMenu);
-						}
-					}
-					if (flags[kFLAGS.FUCK_FLOWER_KILLED] == 0 && flags[kFLAGS.FUCK_FLOWER_LEVEL] >= 1 && flags[kFLAGS.FUCK_FLOWER_LEVEL] < 4) addButton(2, (flags[kFLAGS.FUCK_FLOWER_LEVEL] >= 3 ? "Tree" : "Plant"), SceneLib.holliScene.treeMenu);
-					if (flags[kFLAGS.FUCK_FLOWER_KILLED] == 0 && flags[kFLAGS.FLOWER_LEVEL] >= 1 && flags[kFLAGS.FLOWER_LEVEL] < 4) addButton(2, (flags[kFLAGS.FLOWER_LEVEL] >= 3 ? "Tree" : "Plant"), HolliPure.treeMenu);
-					if (flags[kFLAGS.ALRAUNE_SEEDS] > 0 && model.time.hours >= 6) addButton(0, "Garden", Gardening.manageyourgarden).hint("Visit your plant offspring");
-					if (player.hasKeyItem("Rathazul's Purity Elixir") >= 0 && player.perkv1(PerkLib.PurityElixir) < 5) addButton(9, "PurityElixir", PurityElixir);
-				}
-			}
-			addButton(10, "Unequip", manageEquipment);
-			if (player.isInAyoArmor()) addButton(11, "Ayo Armors", AyoArmorsMaintance);
-			else addButtonDisabled(11, "Ayo Armors", "You need to wear any type of Ayo Armor to use this option.");
-			addButton(14, "Back", inventoryMenu);
-		}
-
-		private function PurityElixir():void {
-            clearOutput();
-            if (player.getAllMinStats().cor == 0) {
-                outputText("You take out the elixir, but reconsider. ");
-                if (player.cor > 0) outputText("All of your corruption can be removed using simpler methods.");
-                else outputText("You're completely pure!");
-                outputText("\n\nYou decide to leave the elixir for worse times.");
-            }
-            else {
-                outputText("You feel something unlock within you as you drink the elixir, some of the veil of corruption being washed out of you as the liquid undo and counteract some of the vile demonic changes your body was afflicted with.");
-                outputText("\n\n<b>Minimum corruption lowered!</b>");
-                if (player.keyItemvX("Rathazul's Purity Elixir", 1) > 1) player.addKeyValue("Rathazul's Purity Elixir", 1, -1);
-                else player.removeKeyItem("Rathazul's Purity Elixir");
-                if (player.hasPerk(PerkLib.PurityElixir)) player.addPerkValue(PerkLib.PurityElixir, 1, 1);
-                else player.createPerk(PerkLib.PurityElixir, 1, 0, 0, 0);
-            }
-			doNext(inventoryMenu);
-		}
-		
-		public function AyoArmorsMaintance():void {
-			clearOutput();
-			var currentArmorSFDrainrate:Number = 0;
-			if (player.armor == armors.LAYOARM) currentArmorSFDrainrate += 60;
-			if (player.armor == armors.HAYOARM) currentArmorSFDrainrate += 120;
-			if (player.armor == armors.UHAYOARM) currentArmorSFDrainrate += 240;
-			if (player.armor == armors.HBARMOR) currentArmorSFDrainrate += 180;
-			if (player.vehicles == vehicles.HB_MECH) {
-				if (player.hasKeyItem("HB Internal Systems") >= 0) {
-					if (player.keyItemvX("HB Internal Systems", 1) == 2) currentArmorSFDrainrate += 40;
-					else currentArmorSFDrainrate += 50;
-				}
-				else currentArmorSFDrainrate += 60;
-			}
-			maxSFCapacity = 0;
-			if (player.armor == armors.LAYOARM) maxSFCapacity += 1500;
-			if (player.armor == armors.HAYOARM) maxSFCapacity += 3000;
-			if (player.armor == armors.UHAYOARM) maxSFCapacity += 6000;
-			if (player.armor == armors.HBARMOR) {
-				maxSFCapacity += 4500;
-				if (player.headJewelry == headjewelries.HBHELM) maxSFCapacity += 900;
-			}
-			if (player.upperGarment == undergarments.HBSHIRT) maxSFCapacity += 350;
-			if (player.lowerGarment == undergarments.HBSHORT) maxSFCapacity += 350;
-			if (player.vehicles == vehicles.HB_MECH) {
-				maxSFCapacity += 1000;
-				if (player.hasKeyItem("HB Internal Systems") >= 0) {
-					if (player.keyItemvX("HB Internal Systems", 1) == 2) maxSFCapacity += 5000;
-					else maxSFCapacity += 2000;
-				}
-			}
-			//if (player.vehicles == vehicles.HB_MECH) maxSFCapacity += 1000;
-			outputText("Currently used Ayo Armor name: "+player.armorName+"\n\n");
-			outputText("Currently used Ayo Armor soulforce drain rate (per hour): "+currentArmorSFDrainrate+"\n\n");
-			outputText("Soulforce reserves in armor: "+flags[kFLAGS.SOULFORCE_STORED_IN_AYO_ARMOR]+" / "+maxSFCapacity+"\n\n");
-			menu();
-			var btn:int = 0;
-			for each (var amnt:int in [50, 100, 200, 500])
-				addButton(btn++, "Charge " + amnt, AyoArmorRecharge, amnt)
-					.disableIf(player.soulforce < amnt, "Your current soulforce is too low.");
-			addButton(btn++, "Full Charge", AyoArmorRecharge, -1)
-				.disableIf(player.soulforce <= 0, "You don't have any soulforce at all!");
-			addButton(10, "Power UP", AyoArmorPowerUP).hint("Activate Ayo Armor (increases strength and speed)")
-				.disableIf(flags[kFLAGS.SOULFORCE_STORED_IN_AYO_ARMOR] == 0,
-					"You need to charge your Ayo Armor with Soulforce before using Power UP function.");
-			addButton(14, "Back", inventoryMenu);
-		}
-
-		public function AyoArmorRecharge(amnt:int):void {
-			clearOutput();
-			if (amnt < 0) amnt = player.soulforce;
-			amnt = Math.min(amnt, maxSFCapacity - flags[kFLAGS.SOULFORCE_STORED_IN_AYO_ARMOR]);
-			outputText("You focus on your spiritual power and guide it to armor energy storages recharging it for "+amnt+" soulforce.");
-			flags[kFLAGS.SOULFORCE_STORED_IN_AYO_ARMOR] += amnt;
-			EngineCore.SoulforceChange(-amnt);
-			doNext(AyoArmorsMaintance);
-		}
-
-		public function AyoArmorPowerUP():void {
-			clearOutput();
-			var oldHPratio:Number = player.hp100/100;
-			player.buff("Ayo Armor").remove();
-			outputText("You pressing button placed on side of chest part of armor, activating it. With a silent hiss armor activate making you feel faster and stronger."+(silly()?" You have come here to chew bubblegum and kick ass...and you're all out of bubblegum.":"")+"");
-			if (player.armor == armors.LAYOARM) player.buff("Ayo Armor").addStats( {"str.mult":0.10, "spe.mult":0.10} );
-			if (player.armor == armors.HAYOARM) player.buff("Ayo Armor").addStats( {"str.mult":0.20, "spe.mult":0.20} );
-			if (player.armor == armors.UHAYOARM) player.buff("Ayo Armor").addStats( {"str.mult":0.40, "spe.mult":0.30, "tou.mult":0.10} );
-			if (player.armor == armors.HBARMOR) player.buff("Ayo Armor").addStats( {"str.mult":0.18, "spe.mult":0.60} );
-			player.HP = oldHPratio*player.maxHP();
-			statScreenRefresh();
-			doNext(AyoArmorsMaintance);
-		}
-
 		public function BagOfCosmosMenuv2():void{
 			transferMenu(gearStorage, GEAR_BOC_FROM, GEAR_BOC_TO, inventoryMenu, "BagofCosmos");
 		}
 
 		public function SkyPoisonPearlMenuv2():void{
 			transferMenu(pearlStorage, 0, pearlStorageSize(), inventoryMenu, "S. P. Pearl");
+		}
+
+		public function DimensionalPocketMenuv2():void{
+			transferMenu(pearlStorage, 0, pearlStorageSize(), inventoryMenu, "DimensionalP.");
 		}
 
 		public function transferMenu(
@@ -874,8 +763,8 @@ use namespace CoC;
 				}
 			}
 			//Check for room in Guild quest bag and return the itemcount for it.
-			if (InCollection(itype, useables.GOLCORE) && nextAction != SceneLib.camp.campMake.accessMakeWinionsMainMenu) {
-				temp = (flags[kFLAGS.REUSABLE_GOLEM_CORES_BAG] < SceneLib.camp.campMake.maxReusableGolemCoresBagSize() ? flags[kFLAGS.REUSABLE_GOLEM_CORES_BAG]:-1);
+			if (InCollection(itype, useables.GOLCORE) && nextAction != SceneLib.campMakeWinions.accessMakeWinionsMainMenu) {
+				temp = (flags[kFLAGS.REUSABLE_GOLEM_CORES_BAG] < SceneLib.campMakeWinions.maxReusableGolemCoresBagSize() ? flags[kFLAGS.REUSABLE_GOLEM_CORES_BAG]:-1);
 				if (temp >= 0) {
 					flags[kFLAGS.REUSABLE_GOLEM_CORES_BAG]++;
 					outputText("You place " + itype.longName + " in your Golem Core bag, giving you "+ (temp+1) +" of them.");
@@ -1253,18 +1142,18 @@ use namespace CoC;
 			outputText("Which would you like to unequip?\n\n");
 			menu();
 			if (page == 1) {
-				addButton(0, "Weapon (M)", unequipWeapon)
+				addButton(0, "Weapon (MH)", unequipWeapon)
 						.itemHints(player.weapon)
 						.disableIf(!player.weapon.canUnequip(false))
-						.disableIf(player.weapon.isNothing || player.hasPerk(PerkLib.Rigidity), "You don't have melee weapon equipped.");
-				addButton(1, "Weapon (R)", unequipWeaponRange)
+						.disableIf(player.weapon.isNothing || player.hasPerk(PerkLib.Rigidity), "You don't have melee main hand weapon equipped.");
+				addButton(1, "Weapon (MO)", unequipWeaponOff)
+						.itemHints(player.weaponOff)
+						.disableIf(!player.weaponOff.canUnequip(false))
+						.disableIf(player.weaponOff.isNothing || player.hasPerk(PerkLib.Rigidity), "You don't have melee off hand weapon equipped.");
+				addButton(2, "Weapon (R)", unequipWeaponRange)
 						.itemHints(player.weaponRange)
 						.disableIf(!player.weaponRange.canUnequip(false))
 						.disableIf(player.weaponRange.isNothing || player.hasPerk(PerkLib.Rigidity), "You don't have range weapon equipped.");
-				addButton(2, "Shield", unequipShield)
-						.itemHints(player.shield)
-						.disableIf(!player.shield.canUnequip(false))
-						.disableIf(player.shield.isNothing || player.hasPerk(PerkLib.Rigidity), "You don't have shield equipped.");
 				addButton(3, "Flying Sword", unequipFlyingSwords)
 						.itemHints(player.weaponFlyingSwords)
 						.disableIf(!player.weaponFlyingSwords.canUnequip(false))
@@ -1275,19 +1164,23 @@ use namespace CoC;
 						.disableIf(!player.armor.canUnequip(false))
 						.disableIf(player.hasPerk(PerkLib.Rigidity), "Your body stiffness prevents you from unequipping this armor.")
 						.disableIf(player.armor.isNothing, "You don't have armor equipped.");
-				addButton(6, "Upperwear", unequipUpperwear)
+				//6? - lower body armor slot
+				addButton(6, "Shield", unequipShield)
+						.itemHints(player.shield)
+						.disableIf(!player.shield.canUnequip(false))
+						.disableIf(player.shield.isNothing || player.hasPerk(PerkLib.Rigidity), "You don't have shield equipped.");
+				addButton(10, "Upperwear", unequipUpperwear)
 						.itemHints(player.upperGarment)
 						.disableIf(!player.upperGarment.canUnequip(false))
 						.disableIf(player.upperGarment.isNothing || player.hasPerk(PerkLib.Rigidity), "You don't have upperwear equipped.");
-				addButton(7, "Lowerwear", unequipLowerwear)
+				addButton(11, "Lowerwear", unequipLowerwear)
 						.itemHints(player.lowerGarment)
 						.disableIf(!player.lowerGarment.canUnequip(false))
 						.disableIf(player.lowerGarment.isNothing || player.hasPerk(PerkLib.Rigidity), "You don't have lowerwear equipped.");
-				addButton(8, "Vehicle", unequipVehicle)
+				addButton(12, "Vehicle", unequipVehicle)
 						.itemHints(player.vehicles)
 						.disableIf(!player.vehicles.canUnequip(false))
 						.disableIf(player.vehicles == VehiclesLib.NOTHING || player.hasPerk(PerkLib.Rigidity), "You not using currently any vehicle.");
-				//10 - lower body armor slot
 				addButton(13, "-2-", manageEquipment, page + 1);
 			}
 			if (page == 2) {
@@ -1300,11 +1193,11 @@ use namespace CoC;
 						.itemHints(player.necklace)
 						.disableIf(!player.necklace.canUnequip(false))
 						.disableIf(player.necklace.isNothing, "You don't have equipped any necklace.");
-				addButton(2, "Acc 1", unequipMiscJewel1)
+				addButton(3, "Acc 1", unequipMiscJewel1)
 						.itemHints(player.miscJewelry1)
 						.disableIf(!player.miscJewelry1.canUnequip(false))
 						.disableIf(player.miscJewelry1.isNothing, "You don't have equipped any accessory.");
-				addButton(3, "Acc 2", unequipMiscJewel2)
+				addButton(8, "Acc 2", unequipMiscJewel2)
 						.itemHints(player.miscJewelry2)
 						.disableIf(!player.miscJewelry2.canUnequip(false))
 						.disableIf(player.miscJewelry2.isNothing, "You don't have equipped any accessory.");
@@ -1366,6 +1259,9 @@ use namespace CoC;
 		}
 		public function unequipWeapon():void {
 			unequipSlotToInventory(manageEquipment, ItemConstants.SLOT_WEAPON_MELEE);
+		}
+		public function unequipWeaponOff():void {
+			unequipSlotToInventory(manageEquipment, ItemConstants.SLOT_WEAPON_MELEE_OFF);
 		}
 		public function unequipWeaponRange():void {
 			unequipSlotToInventory(manageEquipment, ItemConstants.SLOT_WEAPON_RANGED);

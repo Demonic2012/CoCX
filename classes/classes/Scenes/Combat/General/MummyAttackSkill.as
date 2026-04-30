@@ -35,6 +35,12 @@ public class MummyAttackSkill extends AbstractGeneral {
         if (player.hasPerk(PerkLib.HistoryTactician) || player.hasPerk(PerkLib.PastLifeTactician)) mummyamplification *= combat.historyTacticianBonus();
         var mummyamplification:Number = 1;
         if (player.weapon == weapons.SCECOMM) mummyamplification += 0.5;
+		if (player.armor == armors.ARCHNECC) mummyamplification += 0.25;
+		if (player.upperGarment == undergarments.ARCHNECB) mummyamplification += 0.2;
+		if (player.lowerGarment == undergarments.ARCHNECP) mummyamplification += 0.2;
+		if (player.hasPerk(PerkLib.CommandingTone)) mummyamplification += 0.1;
+		if (player.hasPerk(PerkLib.DiaphragmControl)) mummyamplification += 0.1;
+		if (player.hasPerk(PerkLib.VocalTactician)) mummyamplification += 0.15;
 		if (flags[kFLAGS.WILL_O_THE_WISP] == 2) {
             mummyamplification += 0.1;
             if (player.hasPerk(PerkLib.WispLieutenant)) mummyamplification += 0.2;
@@ -54,7 +60,7 @@ public class MummyAttackSkill extends AbstractGeneral {
 		//Determine if critical hit!
         var crit:Boolean = false;
         var critChance:int = 5;
-        var critChanceMulti:int = 1.75;
+        var critChanceMulti:Number = 1.75;
         critChance += combatMagicalCritical();
         if (monster.isImmuneToCrits() && !player.hasPerk(PerkLib.EnableCriticals)) critChance = 0;
         if (rand(100) < critChance) {

@@ -156,7 +156,7 @@ public class RearBody extends BodyPart {
 	EnumValue.add(Types, COBRA_HOOD, "COBRA_HOOD", {
 		name:"cobra hood",
 		appearanceDescFunc: function(player: *): String {
-			var desc: String = " Behind your hair is a large cobra hood decorated with intimating red triangular patterns.";
+			var desc: String = " Behind your hair is a large cobra hood decorated with intimidating red triangular patterns.";
 			if (player.faceType == Face.SNAKE_FANGS) desc += " Anyone can tell just from the vibrant colors that you are highly venomous.";
 			return desc;
 		}
@@ -174,7 +174,7 @@ public class RearBody extends BodyPart {
 	public static const ABYSSAL_SHARK_FIN: int = 28;
 	EnumValue.add(Types, ABYSSAL_SHARK_FIN, "ABYSSAL_SHARK_FIN", {
 		name: "abyss shark fin",
-		appearanceDesc: "A large, shark-like fin has sprouted between your shoulders, and a second, smaller fin beneath it at the height of your navel. With them, you have much a easier ability to swim around."
+		appearanceDesc: "A large, shark-like fin has sprouted between your shoulders, and a second, smaller fin beneath it at the height of your navel. With them, you have a much easier ability to swim around."
 	});
 	public static const ARIGEAN_RED_AURA: int = 29;
 	EnumValue.add(Types, ARIGEAN_RED_AURA, "ARIGEAN_RED_AURA", {
@@ -199,8 +199,31 @@ public class RearBody extends BodyPart {
 	public static const MOTH_COLLAR: int = 33;
 	EnumValue.add(Types, MOTH_COLLAR, "MOTH_COLLAR", {
 		name: "moth collar",
-		appearanceDesc: "You have a fluffy collar"
+		appearanceDesc: "Around your neck is a thick fluffy collar of fur reminiscent of a moth's."
 	});
+    public static const MINDWARP: int = 34;
+    EnumValue.add(Types, MINDWARP, "MINDWARP", {
+        name:"mind warping aura",
+        appearanceDescFunc: function(player: *): String {
+            var desc: String = " The air around you warps and shifts from the mind warping aura your defiled body releases.";
+            return desc;
+        }
+    });
+	public static const BRA_AND_NECK: int = 35;
+	EnumValue.add(Types, BRA_AND_NECK, "BRA_AND_NECK", {
+		name: "bra and neck",
+		appearanceDesc: "Your thighs and breast regularly produce a sticky substance which creates the illusion of a small mesh of  clothes over them. You have what appears to be a frilly choker at the level of your neck."
+	});
+	public static const SERIAL_CODE: int = 36;
+	EnumValue.add(Types, SERIAL_CODE, "SERIAL_CODE", {
+		name: "serial code",
+		appearanceDesc: "A serial code with your number and designation is imprinted on your flank."
+	});/*
+	public static const WERESPIDER: int = 37;
+	EnumValue.add(Types, WERESPIDER, "WERESPIDER", {
+		name: "An extra pair of spider legs",
+		appearanceDesc: "Pairs of chitinous, black spider legs sprout from your shoulders and back."
+	});*/
 
 	public function RearBody(creature:Creature) {
 		super(creature, null);

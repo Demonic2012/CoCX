@@ -38,6 +38,7 @@ public class EAspectWaterSkill extends AbstractMagicSpecial {
         var amountToHeal:Number = elementalAspectBaseDamage(StatusEffects.SummonedElementalsWater);
 
         if (player.hasPerk(PerkLib.WisenedHealer)) amountToHeal += scalingBonusWisdom();
+		if (player.hasPerk(PerkLib.DruidicFocus)) amountToHeal += scalingBonusToughness();
         if (player.armor == armors.NURSECL) amountToHeal *= 1.2;
 		if (player.weapon == weapons.U_STAFF) amountToHeal *= 1.5;
 		if (player.weapon == weapons.ECLIPSE) amountToHeal *= 0.5;
@@ -53,8 +54,8 @@ public class EAspectWaterSkill extends AbstractMagicSpecial {
     override public function doEffect(display:Boolean = true):void {
         var amountToHeal:Number = Math.round(calcDamage(monster));
 
-        if (display) outputText("Your elemental encases your body within a bubble of curative spring water, slowly closing your wounds. The bubbles pop leaving you wet, but on the way to full recovery. <b>([font-heal]+" + numberFormat(amountToHeal) + "</font>)</b>");
-		HPChange(amountToHeal,false);
+        if (display) outputText("Your elemental encases your body within a bubble of curative spring water, slowly closing your wounds. The bubbles pop leaving you wet, but on the way to full recovery. <b>([font-heal]+" + numberFormat(amountToHeal) + "[/font])</b>");
+		HPChange(amountToHeal,false,false);
 		if (display) outputText("\n\n");        
     }
 }

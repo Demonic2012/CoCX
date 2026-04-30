@@ -5,11 +5,13 @@ import classes.Items.Dynamic.Effects.SimpleRaceEnchantment;
 import classes.Items.DynamicItems;
 import classes.Items.Enchantment;
 import classes.Items.EnchantmentLib;
+import classes.Items.ItemConstants;
 import classes.Items.EnchantmentType;
 import classes.Items.Equipable;
 import classes.Items.IDynamicItem;
 import classes.Items.IELib;
 import classes.Items.ItemEffect;
+import classes.PerkLib;
 import classes.Race;
 
 public class DynamicArmor extends Armor implements IDynamicItem {
@@ -72,6 +74,7 @@ public class DynamicArmor extends Armor implements IDynamicItem {
 		_effectDesc              = parsedParams.effectDesc;
 		var value:Number         = parsedParams.value;
 		var buffs:Object         = parsedParams.buffs;
+		_playerPerks             = subtype.perks || [];
 		var type:String          = subtype.type;
 		var tags:Array           = subtype.tags || [];
 		var def:Number           = subtype.def;
@@ -79,6 +82,8 @@ public class DynamicArmor extends Armor implements IDynamicItem {
 		var qdef:Number          = numberOr(subtype.qdef, 0);
 		var bulge:Boolean        = subtype.bulge;
 		var undergarment:Boolean = valueOr(subtype.undergarment,true);
+		var itemEffects:Array    = subtype.effects || [];
+		var qitemEffects:Array   = subtype.qeffects || [];
 		if (parsedParams.error) {
 			trace("[ERROR] Failed to parse " + id + " with error " + parsedParams.error);
 			name      = "ERROR " + name;
@@ -104,7 +109,7 @@ public class DynamicArmor extends Armor implements IDynamicItem {
 				undergarment
 		);
 		
-		DynamicItems.postConstruct(this, tags, buffs);
+		DynamicItems.postConstruct(this, tags, buffs, itemEffects, qitemEffects, quality);
 	}
 	
 	override public function effectDescriptionParts():Array {
@@ -172,21 +177,21 @@ public class DynamicArmor extends Armor implements IDynamicItem {
 	override public function equipText():void {
 		DynamicItems.equipText(this);
 	}
-	override public function beforeEquip(doOutput:Boolean):Equipable {
-		super.beforeEquip(doOutput);
+	override public function beforeEquip(doOutput:Boolean, slot:int):Equipable {
+		super.beforeEquip(doOutput, slot);
 		if (!identified) {
-			return (identifiedCopy() as Equipable).beforeEquip(doOutput);
+			return (identifiedCopy() as Equipable).beforeEquip(doOutput, slot);
 		}
 		return this;
 	}
-	override public function afterEquip(doOutput:Boolean):void {
-		super.afterEquip(doOutput);
+	override public function afterEquip(doOutput:Boolean, slot:int):void {
+		super.afterEquip(doOutput, slot);
 		for each (var e:Enchantment in effects) {
 			e.onEquip(game.player, this);
 		}
 	}
-	override public function afterUnequip(doOutput:Boolean):void {
-		super.afterUnequip(doOutput);
+	override public function afterUnequip(doOutput:Boolean, slot:int):void {
+		super.afterUnequip(doOutput, slot);
 		for each (var e:Enchantment in effects) {
 			e.onUnequip(game.player, this);
 		}
@@ -204,12 +209,30 @@ public class DynamicArmor extends Armor implements IDynamicItem {
 	 * - (optional) quality: force quality
 	 * - def: Base defense
 	 * - mdef: Base magic defense
-	 * - qdef: Defense-per-quality (0.25 = +25% per +1 qualiity)
+	 * - qdef: Defense-per-quality (0.25 = +25% per +1 quality)
 	 * - value: Base cost in gems
 	 * - bulge: Can be modded by Exgartuan (ugh). Default false
 	 * - undergarment: Can be worn with undergarment. Default true
 	 */
 	public static const Subtypes:Object = {
+		"qguarda": {
+			chance: 0,
+			name: "queen's guard armor",
+			shortName: "QGuardA",
+			desc: "A suit of chitinous plate armor, hardened with amber. It grants incredible protection against attacks while weighting next to nothing, allowing for maximum mobility. The amber is just translucent enough to reveal the user's curves and arouse the senses. The insides, being coated in honey, provides a comfortable, if not sticky, experience to the wielder. For a bee, this will help in recovering from wounds. When worn by a bee, increase tease damage and grant regeneration.",
+			type: AP_LIGHT,
+			tags: [
+				ItemConstants.A_AGILE,
+				ItemConstants.A_REVEALING
+			],
+			perks: [
+				[PerkLib.Misdirection, 0, 0, 1, 0]
+			],
+			def: 25,
+			mdef: 0,
+			qdef: 0.2,
+			value: 1000
+		},
 		"clothes": {
 			chance: 1,
 			name: "comfortable clothes",

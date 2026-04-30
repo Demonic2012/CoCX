@@ -1,7 +1,7 @@
 package classes.Scenes.Dungeons.DemonLab {
 /**
  * ...
- * @author CanadianSnas
+ * @author Canadian Snas
  */
 
 import classes.AssClass;
@@ -45,7 +45,7 @@ public class Incels extends Monster {
         this.lustVuln = 1;
         this.level = 52;
         this.gems = rand(50) + 75;
-        this.drop = new WeightedDrop().add(useables.D_SCALE, 5).add(consumables.LETHITE, 2).add(jewelries.POWRRNG, 1);
+        this.drop = new WeightedDrop().add(useables.D_SCALE, 5).add(consumables.LETH1TE, 3).add(consumables.LETH2TE, 2).add(jewelries.POWRRNG, 1);
         this.createPerk(PerkLib.EnemyLargeGroupType, 0, 0, 0, 0);
         this.createPerk(PerkLib.TankI, 0, 0, 0, 0);
         this.createPerk(PerkLib.ToughHide, 0, 0, 0, 0);
@@ -139,7 +139,7 @@ public class Incels extends Monster {
     }
 
     public function RipStruggle():void {
-        if (rand(player.str) > (this.str / 10) * (1 + player.getStatusValue(StatusEffects.Pounced, 1)) || (player.hasStatusEffect(StatusEffects.Pounced) && player.statusEffectv1(StatusEffects.Pounced) < 1) || player.hasPerk(PerkLib.FluidBody)) RipBreakOut();
+        if (rand(Math.round(player.strStat.core.value * 0.8)) < (player.strStat.core.value + player.getStatusValue(StatusEffects.Pounced, 1)) || (player.hasStatusEffect(StatusEffects.Pounced) && player.statusEffectv1(StatusEffects.Pounced) < 1) || player.hasPerk(PerkLib.FluidBody)) RipBreakOut();
         else RipCont();
         SceneLib.combat.enemyAIImpl();
     }

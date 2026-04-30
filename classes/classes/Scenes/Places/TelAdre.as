@@ -87,7 +87,7 @@ private function encounterTelAdre():void {
 private function telAdreCrystal():void {
 	if(!player.hasStatusEffect(StatusEffects.TelAdre)) player.createStatusEffect(StatusEffects.TelAdre,0,0,0,0);
 	//-70+ corruption, or possessed by exgartuan
-	if (SceneLib.exgartuan.anyPresent() || player.cor >= 70 + player.corruptionTolerance) {
+	if ((SceneLib.exgartuan.anyPresent() || player.cor >= 70 + player.corruptionTolerance) && !player.hasPerk(PerkLib.FalseLight)) {
 		outputText("The crystal pendant begins to vibrate in the air, swirling around and glowing dangerously black.  Edryn snatches her hand back and says, \"<i>I'm sorry, but you're too far gone to step foot into our city.  If by some miracle you can shake the corruption within you, return to us.</i>\"\n\n");
 		outputText("You shrug and step back.  You could probably defeat these two, but you know you'd have no hope against however many friends they had beyond the walls.  You turn around and leave, a bit disgruntled at their hospitality.  After walking partway down the dune you spare a glance over your shoulder and discover the city has vanished!  Surprised, you dash back up the dune, flinging sand everywhere, but when you crest the apex, the city is gone.");
 		doNext(endEncounter);
@@ -196,7 +196,7 @@ public function telAdreMenu():void {
 	clearOutput();
 	outputText("Tel'Adre is a massive city, though most of its inhabitants tend to hang around the front few city blocks.  It seems the fall of Mareth did not leave the city of Tel'Adre totally unscathed.  A massive tower rises up in the center of the city, shimmering oddly.  From what you overhear in the streets, the covenant's magic-users slave away in that tower, working to keep the city veiled from outside dangers.  There does not seem to be a way to get into the unused portions of the city, but you'll keep your eyes open.\n\n");
 	outputText("A sign depicting a hermaphroditic centaur covered in piercings hangs in front of one of the sandstone buildings, and bright pink lettering declares it to be the 'Piercing Studio'.  You glance over and see the wooden facade of Urta's favorite bar, 'The Wet Bitch'.  How strange that those would be what she talks about during a tour.  In any event you can also spot some kind of wolf-man banging away on an anvil in a blacksmith's stand, and a foppishly-dressed dog-man with large floppy ears seems to be running some kind of pawnshop in his stand.  ");
-	outputText("Steam boils from the top of a dome-shaped structure near the far end of the street, and simple lettering painted on the dome proclaims it to be a bakery.  Perhaps those shops will be interesting as well.  One shop named Kaiba cosmetic emporium specialises in magical trinkets and other oddities.");
+	outputText("Steam boils from the top of a dome-shaped structure near the far end of the street, and simple lettering painted on the dome proclaims it to be a bakery.  Perhaps those shops will be interesting as well.  One shop named Kaiba cosmetic emporium specializes in magical trinkets and other oddities.");
 	if (flags[kFLAGS.RAPHEAL_COUNTDOWN_TIMER] == -2 && !SceneLib.raphael.RaphaelLikes()) {
 		outputText("\n\nYou remember Raphael's offer about the Orphanage, but you might want to see about shaping yourself more to his tastes first.  He is a picky fox, after all, and you doubt he would take well to seeing you in your current state.");
 	}/*
@@ -205,7 +205,7 @@ public function telAdreMenu():void {
 			switch (choice0) {
 				case 0:
 				outputText("As you enter the city, you notice a small group of mice inside the city. They travel in a group, but their awed expressions and general naivety make them stick out. One of them recognizes you, splitting off from the group. \n\n");
-				outputText("<i>“Hi, "+ player.mf("dad", "mom") +", we’re just buying some supplies. This city is amazing, though!”</i> You tell them to watch themselves, and he nods. <i>“Oh, I know "+ player.mf("dad", "mom") +". That’s why we’re sticking together.”</i> He eyes the armoury enviously. <i>“I just wish we had half of the gear in this place.”</i> He blinks, realising his group’s moved on. <i>“Oh crap, I’ve got the gems! Gotta go! Love ya, "+ player.mf("dad", "mom") +"!”</i> The mouselet scampers off, leaving you alone. What were you doing here, again? \n\n");
+				outputText("<i>“Hi, "+ player.mf("dad", "mom") +", we’re just buying some supplies. This city is amazing, though!”</i> You tell them to watch themselves, and he nods. <i>“Oh, I know "+ player.mf("dad", "mom") +". That’s why we’re sticking together.”</i> He eyes the armory enviously. <i>“I just wish we had half of the gear in this place.”</i> He blinks, realizing his group’s moved on. <i>“Oh crap, I’ve got the gems! Gotta go! Love ya, "+ player.mf("dad", "mom") +"!”</i> The mouselet scampers off, leaving you alone. What were you doing here, again? \n\n");
 				AbandonedTownRebuilt.TelAdreSuppliesBought = true;
 				
 					break;
@@ -332,21 +332,21 @@ private function buyCarrotFromOswald():void {
 	addButton(0,"Next",oswaldPawn);
 }
 
-	private function oswaldPawnMenuNew():void {
-		clearOutput();
-		outputText("You see Oswald fiddling with a top hat as you approach his stand again.  He looks up and smiles, padding up to you and rubbing his furry hands together.  He asks, \"<i>Have any merchandise for me " + player.mf("sir","dear") + "?</i>\"\n\n");
-		var merchantMenu:MerchantMenu = new MerchantMenu();
-		merchantMenu.playerCanSell = true;
-		merchantMenu.playerSellFactor = 0.5;
-		if (merchantMenu.greedCheck()) {
-			outputText("Thanks to a little magic and a lot of hard bargaining you managed to sell your items for more than normal. ");
-			merchantMenu.playerSellFactor = 1.0;
-		}
-		merchantMenu.onShow = function():void {
-			button(10).show("Misc", oswaldPawnMenu2);
-		}
-		merchantMenu.show(telAdreMenu);
+private function oswaldPawnMenuNew():void {
+	clearOutput();
+	outputText("You see Oswald fiddling with a top hat as you approach his stand again.  He looks up and smiles, padding up to you and rubbing his furry hands together.  He asks, \"<i>Have any merchandise for me " + player.mf("sir","dear") + "?</i>\"\n\n");
+	var merchantMenu:MerchantMenu = new MerchantMenu();
+	merchantMenu.playerCanSell = true;
+	merchantMenu.playerSellFactor = 0.5;
+	if (merchantMenu.greedCheck()) {
+		outputText("Thanks to a little magic and a lot of hard bargaining you managed to sell your items for more than normal. ");
+		merchantMenu.playerSellFactor = 1.0;
 	}
+	merchantMenu.onShow = function():void {
+		button(10).show("Misc", oswaldPawnMenu2);
+	}
+	merchantMenu.show(telAdreMenu);
+}
 private function oswaldPawnMenu(page:int = 1, refresh:Boolean = true):void { //Moved here from Inventory.as
 	var slot:int;
 	spriteSelect(SpriteDb.s_oswald);
@@ -740,8 +740,8 @@ public function carpentryShopInside():void {
 	addButton(6, "Sell Wood", carpentryShopSellWood);
 	addButton(7, "Sell Stones", carpentryShopSellStone);
 	addButton(10, "Toolbox", carpentryShopBuySet);
-	if (flags[kFLAGS.MATERIALS_STORAGE_UPGRADES] >= 1) addButton(11, "Nails Box", carpentryShopBuySet2);
-	//if (flags[kFLAGS.MATERIALS_STORAGE_UPGRADES] >= 4) addButton(12, "Stone Building", carpentryShopBuySet3);
+	if (flags[kFLAGS.MATERIALS_STORAGE_UPGRADES] >= 1) addButton(11, "Nail Box", carpentryShopBuySet2);
+	//if (flags[kFLAGS.MATERIALS_STORAGE_UPGRADES] >= 5) addButton(12, "Stone Building", carpentryShopBuySet3);
 	addButton(14, "Leave", telAdreMenu);
 }
 //Buy nails
@@ -1125,6 +1125,7 @@ public function kaibaShopMainMenu2():void {
 	menu();
 	if (flags[kFLAGS.KAIBA_SHELFS] == 0) {
 		if (player.hasStatusEffect(StatusEffects.KaibaDailyLimit)) {
+			addButtonDisabled(2, "G.H.Ornament", "You already bought item from Kaiba today.");
 			addButtonDisabled(3, "R.DeadeyeAim", "You already bought item from Kaiba today.");
 			addButtonDisabled(4, "R.Ambidexty", "You already bought item from Kaiba today.");
 			addButtonDisabled(5, "E.R.Armor", "You already bought item from Kaiba today.");
@@ -1134,6 +1135,7 @@ public function kaibaShopMainMenu2():void {
 			addButtonDisabled(9, "C.G Hat", "You already bought item from Kaiba today.");
 		}
 		else {
+			addButton(2, "G.H.Ornament", buyItem, headjewelries.GHORNAM).hint("Golden horn ornament - +25% to tease / black magic damage while worn on demon horns.");
 			addButton(3, "R.DeadeyeAim", buyItem, jewelries.RINGDEA).hint("Ring of deadeye aim - Removes ranged accuracy penalty when flying, and increases range accuracy by 20%.");
 			addButton(4, "R.Ambidexty", buyItem, jewelries.RNGAMBI).hint("Ring of Ambidexterity - Removes melee accuracy penalty when flying, and increases melee accuracy by 15%.");
 			addButton(5, "E.R.Armor", buyItem, armors.ERA).hint("Elven Ranger Armor - +50% to Bow and spear damage, Agile, Revealing, Slutty seduction +10.");
@@ -1159,6 +1161,7 @@ public function kaibaShopMainMenu2():void {
 			addButtonDisabled(6, "Avelynn", "You already bought item from Kaiba today.");
 			addButtonDisabled(7, "Oni enchanted drinking jug", "You already bought item from Kaiba today.");
 			addButtonDisabled(8, "Storm Ruler", "You already bought item from Kaiba today.");
+			addButtonDisabled(9, "A-Necro cloak", "You already bought item from Kaiba today.");
 		}
 		else {
 			addButton(0, "Teddy Bear", buyItem, useables.TEDDY).hint("An old Teddy bear with a small paper with the name Mister Paw tied to it.");
@@ -1170,6 +1173,7 @@ public function kaibaShopMainMenu2():void {
 			addButton(6, "Avelynn", buyItem, weaponsrange.AVELYNN).hint("Avelynn - Crossbow that will shoot two additional bolts each time.");
 			addButton(7, "Oni enchanted drinking gourd", buyItem, miscjewelries.ONI_GOURD).hint("Oni enchanted drinking gourd - A magical drinking gourd beloved by onis. Suposedly it greatly increases its users attack power but also grants an endless supply of fresh drinks!");
 			addButton(8, "Storm Ruler", buyItem, weapons.S_RULER).hint("Storm Ruler - A large sword that is wielded like a hammer. Naturally deals lightning-type damage, and inflicts 50% more damage to huge or larger enemies. Also increases physical soulskill damage by 20%.");
+			addButton(9, "A-Necro cloak", buyItem, armors.ARCHNECC).hint("Arch-Necromancer cloak - An outfit once worn by a powerful necromancer. It is old and tattered yet still charged with magic. This cloak and set of jewelry doubles cold and dark damage at the expense of fire and lightning. While worn, increase spell power by 1% for every minion under your command and increase minion damage by 25%.");
 		}
 		//addButton(0, "Necklace", buyItem, necklaces.CSNECK);
 		addButton(11, "-1-", kaibaShopMainMenuPage1);
@@ -1216,16 +1220,21 @@ public function kaibaShopMainMenu2():void {
 			addButtonDisabled(4, "F.Cloak", "You already bought item from Kaiba today.");
 			addButtonDisabled(5, "F.M.Dress", "You already bought item from Kaiba today.");
 			addButtonDisabled(6, "Pan Flute", "You already bought item from Kaiba today.");
+			addButtonDisabled(7, "D.B.Helmet", "You already bought item from Kaiba today.");
+			addButtonDisabled(8, "A-Necro bra", "You already bought item from Kaiba today.");
+			addButtonDisabled(9, "A-Necro panty", "You already bought item from Kaiba today.");
 		}
 		else {
 			addButton(0, "Cat Gloves", buyItem, weapons.CATGLOV).hint("Black Cat Gloves - Not quite a weapon as much as they are black gloves with open fingers to let the tips out. These were made and custom enchanted for a cat girl adventurer. This is a temporary sale.");
 			addButton(1, "Cat Collar", buyItem, necklaces.CATBELL).hint("Leather collar with cat bell - Aside from being extra cute on you this necklace not only raises natural evasion but also allows a cat type wearer to deliver tease damage when dodging attacks. A must have when in heat. This is a temporary sale.");
 			addButton(2, "Neko Top", buyItem, undergarments.BN_TOP).hint("Black Neko Leather Top - A bra made of leather black as night. Makes one slimmer than it appears, increasing evasion. Stronger at night. This is a temporary sale.");
 			addButton(3, "NekoBottom", buyItem, undergarments.BN_SKIRT).hint("Black Neko Leather Bottom - A skirt made of leather black as night. Makes one slimmer than it appears, increasing evasion. Stronger at night. This is a temporary sale.");
-			addButton(4, "F.Cloak", buyItem, armors.FCLOAK).hint("Francesca's Black Cloak - A cloak rumored to have been worn by the black cat adventurer Francesca the heavenly black tiger. Not exactly a strong armor per say, its true ability is to conceal its owner body's true location through a mix of glamor and illusion spell improving the users evasiveness by leaps and bound. Francesca was a famous sword mage and as thus the cloak greatly reinforces spells casted through the medium of a weapon. This is a temporary sale.");
+			addButton(4, "F.Cloak", buyItem, armors.FCLOAK).hint("Francesca's Black Cloak - A cloak rumored to have been worn by the black cat adventurer Francesca the heavenly black tiger. Not exactly a strong armor per se, its true ability is to conceal its owner body's true location through a mix of glamor and illusion spell, improving the users evasiveness by leaps and bound. Francesca was a famous sword mage and as thus the cloak greatly reinforces spells casted through the medium of a weapon. This is a temporary sale.");
 			addButton(5, "F.M.Dress", buyItem, armors.FMDRESS).hint("Forest Mage Dress - The wearer of this dress desire and pleasure is no longer vexed by the limitations of mortal flesh allowing one to keep control over their lust long enough to claim victory by diluting their own lust within the ambiant natural world for a time. So long as a Green Magic spell was cast within the 5 previous rounds the user of this dress effectively is able to maintain their focus and mind entirely to the task at hand at the cost of potentialy turning into a lecherous sex maniac due to all the dilluted lust merging back with the user at the end of combat. There is a small chance for this to backfire instead causing the ambiant flora to turn on and rape the wearer of the dress. This is a temporary sale.");
 			addButton(6, "Pan Flute", buyItem, weapons.PFLUTTE).hint("Pan Flute - Small mace/hammer type weapon granting bonuses: +50% spellpower, +100% performance power.");
-
+			addButton(7, "D.B.Helmet", buyItem, headjewelries.DRABLOH).hint("Dragon Blood Helmet - Reinforce all breath weapon Effect by 50%. Deals 20% more damage against dragons.");
+			addButton(8, "A-Necro bra", buyItem, undergarments.ARCHNECB).hint("Arch-Necromancer bra - A bra made of silk and ornamental bones plated in silver. Increase minion damage by 20%.");
+			addButton(9, "A-Necro panty", buyItem, undergarments.ARCHNECP).hint("Arch-Necromancer panty - A panty made of silk and ornamental bones plated in silver. Increase minion damage by 20%.");
 		}
 		//addButton(0, "Necklace", buyItem, necklaces.CSNECK);
 		addButton(11, "-1-", kaibaShopMainMenuPage1);
@@ -1337,8 +1346,71 @@ public function tripxiShopMainMenu():void {
 			player.createStatusEffect(StatusEffects.TelAdreTripxi, 0, 0, 0, 0);
 		}
 		camp.codex.unlockEntry(kFLAGS.CODEX_ENTRY_GOBLINS);
-		tripxiShopMainMenu2a();
+		tripxiShopMainMenu1a();
 	}
+}
+
+public function tripxiShopMainMenu1a():void {
+	menu();
+	spriteSelect(SpriteDb.s_tripxi);
+	addButton(0, "Talk", tripxiShopTalk);
+	addButton(1, "Gunshop", tripxiShopMainMenu2a);
+	addButton(2, "Rent Workshop", tripxiRentWorkshop);
+	if (player.hasKeyItem("Flasherbang II") < 0 && player.hasKeyItem("Blueprint - Flasherbang") < 0 && player.hasKeyItem("Blueprint - Flasherbang II") < 0) addButton(5, "Flasherbang II", curry(tripxiEngineeringBuyBlueprint, 1000, "Flasherbang II")).hint("Flasherbang II BP - 1000 gems");
+	if (player.hasKeyItem("Flasherbang") < 0 && player.hasKeyItem("Flasherbang II") < 0 && player.hasKeyItem("Blueprint - Flasherbang") < 0) addButton(5, "Flasherbang", curry(tripxiEngineeringBuyBlueprint, 500, "Flasherbang")).hint("Flasherbang BP - 500 gems");
+	if (player.hasKeyItem("Caustic Goonade") < 0 && player.hasKeyItem("Blueprint - Goonade") < 0 && player.hasKeyItem("Blueprint - Caustic Goonade") < 0) addButton(6, "Caustic Goonade", curry(tripxiEngineeringBuyBlueprint, 1000, "Caustic Goonade")).hint("Caustic Goonade BP - 1000 gems");
+	if (player.hasKeyItem("Goonade") < 0 && player.hasKeyItem("Caustic Goonade") < 0 && player.hasKeyItem("Blueprint - Goonade") < 0) addButton(6, "Goonade", curry(tripxiEngineeringBuyBlueprint, 500, "Goonade")).hint("Goonade BP - 500 gems");
+	if (player.hasKeyItem("Fire Grenade II") < 0 && player.hasKeyItem("Blueprint - Fire Grenade") < 0 && player.hasKeyItem("Blueprint - Fire Grenade II") < 0) addButton(7, "Fire Grenade II", curry(tripxiEngineeringBuyBlueprint, 1000, "Fire Grenade II")).hint("Fire Grenade II BP - 1000 gems");
+	if (player.hasKeyItem("Fire Grenade") < 0 && player.hasKeyItem("Fire Grenade II") < 0 && player.hasKeyItem("Blueprint - Fire Grenade") < 0) addButton(7, "Fire Grenade", curry(tripxiEngineeringBuyBlueprint, 500, "Fire Grenade")).hint("Fire Grenade BP - 500 gems");
+	if (player.hasKeyItem("Stun Grenade II") < 0 && player.hasKeyItem("Blueprint - Stun Grenade") < 0 && player.hasKeyItem("Blueprint - Stun Grenade II") < 0) addButton(8, "Stun Grenade II", curry(tripxiEngineeringBuyBlueprint, 1000, "Stun Grenade II")).hint("Stun Grenade II BP - 1000 gems");
+	if (player.hasKeyItem("Stun Grenade") < 0 && player.hasKeyItem("Stun Grenade II") < 0 && player.hasKeyItem("Blueprint - Stun Grenade") < 0) addButton(8, "Stun Grenade", curry(tripxiEngineeringBuyBlueprint, 500, "Stun Grenade")).hint("Stun Grenade BP - 500 gems");
+	addButton(14, "Leave", telAdreMenu);
+}
+
+private function tripxiShopTalk(talkOver:int = 1):void {
+	clearOutput();
+	menu();
+	if (talkOver == 1){
+		outputText("You tell the goblin shopkeeper you would like to have a talk with her.\n\n")
+		outputText("\"<i>Just wanted a chat? Well okay, fine but make it quick, my time is mostly for either researching or gems and I would rather not waste either.</i>\"\n\n");
+	}
+	else{
+		outputText("Tripxi looks semi bored but tries to keep the professional attitude.\n\n")
+		outputText("\"<i>Well now that's sorted, is there anything else you wanted to talk about?</i>\"\n\n");
+	}
+	addButton(3, "Goblins", tripxiShopTalkGoblins);
+	addButton(4, "Tel Adre", tripxiShopTalkTelAdre);
+	if (player.statusEffectv1(StatusEffects.TelAdreTripxi) > 0) addButtonDisabled(5, "Small Selection", "You have already talked about this subject.");
+	else addButton(5, "SmallSelection", tripxiShopTalkSmallSelection);
+	addButton(14, "Leave", tripxiShopInside);
+}
+
+private function tripxiShopTalkGoblins():void {
+	clearOutput();
+	outputText("Just what was the goblin civilisation like? You haven't found ");/*(if found a goblin city in some expac) much save for (end of cut)*/outputText("a single hint of their city this far while traveling Mareth.\n\n");
+	outputText("\"<i>By all means, goblin civilisation was THE thing. You guys marvel at magic swords and spells, but we had the true power of technology on our side. I wouldn't want to mean offense, but a lot of you people might as well be savages and barbarians. When the demons knocked to our doors, we laughed them off or blasted them with artillery. However, the demons aren't stupid. They knew that if they couldn't get in, they could destroy us through our surrounding. Inevitably, it was not the demons themselves who toppled down the goblin civilisation, but contaminated waters. Our geniuses fell into madness or breeding frenzy, and not long after everything our society meant fell into a race  to see who could breed faster. There may be only a few goblins left on Mareth who are not obsessed with getting impregnated by everything. You're looking at one of them.</i>\"");
+	doNext(tripxiShopTalk, 2);
+}
+private function tripxiShopTalkTelAdre():void {
+	clearOutput();
+	outputText("Last you checked, the majority of the goblin population has gone prego freak mode. How has she been accepted in Tel Adre?\n\n\"<i>It's simple, I've simply always been there! ");
+	outputText("While my peers were busy drinking drugged water back at our capital, I was managing my shop here. I haven't been making weapon until now though, only explosives. I began working as a standard issue firearm vendor when Tel'adre guards requested I procure them pistols. Ain't like those idiots can use anything more advanced than that anyway.</i>\"\n\n");
+	doNext(tripxiShopTalk, 2);
+}
+private function tripxiShopTalkSmallSelection():void {
+	clearOutput();
+	outputText("You look up her inventory and note that she only sell basic firearms.\n\n");
+	outputText("\"<i>Well, yes, I do? That's because the tech has been lost when our civilisation fell. No one makes guns anymore, and I barely got the base knowledge to assemble these pieces of junk. Primitive, isn't it? We had stuff ranging from bomb launchers to gatling guns, and all of it is now lost god knows were in the waste of Mareth. This said, you're an adventurer, aren't you?</i>\"\n\n");
+	outputText("You nod to that, you are indeed an adventuring hero, the champion of Ingnam to be exact.\n\n");
+	outputText("\"<i>Yea sure whatever this just means, you could help me with something. Fact is, goblin technology is lost, but not gone. There are good odds that while traveling around Mareth, you may run into old gun parts. Gather them and bring them back here. I will study them and create brand-new firearms for you.</i>\"\n\n");
+	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns1, 0, 0, 0, 0);
+	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns2, 0, 0, 0, 0);
+	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns3, 0, 0, 0, 0);
+	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns4, 0, 0, 0, 0);
+	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns5, 0, 0, 0, 0);
+	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns6, 0, 0, 0, 0);
+	player.addStatusValue(StatusEffects.TelAdreTripxi, 1, 1);
+	doNext(tripxiShopTalk, 2);
 }
 
 public function tripxiShopMainMenu2a():void {
@@ -1359,11 +1431,11 @@ public function tripxiShopMainMenu2a():void {
 	else if (player.hasStatusEffect(StatusEffects.TelAdreTripxiGuns5)) addButtonDisabled(8, "???", "Search the Caves.");
 	if (player.statusEffectv1(StatusEffects.TelAdreTripxiGuns6) > 0) addButton(9, weaponsrange.TWINGRA.shortName, buyItemT1, weaponsrange.TWINGRA);
 	else if (player.hasStatusEffect(StatusEffects.TelAdreTripxiGuns6)) addButtonDisabled(9, "???", "Search the Battlefield(B).");
-	addButton(10, "Talk", tripxiShopTalk);
+	
 	addButtonDisabled(11, "-1-", "Shelf 1");
 	addButton(12, "-2-", tripxiShopMainMenu2b);
 	addButton(13, "-3-", tripxiShopMainMenu2c);
-	addButton(14, "Leave", telAdreMenu);
+	addButton(14, "Back", tripxiShopInside);
 }
 public function tripxiShopMainMenu2b():void {
 	menu();
@@ -1385,7 +1457,7 @@ public function tripxiShopMainMenu2b():void {
 	addButton(11, "-1-", tripxiShopMainMenu2a);
 	addButtonDisabled(12, "-2-", "Shelf 2");
 	addButton(13, "-3-", tripxiShopMainMenu2c);
-	addButton(14, "Leave", telAdreMenu);
+	addButton(14, "Back", tripxiShopInside);
 }
 
 public function tripxiShopMainMenu2c():void {
@@ -1407,14 +1479,14 @@ public function tripxiShopMainMenu2c():void {
 	addButton(11, "-1-", tripxiShopMainMenu2a);
 	addButton(12, "-2-", tripxiShopMainMenu2b);
 	addButtonDisabled(13, "-3-", "Shelf 3");
-	addButton(14, "Leave", telAdreMenu);
+	addButton(14, "Back", tripxiShopInside);
 }
 
 public function tripxiShopInside():void {
 	clearOutput();
 	outputText("Tripxi awaits at the counter giving a glance every now and then at her project at the back of the store, she's likely in a rush to resume working. Despite all this she try and keep the shopkeeper act... at least until you're gone.\n\n");
 	outputText("\"<i>So [name] can I interest you into any of my wares?</i>\"\n\n");
-	tripxiShopMainMenu2a();
+	tripxiShopMainMenu1a();
 }
 
 private function buyItemT1(odd:ItemType, page:int = 1):void{
@@ -1487,50 +1559,149 @@ private function buyItemT3No():void {
 	doNext(tripxiShopMainMenu2c);
 }
 
-private function tripxiShopTalk(talkOver:int = 1):void {
+private function tripxiRentWorkshop():void {
 	clearOutput();
+	outputText("You let Tripxi know that you would like to borrow her workshop.\n\n");
+	outputText("What you need a workshop to craft your toys? Yea whatever"+(player.isGoblinoid()?"":" normaly we have a policy not to lend over these kinda room to non goblins but I don't care about college politics anymore. If the engineer college does protest and they won't because they have been thoroughly annihilated by the demon just say that I wasn't home when you used it")+". Beside I gota make do if you wanna use my workshop it will be a hundred gem and this is non negotiable.\n\n");
 	menu();
-	if (talkOver == 1){
-		outputText("You tell the goblin shopkeeper you would like to have a talk with her.\n\n")
-		outputText("\"<i>Just wanted a chat? Well okay, fine but make it quick, my time is mostly for either researching or gems and I would rather not waste either.</i>\"\n\n");
-	}
-	else{
-		outputText("Tripxi looks semi bored but tries to keep the professional attitude.\n\n")
-		outputText("\"<i>Well now that's sorted, is there anything else you wanted to talk about?</i>\"\n\n");
-	}
-	addButton(3, "Goblins", tripxiShopTalkGoblins);
-	addButton(4, "Tel Adre", tripxiShopTalkTelAdre);
-	if (player.statusEffectv1(StatusEffects.TelAdreTripxi) > 0) addButtonDisabled(5, "Small Selection", "You have already talked about this subject.");
-	else addButton(5, "SmallSelection", tripxiShopTalkSmallSelection);
-	addButton(14, "Leave", tripxiShopInside);
+	addButtonIfTrue(1, "Yes", tripxiRentWorkshopYes, "Need 100 gems to use her workshop", player.gems >= 100);
+	addButton(3, "No", tripxiShopInside);
+}
+private function tripxiRentWorkshopYes():void {
+	clearOutput();
+	outputText("Metal Pieces: " + CampStatsAndResources.MetalPieces + "/200" + "\n");
+	outputText("Energy Cores: " + CampStatsAndResources.EnergyCoreResc + "/200" + "\n");
+	outputText("\nWhich blueprints will you work on today?\n\n");
+	if (player.hasKeyItem("Blueprint - Flasherbang II") >= 0) outputText("Flasherbang II - Req. 200+ int, Flasherbang, 10 metal pieces, 5 energy cores.\n");
+	if (player.hasKeyItem("Blueprint - Flasherbang") >= 0) outputText("Flasherbang - Req. 100+ int, 2 metal pieces, 1 energy core.\n");
+	if (player.hasKeyItem("Blueprint - Caustic Goonade") >= 0) outputText("Caustic Goonade - Req. 200+ int, Goonade, 10 metal pieces, 5 wet cloth, 1 methir crystal.\n");
+	if (player.hasKeyItem("Blueprint - Goonade") >= 0) outputText("Goonade - Req. 100+ int, 2 metal pieces, 1 wet cloth.\n");
+	if (player.hasKeyItem("Blueprint - Fire Grenade II") >= 0) outputText("Fire Grenade II - Req. 200+ int, Fire Grenade, 10 metal pieces, 5 salamander firewaters.\n");
+	if (player.hasKeyItem("Blueprint - Fire Grenade") >= 0) outputText("Fire Grenade - Req. 100+ int, 2 metal pieces, 1 salamander firewater.\n");
+	if (player.hasKeyItem("Blueprint - Stun Grenade II") >= 0) outputText("Stun Grenade II - Req. 200+ int, Stun Grenade, 10 metal pieces, 5 voltage topazes, 1 raiju plasma.\n");
+	if (player.hasKeyItem("Blueprint - Stun Grenade") >= 0) outputText("Stun Grenade - Req. 100+ int, 2 metal pieces, 1 voltage topaz.\n");
+	menu();
+	if (player.hasKeyItem("Blueprint - Flasherbang II") >= 0 && player.hasKeyItem("Flasherbang") >= 0 && player.inte >= 200 && CampStatsAndResources.MetalPieces >= 10 && CampStatsAndResources.EnergyCoreResc >= 5) addButton(0, "Flasherbang II", tripxiWorkshopFlasherbangII).hint("Flasherbang II - The images flow doesn’t stop after the initial flash periodically arousing the opponent further and weakening its lust resistance for 6 more rounds - 200+ int, Flasherbang, 10 metal pieces, 5 energy cores, 8 hours of work");
+	if (player.hasKeyItem("Blueprint - Flasherbang") >= 0 && player.inte >= 100 && CampStatsAndResources.MetalPieces >= 2 && CampStatsAndResources.EnergyCoreResc >= 1) addButton(0, "Flasherbang", tripxiWorkshopFlasherbang).hint("Flasherbang - Toss a grenade that overloads the brain with lewd images and light rendering one blind, aroused and increasingly susceptible to lust chemicals - 100+ int, 2 metal pieces, 1 energy core, 4 hours of work");
+	if (player.hasKeyItem("Blueprint - Caustic Goonade") >= 0 && player.hasKeyItem("Goonade") >= 0 && player.inte >= 200 && CampStatsAndResources.MetalPieces >= 10 && player.hasItem(consumables.WETCLTH, 5) && player.hasItem(consumables.METHIRC, 1)) addButton(4, "Caustic Goonade", tripxiWorkshopCausticGoonade).hint("Caustic Goonade - Toss a grenade that splatter acidic sticky goo everywhere hindering movement and flight. Enemies hit by this lose the flight status effect and can be targeted as if on the ground. Drop opponent armor class by 100% - 200+ int, Goonade, 10 metal pieces, 5 wet cloths, 1 methir crystal, 8 hours of work");
+	if (player.hasKeyItem("Blueprint - Goonade") >= 0 && player.inte >= 100 && CampStatsAndResources.MetalPieces >= 2 && player.hasItem(consumables.WETCLTH, 1)) addButton(1, "Goonade", tripxiWorkshopGoonade).hint("Goonade - Toss a grenade that splatter sticky goo everywhere hindering movement and flight for 10 turns. Enemies hit by this lose the flight status effect and can be targeted as if on the ground - 100+ int, 2 metal pieces, 1 wet cloth, 4 hours of work");
+	if (player.hasKeyItem("Blueprint - Fire Grenade II") >= 0 && player.hasKeyItem("Fire Grenade") >= 0 && player.inte >= 200 && CampStatsAndResources.MetalPieces >= 10 && player.hasItem(consumables.SALAMFW, 5)) addButton(2, "Fire Grenade II", tripxiWorkshopFireGrenadeII).hint("Fire Grenade II - Upgrade the fire grenade explosion to also deal fire damage - 200+ int, Fire Grenade, 10 metal pieces, 5 salamander firewaters, 8 hours of work");
+	if (player.hasKeyItem("Blueprint - Fire Grenade") >= 0 && player.inte >= 100 && CampStatsAndResources.MetalPieces >= 2 && player.hasItem(consumables.SALAMFW, 1)) addButton(2, "Fire Grenade", tripxiWorkshopFireGrenade).hint("Fire Grenade - Toss a grenade that sets foes on fire inflicting the burn status effect - 100+ int, 2 metal pieces, 1 salamander firewater, 4 hours of work");
+	if (player.hasKeyItem("Blueprint - Stun Grenade II") >= 0 && player.hasKeyItem("Stun Grenade") >= 0 && player.inte >= 200 && CampStatsAndResources.MetalPieces >= 10 && player.hasItem(consumables.VOLTTOP, 5) && player.hasItem(useables.RPLASMA, 1)) addButton(7, "Stun Grenade II", tripxiWorkshopStunGrenadeII).hint("Stun Grenade II - Upgrade the stun grenade explosion to also deal lightning damage - 200+ int, Stun Grenade, 10 metal pieces, 5 voltage topazes, 1 raiju plasma, 8 hours of work");
+	if (player.hasKeyItem("Blueprint - Stun Grenade") >= 0 && player.inte >= 100 && CampStatsAndResources.MetalPieces >= 2 && player.hasItem(consumables.VOLTTOP, 1)) addButton(3, "Stun Grenade", tripxiWorkshopStunGrenade).hint("Stun Grenade - Toss a grenade that sets stun foe for 1 round. (4 round cd) - 100+ int, 2 metal pieces, 1 voltage topaz, 4 hours of work");
+	addButton(14, "Back", tripxiShopInside);
+}
+public function tripxiWorkshopFlasherbangII():void {
+	clearOutput();
+	player.gems -= 100;
+	CampStatsAndResources.MetalPieces -= 10;
+	CampStatsAndResources.EnergyCoreResc -= 5;
+	outputText("You get to work spending the necessary time to craft your newest toy. After eight hours your brand new Flasherbang II is ready.\n\n");
+	player.createKeyItem("Flasherbang II", 0, 0, 0, 0);
+	player.removeKeyItem("Blueprint - Flasherbang II");
+	player.removeKeyItem("Flasherbang");
+	statScreenRefresh();
+	doNext(camp.returnToCampUseEightHours);
+}
+public function tripxiWorkshopFlasherbang():void {
+	clearOutput();
+	player.gems -= 100;
+	CampStatsAndResources.MetalPieces -= 2;
+	CampStatsAndResources.EnergyCoreResc -= 1;
+	outputText("You get to work spending the necessary time to craft your newest toy. After four hours your brand new Flasherbang is ready.\n\n");
+	player.createKeyItem("Flasherbang", 0, 0, 0, 0);
+	player.removeKeyItem("Blueprint - Flasherbang");
+	statScreenRefresh();
+	doNext(camp.returnToCampUseFourHours);
+}
+public function tripxiWorkshopCausticGoonade():void {
+	clearOutput();
+	player.gems -= 100;
+	CampStatsAndResources.MetalPieces -= 10;
+	player.destroyItems(consumables.WETCLTH, 5);
+	player.destroyItems(consumables.METHIRC, 1);
+	outputText("You get to work spending the necessary time to craft your newest toy. After eight hours your brand new Caustic Goonade is ready.\n\n");
+	player.createKeyItem("Caustic Goonade", 0, 0, 0, 0);
+	player.removeKeyItem("Blueprint - Caustic Goonade");
+	player.removeKeyItem("Goonade");
+	statScreenRefresh();
+	doNext(camp.returnToCampUseEightHours);
+}
+public function tripxiWorkshopGoonade():void {
+	clearOutput();
+	player.gems -= 100;
+	CampStatsAndResources.MetalPieces -= 2;
+	player.destroyItems(consumables.WETCLTH, 1);
+	outputText("You get to work spending the necessary time to craft your newest toy. After four hours your brand new Goonade is ready.\n\n");
+	player.createKeyItem("Goonade", 0, 0, 0, 0);
+	player.removeKeyItem("Blueprint - Goonade");
+	statScreenRefresh();
+	doNext(camp.returnToCampUseFourHours);
+}
+public function tripxiWorkshopFireGrenadeII():void {
+	clearOutput();
+	player.gems -= 100;
+	CampStatsAndResources.MetalPieces -= 10;
+	player.destroyItems(consumables.SALAMFW, 5);
+	outputText("You get to work spending the necessary time to craft your newest toy. After eight hours your brand new Fire Grenade II is ready.\n\n");
+	player.createKeyItem("Fire Grenade II", 0, 0, 0, 0);
+	player.removeKeyItem("Blueprint - Fire Grenade II");
+	player.removeKeyItem("Fire Grenade");
+	statScreenRefresh();
+	doNext(camp.returnToCampUseEightHours);
+}
+public function tripxiWorkshopFireGrenade():void {
+	clearOutput();
+	player.gems -= 100;
+	CampStatsAndResources.MetalPieces -= 2;
+	player.destroyItems(consumables.SALAMFW, 1);
+	outputText("You get to work spending the necessary time to craft your newest toy. After four hours your brand new Fire Grenade is ready.\n\n");
+	player.createKeyItem("Fire Grenade", 0, 0, 0, 0);
+	player.removeKeyItem("Blueprint - Fire Grenade");
+	statScreenRefresh();
+	doNext(camp.returnToCampUseFourHours);
+}
+public function tripxiWorkshopStunGrenadeII():void {
+	clearOutput();
+	player.gems -= 100;
+	CampStatsAndResources.MetalPieces -= 10;
+	player.destroyItems(consumables.VOLTTOP, 5);
+	player.destroyItems(useables.RPLASMA, 1);
+	outputText("You get to work spending the necessary time to craft your newest toy. After eight hours your brand new Stun Grenade II is ready.\n\n");
+	player.createKeyItem("Stun Grenade II", 0, 0, 0, 0);
+	player.removeKeyItem("Blueprint - Stun Grenade II");
+	player.removeKeyItem("Stun Grenade");
+	statScreenRefresh();
+	doNext(camp.returnToCampUseEightHours);
+}
+public function tripxiWorkshopStunGrenade():void {
+	clearOutput();
+	player.gems -= 100;
+	CampStatsAndResources.MetalPieces -= 2;
+	player.destroyItems(consumables.VOLTTOP, 1);
+	outputText("You get to work spending the necessary time to craft your newest toy. After four hours your brand new Stun Grenade is ready.\n\n");
+	player.createKeyItem("Stun Grenade", 0, 0, 0, 0);
+	player.removeKeyItem("Blueprint - Stun Grenade");
+	statScreenRefresh();
+	doNext(camp.returnToCampUseFourHours);
 }
 
-private function tripxiShopTalkGoblins():void {
+private function tripxiEngineeringBuyBlueprint(cost:Number, itemName:String):void {
 	clearOutput();
-	outputText("Just what was the goblin civilisation like? You haven't found ");/*(if found a goblin city in some expac) much save for (end of cut)*/outputText("a single hint of their city this far while traveling Mareth.\n\n");
-	outputText("\"<i>By all means, goblin civilisation was THE thing. You guys marvel at magic swords and spells, but we had the true power of technology on our side. I wouldn't want to mean offense, but a lot of you people might as well be savages and barbarians. When the demons knocked to our doors, we laughed them off or blasted them with artillery. However, the demons aren't stupid. They knew that if they couldn't get in, they could destroy us through our surounding. Inevitably, it was not the demons themselves who toppled down the goblin civilisation, but contaminated waters. Our geniuses fell into madness or breeding frenzy, and not long after everything our society meant fell into a race  to see who could breed faster. There may be only a few goblins left on Mareth who are not obsessed with getting impregnated by everything. You're looking at one of them.</i>\"");
-	doNext(tripxiShopTalk, 2);
+	if (player.gems >= cost) {
+		player.gems -= cost;
+		outputText("Ah? These? Yea in between my work on researching firearms I've been working on explosives. Those can be yours for a few five hundreds how about it? Sure enough even a dumb non goblin like you could craft these.\n\n");
+		outputText("<b>Gained Key Item: Blueprint - "+itemName+"!</b>");
+		player.createKeyItem("Blueprint - "+itemName+"", 0, 0, 0, 0);
+		statScreenRefresh();
+		doNext(tripxiShopInside);
+	}
+	else tripxiEngineeringBuyBlueprintNotEnoughGems();
+	
 }
-private function tripxiShopTalkTelAdre():void {
-	clearOutput();
-	outputText("Last you checked, the majority of the goblin population has gone prego freak mode. How has she been accepted in Tel Adre?\n\n\"<i>It's simple, I've simply always been there! ");
-	outputText("While my peers were busy drinking drugged water back at our capital, I was managing my shop here. I haven't been making weapon until now though, only explosives. I began working as a standard issue firearm vendor when Tel'adre guards requested I procure them pistols. Ain't like those idiots can use anything more advanced than that anyway.</i>\"\n\n");
-	doNext(tripxiShopTalk, 2);
-}
-private function tripxiShopTalkSmallSelection():void {
-	clearOutput();
-	outputText("You look up her inventory and note that she only sell basic firearms.\n\n");
-	outputText("\"<i>Well, yes, I do? That's because the tech has been lost when our civilisation fell. No one makes guns anymore, and I barely got the base knowledge to assemble these pieces of junk. Primitive, isn't it? We had stuff ranging from bomb launchers to gatling guns, and all of it is now lost god knows were in the waste of Mareth. This said, you're an adventurer, aren't you?</i>\"\n\n");
-	outputText("You nod to that, you are indeed an adventuring hero, the champion of Ingnam to be exact.\n\n");
-	outputText("\"<i>Yea sure whatever this just means, you could help me with something. Fact is, goblin technology is lost, but not gone. There are good odds that while traveling around Mareth, you may run into old gun parts. Gather them and bring them back here. I will study them and create brand-new firearms for you.</i>\"\n\n");
-	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns1, 0, 0, 0, 0);
-	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns2, 0, 0, 0, 0);
-	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns3, 0, 0, 0, 0);
-	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns4, 0, 0, 0, 0);
-	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns5, 0, 0, 0, 0);
-	player.createStatusEffect(StatusEffects.TelAdreTripxiGuns6, 0, 0, 0, 0);
-	player.addStatusValue(StatusEffects.TelAdreTripxi, 1, 1);
-	doNext(tripxiShopTalk, 2);
+private function tripxiEngineeringBuyBlueprintNotEnoughGems():void {
+	outputText("You would like to buy this item but you're short on gems...\n\n");
+	doNext(tripxiShopInside);
 }
 
 //[Invetigate]
@@ -1672,7 +1843,7 @@ private function weightLifting():void {
 		if (flags[kFLAGS.SEX_MACHINE_STATUS] >= 0) {
 			addButton(0,"«Machine»",sexMachine.exploreShowers);
 			addButton(1,"Showers",brooke.repeatChooseShower);
-			addButton(4, "Leave", stopGoingBackEveryHourGymCheck);
+			addButton(2,"Again", stopGoingBackEveryHourGymCheck).hint("Train again without leaving gym.");
 		} else doYesNo(brooke.repeatChooseShower,stopGoingBackEveryHourGymCheck);
 	}
 	else doYesNo(sexMachine.exploreShowers,stopGoingBackEveryHourGymCheck);
@@ -1762,20 +1933,15 @@ private function goJogging():void {
 		if (flags[kFLAGS.SEX_MACHINE_STATUS] >= 0) {
 			addButton(0,"''Showers''",sexMachine.exploreShowers);
 			addButton(1,"Showers",brooke.repeatChooseShower);
-			addButton(4, "Leave", stopGoingBackEveryHourGymCheck);
+			addButton(2,"Again", stopGoingBackEveryHourGymCheck).hint("Train again without leaving gym.");
 		} else doYesNo(brooke.repeatChooseShower,stopGoingBackEveryHourGymCheck);
 	}
 	else doYesNo(sexMachine.exploreShowers,stopGoingBackEveryHourGymCheck);
 }
 
 public function stopGoingBackEveryHourGymCheck():void{
-	if (CoC.instance.model.time.hours + 1 < 21){
-		cheatTime(1);
-		gymDesc();
-	}
-	else{
-		camp.returnToCampUseOneHour();
-	}
+	cheatTime(1);
+	gymDesc();
 }
 
 private var justRejectedLuna:Boolean = false;
@@ -1872,7 +2038,7 @@ public function meetingLunaCamp():void {
 	outputText("(<b>Luna has been added to the Followers menu!</b>)\n\n");
 	if (player.hasKeyItem("Radiant shard") >= 0) player.addKeyValue("Radiant shard",1,+1);
 	else player.createKeyItem("Radiant shard", 1,0,0,0);
-	outputText("\n\n<b>Before fully settling in your camp as if remembering something Luna pulls a shining shard from her inventory and hand it over to you as a gift. You acquired a Radiant shard!</b>");
+	outputText("\n\n<b>Before fully settling in your camp, as if remembering something, Luna pulls a shining shard from her inventory and hands it over to you as a gift. You acquired a Radiant shard!</b>");
 	flags[kFLAGS.LUNA_FOLLOWER] = 4;
 	flags[kFLAGS.LUNA_LVL_UP] = 0;
 	flags[kFLAGS.LUNA_DEFEATS_COUNTER] = 0;

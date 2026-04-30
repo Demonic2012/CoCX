@@ -279,7 +279,7 @@ public class HornsTransformations extends MutationsHelper {
 				if (player.horns.type == Horns.COW_MINOTAUR || player.horns.type == Horns.NONE) {
 					if (player.horns.type == Horns.COW_MINOTAUR) {
 						if (player.horns.count < 5) {
-							desc += "Your small horns get a bit bigger, stopping as medium sized nubs.";
+							desc += "Your small horns get a bit bigger, stopping as medium-sized nubs.";
 							player.horns.count += 1 + rand(2);
 						}
 					}
@@ -595,6 +595,101 @@ public class HornsTransformations extends MutationsHelper {
 			// is present
 			function (): Boolean {
 				return player.horns.type === Horns.ARCH_IMP;
+			}
+	);
+
+	public const HornsShroomHeadcap: Transformation = new SimpleTransformation("Shroom Headcap Horns",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "Thinking becomes increasingly harder as a small shroom cap grows up your head, your hair strands turning white like those of a shroom girl. Breed… fuck… spread… this is all your mind needs to think about right now, everything else is inconsequential.\n\nMany parts of your body changes starting with your back which grows a beautiful, long, organic skirt, not unlike a shroom frill to match ";
+				desc += "the color of the small growing mushroom on your head as your arms grow frilled sleeves similar to those on ankles. Completing this setup, a frilly necklace and bra grows on your body as well. By the sixth ejaculation, you look just like a shroom girl. Well not exactly like her yet, the cap on your head is way smaller and there's still a last part of you that has to change first.\n\nYou cum hard onto the ground as ";
+				if (player.hasVagina()) desc += "your clit suddenly engorges, growing longer and fatter into a mushroom-like shape. It seems your clit grew into a mushroom-like penis that slides right out of your vagina";
+				if (player.gender > 2) desc += ". Meanwhile ";
+				if (player.hasCock()) desc += "your cock suddenly throbs as it undergoes changes, the crown and shape changing to match that of a mushroom";
+				desc += ". You have successfully used your metamorph ability to transform into a mushroom person again. <b>you now have an Shroom Headcap.</b>";
+
+				player.horns.count = 2;
+
+				player.horns.type = Horns.SHROOM_HEADCAP;
+				if (doOutput) outputText(desc);
+			},
+			// is present
+			function (): Boolean {
+				return player.horns.type === Horns.SHROOM_HEADCAP;
+			}
+	);
+
+	public const HornsAutomataHeadset: Transformation = new SimpleTransformation("Automata Headset Horns",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				player.horns.count = 2;
+
+				player.horns.type = Horns.HEADSET;
+				if (doOutput) outputText(desc);
+			},
+			// is present
+			function (): Boolean {
+				return player.horns.type === Horns.HEADSET;
+			}
+	);
+
+	public const HornsRam: Transformation = new SimpleTransformation("Ram Horns",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				TransformationUtils.applyTFIfNotPresent(transformations.HornsNone, doOutput);
+
+				desc += "You writhe in pain as two bony lumps begin to push out of the side of your head. The transformation gives you a hell of a headache, but as soon as it is over, you feel for the two large spiraling horns on your head similar to those of a ram, and unsurprisingly, they are as sensitive as they are sturdy. Woe to whoever is going to be at the end of your charging attacks now that you sport those. <b>You now have heavy ram horns!</b>";
+
+				player.horns.count = 2;
+				player.horns.type = Horns.RAM;
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(HornsMem.getMemory(HornsMem.RAM));
+			},
+			// is present
+			function (): Boolean {
+				return player.horns.type === Horns.RAM;
+			}
+	);
+
+	public const HornsVerdantRam: Transformation = new SimpleTransformation("Verdant Ram Horns",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "You feel a tingling sensation on your scalp as something grows from your head and crawls along your horns and you touch them tentatively discovering vines have grown along their length. <b>You now have verdant rams horns!</b>";
+
+				player.horns.count = 2;
+				player.horns.type = Horns.VERDANT_RAM;
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(HornsMem.getMemory(HornsMem.VERDANT_RAM));
+			},
+			// is present
+			function (): Boolean {
+				return player.horns.type === Horns.VERDANT_RAM;
+			}
+	);
+
+	public const HornsHollow: Transformation = new SimpleTransformation("Hollow Horns",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				desc += "You writhe in pain as two bony lumps begin to push out of the side of your head. The transformation makes your soulforce flare, and as it does the spiritual flames seem to become liquid then solid. They connect to the bony stumps on your skull. <b>A zigzag pattern forms, as soon as it is over, you feel for the two large Hollow Horn!</b>";
+
+				player.horns.count = 4;
+				player.horns.type = Horns.HOLLOW;
+				if (doOutput) outputText(desc);
+				Metamorph.unlockMetamorph(HornsMem.getMemory(HornsMem.HOLLOW));
+			},
+			// is present
+			function (): Boolean {
+				return player.horns.type === Horns.HOLLOW;
 			}
 	);
 	/*

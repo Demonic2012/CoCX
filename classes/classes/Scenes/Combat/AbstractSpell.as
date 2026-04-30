@@ -222,6 +222,7 @@ public class AbstractSpell extends CombatAbility {
 		}
 		if (player.armor == armors.ELFDRES && player.isElf()) lustDmg *= 2;
 		if (player.armor == armors.FMDRESS && player.isWoodElf()) lustDmg *= 2;
+		if (player.weapon == weapons.QULIPOTH) lustDmg *= 1.5;
 
 		if (applyOmnicaster && (category != CAT_SPELL_GREEN || !player.hasPerk(PerkLib.ArcaneVenom))) {
 			lustDmg *= omnicasterDamageFactor();
@@ -265,6 +266,10 @@ public class AbstractSpell extends CombatAbility {
 					if (player.hasPerk(PerkLib.BloodMastery)) damage *= 2;
 					damage *= combat.bloodDamageBoostedByDao();
 				}
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment3)) {
+					damage = calcEclypseMod(damage, casting);
+					damage *= damageTypeDarknessAdd();
+				}
 				break;
 			}
 			case DamageType.FIRE: {
@@ -277,61 +282,108 @@ public class AbstractSpell extends CombatAbility {
 				}
 				if (player.statStore.hasBuff("AjidAji")) damage *= 1.3;
 				if (Forgefather.channelInlay == "ruby" && Forgefather.refinement == 3) damage *= 1.25
-				if (Forgefather.channelInlay == "ruby" && Forgefather.refinement == 4) damage *= 1.5
+				if (Forgefather.channelInlay == "ruby" && Forgefather.refinement >= 4) damage *= 1.5
 				if (Forgefather.gem == "ruby" && Forgefather.refinement == 3) damage *= 1.12
-				if (Forgefather.gem == "ruby" && Forgefather.refinement == 4) damage *= 1.25
+				if (Forgefather.gem == "ruby" && Forgefather.refinement >= 4) damage *= 1.25
 				damage *= combat.fireDamageBoostedByDao();
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment3)) {
+					damage = calcEclypseMod(damage, casting);
+					damage *= damageTypeDarknessAdd();
+				}
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment4)) {
+					damage = calcGlacialMod(damage, casting);
+					damage *= damageTypeIceAdd();
+				}
 				break;
 			}
 			case DamageType.LIGHTNING: {
 				damage = calcVoltageMod(damage, casting);
 				if (player.hasPerk(PerkLib.ElectrifiedDesire)) damage *= (1 + (player.lust100 * 0.01));
 				if (Forgefather.channelInlay == "topaz" && Forgefather.refinement == 3) damage *= 1.25
-				if (Forgefather.channelInlay == "topaz" && Forgefather.refinement == 4) damage *= 1.5
+				if (Forgefather.channelInlay == "topaz" && Forgefather.refinement >= 4) damage *= 1.5
 				if (Forgefather.gem == "topaz" && Forgefather.refinement == 3) damage *= 1.12
-				if (Forgefather.gem == "topaz" && Forgefather.refinement == 4) damage *= 1.25
+				if (Forgefather.gem == "topaz" && Forgefather.refinement >= 4) damage *= 1.25
 				damage *= combat.lightningDamageBoostedByDao();
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment3)) {
+					damage = calcEclypseMod(damage, casting);
+					damage *= damageTypeDarknessAdd();
+				}
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment4)) {
+					damage = calcGlacialMod(damage, casting);
+					damage *= damageTypeIceAdd();
+				}
 				break;
 			}
 			case DamageType.ICE: {
 				damage = calcGlacialMod(damage, casting);
-				if (combat.wearingWinterScarf()) damage *= 1.2;
-				if (player.armor == armors.BLIZZ_K) damage *= 1.5;
-				if (player.headJewelry == headjewelries.SNOWFH) damage *= 1.3;
-				if (Forgefather.channelInlay == "sapphire" && Forgefather.refinement == 3) damage *= 1.25
-				if (Forgefather.channelInlay == "sapphire" && Forgefather.refinement == 4) damage *= 1.5
-				if (Forgefather.gem == "sapphire" && Forgefather.refinement == 3) damage *= 1.12
-				if (Forgefather.gem == "sapphire" && Forgefather.refinement == 4) damage *= 1.25
-				damage *= combat.iceDamageBoostedByDao();
+				damage *= damageTypeIceAdd();
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment3)) {
+					damage = calcEclypseMod(damage, casting);
+					damage *= damageTypeDarknessAdd();
+				}
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment4)) damage *= 1.5;
 				break;
 			}
 			case DamageType.DARKNESS: {
 				damage = calcEclypseMod(damage, casting);
-				if (Forgefather.channelInlay == "amethyst" && Forgefather.refinement == 3) damage *= 1.25
-				if (Forgefather.channelInlay == "amethyst" && Forgefather.refinement == 4) damage *= 1.5
-				if (Forgefather.gem == "amethyst" && Forgefather.refinement == 3) damage *= 1.12
-				if (Forgefather.gem == "amethyst" && Forgefather.refinement == 4) damage *= 1.25
-				damage *= combat.darknessDamageBoostedByDao();
+				damage *= damageTypeDarknessAdd();
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment4)) {
+					damage = calcGlacialMod(damage, casting);
+					damage *= damageTypeIceAdd();
+				}
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment3)) damage *= 1.5;
 				break;
 			}
 			case DamageType.WATER: {
 				damage = calcTideMod(damage, casting);
 				damage *= combat.waterDamageBoostedByDao();
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment3)) {
+					damage = calcEclypseMod(damage, casting);
+					damage *= damageTypeDarknessAdd();
+				}
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment4)) {
+					damage = calcGlacialMod(damage, casting);
+					damage *= damageTypeIceAdd();
+				}
 				break;
 			}
 			case DamageType.WIND: {
 				damage = calcGaleMod(damage, casting);
 				damage *= combat.windDamageBoostedByDao();
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment3)) {
+					damage = calcEclypseMod(damage, casting);
+					damage *= damageTypeDarknessAdd();
+				}
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment4)) {
+					damage = calcGlacialMod(damage, casting);
+					damage *= damageTypeIceAdd();
+				}
 				break;
 			}
 			case DamageType.EARTH: {
 				damage = calcQuakeMod(damage, casting);
 				damage *= combat.earthDamageBoostedByDao();
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment3)) {
+					damage = calcEclypseMod(damage, casting);
+					damage *= damageTypeDarknessAdd();
+				}
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment4)) {
+					damage = calcGlacialMod(damage, casting);
+					damage *= damageTypeIceAdd();
+				}
 				break;
 			}
 			case DamageType.ACID: {
 				damage = calcCorrosionMod(damage, casting);
 				damage *= combat.acidDamageBoostedByDao();
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment3)) {
+					damage = calcEclypseMod(damage, casting);
+					damage *= damageTypeDarknessAdd();
+				}
+				if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment4)) {
+					damage = calcGlacialMod(damage, casting);
+					damage *= damageTypeIceAdd();
+				}
 				break;
 			}
 			case DamageType.TRUE: {
@@ -341,13 +393,13 @@ public class AbstractSpell extends CombatAbility {
 		if (monster != null) {
 			if (hasTag(TAG_AOE) && (monster.plural || monster.hasPerk(PerkLib.EnemyGigantType) || monster.hasPerk(PerkLib.EnemyColossalType))) damage *= 5;
 			if (category == CAT_SPELL_WHITE || category == CAT_SPELL_DIVINE) {
-				if (player.hasPerk(PerkLib.DivineKnowledge) && monster.cor > 65) {
+				if (player.hasPerk(PerkLib.DivineKnowledge) && monster.cor > 35) {
 					damage *= 1.2;
 				}
 				damage *= pureMagicPerkFactor(monster);
 			}
 			if (category == CAT_SPELL_BLACK || category == CAT_SPELL_HEX) {
-				if (player.hasPerk(PerkLib.HexKnowledge) && monster.cor < 34) {
+				if (player.hasPerk(PerkLib.HexKnowledge) && monster.cor < -35) {
 					damage *= 1.2;
 				}
 				damage *= corruptMagicPerkFactor(monster);
@@ -356,8 +408,73 @@ public class AbstractSpell extends CombatAbility {
 		if (applyOmnicaster) {
 			damage *= omnicasterDamageFactor();
 		}
-		
+		if (player.weapon == weapons.ANCIENTO) {
+			damage *= 1.25;
+		}
+		damage *= (1 + (0.01 * combat.masteryMagicCombat()));
 		return Math.round(damage);
+	}
+	private function damageTypeDarknessAdd():Number {
+		var dTDA:Number = 1;
+		if (Forgefather.channelInlay == "amethyst" && Forgefather.refinement == 3) dTDA *= 1.25
+		if (Forgefather.channelInlay == "amethyst" && Forgefather.refinement >= 4) dTDA *= 1.5
+		if (Forgefather.gem == "amethyst" && Forgefather.refinement == 3) dTDA *= 1.12
+		if (Forgefather.gem == "amethyst" && Forgefather.refinement >= 4) dTDA *= 1.25
+		dTDA *= combat.darknessDamageBoostedByDao();
+		return dTDA;
+	}
+	private function damageTypeIceAdd():Number {
+		var dTIA:Number = 1;
+		if (combat.wearingWinterScarf()) dTIA *= 1.2;
+		if (player.armor == armors.BLIZZ_K) dTIA *= 1.5;
+		if (player.headJewelry == headjewelries.SNOWFH) dTIA *= 1.3;
+		if (Forgefather.channelInlay == "sapphire" && Forgefather.refinement == 3) dTIA *= 1.25
+		if (Forgefather.channelInlay == "sapphire" && Forgefather.refinement >= 4) dTIA *= 1.5
+		if (Forgefather.gem == "sapphire" && Forgefather.refinement == 3) dTIA *= 1.12
+		if (Forgefather.gem == "sapphire" && Forgefather.refinement >= 4) dTIA *= 1.25
+		dTIA *= combat.iceDamageBoostedByDao();
+		return dTIA;
+	}
+	
+	public function damageCalculationTier1Spells(randomize:Boolean=true):Number {
+		var dCT1S:Number = 0;
+		dCT1S += 8 * scalingBonusIntelligence(randomize);
+		dCT1S += 2 * scalingBonusWisdom(randomize);
+		if (player.perkv1(IMutationsLib.MyconidCollectiveConsciousnessIM) >= 1) {
+			dCT1S += Math.round(scalingBonusToughness() * 0.1 * player.perkv1(IMutationsLib.MyconidCollectiveConsciousnessIM));
+			if (player.perkv1(IMutationsLib.MyconidCollectiveConsciousnessIM) >= 4) dCT1S += Math.round(scalingBonusToughness() * 0.1);
+		}
+		if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment11)) dCT1S += 5 * scalingBonusLibido(randomize);
+		return dCT1S;
+	}
+	public function damageCalculationTier2Spells(randomize:Boolean=true):Number {
+		var dCT2S:Number = 0;
+		dCT2S += 24 * scalingBonusIntelligence(randomize);
+		dCT2S += 6 * scalingBonusWisdom(randomize);
+		if (player.perkv1(IMutationsLib.MyconidCollectiveConsciousnessIM) >= 1) {
+			dCT2S += Math.round(scalingBonusToughness() * 0.1 * player.perkv1(IMutationsLib.MyconidCollectiveConsciousnessIM));
+			if (player.perkv1(IMutationsLib.MyconidCollectiveConsciousnessIM) >= 4) dCT2S += Math.round(scalingBonusToughness() * 0.1);
+		}
+		if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment11)) dCT2S += 15 * scalingBonusLibido(randomize);
+		return dCT2S;
+	}
+	public function damageCalculationTier3Spells(randomize:Boolean=true):Number {
+		var dCT3S:Number = 0;
+		dCT3S += 64 * scalingBonusIntelligence(randomize);
+		dCT3S += 16 * scalingBonusWisdom(randomize);
+		if (player.perkv1(IMutationsLib.MyconidCollectiveConsciousnessIM) >= 1) {
+			dCT3S += Math.round(scalingBonusToughness() * 0.1 * player.perkv1(IMutationsLib.MyconidCollectiveConsciousnessIM));
+			if (player.perkv1(IMutationsLib.MyconidCollectiveConsciousnessIM) >= 4) dCT3S += Math.round(scalingBonusToughness() * 0.1);
+		}
+		if (player.hasStatusEffect(StatusEffects.PhylacteryEnchantment11)) dCT3S += 40 * scalingBonusLibido(randomize);
+		return dCT3S;
+	}
+	
+	public function daaamageaddons(dmg:Number):Number {
+		var daaamageaddon:Number = dmg;
+		if (player.hasPerk(PerkLib.Spellsong) && player.lust > player.lust100 * 0.35) daaamageaddon += combat.scalingBonusLibido();
+		if (player.weaponRangeName == "Artemis") daaamageaddon *= 1.5;
+		return daaamageaddon;
 	}
 	
 	public static function corruptMagicPerkFactor(monster:Monster):Number {
@@ -402,16 +519,16 @@ public class AbstractSpell extends CombatAbility {
 	}
     
     public static function omnicasterDamageFactor_osc():Number {
-		if ((player.isStaffTypeWeapon() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.OffensiveStaffChanneling)) {
-			if (player.isPartiallyStaffTypeWeapon()) return 0.8;
+		if ((player.isStaffTypeWeapon() || player.weapon.isWandType() || player.weaponOff.isWandType() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.OffensiveStaffChanneling)) {
+			if (player.weapon.isWandType() || player.weaponOff.isWandType() || player.isPartiallyStaffTypeWeapon()) return 0.8;
 			else return 0.7;
 		}
         else return 0.0;
     }
 	
 	public static function omnicasterRepeatCount_osc():int {
-		if ((player.isStaffTypeWeapon() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.OffensiveStaffChanneling)) {
-			if (player.isPartiallyStaffTypeWeapon()) return 2;
+		if ((player.isStaffTypeWeapon() || player.weapon.isWandType() || player.weaponOff.isWandType() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.OffensiveStaffChanneling)) {
+			if (player.weapon.isWandType() || player.weaponOff.isWandType() || player.isPartiallyStaffTypeWeapon()) return 2;
 			else return 3;
 		}
         else return 1;
@@ -424,7 +541,7 @@ public class AbstractSpell extends CombatAbility {
     }
 	
 	public static function omnicasterDamageFactor():Number {
-        if ((player.isStaffTypeWeapon() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.OffensiveStaffChanneling)) {
+        if ((player.isStaffTypeWeapon() || player.weapon.isWandType() || player.weaponOff.isWandType() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.OffensiveStaffChanneling)) {
             if (player.hasPerk(PerkLib.Omnicaster) && !oscOverGazer())
                 return omnicasterDamageFactor_gazer() * 1.2;
             else
@@ -440,7 +557,7 @@ public class AbstractSpell extends CombatAbility {
 	
 	public static function omnicasterRepeatCount():int {
         if (!player.hasPerk(PerkLib.Omnicaster) &&
-                !(player.isStaffTypeWeapon() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.OffensiveStaffChanneling))
+                !(player.isStaffTypeWeapon() || player.weapon.isWandType() || player.weaponOff.isWandType() || player.isPartiallyStaffTypeWeapon()) && player.hasPerk(PerkLib.OffensiveStaffChanneling))
             return 1;
         return oscOverGazer() ? omnicasterRepeatCount_osc() : omnicasterRepeatCount_gazer();
 	}
@@ -476,8 +593,8 @@ public class AbstractSpell extends CombatAbility {
 	protected function postLustSpellEffect(hits:int):void {
 		if (player.hasPerk(PerkLib.EromancyMaster)) combat.teaseXP((1 + combat.bonusExpAfterSuccesfullTease()) * hits);
 		if (player.hasPerk(PerkLib.VerdantLeech)) {
-			if (monster.lustVuln != 0 && !monster.hasPerk(PerkLib.EnemyTrueAngel)) monster.lustVuln += hits * 0.025;
-			HPChange(Math.round(player.maxHP() * 0.01 * hits), false);
+			if (monster.lustVuln != 0 && !player.enemiesImmuneToLustResistanceDebuff()) monster.lustVuln += hits * 0.025;
+			HPChange(Math.round(player.maxHP() * 0.01 * hits), false, false);
 		}
 	}
 
@@ -552,7 +669,9 @@ public class AbstractSpell extends CombatAbility {
 		}
 		//Determine if critical hit!
 		var crit:Boolean = false;
-		var critChance:int = 5 + combatMagicalCritical();
+		var critChance:int = 5;
+		critChance += combatMagicalCritical();
+		critChance += combatSpellsCritical();
         if (player.perkv1(IMutationsLib.ElvishPeripheralNervSysIM) >= 4) critChance += 10;
 		if (player.perkv1(IMutationsLib.GazerEyesIM) >= 3) critChance += 10;
 		if (player.perkv1(IMutationsLib.GazerEyesIM) >= 4) critChance += 25;
@@ -609,6 +728,7 @@ public class AbstractSpell extends CombatAbility {
 			outputText(" damage.");
 			if (crit) outputText(" <b>*Critical Hit!*</b>");
 		}
+		combat.spellcastingMasteryXP(combat.spellcastingMasteryEXPgained(crit));
 		return damage*repeats;
 	}
 	

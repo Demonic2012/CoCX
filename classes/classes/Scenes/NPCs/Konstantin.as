@@ -179,7 +179,7 @@ public class Konstantin extends NPCAwareContent
 			outputText("(<b>Konstantin has been added to the Followers menu!</b>)\n\n");
 			if (player.hasKeyItem("Radiant shard") >= 0) player.addKeyValue("Radiant shard",1,+1);
 			else player.createKeyItem("Radiant shard", 1,0,0,0);
-			outputText("\n\n<b>Before fully settling in your camp as if remembering something Konstantin pulls a shining shard from his inventory and hand it over to you as a gift. You acquired a Radiant shard!</b>");
+			outputText("\n\n<b>Before fully settling in your camp, as if remembering something, Konstantin pulls a shining shard from his inventory and hands it over to you as a gift. You acquired a Radiant shard!</b>");
 			flags[kFLAGS.KONSTANTIN_FOLLOWER] = 2;
 			explorer.stopExploring();
 			doNext(camp.returnToCampUseTwoHours);
@@ -345,7 +345,7 @@ public class Konstantin extends NPCAwareContent
 					outputText("You show him the pieces of glowing-white, thick bark.\n\n");
 					outputText("\"<i>Funny thing.</i>\" Konstantin retorts. \"<i>I heard a feminine voice in my head asking me to craft a thing out of this. Voice said that she was Marae, and that she gave it as a reward to a brave warrior or something.</i>\"\n\n");
 					outputText("Really?\n\n");
-					outputText("\"<i>Yeah. Listen, I usually don’t buy the deities nonsense, but If you’d like, I could do as the voice asked and try to carve an armour out of this thing. It seems sturdy and flexible enough for most battlefields.</i>\"\n\n");
+					outputText("\"<i>Yeah. Listen, I usually don’t buy the deities nonsense, but If you’d like, I could do as the voice asked and try to carve an armor out of this thing. It seems sturdy and flexible enough for most battlefields.</i>\"\n\n");
 				}
 				if (player.hasItem(useables.TBAPLAT)) {
 					outputText("You show him the pieces of thick bark with tentacles attached.\n\n");
@@ -790,6 +790,9 @@ public class Konstantin extends NPCAwareContent
 			addButton(1, "Sword", KonstantinCraftingYggdrasilItems2, 2, null, null, weapons.WDBLADE.description);
 			addButton(2, "Bow", KonstantinCraftingYggdrasilItems2, 3, null, null, weaponsrange.WARDBOW.description);
 			addButton(3, "Staff", KonstantinCraftingYggdrasilItems2, 4, null, null, weapons.WDSTAFF.description);
+			//4 spear / dagger / claws(gauntlet) / massive sized sword / shield (nullify next non phys/psionic/ture dmg attack) / axe
+			//5
+			//6
 			addButton(14, "Back", KonstantinMainCampMenu);
 		}
 		private function KonstantinCraftingYggdrasilItems2(yggdrasilType:int):void {
@@ -1131,7 +1134,7 @@ public class Konstantin extends NPCAwareContent
 			clearOutput();
 			var x:int = player.cockThatFits(50, "length");
 			outputText("Lying on bed next of the bear-morph, the arousal running wild through your loins makes its presence painfully obvious as your [cock] arises at full length. Seems like having his large furred body rubbing against yours naked is too much. While still locked in the furred embrace, a familiar feeling deep down your balls appears, you rock hard erection bubbles pre in excitement. Konstantin notices that, and after giving it some tentative strokes with one of his huge hands, he offers:\n\n");
-			outputText("\"<i>You’re quite pent up, " + player.mf("boy", "girl") + ". Or is I’m too much to handle?</i>\" he light-heartedly jokes, his hand still rubbing your cock.\n\n");
+			outputText("\"<i>You’re quite pent up, " + player.mf("boy", "girl") + ". Or am I too much to handle?</i>\" he light-heartedly jokes, his hand still rubbing your cock.\n\n");
 			outputText("Your only answer is an overstimulated gasp.\n\n");
 			outputText("\"<i>Then we’ll have to fix that.</i>\" he says with a toothy smile. \"<i>Besides, ");
 			if (player.cocks[x].cockLength >= 12) outputText("it’s hard to look at this monster without having the desire of choke on it");
@@ -1151,7 +1154,7 @@ public class Konstantin extends NPCAwareContent
 			outputText(".\n\nSlowly, he takes your saliva-coated penis out of his mouth, but before you can protest, he slides it in again sucking softly. He repeats this process, your cock going in and out of his mouth, while your need to cum becomes overwhelming. Suddenly, something massive starts prodding you butthole. When you look up to see what is, you manage to see how Konstantin slides one of his fingers inside and starts fingering you. The dual assault more of than you can handle, and you find yourself cumming, your ");
 			if (player.hasBalls()) outputText("balls");
 			else outputText("cock");
-			outputText(" unloading the barely-contained load throught your cumslit, torrent that is soon flooding the bear’s maw.\n\n");
+			outputText(" unloading the barely-contained load through your cumslit, torrent that is soon flooding the bear’s maw.\n\n");
 			if (player.cumQ() > 1500) {
 				outputText("Konstantin gulps down you seed with a bit of difficulty as your torrent of cums never seems to subside. When it finally does, the bear has gotten a little rounder from all the cum that he has drinked. Smiling, he gives your cockhead a final, slobbering kiss.\n\n");
 				outputText("\"<i>Whoa, I hadn't expected you to be so productive, in that area. Still, it was tasty.</i>\" the bear mutters, looking at his slightly larger belly.\n\n");
@@ -1216,7 +1219,7 @@ public class Konstantin extends NPCAwareContent
 			outputText("The oral ministrations that Konstantin is giving you soon prove to be too much, and you find yourself cumming, your ");
 			if (player.hasBalls()) outputText("balls");
 			else outputText("[cock]");
-			outputText(" unloading the barely-contained load throught your cumslit, torrent that is soon flooding the bear’s maw.\n\n");
+			outputText(" unloading the barely-contained load through your cumslit, torrent that is soon flooding the bear’s maw.\n\n");
 			if (player.cumQ() > 1500) outputText("He gulps down you seed with a bit of difficulty as your torrent of cums never seems to subside. When it finally does, the bear has gotten a little rounder from all the cum that he has drinked.");
 			else outputText("He gulps down your seed with ease, not letting any drop to waste. Once you’re done, he gives your cockhead some playful slurps.");
 			outputText("\n\nNot much later, Konstantin gasps and the way that his penis throbs inside you tell you that he’s close to coming. You slide most of his cock out, so only the head remains inside you, and play with his nuts, enticing them into flooding your mouth with his thick cream. You’re not left waiting too long, as his cumslit opens like a dam breaking, and a torrent of bear cum invades your mouth. Sealing your ");

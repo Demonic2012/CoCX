@@ -19,12 +19,12 @@ public class WhitefireSwiftcastSpell extends AbstractWhiteSpell {
 			TIMING_INSTANT,
 			[TAG_DAMAGING, TAG_FIRE, TAG_TIER1]
 		);
-		baseManaCost = 8;
+		baseManaCost = 30;
 	}
 	
 	override public function get isKnown():Boolean {
 		return player.hasStatusEffect(StatusEffects.KnowsWhitefire) &&
-				player.hasPerk(PerkLib.SwiftCasting);
+				(player.hasPerk(PerkLib.SwiftCasting) || player.hasPerk(PerkLib.FiendishConcentration));
 	}
 	
 	override public function calcCooldown():int {
@@ -32,8 +32,9 @@ public class WhitefireSwiftcastSpell extends AbstractWhiteSpell {
 	}
 	
 	public function calcDamage(monster:Monster, randomize:Boolean = true, casting:Boolean = true):Number {
-		var baseDamage:Number = 0.4 * scalingBonusIntelligence(randomize);
-		if (player.weaponRangeName == "Artemis") baseDamage *= 1.5;
+		var baseDamage:Number = 0.75 * damageCalculationTier1Spells(randomize);
+		daaamageaddons(baseDamage);
+		if (player.hasPerk(PerkLib.PureMagic) && (monster && monster.hasPerk(PerkLib.EnemyTrueDemon))) baseDamage *= 1.25;
 		if (player.armorName == "FrancescaCloak") baseDamage *= 2;
 		return adjustSpellDamage(baseDamage, DamageType.FIRE, CAT_SPELL_WHITE, monster, true, casting);
 	}

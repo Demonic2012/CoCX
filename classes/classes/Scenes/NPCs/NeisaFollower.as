@@ -65,11 +65,7 @@ public function neisaMorningPaycheckCall():void {
 		else {
 			outputText("Neisa sighs in disappointment when she realises you are short "+(10 - flags[kFLAGS.SPIRIT_STONES])+" spirit stones.\n\n");
 			outputText("\"<i>Why now, you forgot to go change gems for spirit stones? That's fine but until you pay the debt you owe me I'm staying back at the inn.</i>\"\n\n");
-			outputText("(<b>Neisa has been removed from Followers menu!</b>)\n\n");
-			if (flags[kFLAGS.PLAYER_COMPANION_1] == "Neisa") flags[kFLAGS.PLAYER_COMPANION_1] = "";
-			if (flags[kFLAGS.PLAYER_COMPANION_2] == "Neisa") flags[kFLAGS.PLAYER_COMPANION_2] = "";
-			flags[kFLAGS.NEISA_AFFECTION] = 0;
-			flags[kFLAGS.NEISA_FOLLOWER] = 6;
+			setNeisaDismissed();
 		}
 	}
 	else if (flags[kFLAGS.NEISA_FOLLOWER] == 16) {
@@ -125,19 +121,36 @@ public function neisaCampMenu():void {
 		if (flags[kFLAGS.PLAYER_COMPANION_1] == "Neisa" || flags[kFLAGS.PLAYER_COMPANION_2] == "Neisa") addButtonDisabled(1, "Spar", "You can't fight against her as long she's in your team.");
 		else addButton(1, "Spar", neisaSpar).hint("Do a quick battle with Neisa!");
 	}
-	//addButton(2, "Talk", talkWithValeria).hint("Discuss with Valeria.");
-	//if (player.lust >= 33) addButton(3, "Sex", followersValeriaSex).hint("Initiate sexy time with the armor-goo.");
+	//addButton(2, "Talk", neisaTalkMenuMain);
+	//if (player.lust >= 33) addButton(3, "Sex", neisaSexMenuMain);
 	if (player.hasPerk(PerkLib.BasicLeadership)) addButton(5, "Team", neisaHenchmanOption);
 	else addButtonDisabled(5, "Team", "You need to have at least Basic Leadership to form a team.");
+	addButton(12, "Dismiss", neisaDismiss).hint("Tell Neisa to go back to the inn.");
 	if (flags[kFLAGS.NEISA_FOLLOWER] >= 14) addButton(13, "Paycheck", neisaMorningPaycheckCall2).hint("Pay Neisa due payment (make sure to not lack spirit stones for it)");
 	addButton(14, "Back", camp.campFollowers);
+}
+
+private function setNeisaDismissed():void {
+	outputText("(<b>Neisa has been removed from Followers menu!</b>)\n\n");
+	if (flags[kFLAGS.PLAYER_COMPANION_1] == "Neisa") flags[kFLAGS.PLAYER_COMPANION_1] = "";
+	if (flags[kFLAGS.PLAYER_COMPANION_2] == "Neisa") flags[kFLAGS.PLAYER_COMPANION_2] = "";
+	flags[kFLAGS.NEISA_AFFECTION] = 0;
+	flags[kFLAGS.NEISA_FOLLOWER] = 6;
+}
+
+public function neisaDismiss():void {
+	clearOutput();
+	outputText("You tell Neisa you don't want her services anymore. She looks annoyed, but tries not to show it.\n\n");
+	outputText("After a few minutes, Neisa is gone already, along with her stuff. You breathe a sigh of relief knowing that your spirit stones won't be drained every morning.");
+	setNeisaDismissed();
+	doNext(playerMenu);
 }
 
 public function neisaAppearance():void {
 	clearOutput();
 	outputText("Neisa is a seven feet tall human or at least outwardly looks like one. Her black hair is short and straight and her green eyes always watchful. She could pass for a beautiful woman back home although in Mareth pretty faces are far from uncommon thanks to the whole demonic corruption problem turning every person into sexy temptresses or manly perfection.\n\n");
 	outputText("Neisa’s arms are well muscled despite their womanly shape to use a shield and any melee weapon, you suspect she does a rigorous training between jobs. Her legs are those of an adventurer who is used to walking for a long periods of time. She got a well shaped waistline with a girly ass that fits just fine in her armor.\n\n");
-	outputText("Similar to most of the impressive gravity defying sizes visible on most women on mareth she sports an I-cup set of breasts.\n\n");
+	outputText("Similar to most of the impressive gravity defying sizes visible on most women on Mareth she sports an I-cup set of breasts.\n\n");
 	outputText("You have yet to see what she hides under her semi skimpy armor but you suspect she got a pussy and no cock, making her a true female.");
 	menu();
 	addButton(14, "Back", neisaCampMenu);
@@ -167,47 +180,13 @@ public function neisaSparLost():void {
 private function LevelingHerself():void {
 	if (flags[kFLAGS.NEISA_DEFEATS_COUNTER] >= 1) flags[kFLAGS.NEISA_DEFEATS_COUNTER]++;
 	else flags[kFLAGS.NEISA_DEFEATS_COUNTER] = 1;
-	if (flags[kFLAGS.NEISA_DEFEATS_COUNTER] == 1 && flags[kFLAGS.NEISA_LVL_UP] == 1) {
-		if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers4)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers4, 4, player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction));
-		else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers4, 0, 0, 0, player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction));
-		flags[kFLAGS.NEISA_DEFEATS_COUNTER] = 0;
-		flags[kFLAGS.NEISA_LVL_UP] = 2;
-	}
-	if (flags[kFLAGS.NEISA_DEFEATS_COUNTER] == 2 && flags[kFLAGS.NEISA_LVL_UP] == 2) {
-		if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers4)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers4, 4, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 2));
-		else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers4, 0, 0, 0, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 2));
-		flags[kFLAGS.NEISA_DEFEATS_COUNTER] = 0;
-		flags[kFLAGS.NEISA_LVL_UP] = 3;
-	}
-	if (flags[kFLAGS.NEISA_DEFEATS_COUNTER] == 3 && flags[kFLAGS.NEISA_LVL_UP] == 3) {
-		if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers4)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers4, 4, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 3));
-		else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers4, 0, 0, 0, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 3));
-		flags[kFLAGS.NEISA_DEFEATS_COUNTER] = 0;
-		flags[kFLAGS.NEISA_LVL_UP] = 4;
-	}
-	if (flags[kFLAGS.NEISA_DEFEATS_COUNTER] == 4 && flags[kFLAGS.NEISA_LVL_UP] == 4) {
-		if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers4)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers4, 4, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 4));
-		else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers4, 0, 0, 0, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 4));
-		flags[kFLAGS.NEISA_DEFEATS_COUNTER] = 0;
-		flags[kFLAGS.NEISA_LVL_UP] = 5;
-	}
-	if (flags[kFLAGS.NEISA_DEFEATS_COUNTER] == 5 && flags[kFLAGS.NEISA_LVL_UP] == 5) {
-		if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers4)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers4, 4, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 5));
-		else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers4, 0, 0, 0, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 5));
-		flags[kFLAGS.NEISA_DEFEATS_COUNTER] = 0;
-		flags[kFLAGS.NEISA_LVL_UP] = 6;
-	}
-	if (flags[kFLAGS.NEISA_DEFEATS_COUNTER] == 6 && flags[kFLAGS.NEISA_LVL_UP] == 6) {
-		if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers4)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers4, 4, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 6));
-		else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers4, 0, 0, 0, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 6));
-		flags[kFLAGS.NEISA_DEFEATS_COUNTER] = 0;
-		flags[kFLAGS.NEISA_LVL_UP] = 7;
-	}
-	if (flags[kFLAGS.NEISA_DEFEATS_COUNTER] == 7 && flags[kFLAGS.NEISA_LVL_UP] == 7) {
-		if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers4)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers4, 4, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 7));
-		else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers4, 0, 0, 0, (player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * 7));
-		flags[kFLAGS.NEISA_DEFEATS_COUNTER] = 0;
-		flags[kFLAGS.NEISA_LVL_UP] = 8;
+	if (flags[kFLAGS.NEISA_LVL_UP] < 24) {
+		if (flags[kFLAGS.NEISA_DEFEATS_COUNTER] >= flags[kFLAGS.NEISA_LVL_UP]) {
+			if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers4)) player.addStatusValue(StatusEffects.CampSparingNpcsTimers4, 4, player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * flags[kFLAGS.NEISA_LVL_UP]);
+			else player.createStatusEffect(StatusEffects.CampSparingNpcsTimers4, 0, 0, 0, player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * flags[kFLAGS.NEISA_LVL_UP]);
+			flags[kFLAGS.NEISA_DEFEATS_COUNTER] = 0;
+			flags[kFLAGS.NEISA_LVL_UP]++;
+		}
 	}
 }
 
@@ -244,10 +223,10 @@ public function neisaHenchmanOption2(slot:Number = 1):void {
 		outputText("\"<i>Yeah sure, I will join, just make sure to share the loot.</i>\"\n\n");
 		outputText("Neisa is now following you around.\n\n");
 		var strNeisa:Number = 50;
-		var meleeAtkNeisa:Number = 12;
+		var meleeAtkNeisa:Number = 32;
 		if (flags[kFLAGS.NEISA_LVL_UP] >= 2) {
-			strNeisa += 15 * (flags[kFLAGS.NEISA_LVL_UP] - 1);
-			meleeAtkNeisa += 3 * (flags[kFLAGS.NEISA_LVL_UP] - 1);
+			strNeisa += 45 * (flags[kFLAGS.NEISA_LVL_UP] - 1);
+			meleeAtkNeisa += 24 * (flags[kFLAGS.NEISA_LVL_UP] - 1);
 		}
 		strNeisa *= (1 + (0.2 * player.newGamePlusMod()));
 		strNeisa = Math.round(strNeisa);

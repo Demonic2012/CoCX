@@ -12,6 +12,8 @@ import classes.BodyParts.LowerBody;
 import classes.GlobalFlags.kACHIEVEMENTS;
 import classes.GlobalFlags.kFLAGS;
 import classes.Scenes.Dungeons.RiverDungeon;
+import classes.Scenes.NPCs.DianaFollower;
+import classes.Scenes.NPCs.WaizAbiFollower;
 import classes.Scenes.SceneLib;
 import classes.internals.SaveableState;
 import classes.Scenes.API.MultiBuy;
@@ -66,7 +68,7 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 				EvelynnTavernTalks = valueOr(o["EvelynnTavernTalks"], false);
 				EvelynnCoreLimitBreakerCounter = valueOr(o["EvelynnCoreLimitBreakerCounter"], 0);
 				DianaTavernTalks1 = valueOr(o["DianaTavernTalks1"], false);
-				DianaTavernTalks2 = valueOr(o["DianaTavernTalks1"], false);
+				DianaTavernTalks2 = valueOr(o["DianaTavernTalks2"], false);
 			} else {
 				// loading from old save
 				resetState();
@@ -92,7 +94,7 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 			addButton(0, "Drink", drinkAlcohol);
 			addButton(2, "Felix", shadyPerson).hint("A strange two-headed chimera with two tails is sitting near the bar.");
 			addButton(4, "Adv.Guild", SceneLib.adventureGuild.BoardkeeperYangMain);
-			//addButton(5, "Monkey", SceneLib.waizabi.bimboMonkey).hint("You see a massive-breasted woman sitting at a table on your right. At first, she seems human, but as you look, her monkey tail flicks up, grabbing her drink and bringing it to her lips. Her body is heavily muscled, almost amazonian.");//monkey bimbo go go - Waiz'abi
+			if (WaizAbiFollower.WaizAbiState < 2) addButton(5, "Monkey", SceneLib.waizabi.bimboMonkey).hint("You see a massive-breasted woman sitting at a table on your right. At first, she seems human, but as you look, her monkey tail flicks up, grabbing her drink and bringing it to her lips. Her body is heavily muscled, almost amazonian.");
 			if (workHoursMadam() || workHoursTemptress()) addButton(6, "5/0/0", tableNo5);
 			else addButtonDisabled(6, "5/0/0", "Table No. 5 is curently empty.");
 			if (flags[kFLAGS.MICHIKO_FOLLOWER] < 1) addButton(8, "???", SceneLib.michikoFollower.firstMeetingMichiko).hint("You see a suspicious looking squirrel in one corner, nursing a drink and small bowl of peanuts.");
@@ -105,8 +107,13 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 			if (flags[kFLAGS.NEISA_FOLLOWER] == 3) addButton(10, "Neisa", NeisabutPCgotKOd);
 			if (flags[kFLAGS.NEISA_FOLLOWER] == 4 || flags[kFLAGS.NEISA_FOLLOWER] == 5) addButton(10, "Neisa", meetingNeisaPostDungeonExploration).hint("Neisa is sitting at a table enjoying one of the local drinks.");
 			if (flags[kFLAGS.NEISA_FOLLOWER] == 6) addButton(10, "Neisa", meetingNeisaPostDungeonExploration2).hint("Neisa is sitting at a table enjoying one of the local drinks.");
-			if (DianaTavernTalks1) addButton(11, "Healer", dianaAtJttEMain).hint("You see a horse woman healer sitting at a table on your left.");
-			else addButton(11, "???", dianaAtJttEMain).hint("You see a horse woman sitting at a table on your left.");
+			if (DianaFollower.DianaState < 4) {
+				if (DianaFollower.DianaState == 2) addButtonDisabled(11, "Healer", "She went to visit village elders. Please come tomorrow.");
+				else {
+					if (DianaTavernTalks1) addButton(11, "Healer", dianaAtJttEMain).hint("You see a horse woman healer sitting at a table on your left.");
+					else addButton(11, "???", dianaAtJttEMain).hint("You see a horse woman sitting at a table on your left.");
+				}
+			}
 			addButton(14, "Leave", heXinDao.riverislandVillageStuff);
 		}
 
@@ -142,7 +149,7 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 		//drink list (to be expanded) some generic nonTF beers
 		private function notThirsty():void {
 			clearOutput();
-			outputText("In the end you realise you are not thirsty after all and wave a goodbye before leaving.\n\n");
+			outputText("In the end you realize you are not thirsty after all and wave a goodbye before leaving.\n\n");
 			doNext(enteringInn,false);
 		}
 
@@ -150,14 +157,18 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 			clearOutput();//Felix - male beffy bro nekomata twin herald npc
 			if (second) {
 				outputText("You approach the table seeing very peculiar looking being. It almost looks like someone took a cat and dog morph, then stuck them together.\n\n They have two heads, two pairs of arms and even two tails. ");
-				outputText("Left side of body looking clearly canine with dog shaped head. It swivels around, constantly scanning the bar for threats. The right head seems feline, but unlike most cat races you've seen, this person has noticable musculature. Seeing your approach, the cat head turns toward you. Its pupils dialate slightly, and it stares at you with feline interest.\n\n");
+				outputText("Left side of body looking clearly canine with dog shaped head. It swivels around, constantly scanning the bar for threats. The right head seems feline, but unlike most cat races you've seen, this person has noticable musculature. Seeing your approach, the cat head turns toward you. Its pupils dilate slightly, and it stares at you with feline interest.\n\n");
 			}
 			outputText("\"<i>Welcome to 'Felix's Corner' traveler. Do you wanna buy something?</i>\" asks the cat head ending it with a short purr. \"<i>We have wares if you have the spirit stones.</i>\"\n\n");
 			outputText("After that the other head stops looking around, baring its teeth at you. \"<i>If you not interested in buying anything, then get lost... we don't have all day.</i>\"\n\n");
 			menu();
-			addButton(7, necklaces.NECRONE.shortName, itemBuy, necklaces.NECRONE).hint("120 spirit stones");
-			addButton(8, weapons.NECROWA.shortName, itemBuy, weapons.NECROWA).hint("128 spirit stones");
-			addButton(9, shields.NECROSH.shortName, itemBuy, shields.NECROSH).hint("100 spirit stones");
+			addButton(3, necklaces.TREELNE.shortName, itemBuy, necklaces.TREELNE).hint("800 spirit stones");
+			addButton(4, headjewelries.TREELCR.shortName, itemBuy, headjewelries.TREELCR).hint("800 spirit stones");
+			addButton(5, necklaces.NECRONE.shortName, itemBuy, necklaces.NECRONE).hint("120 spirit stones");
+			addButton(6, weapons.NECROWA.shortName, itemBuy, weapons.NECROWA).hint("128 spirit stones");
+			addButton(7, shields.NECROSH.shortName, itemBuy, shields.NECROSH).hint("100 spirit stones");
+			addButton(8, necklaces.SKULLNE.shortName, itemBuy, necklaces.SKULLNE).hint("800 spirit stones");
+			addButton(9, headjewelries.SKULLCR.shortName, itemBuy, headjewelries.SKULLCR).hint("800 spirit stones");
 			addButton(10, necklaces.EZEKIELN.shortName, itemBuy, necklaces.EZEKIELN).hint("50 spirit stones");
 			addButton(11, headjewelries.EZEKIELC.shortName, itemBuy, headjewelries.EZEKIELC).hint("40 spirit stones");
 			addButton(12, jewelries.EZEKIELS.shortName, itemBuy, jewelries.EZEKIELS).hint("10 spirit stones");
@@ -203,16 +214,15 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 		}
 		private function workHoursMadam():Boolean {
 			return (model.time.hours >= 7 && model.time.hours <= 9) || (model.time.hours >= 18 && model.time.hours <= 22);
-
 		}
 		private function visitMadam():void {
 			clearOutput();
 			if (AhriTavernTalks) outputText("\"<i>You came back? What do you seek from this Madam?</i>\" You can swear to see her eyes glow for a moment under the hood as she looks at you. \"<i>Another session to exchange your grown potential to increased ability to develop mystical abilities?</i>\"\n\n");
 			else {
-				outputText("You see a person covered wholy by the loose robe. For a moment it looks like it not noticed your presence next to it.\n\n");
+				outputText("You see a person covered wholly by the loose robe. For a moment it looks like it not noticed your presence next to it.\n\n");
 				outputText("\"<i>Greeting potential customer. You can call me Madam,</i>\" clearly female voice with undeniable subtle charm interrupts the silence. \"<i>You came to our table seeking my services? I am not able to provide much... aside from something i call... 'conversion'.</i>\"\n\n");
 				outputText("Conversion? Seeing your puzzle expression she continues, \"<i>I would take a bit of your grown potential to exchange it for increased ability to develop mystical abilities. But...</i>\" she make a gesture with one of her hands showing briefly her hand with five outstretched fingers \"<i>...I shall only do this ten times. No more and no less than ten.</i>\"\n\n");
-				outputText("Just like that? Without any string attatched?\n\n");
+				outputText("Just like that? Without any string attached?\n\n");
 				outputText("\"<i>Of course there would be additional price. Ten spirit stones.</i>\" She pause before asking \"<i>So, dear customer, would you like me to perform this conversion on you?</i>\"\n\n");
 				AhriTavernTalks = true;
 			}
@@ -231,11 +241,11 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 				doNext(visitMadam);
 			}
 			else if (AhriStatsToPerksConvertCounter > 9 && AhriTavernTalks > 0) {
-				outputText("\"<i>It's unfotunate but I can't help you anymore,</i>\" Madam rise her hand to show five fingers, \"<i>My service can be repeated maximum ten times and you, dear customer, have reached this limit.</i>\"\n\n");
+				outputText("\"<i>It's unfortunate but I can't help you anymore,</i>\" Madam rise her hand to show five fingers, \"<i>My service can be repeated maximum ten times and you, dear customer, have reached this limit.</i>\"\n\n");
 				doNext(visitMadam);
 			}
 			else {
-				outputText("After recieving payment Madam reaches down to her belt, depositing them into a small pouch. \"<i>Come we can't do 'it' here</i>\". She leads you into a short corridor at the back of the inn, with several rooms just off it. Opening one of the side room doors, she motions for you to come inside.\n\n");
+				outputText("After receiving payment Madam reaches down to her belt, depositing them into a small pouch. \"<i>Come we can't do 'it' here</i>\". She leads you into a short corridor at the back of the inn, with several rooms just off it. Opening one of the side room doors, she motions for you to come inside.\n\n");
 				outputText("\"<i>Please sit down. This process is strenuous, and will take some time.</i>\" She points toward a sofa in the middle of the room. You sit, and she walks behinds you. \"<i>Dear customer, please close your eyes.</i>\" Her voice is low, humming...almost buzzing. It's somehow both calming and enticing at once.\n\n");
 				outputText("You close your eyes as a strange energy fills your body. Nervousness washed away by her voice, you begin to nod off as the energy spreads. Starting from the sides of you head, down to your jaw... It feels extremely comfortable. Unwilling to move a muscle, you relax, drifting off. \n\n");
 				outputText("When you wake up, you groan, stretching your limbs. You're filled with a vaguely empty feeling in your muscles, but your brain feels...expanded, somehow. You snap awake, realizing that you're still in the inn. Looking around, there is nobody else in the room, with the door left wide open, almost like madam wanted to say 'return on your own'. Slightly unsatisfied, you return to the drinking hall.\n\n");
@@ -255,7 +265,6 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 		}
 		private function workHoursTemptress():Boolean {
 			return (model.time.hours >= 8 && model.time.hours <= 9) || (model.time.hours >= 18 && model.time.hours <= 23);
-
 		}
 		private function visitTemptress():void {
 			clearOutput();//Temptress - female displacer devil npc for perk points to stat points conversion outputText("\"<i></i>\"\n\n");
@@ -287,7 +296,7 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 				doNext(visitTemptress);
 			}
 			else {
-				outputText("After recieving payment Temptress takes them, bringing them to a pouch at her waist. \"<i>Let's move to a more... private place.</i>\" she leads you into a short corridor at the back of the inn, with several rooms just off it. Opening one of the side room doors, she motions for you to come inside..\n\n");
+				outputText("After receiving payment Temptress takes them, bringing them to a pouch at her waist. \"<i>Let's move to a more... private place.</i>\" she leads you into a short corridor at the back of the inn, with several rooms just off it. Opening one of the side room doors, she motions for you to come inside..\n\n");
 				outputText("\"<i>Lay down comfortable and close your eyes.</i>\" She points towards a luxurious bed. You lie down, and she sits beside you, taking your head in her hands. \"<i>All it takes is a simple touch.</i>\". She rests your head on the pillows, then taps your chest with one hand. t\n\n");
 				outputText("While the closeness is nice, as she touches your chest, it begins to tingle, warmth spreading through your chest and stomach. The warmth seems to dissolve your muscles, soft warmth leaving you barely willing to move a finger. Surprisingly, you're not alarmed, you're comforted. You sigh, closing your eyes and drifting off, the bone-deep warmth spreading further.\n\n");
 				outputText("When you wake up, your head feels tighter, and yet at the same time your body feels looser, ready to improve. Looking around there is nobody beside you in the room, the door wide open. Looks like after doing her part, Temptress already left. Slightly unsatisfied you return to the drinking hall.\n\n");
@@ -311,21 +320,41 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 				DianaTavernTalks1 = true;
 			}
 			menu();
-			if (player.HP < player.maxOverHP()) addButtonIfTrue(0, "Healing", dianaAtJttEMainHeal, "You need to have 50 gems.", player.gems >= 50);
-			else addButtonDisabled(0, "Healing", "You're fully healed already.");
+			addButton(1, "Talk", dianaAtJttEMainTalk);
+			if (player.HP < player.maxOverHP()) addButtonIfTrue(5, "Healing", dianaAtJttEMainHeal, "You need to have 50 gems.", player.gems >= 50);
+			else addButtonDisabled(5, "Healing", "You're fully healed already.");
 			if ((player.statStore.hasBuff("Weakened") || player.statStore.hasBuff("Drained") || player.statStore.hasBuff("Damaged")) && flags[kFLAGS.DIANA_CURE_COOLDOWN] <= 0) {
-				addButtonIfTrue(1, "C.C.(Base)", dianaAtJttEMainCurses1, "You need to have 150 gems.", player.gems >= 150, "Cure curses that affect stats non-multiplier bonuses.");
-				addButtonIfTrue(2, "C.C.(Mult)", dianaAtJttEMainCurses2, "You need to have 150 gems.", player.gems >= 150, "Cure curses that affect stats multiplier bonsues.");
+				addButtonIfTrue(6, "C.C.(Base)", dianaAtJttEMainCurses1, "You need to have 150 gems.", player.gems >= 150, "Cure curses that affect stats non-multiplier bonuses.");
+				addButtonIfTrue(7, "C.C.(Mult)", dianaAtJttEMainCurses2, "You need to have 150 gems.", player.gems >= 150, "Cure curses that affect stats multiplier bonsues.");
 			}
 			else if (flags[kFLAGS.DIANA_CURE_COOLDOWN] > 0) {
-				addButtonDisabled(1, "C.C.(Base)", "Healer is not yet ready to cure your curses again.");
-				addButtonDisabled(2, "C.C.(Mult)", "Healer is not yet ready to cure your curses again.");
+				addButtonDisabled(6, "C.C.(Base)", "Healer is not yet ready to cure your curses again.");
+				addButtonDisabled(7, "C.C.(Mult)", "Healer is not yet ready to cure your curses again.");
 			}
 			else {
-				addButtonDisabled(1, "C.C.(Base)", "You don't have any curses to cure. (non-multiplier)");
-				addButtonDisabled(2, "C.C.(Mult)", "You don't have any curses to cure. (multiplier)");
+				addButtonDisabled(6, "C.C.(Base)", "You don't have any curses to cure. (non-multiplier)");
+				addButtonDisabled(7, "C.C.(Mult)", "You don't have any curses to cure. (multiplier)");
 			}
+			addButton(8, "Uncurse", SceneLib.dianaScene.dianaAtJttECursedItemsRemoval1)
+				.hint("Ask horse healer to remove your cursed item. Costs 500 gems. ")
+				.disableIf(player.gems < 500, "Ask horse healer to remove your cursed item. Costs 500 gems (Can't afford).")
+				.disableIf(player.equippedKnownCursedItems().length == 0 && player.carriedKnownCursedItems().length == 0, "You don't have any cursed items");
+			if (player.carryUniqueCursedItems()) addButton(9, "U.Uncurse", SceneLib.dianaScene.dianaAtJttECursedItemsRemoval2);
 			addButton(14, "Back", curry(enteringInn,false));
+		}
+		public function dianaAtJttEMainTalk():void {
+			clearOutput();
+			if (DianaTavernTalks2) outputText("\"<i>Still not needing any treatment?</i>\" She looks a bit disappointed. \"<i>As per last time if no one comes, I can talk for a few minutes. But patients in need take precedence!</i>\"");
+			else {
+				outputText("\"<i>Not in need of medical treatment?</i>\" She hesitates for a moment. \"<i>Well, maybe if no patient in need comes, I can spare a few minutes.</i>\"");
+				DianaTavernTalks2 = true;
+			}
+			menu();
+			addButton(0, "Name?", SceneLib.dianaScene.dianaTalkName);
+			addButton(1, "Yourself", SceneLib.dianaScene.dianaTalkYourself);
+			addButton(2, "Job", SceneLib.dianaScene.dianaTalkJob);
+			if (DianaFollower.DianaState > 0) addButton(4, "Invite2Camp", SceneLib.dianaScene.dianaTalkInvite2Camp);
+			addButton(14, "Back", dianaAtJttEMain);
 		}
 		public function dianaAtJttEMainHeal():void {
 			clearOutput();
@@ -337,7 +366,7 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 				if (player.statusEffectv1(StatusEffects.CombatWounds) > 0.2) player.addStatusValue(StatusEffects.CombatWounds, 1, -0.2);
 				else player.removeStatusEffect(StatusEffects.CombatWounds);
 			}
-			HPChange(player.maxOverHP() * 0.25, true);
+			HPChange(player.maxOverHP() * 0.25, true, false);
 			EngineCore.changeFatigue( -(Math.round(player.maxFatigue() * 0.125)));
 			doNext(dianaAtJttEMain);
 			advanceMinutes(15);
@@ -504,7 +533,7 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 			}
 			menu();
 			addButton(1, "No", firstTimeMeetingNekomataBoyNo);
-			addButton(3, "Yes", firstTimeMeetingNekomataBoyYes);
+			addButton(3, "Yes", firstTimeMeetingNekomataBoyYes).disableIf(!player.blockingBodyTransformations(), "Can't have any effect that block body transformations.");
 		}
 		public function firstTimeMeetingNekomataBoyNo():void {
 			outputText("Yeah no, this is looking too good to be true and truth be told it likely is. You tell the sketchy cat you will pass on it for now and head back towards the bar.\n\n");
@@ -555,7 +584,7 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 			outputText("He grins wide and opens up his wizard robe, revealing the hardening cock you have been focusing on all this time before he unstraps you from the table and lets you get up on your own. Without hesitation, you take his cock inside your mouth. He grumbles to himself, annoyed at your sluggish, somewhat stiff motions, but you still manage to wrap your lips around him, rocking back and forth as you suck him off.\n\n");
 			outputText("\"<i>Um, I didn't consider rigor mortis in my calculation, I will need to mention this hiccup to the client… at least "+player.mf("he","she")+" makes up for it with enthusiasm.</i>\"\n\n");
 			outputText("A few seconds later he finally orgasms, causing that amassed energy in his cock to flood down your throat in a white cascade. You almost faint as pleasure floods your head... You watch his reaction, waiting for an opening...You realize the fog has lifted somewhat! For whatever reason, this seems to not only restore your mind but also sharpen it. You bend your arm, and your range of motion also seems to have returned!. ");
-			outputText("It would seem your torturer messed up something in the charm and instead of removing your free will, he only emptied you of it, turning you into some kind of energy vampire that gets dumber when starved. Well your face might be stuck in that zombie like expression right now but your mind is racing as you take full awareness of the situation, and how easily it would be to turn the tables on your captor.\n\n");
+			outputText("It would seem your torturer messed up something in the charm and instead of removing your free will, he only emptied you of it, turning you into some kind of energy vampire that gets dumber when starved. Well, your face might be stuck in that zombie like expression right now but your mind is racing as you take full awareness of the situation, and how easily it would be to turn the tables on your captor.\n\n");
 			outputText("Satisfied with fucking your throat, the cat morph heads to the back of the room to retrieve a big box, likely the one he intended for you to lay into until he shipped you to whatever asshole serves as his client. Poor guy thinks you're too stupid to attempt anything. He gets one hell of a surprise as you grab his left arm with until now unprecedented agility, immobilizing him and begin ");
 			outputText("to drink directly from the tap of his life force through your hand. He did say something about making you capable of guarding your master too, right? Seems he loaded you with quite a few upgrades. Guess he didn't account for the risks of getting overwhelmed by his own creations as you literally drain his soulforce until he passes out. ");
 			outputText("You let him fall limply on the ground and look at him, he has foam at the mouth. Geeze your nails are poisonous too? While you doubt you killed him, you don't want him to just get away with this either so you dump him in the box he originally reserved for you and lock him up.\n\n");
@@ -575,9 +604,8 @@ public class JourneyToTheEast extends HeXinDaoAbstractContent implements Saveabl
 			player.createPerk(PerkLib.Rigidity, 0, 0, 0, 0);
 			player.createPerk(PerkLib.LifeLeech, 0, 0, 0, 0);
 			player.createPerk(PerkLib.Undeath, 0, 0, 0, 0);
-			if (player.hasPerk(PerkLib.RacialParagon))
-				flags[kFLAGS.APEX_SELECTED_RACE] = Races.JIANGSHI;
 			player.createPerk(PerkLib.EnergyDependent, 0, 0, 0, 0);
+			player.updateRacialParagon(Races.JIANGSHI);
 			if (flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD] == 0) flags[kFLAGS.HAIR_GROWTH_STOPPED_BECAUSE_LIZARD]++;
 			var item:ItemType;
 			if (!player.weapon.isNothing) {

@@ -8,11 +8,11 @@ import classes.internals.EnumValue;
  * * character has two layer of skin: base and ~~cover~~ coat
  * each layer has: `type`, `tone`, `adj` (optional adjective), and `desc` (overrides default noun for type)
  * a **coverage** parameter with the rance:
- * `(0) COVERAGE_NONE` : coat layer is non-existant
+ * `(0) COVERAGE_NONE` : coat layer is non-existent
  * `(1) COVERAGE_LOW` : coat layer exists, but its descriptions appear only when explicitly called
  * `(2) COVERAGE_MEDIUM` : coat layer exists, descriptions use mixed "[base] and [skin coat]", can explicitly check either
  * `(3) COVERAGE_HIGH` : coat layer exists and is used as a default layer when describing skin; base description appear only when explicitly called
- * `(4) COVERAGE_COMPLETE` : same as COVERAGE_HIGH; intended to be used when even face is fully coverred
+ * `(4) COVERAGE_COMPLETE` : same as COVERAGE_HIGH; intended to be used when even face is fully covered
  * tattoos should be moved to body part-level as patterns
  *
  * @since December 27, 2016
@@ -79,7 +79,7 @@ public class Skin extends SaveableBodyPart {
 	public static const GOO: int = 3;
 	EnumValue.add(SkinTypes, GOO, "GOO", {
 		name:"skin",
-		adj: "goopey",
+		adj: "goopy",
 		appearanceDesc: "Your [skin base] is {partiallyOrCompletely} made of [skin coat].",
 		plural: false,
 		base:true,
@@ -163,6 +163,14 @@ public class Skin extends SaveableBodyPart {
 	EnumValue.add(SkinTypes, TRANSPARENT, "TRANSPARENT", {
 		name:"transparent",
 		appearanceDesc: "Your [skin base] is completely transparent, like a ghost's.",
+		plural: false,
+		base:true,
+		material: BodyMaterial.SKIN
+	});
+	public static const STEEL: int = 23;
+	EnumValue.add(SkinTypes, STEEL, "STEEL", {
+		name:"steel",
+		appearanceDesc: "Your [skin base] is completely made of steel.",
 		plural: false,
 		base:true,
 		material: BodyMaterial.SKIN
@@ -304,6 +312,24 @@ public class Skin extends SaveableBodyPart {
 	EnumValue.add(PatternTypes, PATTERN_BLOOD_MAGIC_TATTOO, "PATTERN_BLOOD_MAGIC_TATTOO", {
 		name:"blood magic tattoo",
 		appearanceDesc: "Your body is covered with blood magic tattoos.",
+		base:true
+	});
+	public static const PATTERN_CIRCUIT_TATTOO: int = 22;
+	EnumValue.add(PatternTypes, PATTERN_CIRCUIT_TATTOO, "PATTERN_CIRCUIT_TATTOO", {
+		name:"circuit tattoo",
+		appearanceDesc: "Your body is covered with covered with circuit like patterns.",
+		base:true
+	});
+	public static const PATTERN_RUNIC: int = 23;
+	EnumValue.add(PatternTypes, PATTERN_RUNIC, "RUNIC_TATTOO", {
+		name:"runic pattern",
+		appearanceDesc: "Your body is covered with runic patterns.",
+		base:true
+	});
+	public static const PATTERN_SOULFORCE_SCARING: int = 24;
+	EnumValue.add(PatternTypes, PATTERN_SOULFORCE_SCARING, "SOULFORCE_SCARING", {
+		name:"soulforce scaring",
+		appearanceDesc: "Esoteric sigils paint your [skin]. They disappear and reappear, all along your [chest], [arms], and [legs] - pulsing with spiritual energy.",
 		base:true
 	});
 	// Don't forget to add new types in DebugMenu.as lists SKIN_BASE_TYPES or SKIN_COAT_TYPES
@@ -498,8 +524,8 @@ public class Skin extends SaveableBodyPart {
 	public function hasPartialCoat():Boolean {
 		return coverage == COVERAGE_LOW;
 	}
-	public function hasPartialCoatOfType(coat_type:int):Boolean {
-		return coverage == COVERAGE_LOW && coat.type == coat_type;
+	public function hasPartialCoatOfType(...types:Array):Boolean {
+		return hasPartialCoat() && coat.isAny(types);
 	}
 	public function isFurCovered():Boolean {
 		return hasCoatOfType(FUR);
@@ -587,6 +613,15 @@ public class Skin extends SaveableBodyPart {
 	}
 	public function hasBioluminescence():Boolean {
 		return base.pattern == PATTERN_BIOLUMINESCENCE;
+	}
+	public function hasDemonicPleasureRune():Boolean {
+		return base.pattern == PATTERN_DEMONIC_PLEASURE_RUNE;
+	}
+	public function hasRunicTattoo():Boolean {
+		return base.pattern == PATTERN_RUNIC;
+	}
+	public function hasSoulforceScaring():Boolean {
+		return base.pattern == PATTERN_SOULFORCE_SCARING;
 	}
 	override public function restore(keepTone:Boolean = true):void {
 		coverage = COVERAGE_NONE;

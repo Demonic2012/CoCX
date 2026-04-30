@@ -25,12 +25,13 @@ public class Ingnam extends BaseContent
 		//Main Ingnam menu.
 		public function menuIngnam():void {
 			//Force autosave
-			if (player.slotName != "VOID" && mainView.getButtonText(0) != "Game Over" && flags[kFLAGS.HARDCORE_MODE] > 0)
+			/*if (player.slotName != "VOID" && mainView.getButtonText(0) != "Game Over" && flags[kFLAGS.HARDCORE_MODE] > 0)
 			{
 				trace("Autosaving to slot: " + player.slotName);
-
-			CoC.instance.saves.saveGame(player.slotName);
-            }
+				CoC.instance.saves.saveGameToSharedObject(player.slotName);
+            }*/
+			var canExploreAtNight:Boolean = (player.isNightCreature());
+			var isAWerebeast:Boolean = (player.isWerebeast());
 			//Banished to Mareth.
 			if (model.time.days >= 0 && flags[kFLAGS.INGNAM_PROLOGUE_COMPLETE] <= 0) {
 				getBanishedToMareth();
@@ -77,14 +78,28 @@ public class Ingnam extends BaseContent
 			//Show wait/rest/sleep depending on conditions.
 			addButton(9, "Wait", SceneLib.camp.doWait);
             if (player.fatigue > 40 || player.HP / player.maxHP() <= .9) addButton(9, "Rest", SceneLib.camp.rest);
+			if ((model.time.hours >= 23 || model.time.hours < 6) && !canExploreAtNight) removeButton(0);
             if (model.time.hours >= 21 || model.time.hours < 6) {
-				removeButton(0);
 				removeButton(1);
 				removeButton(2);
 				removeButton(4);
-                addButton(9, "Sleep", SceneLib.camp.doSleep);
             }
+			if (((model.time.hours <= 5 || model.time.hours >= 21) && !canExploreAtNight) || (!isNightTime && canExploreAtNight)) {
+				addButton(9, "Sleep", SceneLib.camp.doSleep);
+				if (isAWerebeast && flags[kFLAGS.LUNA_MOON_CYCLE] == 8) {
+					addButtonDisabled(9, "Sleep", "Try as you may you cannot find sleep tonight. The damn moon won't let you rest as your urges to hunt and fuck are on the rise.");
+				}
+			}
 			if (player.hasPerk(PerkLib.JobSoulCultivator)) addButton(10, "Soulforce", soulforce.accessSoulforceMenu).hint("Spend some time on the cultivation or spend some of the soulforce.");
+			if (flags[kFLAGS.NEW_GAME_PLUS_LEVEL] > 0 && model.time.days < 0) addButton(11, "Skip", skipDay);
+		}
+
+		public function skipDay():void {
+			clearOutput();
+			outputText("You slept for who know how many hours for no reason at all.");
+			model.time.days = 0;
+			model.time.hours = 6;
+			doNext(menuIngnam);
 		}
 
 		//The end of prologue, starts the game.
@@ -116,12 +131,20 @@ public class Ingnam extends BaseContent
 		public function exploreIngnam():void {
 			hideMenus();
 			clearOutput();
-			if (rand(4) == 0) {
+			if (cantFindEnemies()) {
 				outputText("You explore the village of Ingnam for a while but you don't find anything interesting.");
-				advanceMinutes(15);
+				advanceMinutes(5);
 				doNext(camp.doCamp);
 			}
 			else thiefScene.encounterThief();
+		}
+		private function cantFindEnemies():Boolean {
+			var canOrNot:Boolean = true;
+			if (player.level >= 9 || model.time.hours >= 21) canOrNot = false;
+			else if (player.level < 9 && rand(3) > 0) canOrNot = false;
+			else if (player.level < 6 && rand(2) == 0) canOrNot = false;
+			else if (player.level < 3 && rand(3) == 0) canOrNot = false;
+			return canOrNot;
 		}
 
 		//Shopping time!
@@ -240,8 +263,31 @@ public class Ingnam extends BaseContent
 			addShopItem(consumables.SMART_T, 30, 5);
 			addShopItem(consumables.INCOINS, 30, 5);
 			addShopItem(consumables.FISHFIL, 10, 5);
-			addShopItem(consumables.H_PILL, 10, 5);
+			addShopItem(consumables.H_PILL, 10, 5); 
 			addButton(10, "Sell", sellAtTradingPost);
+			addButtonDisabled(11, "-1-", "Misc");
+			addButton(12, "-2-", shopTradingPost2);
+			addButton(14, "Leave", menuShops);
+		}
+		public function shopTradingPost2():void {
+			clearOutput();
+			outputText("The trading post is one of the larger buildings in the village, with its porch covered in barrels filled with pickled goods, preserved delicacies and dried goods, from the humble local farm to exotic faraway lands. The interior is packed with crowded shelves that boast a variety of goods, all arranged neatly on shelves.");
+			outputText("\n\nYou suspect you could buy or sell some imported goods here.");
+			outputText("\n\n<b><u>Trading post pricings</u></b>");
+			menu();
+			if (player.hasPerk(PerkLib.HistoryScout) || player.hasPerk(PerkLib.PastLifeScout)) { //20% discount for History: Scout perk
+				addShopItem(weaponsrange.BOWOLD_, 40, 6);
+				addShopItem(weaponsrange.LCROSBW, 200, 6);
+				addShopItem(weaponsrange.O_JAVEL, 40, 6);
+			}
+			else {
+				addShopItem(weaponsrange.BOWOLD_, 50, 6);
+				addShopItem(weaponsrange.LCROSBW, 250, 6);
+				addShopItem(weaponsrange.O_JAVEL, 50, 6);
+			}
+			addButton(10, "Sell", sellAtTradingPost);
+			addButton(11, "-1-", shopTradingPost);
+			addButtonDisabled(12, "-2-", "Weapons");
 			addButton(14, "Leave", menuShops);
 		}
 		private function sellAtTradingPost(page:int = 1):void {
@@ -371,12 +417,20 @@ public class Ingnam extends BaseContent
 			}
 			outputText("\n\n<b><u>Black market pricings</u></b>");
 			menu();
-			addShopItem(consumables.W_FRUIT, 75, 6);
-			addShopItem(consumables.CANINEP, 75, 6);
-			addShopItem(consumables.EQUINUM, 75, 6);
-			addShopItem(consumables.INCUBID, 75, 6);
-			addShopItem(consumables.SUCMILK, 75, 6);
-			addShopItem(consumables.RINGFIG, 75, 6);
+			addShopItem(consumables.W_FRUIT, 20, 7);
+			addShopItem(consumables.CANINEP, 20, 7);
+			addShopItem(consumables.EQUINUM, 20, 7);
+			addShopItem(consumables.INCUBID, 20, 7);
+			addShopItem(consumables.SUCMILK, 20, 7);
+			addShopItem(consumables.RINGFIG, 20, 7);
+			addShopItem(consumables.BLADEGR, 20, 7);
+			addShopItem(consumables.ELFEARS, 20, 7);
+			addShopItem(consumables.FOXBERY, 20, 7);
+			addShopItem(consumables.REPTLUM, 20, 7);
+			addShopItem(consumables.SALAMFW, 20, 7);
+			addShopItem(consumables.DESERTB, 30, 7);
+			addShopItem(consumables.FOXJEWL, 75, 7);
+			addShopItem(weaponsrange.FLINTLK, 310, 7);
 			addButton(14, "Leave", menuShops);
 		}
 
@@ -404,6 +458,7 @@ public class Ingnam extends BaseContent
 			else if (shop == 3) shopToGo = shopTailor;
 			else if (shop == 4) shopToGo = shopAlchemist;
 			else if (shop == 5) shopToGo = shopTradingPost;
+			else if (shop == 6) shopToGo = shopTradingPost2;
 			else shopToGo = shopBlackMarket;
 			//Process
 			clearOutput();
@@ -426,7 +481,8 @@ public class Ingnam extends BaseContent
 			else if (shop == 3) shopTailor();
 			else if (shop == 4) shopAlchemist();
 			else if (shop == 5) shopTradingPost();
-			else if (shop == 6) shopBlackMarket();
+			else if (shop == 6) shopTradingPost2();
+			else if (shop == 7) shopBlackMarket();
 			else shopBlackMarket();
 		}
 

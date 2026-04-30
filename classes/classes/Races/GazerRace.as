@@ -2,6 +2,7 @@ package classes.Races {
 import classes.BodyData;
 import classes.BodyParts.*;
 import classes.IMutations.IMutationsLib;
+import classes.PerkLib;
 import classes.Race;
 import classes.StatusEffects;
 
@@ -65,8 +66,10 @@ public class GazerRace extends Race {
 							if (x >= 2) return 2;
 							return 0;
 						}
-				);
+				)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		
+		addBloodline(PerkLib.GazersDescendant, PerkLib.BloodlineGazer);
 		addMutation(IMutationsLib.GazerEyesIM);
 		
 		buildTier(14, "gazer")

@@ -1,6 +1,7 @@
 package classes.Races {
 import classes.BodyParts.*;
 import classes.IMutations.IMutationsLib;
+import classes.PerkLib;
 import classes.Race;
 
 public class YukiOnnaRace extends Race {
@@ -50,8 +51,10 @@ public class YukiOnnaRace extends Race {
 				.wingType(Wings.LEVITATION, +3)
 				.femininity(100, +1)
 				.noCock(+1)
-				.hasVagina(+1);
+				.hasVagina(+1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		
+		addBloodline(PerkLib.YukiOnnasDescendant, PerkLib.BloodlineYukiOnna);
 		addMutation(IMutationsLib.FrozenHeartIM);
 		
 		buildTier(14,"Yuki Onna")

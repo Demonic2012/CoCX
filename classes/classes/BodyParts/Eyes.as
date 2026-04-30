@@ -22,7 +22,7 @@ public class Eyes extends BodyPart {
 	public static const SPIDER: int = 1;
 	EnumValue.add(Types, SPIDER, "SPIDER", {
 		name:"six spider",
-		appearanceDesc: "In addition to your primary two [eyecolor] eyes, you have a second, smaller pair on your forehead.",
+		appearanceDesc: "In addition to your primary two [eyecolor] eyes, you have two smaller pairs on your forehead.",
 		Darkvision: true
 	});
 	public static const BLACK_EYES_SAND_TRAP: int = 2;
@@ -33,13 +33,13 @@ public class Eyes extends BodyPart {
 	public static const CAT: int = 3;
 	EnumValue.add(Types, CAT, "CAT", {
 		name:"cat",
-		appearanceDesc: "Your [eyecolor] eyes have vertically slit like those of cat.",
+		appearanceDesc: "Your [eyecolor] eyes have vertically slit pupils like those of cat.",
 		Darkvision: true
 	});
 	public static const GORGON: int = 4;
 	EnumValue.add(Types, GORGON, "GORGON", {
 		name:"gorgon",
-		appearanceDesc: "Your [eyecolor] eyes are similar to those of snake-like gorgons with ability to temporally petrify.",
+		appearanceDesc: "Your [eyecolor] eyes are similar to those of snake-like gorgons with the ability to temporally petrify.",
 		Darkvision: true
 	});
 	public static const FENRIR: int = 5;
@@ -51,7 +51,7 @@ public class Eyes extends BodyPart {
 	public static const MANTICORE: int = 6;
 	EnumValue.add(Types, MANTICORE, "MANTICORE", {
 		name:"manticore",
-		appearanceDesc: "Your eyes are similar to those of a cat, with slit pupils. However, their [eyecolor] iris dismiss any links to the regular felines in favor of something way more ominous.",
+		appearanceDesc: "Your eyes are similar to those of a cat, with slit pupils. However, their [eyecolor] irises dismiss any links to the regular felines in favor of something way more ominous.",
 		Darkvision: true
 	});
 	public static const FOX: int = 7;
@@ -108,7 +108,7 @@ public class Eyes extends BodyPart {
 	public static const VAMPIRE: int = 15;
 	EnumValue.add(Types, VAMPIRE, "VAMPIRE", {
 		name:"vampire",
-		appearanceDesc: "Your eyes looks somewhat normal, but their [eyecolor] irises seem to have the tendency of drawing in people’s gaze, like moths to a flame.",
+		appearanceDesc: "Your eyes look somewhat normal, but their [eyecolor] irises seem to have the tendency of drawing in people’s gaze, like moths to a flame.",
 		Darkvision: true
 	});
 	public static const GEMSTONES: int = 16;
@@ -142,7 +142,7 @@ public class Eyes extends BodyPart {
 	public static const CAVE_WYRM: int = 21;
 	EnumValue.add(Types, CAVE_WYRM, "CAVE_WYRM", {
 		name:"cave wyrm",
-		appearanceDesc: "Dark blue iris with [eyecolor] eyes pupil that glow in the dark.",
+		appearanceDesc: "Dark blue irises with [eyecolor] eyes pupils that glow in the dark.",
 		Darkvision: true
 	});
 	public static const HINEZUMI: int = 22;
@@ -213,7 +213,7 @@ public class Eyes extends BodyPart {
 	public static const GREMLIN: int = 34;
 	EnumValue.add(Types, GREMLIN, "GREMLIN", {
 		name:"gremlin",
-		appearanceDesc: "Your [eyecolor] eyes looks human enough though your eyelids are dark, just as if you very tired althought it's more likely traces of your demonic corruption."
+		appearanceDesc: "Your [eyecolor] eyes look human enough though your eyelids are dark as if very tired or more likely by traces of demonic corruption."
 	});
 	public static const WEASEL: int = 35;
 	EnumValue.add(Types, WEASEL, "WEASEL", {
@@ -252,18 +252,18 @@ public class Eyes extends BodyPart {
 	public static const MINDBREAKERMALE: int = 41;
 	EnumValue.add(Types, MINDBREAKERMALE, "MINDBREAKERMALE", {
 		name:"eldritch male",
-		appearanceDesc: "You have three two [eyecolor], predatory eyes at the front of your head, giving you full sight and perfect perception of what’s in front of you. The eye along your forehead is considerably larger, it is where you channel your formidable mental powers.",
+		appearanceDesc: "You have three [eyecolor], predatory eyes at the front of your head, giving you full sight and perfect perception of what’s in front of you. The eye along your forehead is considerably larger, it is where you channel your formidable mental powers.",
 		Darkvision: true
 	});
 	public static const SNAKEFIENDISH: int = 42;
 	EnumValue.add(Types, SNAKEFIENDISH, "SNAKEFIENDISH", {
 		name:"fiendish snake",
-		appearanceDesc: "Your [eyecolor] eyes have slitted pupils like that of a snake with black schlera wich betray your corrupted nature."
+		appearanceDesc: "Your [eyecolor] eyes have slitted pupils like that of a snake with black sclera which betray your corrupted nature."
 	});
 	public static const WERESPIDER: int = 43;
 	EnumValue.add(Types, WERESPIDER, "WERESPIDER", {
 		name:"werespider",
-		appearanceDesc: "In addition to your primary two [eyecolor] eyes, you have a second, smaller pair on your forehead. In your eyes, sometimes a green light is visibly dancing. Hinting at the beast within. It encompasses your entire pupil when you let it loose.",
+		appearanceDesc: "In addition to your primary two [eyecolor] eyes, you have two smaller pairs on your forehead. In your eyes, sometimes a green light is visibly dancing. Hinting at the beast within. It encompasses your entire pupil when you let it loose.",
 		Darkvision: true
 	});
 	public static const ARIGEAN: int = 44;
@@ -285,7 +285,36 @@ public class Eyes extends BodyPart {
 	public static const MOTH: int = 47;
 	EnumValue.add(Types, MOTH, "MOTH", {
 		name:"moth",
-		appearanceDesc: "Your eyes are like a moth’s eyes",
+		appearanceDesc: "Your eyes are like a moth’s eyesm, a solid [eyecolor] spheres.",
+		Darkvision: true
+	});
+	public static const LICH: int = 48;
+	EnumValue.add(Types, LICH, "LICH", {
+		name:"lich",
+		appearanceDesc: "Your [eyecolor] eyes looks human enough though your eyelids are dark as if very tired or more likely because in theory you are halfway through death. While you have no biological benefit to take a long period of rest your body does feel at times like if you hadn’t slept for decades."/*,
+		Darkvision: true*/
+	});
+	public static const AUTOMATA: int = 49;
+	EnumValue.add(Types, AUTOMATA, "AUTOMATA", {
+		name:"automata",
+		appearanceDesc: "Your [eyecolor] eyes look somewhat human, save for glowing [eyecolor] orbs with pink center where your iris would be located which lets those with the knowledge of your functions know that you are currently online and active. While they appear human, your eyes are in fact mechanical in nature including a zoom and a photography function as well as a peerless sight few organics could imitate."/*,
+		Darkvision: true*/
+	});
+	public static const YGGDRASIL: int = 50;
+	EnumValue.add(Types, YGGDRASIL, "YGGDRASIL", {
+		name:"yggdrasil",
+		appearanceDesc: "In addition to your primary two [eyecolor] eyes, you have second pair on your forehead. Both of them have slitted pupils like that of a dragon.",
+		Darkvision: true
+	});
+	public static const MARILITH: int = 51;
+	EnumValue.add(Types, MARILITH, "MARILITH", {
+		name:"marilith",
+		appearanceDesc: "Your [eyecolor] eyes have slitted pupils like that of a snake with black sclera which betray your corrupted nature. A third eye sits eerily on your forehead alluding to your fiendish nature."
+	});
+	public static const HOLLOW: int = 52;
+	EnumValue.add(Types, HOLLOW, "HOLLOW", {
+		name:"hollow",
+		appearanceDesc: "Your eyes are a strange mix of black sclera and [eyecolor] iris, through eyes even the faintest pulse of soulforce is visible to you.",
 		Darkvision: true
 	});
 

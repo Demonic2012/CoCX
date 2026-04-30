@@ -38,7 +38,7 @@ public class StalagmiteSpell extends AbstractGreySpell {
 	}
 	
 	override protected function usabilityCheck():String {
-		if (monster.hasStatusEffect(StatusEffects.Flying)) {
+		if (monster.isFlying()) {
 			return "You can only use earth magic against enemy on the ground."
 		}
 		if (player.hasStatusEffect(StatusEffects.Flying)) {
@@ -50,9 +50,10 @@ public class StalagmiteSpell extends AbstractGreySpell {
 	override public function calcCooldown():int {
 		var calcC:int = 0;
 		calcC += spellGreyCooldown();
-		if (player.weaponRange == weaponsrange.RG_TOME && player.level < 18) {
+		if (player.weaponRange == weaponsrange.RG_TOME && player.level < 24) {
 			if (player.level < 6) calcC -= 1;
 			if (player.level < 12) calcC -= 1;
+			if (player.level < 18) calcC -= 1;
 			calcC -= 1;
 			if (calcC < 0) calcC = 0;
 		}
@@ -60,8 +61,8 @@ public class StalagmiteSpell extends AbstractGreySpell {
 	}
 	
 	public function calcDamage(monster:Monster, randomize:Boolean = true, casting:Boolean = true):Number { //casting - Increase Elemental Counter while casting (like Raging Inferno)
-		var baseDamage:Number = 2 * scalingBonusIntelligence(randomize);
-		if (player.weaponRangeName == "Artemis") baseDamage *= 1.5;
+		var baseDamage:Number = damageCalculationTier1Spells(randomize);
+		daaamageaddons(baseDamage);
 		if (ex) baseDamage *= 2;
 		return adjustSpellDamage(baseDamage, DamageType.EARTH, CAT_SPELL_GREY, monster, true, casting);
 	}

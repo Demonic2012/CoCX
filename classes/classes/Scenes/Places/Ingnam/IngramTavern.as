@@ -63,7 +63,7 @@ public class IngramTavern extends BaseContent implements SaveableState {
                 IngramRumors = 3;
                 break;
             case 3:
-                outputText("\n\nI shouldnt tell you this but since you are soon going to be sent through the portal, about 4 years before you were chosen as the next tribute, I was approached by a group of people being lead by somone named ChiChi.");
+                outputText("\n\nI shouldn't tell you this but since you are soon going to be sent through the portal, about 4 years before you were chosen as the next tribute, I was approached by a group of people being lead by someone named ChiChi.");
                 outputText("\n\nThey came to my inn for lodging and paid heavily to keep it hush hush because they planned to sneak through the portal the next day.");
                 outputText("\n\nBefore they left I heard them talking about setting up some kind of settlement if they succeed in surviving on the other side of the portal. If they survived they may be able to help you.")
                 IngramRumors = 4;
@@ -88,6 +88,10 @@ public class IngramTavern extends BaseContent implements SaveableState {
         addButton(0, "Order Drink", orderDrink).hint("Buy some refreshing beverages.");
         addButton(1, "Order Food", orderFood).hint("Buy some food" + (flags[kFLAGS.HUNGER_ENABLED] > 0 && player.hunger < 50 ? " and curb that hunger of yours!": ".") + "");
         if (IngramRumors < 3) addButton(2, "Stories", hearRumors).hint("Hear the stories the innkeeper has to offer.");
+		if (!player.hasStatusEffect(StatusEffects.ChainOfFate)) {
+			if (time.hours == 17) addButton(4, "Sollertia Rex", meetTotalyNotAizen).disableIf(!player.blockingBodyTransformations(), "Can't have any effect that block body transformations.");
+			else addButtonDisabled(4, "???", "Come to Tavern at 5 pm.");
+		}
         //if (player.hasPerk(PerkLib.HistoryWhore)) addButton(5, "Prostitute", whoreForGems).hint("Seek someone who's willing to have sex with you for profit.");
         addButton(14, "Leave", SceneLib.ingnam.menuIngnam);
     }
@@ -210,7 +214,7 @@ public class IngramTavern extends BaseContent implements SaveableState {
         outputText("\"<i>I'd like a glass of milk please,</i>\" you say. You hand over the two gems to the innkeeper and he pours you a glass of milk.");
         outputText("\n\nYou drink the cup of milk. You feel calm and refreshed. ");
         fatigue(-15);
-        HPChange(player.maxHP() / 4, false);
+        HPChange(player.maxHP() / 4, false, false);
         player.refillHunger(10);
         cheatTime(1/12);
         doNext(menuTavern);
@@ -226,7 +230,7 @@ public class IngramTavern extends BaseContent implements SaveableState {
         outputText("\"<i>I'd like a glass of root beer please,</i>\" you say. You hand over the three gems to the innkeeper and he pours you a glass of root beer.");
         outputText("\n\nYou drink the cup of root beer. Refreshing! ");
         fatigue(-15);
-        HPChange(player.maxHP() / 4, false);
+        HPChange(player.maxHP() / 4, false, false);
         player.refillHunger(10);
         cheatTime(1/12);
         doNext(menuTavern);
@@ -258,7 +262,7 @@ public class IngramTavern extends BaseContent implements SaveableState {
         player.gems -= 5;
         outputText("You tell the innkeeper that you would like a sandwich and toss five gems at him. \"<i>Certainly, " + player.mf("sir", "madam") + ",</i>\" he says as he quickly grabs a plate and assembles a sandwich. Hey, it's your favorite type!");
         outputText("\n\nYou eat the sandwich. Delicious!");
-        HPChange(player.maxHP() / 3, false);
+        HPChange(player.maxHP() / 3, false, false);
         player.refillHunger(25);
         cheatTime(1/12);
         doNext(menuTavern);
@@ -274,7 +278,7 @@ public class IngramTavern extends BaseContent implements SaveableState {
         player.gems -= 3;
         outputText("You tell the innkeeper that you would like a bowl of soup and toss three gems at him. \"<i>Certainly, " + player.mf("sir", "madam") + ",</i>\" he says as he grabs a bowl and fills it with steaming soup. Hey, it's your favorite type!");
         outputText("\n\nYou take one spoonful at a time, blowing to make sure the soup isn't too hot. You eventually finish the soup. Delicious!");
-        HPChange(player.maxHP() / 3, false);
+        HPChange(player.maxHP() / 3, false, false);
         player.refillHunger(20);
         cheatTime(1/12);
         doNext(menuTavern);
@@ -305,5 +309,25 @@ public class IngramTavern extends BaseContent implements SaveableState {
         statScreenRefresh();
         inventory.takeItem(consumables.TRAILMX, orderFood);
     }
+	
+	private function meetTotalyNotAizen():void {
+		clearOutput();
+		outputText("You enter the inn and take a seat. Usually there would be a lot more people milling about—farmers taking a break, husbands catching a buzz with good company before going home to their wives. But tonight, there is barely anyone here. The air hangs thick, heavy with smoke and the stale scent of spilled ale.\n\n");
+		outputText("Behind the counter, the barkeep pours a dark foamy stout into a polished mug and slides it across the counter to an odd-looking figure. He was not what one would expect in such a place—his shoulders hunched, a slight hump visible beneath the drape of his patched coat. Despite its age and fraying edges, the coat carried an odd dignity, its mismatched buttons polished to a sheen. His grey eyes glittered with a warmth that felt like it had been around the world and back.\n\n");
+		outputText("He took a long drink, foam settling on his wiry salt-and-pepper mustache. You realized you had been staring a moment too long, and so you greeted the man. He turned his gaze to you, offering a nod and a smile. You had expected crooked patchwork teeth, perhaps a flash of gold caps, but what greeted you instead were straight, pearly whites. His face was lined with deep crow’s feet, aged by years of laughter and squinting at distant horizons. Handsome still, you thought, in the way of men who had lived full and hearty.\n\n");
+		outputText("\"<i>The chosen has time to greet a wandering old man? Good to see such things haven’t dulled your spirits, la"+player.mf("d","ss")+",</i>\" he said, lifting the stout for another swallow.\n\n");
+		outputText("Your brow furrowed—how could he know such a thing?\n\n");
+		outputText("\"<i>You’re the talk of this little hamlet, my good la"+player.mf("d","ss")+",</i>\" he continued, smooth with every word. \"<i>It’s all too easy to hear the local gossip, if you know where to look.</i>\" His eyes flicked toward the barkeep, who was busy pouring another drink down the counter.\n\n");
+		outputText("\"<i>I have walked through bazaars where incense choked the air so thick you could taste lies in every breath. I’ve eaten at the tables of men who swore themselves kings and found their crowns pawned by dawn. I’ve seen some swear loyalty only to be stabbed by those they love, and I’ve bartered in markets where merchants sold not spices, but memories—whispers of first kisses, the laughter of children, dreams bottled in glass.</i>\"\n\n");
+		outputText("The stout trembled faintly in his hand, yet his voice never wavered. His eyes, distant and sharp, seemed to peer through the walls of the tavern, beyond the fields, into worlds you could not imagine.\n\n");
+		outputText("\"<i>Stories follow me, la"+player.mf("d","ss")+". Just as… certain gifts do.</i>\" His lips curved around the rim of his mug as he drank again, hiding the last hint of that smile.\n\n");
+		outputText("\"<i>My advice to you,</i>\" Sollertia said, tilting the last of his stout before setting the mug down with a soft clink, \"<i>is to take your predicament in stride. You can accomplish great things, if only you put your mind to it.</i>\"\n\n");
+		outputText("His smile lingered, unreadable, as he rose from his seat. The merchant gave the table a slow, deliberate pat, then turned to the corner where a massive travel pack leaned against the wall. The kind of burden that would buckle even a mule’s legs, yet he hefted it with a practiced ease.\n\n");
+		outputText("\"<i>Well then,</i>\" he said, straightening with a faint groan, \"<i>if you’ll excuse me, this old man needs his sleep.</i>\"\n\n");
+		outputText("With a nod and a last gleam in his grey eyes, he staggered toward the door, his gait a mix of drunken sway and purposeful march. The inn’s door creaked open, spilling a draft of cold night air inside. When it shut behind him, only the clatter of mugs and the low murmur of other patrons remained. You could still feel the chill of his handshake lingering in your palm.\n\n");
+		player.createStatusEffect(StatusEffects.ChainOfFate,0,0,1,1);
+		cheatTime(1/12);
+        doNext(menuTavern);
+	}
 }
 }

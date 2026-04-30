@@ -2,11 +2,12 @@ package classes.Races {
 import classes.BodyData;
 import classes.BodyParts.*;
 import classes.IMutations.IMutationsLib;
+import classes.PerkLib;
 import classes.Race;
 
 public class YetiRace extends Race {
 	public static const YetiSkinColors:/*String*/Array = ["dark", "tan"];
-	public static const YetiEyeColors:/*String*/Array = ["siilver", "grey", "gray"];
+	public static const YetiEyeColors:/*String*/Array = ["silver", "grey", "gray"];
     public static const RaceBody:/*String*/Array = [
         /*Antenna*/		"Human",
         /*Arms*/		"Human",
@@ -55,9 +56,11 @@ public class YetiRace extends Race {
 				.customRequirement("butt", "thicc butt",
 						function (body:BodyData):Boolean {
 							return body.player.butt.type >= 10;
-						}, +1);
+						}, +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		
 		addMutation(IMutationsLib.YetiFatIM);
+		addMutation(IMutationsLib.FrozenHeartIM);
 		
 		buildTier(14,"yeti")
 				.namesTauric("yeti", "yeti-taur")

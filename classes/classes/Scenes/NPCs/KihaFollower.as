@@ -203,7 +203,7 @@ public class KihaFollower extends NPCAwareContent implements TimeAwareInterface,
         chance -= totalKihaChildren() / 5;
         if (chance < 10) chance = 10;
         //Roll
-        if (rand(100) <= chance) {
+        if (rand(100) <= chance || player.hasPerk(PerkLib.PilgrimsBounty)) {
             if (debug) outputText("\n\n<b>DEBUG: Kiha is impregnated.</b>");
             trace("Kiha got PREGNANT!");
             pregnancy.knockUpForce(PregnancyStore.PREGNANCY_PLAYER, PregnancyStore.INCUBATION_KIHA);
@@ -298,7 +298,7 @@ public class KihaFollower extends NPCAwareContent implements TimeAwareInterface,
         //(Proceed to Spider Horde Combat)
         //Set first round cover
         monster.createStatusEffect(StatusEffects.MissFirstRound, 0, 0, 0, 0);
-        HPChange(100, false);
+        HPChange(100, false, false);
         fatigue(-30);
         dynStats("lus", -40, "scale", false);
     }
@@ -332,7 +332,7 @@ public class KihaFollower extends NPCAwareContent implements TimeAwareInterface,
         //(Proceed to Spider Horde Combat)
         startCombat(new SpiderMorphMob());
         //st - say, 100 hp, -30 fatigue, and -40 lust - then have her cover for you for the first few rounds if you lost to her so you can blitz them or heal. -Z)
-        HPChange(100, false);
+        HPChange(100, false, false);
         fatigue(-30);
         dynStats("lus", -40, "scale", false);
     }
@@ -403,7 +403,7 @@ public class KihaFollower extends NPCAwareContent implements TimeAwareInterface,
             warmLoverKihaIntro(output);
             return;
         }
-        if (output && flags[kFLAGS.KIHA_TALK_STAGE] == 6 && (player.cor <= 30 + player.corruptionTolerance || sceneHunter.other && player.cor < 66 + player.corruptionTolerance)) {
+        if (output && flags[kFLAGS.KIHA_TALK_STAGE] == 6 && (player.cor <= 30 + player.corruptionTolerance || sceneHunter.other && player.cor < 66 + player.corruptionTolerance) || player.hasPerk(PerkLib.FalseLight)) {
             //Talk to Friendly Kiha - Fourth Time (requires <=30 corruption on account of making the PC act like a bitch) (Z)
             //(SPECIAL: Play next time the PC encounters Kiha after Talk 3 if he meets reqs, skipping the main menu)
             outputText("As you wander through the swamp, you eventually come to the familiar territory of your friend, Kiha.  Remembering her hasty departure the last time you talked, a pang of worry takes hold in your chest.  She mentioned taking the fight to the demons… . Surely she didn't, did she? Grimacing at the thought, you pick up the pace and make your way to her little islet.");
@@ -1544,7 +1544,7 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
         outputText(".  Both of you are gasping and panting from the slow descent, Kiha ");
         if (flags[kFLAGS.TIMES_KIHA_ANALED] >= 5) outputText("growing pleased by");
         else outputText("unused to anal penetration");
-        outputText(" and you already so sensitive from edging again and again.  Kiha slowly rolls her hips, dragging out an inch of your cock at a time before her gripping asshole swallows it back up; when she moves, though, she's careful never to seperate the two of you, always holding each other close as she gently rides your " + cockDescript(x) + ".  You grin as she finally allows you to move, your hips reaching up to meet hers as she begins making short, quick bounces, still holding you tight enough to nip your ear and trace kisses along your neck.");
+        outputText(" and you already so sensitive from edging again and again.  Kiha slowly rolls her hips, dragging out an inch of your cock at a time before her gripping asshole swallows it back up; when she moves, though, she's careful never to separate the two of you, always holding each other close as she gently rides your " + cockDescript(x) + ".  You grin as she finally allows you to move, your hips reaching up to meet hers as she begins making short, quick bounces, still holding you tight enough to nip your ear and trace kisses along your neck.");
         outputText("[pg]You move together, pressing your cock deep into Kiha's hot bowels before withdrawing nearly to the tip.  Again and again your " + cockDescript(x) + " slides in and out of Kiha's asshole, slowly stretching her until the going gets easy.  She starts to pick up the pace, pulling you up from the ");
         if (followerKiha()) outputText("rock");
         else outputText("tree");
@@ -1660,7 +1660,7 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
             if (player.cockArea(x1[2] - 1) < 24) outputText(" and your rod buried to the hilt within her");
             outputText(".  As you alternatively pound away at her front and back door, you can feel her dark scaly body contorting between your arms: Kiha is drowning in an unholy fountain of pleasure.  She thrashes wildly and nearly escapes your grasp; the ferocious girl isn't one to be dominated, and in her oblivious passion she lets her inhumane vitality express to its full extent.  Although you were rather rough and unsubtle with her cunt, it is literally dripping cascades of fem-spunk; the shimmering liquid flows down her toned thighs and releases hot steam as it impregnates the cursed floor.  Some of her boiling sexual essence is coated on your [cock " + x1[2] + "] as you thrust in and out of her gaping pussy.  The hot fluid serves as an aphrodisiac on your plant-like junk and makes it even harder; your mind is filled with feverish sensations as both of you descend even deeper in libertinism.");
             if (x1[3] > 0) {
-                outputText("[pg]While you certainly appreciate the vision of a fiery and powerful girl writhing against your body, you think her ecstatic face is missing something, and you know what it is: a juicy meaty cock!  Her gaping mouth letting out hectic moans is surely a pleasant sight to see, but you would rather see those pulpy lips encircling some dick.  Moving your wriggling [cock " + x1[3] + "] toward Kiha's face, you teasingly ask her if she wants some more cock, making sure to pound her hard at every word.  The flaring tip of your [cock " + x1[3] + "] is simmering in arousal before her eyes, giving her a perfect view of your extravagant junk.  The dragoness is too shaken up to give a proper answer; every now and then she mutters a single incoherent sound, her words being mangled by intermittent moans at every thrust from your [cock " + x1[1] + "] and your [cock " + x1[2] + "] into her holes: \"<i>Aah… wait… aah… no… ooh… aah… wait… x1[2]-yeaAAAAH! YES! Oh… yesyesyesyeESSSSSSSS! AAAAaaah… aah… .</i>\"");
+                outputText("[pg]While you certainly appreciate the vision of a fiery and powerful girl writhing against your body, you think her ecstatic face is missing something, and you know what it is: a juicy meaty cock!  Her gaping mouth letting out hectic moans is surely a pleasant sight to see, but you would rather see those pulpy lips encircling some dick.  Moving your wriggling [cock " + x1[3] + "] toward Kiha's face, you teasingly ask her if she wants some more cock, making sure to pound her hard at every word.  The flaring tip of your [cock " + x1[3] + "] is simmering in arousal before her eyes, giving her a perfect view of your extravagant junk.  The dragoness is too shaken up to give a proper answer; every now and then she mutters a single incoherent sound, her words being mangled by intermittent moans at every thrust from your [cock " + x1[1] + "] and your [cock " + x1[2] + "] into her holes: \"<i>Aah… wait… aah… no… ooh… aah… wait… [cock " + x1[2] + "]-yeaAAAAH! YES! Oh… yesyesyesyeESSSSSSSS! AAAAaaah… aah… .</i>\"");
                 outputText("[pg]How could you refuse such an invitation?  You graciously give in to her needy demands for cock and approach her with your [cock " + x1[3] + "]; however, still unwilling to be treated as a mere fuck-toy, Kiha acts first: her flexible tongue grabs your plant-like rod and she gulps down the entirety of your length, suckling and squeezing ferociously.  Her lips cling to your [cock " + x1[3] + "] with an almost desperate need; she seems to be determined to get what she wants and it's clear she won't let go of your tentacle prick before having milked it of all its substance.  Your cock is being sucked so hard it sometimes hurts; her lips act as an incredibly tight cock-ring, entrapping your liana-dick and effectively preventing it from moving; it feels good, but the sensation is unbearably teasing.  You can actually see enormous globs of pre-cum running up your sinuous shaft before being greedily swallowed by the cock-hungry dragoness.");
                 if (x1[4] > 0) {
                     outputText("[pg]At last, Kiha is entirely stuffed with your tentacle pricks.  Since you can't penetrate her anymore, you decide to toy with her body: your remaining junk wraps around every part of her body.  You enjoy the hot contact of your rubbery dickflesh against her fit thighs, her plush yet firm buttocks and her bouncy breasts.  These seem to be whirling around like an invitation for some cock to slide between them.  You give Kiha a good tit-fuck, the little scales pleasantly scratching your dong as it slides below her dangling orbs.  Her whole body is a delight to touch and grope: the soft contact of her skin under which runs boiling heat and the rough sensation of her scattered scales are both entrancing you in different ways.  The extremity of your [cock " + x1[4] + "] somehow ends up near Kiha's butt, and you can feel her tail wagging left and right in excitement.  A wicked idea crosses your mind: wrapping your lengthy tentacle pecker around Kiha's scaly appendage, you squeeze it hard, almost painfully.  The dragoness tries to yell but her screams are muffled by your filling [cock " + x1[3] + "]; her tail seems to vibrate on its own within your tentacle grip.  The scaly girl convulses savagely in a sheer display of fury and fiery lust; the two of you struggle, fighting and loving each other in an impetuous display of passionate ire.  Your bodies grind against each other, your muscles tense against the dragoness'.  You are obviously dominant in this mad sexual clash due to your wriggling mass of tentacle junk filling her every orifice and taking advantage of her most awkward postures to give her dazing pleasure.  Nevertheless, the impulsive dragon girl won't surrender that easily and still opposes the most vehement resistance.  This debauched embrace is swiftly escalating in violence and intensity and it seems that only orgasm will resolve the crazy fight.");
@@ -1706,7 +1706,7 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
         outputText("[pg]Kiha sniffles softly and continues, \"<i>I almost feel bad for Lethice to have you as an enemy.  Do me a favor and kick her in the twat for me when you find her, okay?</i>\"  You both share a nervous laugh at that and slowly end the hug.  Dabbing at one of her tears, you suggest, \"<i>Come on, let's carry your stuff over and get you moved in.</i>\"  Kiha's tail wags happily, and the two of you begin gathering her things.");
         outputText("[pg]<b>(Kiha has joined your camp as a lover!)</b>");
         flags[kFLAGS.KIHA_FOLLOWER] = 1;
-        outputText("\n\n<b>As if remembering something Kiha pulls a shining shard from her inventory and hand it over to you as a gift. You acquired a Radiant shard!</b>");
+        outputText("\n\n<b>As if remembering something Kiha pulls a shining shard from her inventory and hands it over to you as a gift. You acquired a Radiant shard!</b>");
         if (player.hasKeyItem("Radiant shard") >= 0) {
             player.addKeyValue("Radiant shard", 1, +1);
         } else player.createKeyItem("Radiant shard", 1, 0, 0, 0);
@@ -1812,12 +1812,12 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
         outputText("[pg]Between her gropable butt-cheeks, Kiha has a single tight asshole, right where it belongs.");
         if (pregnancy.isPregnant) {
             outputText("[pg]");
-            if (pregnancy.incubation > 288) outputText("<b>Her belly appears to be a bit swollen.</b>");
-            else if (pregnancy.incubation > 240 && pregnancy.incubation <= 288) outputText("<b>Her belly is comparable to being six months into pregnant.</b>");
-            else if (pregnancy.incubation > 192 && pregnancy.incubation <= 240) outputText("<b>Her belly is comparable to being eight months into pregnancy.</b>");
-            else if (pregnancy.incubation > 144 && pregnancy.incubation <= 192) outputText("<b>Her belly is comparable to being nine months into pregnancy. It wouldn't take very long until she eventually lays a clutch of eggs.</b>");
-            else if (pregnancy.incubation > 72 && pregnancy.incubation <= 144) outputText("<b>Her belly is even bigger than the average belly size at end of a typical human pregnancy.</b>");
-            else if (pregnancy.incubation <= 72) outputText("<b>It's impossible to not notice her pregnancy. The size of her belly has taken its toll on her. She is about to lay a clutch of eggs soon.</b>");
+            if (pregnancy.incubation > sceneHunter.adjustPregEventTimerNum(288, PregnancyStore.INCUBATION_KIHA)) outputText("<b>Her belly appears to be a bit swollen.</b>");
+            else if (pregnancy.incubation > sceneHunter.adjustPregEventTimerNum(240, PregnancyStore.INCUBATION_KIHA) && pregnancy.incubation <= sceneHunter.adjustPregEventTimerNum(288, PregnancyStore.INCUBATION_KIHA)) outputText("<b>Her belly is comparable to being six months into pregnancy.</b>");
+            else if (pregnancy.incubation > sceneHunter.adjustPregEventTimerNum(192, PregnancyStore.INCUBATION_KIHA) && pregnancy.incubation <= sceneHunter.adjustPregEventTimerNum(240, PregnancyStore.INCUBATION_KIHA)) outputText("<b>Her belly is comparable to being eight months into pregnancy.</b>");
+            else if (pregnancy.incubation > sceneHunter.adjustPregEventTimerNum(144, PregnancyStore.INCUBATION_KIHA) && pregnancy.incubation <= sceneHunter.adjustPregEventTimerNum(192, PregnancyStore.INCUBATION_KIHA)) outputText("<b>Her belly is comparable to being nine months into pregnancy. It wouldn't take very long until she eventually lays a clutch of eggs.</b>");
+            else if (pregnancy.incubation > sceneHunter.adjustPregEventTimerNum(72, PregnancyStore.INCUBATION_KIHA) && pregnancy.incubation <= sceneHunter.adjustPregEventTimerNum(144, PregnancyStore.INCUBATION_KIHA)) outputText("<b>Her belly is even bigger than the average belly size at end of a typical human pregnancy.</b>");
+            else if (pregnancy.incubation <= sceneHunter.adjustPregEventTimerNum(72, PregnancyStore.INCUBATION_KIHA)) outputText("<b>It's impossible to not notice her pregnancy. The size of her belly has taken its toll on her. She is about to lay a clutch of eggs soon.</b>");
         }
         doNext(kihaScene.encounterKiha);
     }
@@ -1826,7 +1826,7 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
         clearOutput();
         outputText("Feeling that Kiha's natural inclination for dominance has grown a little stale, you broach the idea of YOU dominating Her.  The dragoness glances your way and grins toothily as she cracks her knuckles.  \"<i>Why would I want to let you dominate me, doofus?  I've been fighting to stay on top out in the swamps as long as I can remember.  What makes you think I'd want to submit to some cute " + player.mf("guy", "girl") + " I just met?</i>\"  She blushes a little when she realizes she just called you cute.");
         outputText("[pg]Sighing, you fold your arms across your chest and tell her that you won't take no for an answer.  Kiha snorts derisively, two tiny puffs of flame shooting from her nostrils as she cracks her neck and stands.  She grabs her axe out of the dirt and whirls to face you.");
-        outputText("[pg]\"<i>If you want have your way with me, you'll need to earn it, just like anyone else,</i>\" Kiha explains.  She narrows her eyes at you and questions, \"<i>The question is, are you " + player.mf("man", "woman") + " enough to take what you want?  I wouldn't want you to get hurt.</i>\"");
+        outputText("[pg]\"<i>If you want to have your way with me, you'll need to earn it, just like anyone else,</i>\" Kiha explains.  She narrows her eyes at you and questions, \"<i>The question is, are you " + player.mf("man", "woman") + " enough to take what you want?  I wouldn't want you to get hurt.</i>\"");
         outputText("[pg]That seems like a challenge.  Will you rise to it, or will you back down?");
         menu();
         addButton(0, "Back Down", beABitchDumbass);
@@ -2075,7 +2075,7 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
                 if (flags[kFLAGS.KIHA_DEFEATS_COUNTER] >= 1) flags[kFLAGS.KIHA_DEFEATS_COUNTER]++;
                 else flags[kFLAGS.KIHA_DEFEATS_COUNTER] = 1;
             }
-            if (flags[kFLAGS.KIHA_LVL_UP] < 13 && flags[kFLAGS.KIHA_DEFEATS_COUNTER] >= flags[kFLAGS.KIHA_LVL_UP] + 4) {
+            if (flags[kFLAGS.KIHA_LVL_UP] < 17 && flags[kFLAGS.KIHA_DEFEATS_COUNTER] >= flags[kFLAGS.KIHA_LVL_UP] + 7) {
                 var addToV3:Number = player.statusEffectv1(StatusEffects.TrainingNPCsTimersReduction) * flags[kFLAGS.KIHA_DEFEATS_COUNTER];
                 if (player.hasStatusEffect(StatusEffects.CampSparingNpcsTimers1))
                     player.addStatusValue(StatusEffects.CampSparingNpcsTimers1, 3, addToV3);
@@ -2673,7 +2673,7 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
         outputText("“<i>Well hello, [name].</i>” Your heart races, your pussy dampens. You don’t remember who this is… but your body clearly does! You turn around, to see a black dragon-morph, exactly double your height. He’s got massive muscles, some rather fetching scars, and best of all, dangling between his legs is a scaly cock almost a third your height. He grins, showing you his teeth, and for a moment, you shudder. Something isn’t right here.\n\n");
         outputText("“<i>Oh. Were you looking for someone?</i>” He asks, and you nod. Yes, you were with someone before… He nods. “<i>Yes, our lover. Kiha should be around here somewhere. Unlike you, my lazy little one, she’s already started hers. Confused, you ask him what he means, and he puts a hand on your shoulder. “You’ll see, my [name].</i>”\n\n");
         outputText("He leads you down a small hallway, into a room identical to yours. Inside, a familiar red dragoness lies down in her bed. Other than her red scales and dusky skin, she looks identical to you… But unlike you, her belly’s swollen, and she’s clearly enjoying the fullness. “<i>Lie down beside her, [name], and let’s get started. I want you both to feel my love inside you.</i>” You happily obey, lifting your tail so your stud can get at your slavering pussy.\n\n");
-        outputText("You live the rest of your life with Kiha, as you had vowed before your wedding was interrupted… Not that you ever remembered. You spend your days in orgasmic bliss, recieving daily fucks that leave you comatose, then being a broodmother to the next race of demonic dragons. You and Kiha, in each other’s arms, hatch an army that conquers Mareth’s skies, leaving no safe place left.\n\n");
+        outputText("You live the rest of your life with Kiha, as you had vowed before your wedding was interrupted… Not that you ever remembered. You spend your days in orgasmic bliss, receiving daily fucks that leave you comatose, then being a broodmother to the next race of demonic dragons. You and Kiha, in each other’s arms, hatch an army that conquers Mareth’s skies, leaving no safe place left.\n\n");
         //BAD END HERE
         if (recalling) recallWakeUp();
         else EventParser.gameOver();
@@ -2727,16 +2727,16 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
         clearOutput();
         kihaSprite();
         outputText("Gasping, panting, the black dragon falls to one knee. His demonic aura flares, and with a mighty roar, he stands back up. \"<i>No… </i>\" He rumbles, taking a lumbering step towards you. \"<i>I… Cannot die here… </i>\" His entire body spasms, dropping him to his knees. \"<i>I… was promised… Power.</i>\" His flesh begins to steam, and you gag, covering your nose as his scales smoke.\n\n");
-        outputText("His muscles begin to shrink, the stench of burning flesh filling the cave, and within a few seconds, the once-mighty demonic dragon is little more than skin and bone, scales falling from his body like leaves. He staggers forward, face shrivelling as the dark magic sustaining him finally runs out, his last utterances a brassy roar of pain that peters out to nothing, leaving dusty bones on the cave floor.\n\n");
+        outputText("His muscles begin to shrink, the stench of burning flesh filling the cave, and within a few seconds, the once-mighty demonic dragon is little more than skin and bone, scales falling from his body like leaves. He staggers forward, face shriveling as the dark magic sustaining him finally runs out, his last utterances a brassy roar of pain that peters out to nothing, leaving dusty bones on the cave floor.\n\n");
         outputText("For a moment you stand there, equally horrified and disgusted by the remains of that… creature… But your wedding band flashes with pain. You turn around, and to your shock, you see blood on the floor of Kiha’s cell, dripping from one of her wrists.\n\n");
         outputText("Kiha points with her uninjured hand, struggling to keep the weight off her injured wrists, but she’s barely holding on to consciousness, her wings hanging limp behind her. With trembling hands, you open the shackles keeping her chained, and lower Kiha gently so her feet are on the ground. Startled, clearly out of it, Kiha lashes out, catching you in the jaw with her uninjured arm.\n\n");
-        outputText("\"<i>No! I… Won’t… Don’t you DARE touch me!</i>\" Kiha’s eyes are unfocused, and one of her wings is still hanging loosely. Instead of fighting her, you take the hit, wrap your arms gently around Kiha, and ask her what her favourite constellation is.\n\n");
+        outputText("\"<i>No! I… Won’t… Don’t you DARE touch me!</i>\" Kiha’s eyes are unfocused, and one of her wings is still hanging loosely. Instead of fighting her, you take the hit, wrap your arms gently around Kiha, and ask her what her favorite constellation is.\n\n");
         outputText("\"<i>Wha-what?</i>\" Your dragoness sniffs, and would have fallen over, had you not steadied her. \"<i>[Name]?</i>\" Kiha stops struggling, and you shush her gently, keeping your hold so she doesn’t fall over. \"<i>Is… Is it really you?</i>\" Kiha’s shaking like a leaf… and you can’t blame her. She’s barely able to stand, and you can smell some of what he did. Slowly, carefully, you bring Kiha into the back of the cave, where a crude hallway and three rooms have been carved out. You bring her over to the middle room, laying your wife down on a surprisingly comfortable bed, on her stomach.\n\n");
         outputText("\"<i>D-don’t leave.</i>\" Kiha mutters, but her wrist is still bleeding. You kiss Kiha on the cheek, telling her you’ll be right back.\n\n");
         outputText("You find basic medical supplies in the cave-dwelling, in the backmost (and largest) room. Kiha’s shivering, despite the cave’s heat, when you return, but you bandage her wounded wrist as best you can. Her wing, however… You tap the bone, right next to her shoulder. Kiha winces, but doesn’t cry out. It’s dislocated, but doesn’t appear to be broken. You set her wing with only a little whimper, and when it’s done, Kiha immediately falls asleep, tears still on her face. Despite your misgivings about staying here, your dragoness is clearly unfit to travel right now. You position yourself at the entrance to the room, wrapping yourself in blankets from the other bedroom.\n\n");
         outputText("You wake up a few hours later. Kiha’s shaking, crying in her sleep, and the emotions come through your wedding band loud and clear. Sitting by her bedside, you shake Kiha, and she opens her eyes, stock still.\n\n");
         outputText("\"<i>… [Name]… It’s you.</i>\" She looks around, shocked. \"<i>B-but we’re still here… [Name], you need to get out of here before… Before… </i>\" Kiha blinks, looking up at you. You lean down, kissing Kiha on the forehead. You tell her that it’s okay… The black dragon can’t hurt anyone else.\n\n");
-        outputText("\"<i>… Oh… </i>\" Kiha seems to realise what’s going on, then moves, wincing as her wrist throbs. \"<i>Damn it… </i>\" Despite everything, Kiha really doesn’t seem to want to ask, but she does. \"<i>C-could you get me some water?</i>\" She shudders. \"<i>I… can’t… </i>\"\n\n");
+        outputText("\"<i>… Oh… </i>\" Kiha seems to realize what’s going on, then moves, wincing as her wrist throbs. \"<i>Damn it… </i>\" Despite everything, Kiha really doesn’t seem to want to ask, but she does. \"<i>C-could you get me some water?</i>\" She shudders. \"<i>I… can’t… </i>\"\n\n");
         outputText("You spend the next day tending to Kiha’s injuries… well, most of them. One in particular, she insisted on handling herself. While her wrist and wing were the only obvious injuries, Kiha still seemed to have trouble moving, for now at least. However, as the sun begins to set, Kiha, sitting at the table, insists on leaving the cave.\n\n");
         outputText("\"<i>[Name]… I want to go home.</i>\" Kiha tries to demand this, but she’s still weak. You tell her this, and she shudders. \"<i>… Look… I can’t stay in this cave anymore. I promise to stay at camp… but… </i>\" She looks back at the shackles that still have her blood on them, and you can’t help but agree. This place might be safe now… But you can’t blame her, either.\n\n");
         outputText("You tell Kiha to relax, and she bristles, opening her mouth… and you put a finger on her lips, scooping your dragoness into your arms. \"<i>H-hey, what are you-?!</i>\" Kiha blurts, but you chuckle, making sure to keep her injured wing bound. You gently tell Kiha that you’re taking her home. She blushes, lips quivering, but nods once as you carry her out from the cave.\n\n");
@@ -2805,7 +2805,7 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
         if (DemonLab.MainAreaComplete == 4) {
             outputText("You decide it's time to ask Kiha about the other Dragonoids, and the village your dragoness came from. Kiha winces, but nods to you. <i>\"… I suppose you're right, it's… Only fair that you know.</i>\" Kiha sighs, but squares her shoulders. \"<i> Come with me, my idiot. If you're that curious about me… It's easier to show you.</i>\"\n\n");
         }
-        outputText("You follow closely as Kiha wordlessly leaves camp. She leads you over most of the forest, past the swamp, and into the plains. You realise that you've never really seen Kiha come to this part of the world before.\n\n");
+        outputText("You follow closely as Kiha wordlessly leaves camp. She leads you over most of the forest, past the swamp, and into the plains. You realize that you've never really seen Kiha come to this part of the world before.\n\n");
         outputText("Eventually, the pair of you crest a large hill that towers over the surrounding land. A single apple tree, far larger than any you’ve ever seen back home, sits on the top of the hill, casting shade down over the entire hill. On one side of the hill, the terrain becomes increasingly sandy, and you can see a gnoll run on the other side, chased away from the hill by the sight of your dragoness lover.\n\n");
         outputText("Your dusky dragoness finds a comfortable spot among the exposed roots of the ancient tree, and sits down, motioning for you to join her.\n\n");
         outputText("You sit beside Kiha, noticing the somber look on her face. You follow her gaze, to a spot on the plains that seems flatter than normal… and off. The grass in that area is shorter, and the only shafts of wood poking up from the ground there are… rather blocky and black, almost like burnt lumber, rather than a tree. Nature may have reclaimed most of the land, but now you know what to look for, it’s painfully obvious that the patch of land was once a village.\n\n");
@@ -2987,9 +2987,9 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
             + "\n"
             + "You quickly realize that while Kiha has the speed advantage, the drider giantess has the range and toughness to wait her out. Kiha roars, slashing at Tyrantia’s flank, only to take an armored leg to the wing. Your dragoness barely turns the blow into a controlled crash, getting her feet underneath her and skidding to a halt. Phallic spear glinting, Tyrantia presses her advantage, stabbing rapidly, bearing down on Kiha and preventing her from taking off. \n"
             + "\n"
-            + "“<i>Fuck, fuck, FUCK!</i>” Kiha’s swearing gets worse and more frequent as Tyrantia pushes her back, forcing the dragoness to the edge of the ring. As she nears the edge, Kiha, realising her situation, breathes flames right at Tyrantia’s armoured head. When the giantess turns her head to protect her eyes, Kiha launches herself up, oversized axe glowing crimson as she slices at Tyrantia’s chest. \n"
+            + "“<i>Fuck, fuck, FUCK!</i>” Kiha’s swearing gets worse and more frequent as Tyrantia pushes her back, forcing the dragoness to the edge of the ring. As she nears the edge, Kiha, realizing her situation, breathes flames right at Tyrantia’s armored head. When the giantess turns her head to protect her eyes, Kiha launches herself up, oversized axe glowing crimson as she slices at Tyrantia’s chest. \n"
             + "\n"
-            + "Tyrantia steps forward, and as Kiha’s head reaches her level, she slams her armoured head into Kiha’s with a metallic crunch of impact. Her axe is deflected by a swift motion from Tyrantia’s spear, and before Kiha can recollect herself, she’s pinned to the rough ground, phallic spear at her throat. \n"
+            + "Tyrantia steps forward, and as Kiha’s head reaches her level, she slams her armored head into Kiha’s with a metallic crunch of impact. Her axe is deflected by a swift motion from Tyrantia’s spear, and before Kiha can recollect herself, she’s pinned to the rough ground, phallic spear at her throat. \n"
             + "\n"
             + "“<i>Good</i>”.  Tyrantia grins, removing her helmet. “<i>Thanks for the spar, Kiha. It’s been a while since I practised against a flyer who can last more than a few taps</i>”. Tyrantia lowers a hand to Kiha, offering her a hand up. Kiha exhales angrily, flapping her wings and rolling backwards to her feet. \n"
             + "\n"
@@ -3203,11 +3203,11 @@ private function warmLoverKihaIntro(output:Boolean = true):void {
 		if (slot < 21) {
 			outputText("\"<i>Hey my idiot. Want me to tarry along and scorch their hides? Why not, give those demons what they deserve!</i>\"\n\n");
             outputText("Kiha is now following you around.\n\n");
-            var strKiha:Number = 85;
-            var meleeAtkKiha:Number = 28
+            var strKiha:Number = 340;
+            var meleeAtkKiha:Number = 60;
             if (flags[kFLAGS.KIHA_LVL_UP] >= 1) {
-                strKiha += 25 * flags[kFLAGS.KIHA_LVL_UP];
-                meleeAtkKiha += 10 * flags[kFLAGS.KIHA_LVL_UP];
+                strKiha += 50 * flags[kFLAGS.KIHA_LVL_UP];
+                meleeAtkKiha += 30 * flags[kFLAGS.KIHA_LVL_UP];
             }
             strKiha *= (1 + (0.2 * player.newGamePlusMod()));
             strKiha = Math.round(strKiha);

@@ -71,7 +71,8 @@ public class ScyllaRace extends Race {
 							return body.player.isKraken();
 						}, +4)
 				.skinBasePattern(Skin.PATTERN_BIOLUMINESCENCE, +1)
-				.hasPerk(PerkLib.InkSpray, +1);
+				.hasPerk(PerkLib.InkSpray, +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addConditionedScores(function (body:BodyData):Boolean {
 			return body.player.isScylla() || body.player.isKraken();
 		}, "scylla or kraken lower body;")
@@ -80,7 +81,9 @@ public class ScyllaRace extends Race {
 				.cockOrVaginaOfType(CockTypesEnum.SCYLLATENTACLE, VaginaClass.SCYLLA, +1)
 				.noWings(+2);
 		
+		addBloodline(PerkLib.KrakensDescendant, PerkLib.BloodlineKraken);
 		addMutation(IMutationsLib.ScyllaInkGlandsIM);
+		addMutation(IMutationsLib.MightyLowerHalfIM);
 		
 		buildTier(7, "scylla")
 				.buffs({

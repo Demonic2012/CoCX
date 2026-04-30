@@ -5,15 +5,7 @@
 package classes.Scenes.Areas.Forest
 {
 import classes.*;
-import classes.BodyParts.Arms;
-import classes.BodyParts.Ears;
-import classes.BodyParts.Face;
-import classes.BodyParts.Hair;
-import classes.BodyParts.Horns;
-import classes.BodyParts.LowerBody;
-import classes.BodyParts.Skin;
-import classes.BodyParts.Tail;
-import classes.BodyParts.Wings;
+import classes.BodyParts.*;
 import classes.GlobalFlags.kFLAGS;
 import classes.Races.YgddrasilRace;
 import classes.Items.MutationsHelper;
@@ -239,65 +231,55 @@ public class WorldTree extends BaseContent
 				outputText("\n\nAt first it looks like nothing changed but then you realize all the hair on your body has shifted to a verdant green color.  <b>You now have green hair.</b>");
 				player.hairColor = "green";
 			}
+			//Yggdrasil Eyes
+			if (player.eyes.type != Eyes.YGGDRASIL && changes < changeLimit) {
+				outputText("\n\n");
+				CoC.instance.transformations.EyesYggdrasil.applyEffect();
+				changes++;
+			}//Eyes Color
+			if (CoC.instance.transformations.EyesYggdrasilColors.isPossible()) {
+				outputText("[pg]");
+				CoC.instance.transformations.EyesYggdrasilColors.applyEffect();
+				changes++;
+			}
 			//horns
 			if (player.horns.type != Horns.OAK && (player.hairType == Hair.LEAF || player.hairType == Hair.GRASS || player.hairType == Hair.ANEMONE) && changes < changeLimit) {
 				outputText("\n\n");
 				CoC.instance.transformations.HornsOak.applyEffect();
 				changes++;
 			}
-			//Vines/tentacles arms
-			if (player.cor >= 66) {
-				if (player.arms.type != Arms.PLANT2 && changes < changeLimit) {
-					outputText("\n\n");
-					CoC.instance.transformations.ArmsPlant2.applyEffect();
-					changes++;
-				}
-			}
-			if (player.cor >= 33 && player.cor < 66) {
-				if (rand(2) == 0) {
-					if (player.arms.type != Arms.PLANT2 && changes < changeLimit) {
-						outputText("\n\n");
-						CoC.instance.transformations.ArmsPlant2.applyEffect();
-						changes++;
-					}
-				}
-				else {
-					if (player.arms.type != Arms.PLANT && changes < changeLimit) {
-						outputText("\n\n");
-						CoC.instance.transformations.ArmsPlant.applyEffect();
-						changes++;
-					}
-				}
-			}
-			if (player.cor < 33) {
-				if (player.arms.type != Arms.PLANT && changes < changeLimit) {
-					outputText("\n\n");
-					CoC.instance.transformations.ArmsPlant.applyEffect();
-					changes++;
-				}
+			//Bark Claws
+			if (player.arms.type != Arms.YGGDRASIL && changes < changeLimit) {
+				outputText("\n\n");
+				CoC.instance.transformations.ArmsYggdrasil.applyEffect();
+				changes++;
 			}
 			//Plant-like wings
-			if (player.wings.type == Wings.YGGDRASIL_HUGE && changes < changeLimit && rand(3) == 0) {
+			if (player.wings.type == Wings.YGGDRASIL_HUGE_3 && changes < changeLimit) {
+				outputText("\n\n");
+				CoC.instance.transformations.WingsYggdrasilOctupleHuge.applyEffect();
+				changes++;
+			}
+			if (player.wings.type == Wings.YGGDRASIL_HUGE_2 && changes < changeLimit) {
+				outputText("\n\n");
+				CoC.instance.transformations.WingsYggdrasilSextupleHuge.applyEffect();
+				changes++;
+			}
+			if (player.wings.type == Wings.YGGDRASIL_HUGE && changes < changeLimit) {
 				outputText("\n\n");
 				CoC.instance.transformations.WingsYggdrasilQuadrupleHuge.applyEffect();
 				changes++;
 			}
-			if (player.wings.type == Wings.YGGDRASIL_LARGE && changes < changeLimit && rand(3) == 0) {
+			if (player.wings.type == Wings.YGGDRASIL_LARGE && changes < changeLimit) {
 				outputText("\n\n");
 				CoC.instance.transformations.WingsYggdrasilHuge.applyEffect();
 				changes++;
 			}
-			if ((player.arms.type == Arms.PLANT || player.arms.type == Arms.PLANT2) && player.wings.type != Wings.YGGDRASIL_LARGE && player.wings.type != Wings.YGGDRASIL_HUGE && player.wings.type != Wings.YGGDRASIL_HUGE_2 && player.lowerBody != LowerBody.PLANT_FLOWER && changes < changeLimit && rand(3) == 0) {
+			if (player.arms.type == Arms.YGGDRASIL && player.wings.type != Wings.YGGDRASIL_LARGE && player.wings.type != Wings.YGGDRASIL_HUGE && player.wings.type != Wings.YGGDRASIL_HUGE_2 && player.wings.type != Wings.YGGDRASIL_HUGE_3 && player.wings.type != Wings.YGGDRASIL_HUGE_4 && player.lowerBody != LowerBody.PLANT_FLOWER && changes < changeLimit) {
 				outputText("\n\n");
 				CoC.instance.transformations.WingsYggdrasilLarge.applyEffect();
 				changes++;
 			}
-			//Bark claws
-		//	if (player.arms.type != ORCA && changes < changeLimit) {
-		//		outputText("\n\nRemarkably, the sunscreen has no effect.  Maybe next time?");
-		//		player.arms.type = ORCA;
-		//		changes++;
-		//	}
 			//Root claws
 			if ((player.wings.type == Wings.YGGDRASIL_LARGE || player.wings.type == Wings.YGGDRASIL_HUGE || player.wings.type == Wings.YGGDRASIL_HUGE_2) && player.lowerBody != LowerBody.YGG_ROOT_CLAWS && changes < changeLimit) {
 				outputText("\n\n");
@@ -310,16 +292,32 @@ public class WorldTree extends BaseContent
 				CoC.instance.transformations.FacePlantDragon.applyEffect();
 				changes++;
 			}
+			//Extra plant dragon tails
+			var nYgddrasilTails:int = player.tailType == Tail.YGGDRASIL ? player.tailCount : 0;
+			if (nYgddrasilTails == 3 && player.level >= 18 && player.inte >= 45 && player.wis >= 90 && changes < changeLimit) {
+				outputText("[pg]");
+				transformations.TailYgddrasil(4).applyEffect();
+			}
+			if (nYgddrasilTails == 2 && player.level >= 12 && player.inte >= 30 && player.wis >= 60 && changes < changeLimit) {
+				outputText("[pg]");
+				transformations.TailYgddrasil(3).applyEffect();
+			}
+			if (nYgddrasilTails == 1 && player.level >= 6 && player.inte >= 15 && player.wis >= 30 && changes < changeLimit) {
+				outputText("[pg]");
+				transformations.TailYgddrasil(2).applyEffect();
+			}
 			//Plant dragon tail
 			if (player.faceType == Face.PLANT_DRAGON && player.tailType != Tail.YGGDRASIL && changes < changeLimit) {
 				outputText("\n\n");
-				CoC.instance.transformations.TailYgddrasil.applyEffect();
+				CoC.instance.transformations.TailYgddrasil(1).applyEffect();
 				changes++;
 			}
+			//Rear body
+			
 			//Moss (fur)/else Bark skin
 			if (!player.isBarkSkin() && !player.isGargoyle() && changes < changeLimit && player.faceType == Face.PLANT_DRAGON) {
 				outputText("\n\n");
-				CoC.instance.transformations.SkinBark(Skin.COVERAGE_COMPLETE, {colors: YgddrasilRace.YgddrasilSkinColors}).applyEffect();
+				CoC.instance.transformations.SkinBark(Skin.COVERAGE_COMPLETE, {colors: randomChoice(YgddrasilRace.YgddrasilSkinColors)}).applyEffect();
 				changes++;
 			}
 			if (player.ears.type != Ears.LIZARD && player.tailType == Tail.YGGDRASIL && player.lowerBody == LowerBody.YGG_ROOT_CLAWS && changes < changeLimit) {
@@ -329,10 +327,10 @@ public class WorldTree extends BaseContent
 				CoC.instance.transformations.EarsLizard.applyEffect(false);
 				changes++;
 			}
-			if (changes < changeLimit && player.isRaceCached(Races.YGGDRASIL) && !player.hasPerk(PerkLib.DragonPoisonBreath)) {
+			if (changes < changeLimit && player.isRaceCached(Races.YGGDRASIL) && !player.hasPerk(PerkLib.DragonPoisonousSapBreath)) {
 				outputText("\n\nYou feel something awakening within you... then a sudden sensation of choking grabs hold of your throat, sending you to your knees as you clutch and gasp for breath.  It feels like there's something trapped inside your windpipe, clawing and crawling its way up.  You retch and splutter and then, with a feeling of almost painful relief, you expel a bellowing roar from deep inside of yourself... ");
-				outputText("with enough force that clods of dirt and shattered gravel are sent flying all around.  You look at the small crater you have literally blasted into the landscape with a mixture of awe and surprise.\n\nIt seems song has awaked some kind of power within you... your throat and chest feel very... strange and you can't put a finger what this feeling exactly is, however; you doubt you can force out more than one such blast before resting.  (<b>Gained Perk: Dragon poison breath!</b>)");
-				player.createPerk(PerkLib.DragonPoisonBreath, 0, 0, 0, 0);
+				outputText("with enough force that clods of dirt and shattered gravel are sent flying all around.  You look at the small crater you have literally blasted into the landscape with a mixture of awe and surprise.\n\nIt seems song has awaked some kind of power within you... your throat and chest feel very... strange and you can't put a finger what this feeling exactly is, however; you doubt you can force out more than one such blast before resting.  (<b>Gained Perk: Dragon poisonous sap breath!</b>)");
+				player.createPerk(PerkLib.DragonPoisonousSapBreath, 0, 0, 0, 0);
 				changes++;
 			}
 			flags[kFLAGS.TIMES_TRANSFORMED] += changes;

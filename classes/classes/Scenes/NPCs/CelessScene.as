@@ -2,6 +2,7 @@ package classes.Scenes.NPCs {
 import classes.CoC;
 import classes.EventParser;
 import classes.GlobalFlags.kFLAGS;
+import classes.IMutations.IMutationsLib;
 import classes.ItemType;
 import classes.PerkLib;
 import classes.PregnancyStore;
@@ -45,8 +46,7 @@ public class CelessScene extends XXCNPC implements TimeAwareInterface {
 
 	public static function canMeetUnicorn():Boolean {
 		return (
-				CoC.instance.player.level >= 25
-				&& !CoC.instance.player.isPregnant()
+				!CoC.instance.player.isPregnant()
 				&& !instance.armorFound
 				&& (instance._age == 0 || instance._age < -1)
 		);
@@ -95,7 +95,7 @@ public class CelessScene extends XXCNPC implements TimeAwareInterface {
 	}
 
 	public function get isCorrupt():Boolean {
-		return _corruption > 50;
+		return _corruption > 50 || player.perkv1(IMutationsLib.FiendishOvariesIM) >= 2;
 	}
 
 	public function get isAdult():Boolean {
@@ -184,7 +184,7 @@ public class CelessScene extends XXCNPC implements TimeAwareInterface {
 		menu();
 		addButton(0,"Appearance",celessChildAppearance)
 		if (isAdult) {
-			outputText("\n\n<i>\""+player.mf("Dad", "Mom")+", now that I'm fully grown...I can feel power surging through my horn. I don't know how it works, exactly...But I can create powerful items for you, real actual artefacts. Should you ever find <b>radiant shards</b> and a decent medium I could use my innate magic to craft an armament of legend. Simply ask me if you ever want one." +
+			outputText("\n\n<i>\""+player.mf("Dad", "Mom")+", now that I'm fully grown...I can feel power surging through my horn. I don't know how it works, exactly...But I can create powerful items for you, real actual artifacts. Should you ever find <b>radiant shards</b> and a decent medium I could use my innate magic to craft an armament of legend. Simply ask me if you ever want one." +
 					" please don't ask me how I know this. I think it's just innate knowledge or something my dad magically passed down to me.\"</i>");
 			if (isCorrupt || player.cor >= 20) {
 				addButton(1, "Incest", incestMenu);
@@ -382,6 +382,7 @@ public class CelessScene extends XXCNPC implements TimeAwareInterface {
 			[CoC.instance.weapons.BFTHSWORD, CoC.instance.weapons.ARMAGED, CoC.instance.weapons.CHAOSEA],
 			[CoC.instance.weapons.A_WAND, CoC.instance.weapons.OCCULUS, CoC.instance.weapons.ECLIPSE],
 			[CoC.instance.weapons.PFLUTTE, CoC.instance.weapons.ELYSIUM, CoC.instance.weapons.HELLCAL],
+			[CoC.instance.weapons.GNARLEDS, CoC.instance.weapons.ANCIENTO, CoC.instance.weapons.QULIPOTH],
 			[CoC.instance.weaponsrange.BOWLONG, CoC.instance.weaponsrange.ARTEMIS, CoC.instance.weaponsrange.WILDHUN],
 			[CoC.instance.weaponsrange.SHUNHAR, CoC.instance.weaponsrange.KSLHARP, CoC.instance.weaponsrange.LEVHARP],
 			[CoC.instance.weaponsrange.SIXSHOT, CoC.instance.weaponsrange.GOODSAM, CoC.instance.weaponsrange.BADOMEN],
@@ -395,7 +396,11 @@ public class CelessScene extends XXCNPC implements TimeAwareInterface {
 			[CoC.instance.armors.SPKIMO, CoC.instance.armors.OEKIMO, CoC.instance.armors.OTKIMO],
 			[CoC.instance.armors.CTPALAD, CoC.instance.armors.CTHPALA, CoC.instance.armors.CTBGUAR],
 			[CoC.instance.armors.LTHRPNT, null, CoC.instance.armors.CGUNSLI],
-			[CoC.instance.armors.DEATHPO, null, CoC.instance.armors.DEATHPGA]
+			[CoC.instance.armors.DEATHPO, null, CoC.instance.armors.DEATHPGA],
+			[CoC.instance.armors.B_QIPAO, CoC.instance.armors.SFLAREQ, null],
+			[CoC.instance.armors.G_QIPAO, CoC.instance.armors.SFLAREQ, null],
+			[CoC.instance.armors.P_QIPAO, CoC.instance.armors.SFLAREQ, null],
+			[CoC.instance.armors.R_QIPAO, CoC.instance.armors.SFLAREQ, null]
 		];
 		var selectfrom:int = corrupt ? 2 : 1;
 		var selectMenu:ButtonDataList = new ButtonDataList();
@@ -485,7 +490,7 @@ public class CelessScene extends XXCNPC implements TimeAwareInterface {
 				"The woman has silvery white hair flowing around her perfect visage; and her sizable E cup would make most women back in Ingnam green with envy, then again, most things even somewhat female here in Mareth would cause the same reaction. "+
 				"The comparison to a human, however, ends there. "+
 				"Below her waist is the large lower-body of an immaculate white horse. "+
-				"Her ears are covered with silvery white fur and while at first you mistook her for just a centaur warrior, the spear-like spiraling horns on her forehead warns you that there might be more to her.\n\n"+
+				"Her ears are covered with silvery white fur and while at first you mistook her for just a centaur warrior, the spear-like spiraling horn on her forehead warns you that there might be more to her.\n\n"+
 				"<i>\"Just leave and I won’t have to attack you. I swear on my honor that I won’t give chase should you leave peacefully. This is for your own good.\"</i>");
 				if (playerIsVirgin()) {
 					outputText("She suddenly sniffs something in the air and her expression changes to one of baffled disbelief.\n\n"+
@@ -512,7 +517,8 @@ public class CelessScene extends XXCNPC implements TimeAwareInterface {
 					menu();
 					addButton(0, "Okay", celessUnicornIntro1, (player.isMale() || player.isGenderless()) ? 2 : 3)
 						.disableIf(player.isMale() && player.blockingBodyTransformations(), "Due to your unusual body, you have a feeling this won't work at you.")
-						.disableIf(player.isGargoyle(), "You are a gargoyle... you can't carry <b>anyone's</b> essence.");
+						.disableIf(player.isGargoyle(), "You are a gargoyle... you can't carry <b>anyone's</b> essence.")
+						.disableIf(player.isAutomata(), "You are an automata... you can't carry <b>anyone's</b> essence.");
 					var warningStr:String = "You have a strange feeling that you can miss something very important by doing this.\n\n"
 						+ "<b>You can still get Celess this way by enabling 'Other' in SceneHunter settings.</b>";
 					var noteStr:String = "<b>SH: Now this works as alternative way to Celess.</b>";

@@ -23,7 +23,7 @@ public class CrimsonJade extends Consumable {
 
     override public function useItem():Boolean {
         clearOutput();
-        outputText("What you want to do with this Crimson Jade?");
+        outputText("What do you want to do with this Crimson Jade?");
 		crimsonJade();
         return true;
     }
@@ -56,7 +56,7 @@ public class CrimsonJade extends Consumable {
 		}
 	}
 	public function crimsonJade0():void {
-		outputText("You put away crimson jade. Now is not good time to use it.");
+		outputText("You put away the crimson jade. Now is not good time to use it.");
 		SceneLib.inventory.returnItemToInventory(this);
 	}
     public function crimsonJade1(soulskill:Number):void {
@@ -92,11 +92,11 @@ public class CrimsonJade extends Consumable {
 				case 4:
 					outputText("[pg]You blink in surprise, assaulted by the knowledge of a <b>new blood soulskill: Blood Requiem.</b>");
 					player.createStatusEffect(StatusEffects.KnowsBloodRequiem, 0, 0, 0, 0);
-					break;/*
+					break;
 				case 5:
 					outputText("[pg]You blink in surprise, assaulted by the knowledge of a <b>new blood soulskill: Crimson Overflow.</b>");
-					player.createStatusEffect(StatusEffects., 0, 0, 0, 0);
-					break;*/
+					player.createStatusEffect(StatusEffects.KnowsCrimsonOverflow, 0, 0, 0, 0);
+					break;
 				case 6:
 					outputText("[pg]You blink in surprise, assaulted by the knowledge of a <b>new blood soulskill: Scarlet Spirit Charge.</b>");//not yet have additional effect from Way of the Blood
 					player.createStatusEffect(StatusEffects.KnowsScarletSpiritCharge, 0, 0, 0, 0);

@@ -51,13 +51,12 @@ public class FingerOfDeathSkill extends AbstractSoulSkill {
 	override public function calcCooldown():int {
 		var cooldown:int = 6;
 		if (player.perkv1(IMutationsLib.AnubiHeartIM) >= 4) cooldown -= 2;
-			
 		return soulskillTier2Cooldown(cooldown, false);
 	}
 
 	public function calcDamage(monster:Monster, casting:Boolean = false):Number {
-		var damage:Number = (scalingBonusWisdom() * 1.5) + (scalingBonusIntelligence() * 1.5);
-		if (damage < 15) damage = 15;
+		var damage:Number = (scalingBonusWisdom() + scalingBonusIntelligence()) * 2;
+		if (damage < 20) damage = 20;
 
 		//soulskill mod effect
 		var damageMult:Number = 1;
@@ -70,6 +69,7 @@ public class FingerOfDeathSkill extends AbstractSoulSkill {
 		//other bonuses
 		if (player.hasPerk(PerkLib.Heroism) && (monster.hasPerk(PerkLib.EnemyBossType) || monster.hasPerk(PerkLib.EnemyHugeType))) damage *= 2;
 		if (player.perkv1(IMutationsLib.AnubiHeartIM) >= 4 && player.HP < Math.round(player.maxHP() * 0.5)) damage *= 1.5;
+		if (player.hasPerk(PerkLib.ExanimationI)) damage *= combat.hollowSkillsAndSoulskillsBoost();
 		if (player.armor == armors.DEATHPGA) damage *= 1.5;
 		return Math.round(damage * combat.darknessDamageBoostedByDao());
 		
@@ -78,7 +78,7 @@ public class FingerOfDeathSkill extends AbstractSoulSkill {
 
     override public function doEffect(display:Boolean = true):void {
 		if (display) outputText("You point a finger at your opponent condemning [monster his] soul as you call on to the power of death to claim a part of [monster him] early!"
-			+ " A ghastly claw appears and pierce through [themonster] body tearing [monster his] soul appart.  ");
+			+ " A ghastly claw appears and pierces through [themonster] body tearing [monster his] soul apart.  ");
 		combat.darkRitualCheckDamage();
 
 		var damage:Number = calcDamage(monster, true);
@@ -100,6 +100,12 @@ public class FingerOfDeathSkill extends AbstractSoulSkill {
 
 		checkAchievementDamage(damage);
 		if (display) outputText("\n\n");
+		if (player.hasPerk(PerkLib.BrutalSpells) && monster.armorMDef > 0) {
+			outputText("Your soulskills are so brutal that you damage [themonster]'s magical resistance!\n\n");
+			var bbc:Number = (Math.round(monster.armorMDef * 0.1) + 5);
+			if (monster.armorMDef - bbc > 0) monster.armorMDef -= bbc;
+			else monster.armorMDef = 0;
+		}
 		if (!player.hasStatusEffect(StatusEffects.BloodCultivator) && flags[kFLAGS.IN_COMBAT_PLAYER_ANUBI_HEART_LEECH] == 0) anubiHeartLeeching(damage);
 		combat.heroBaneProc2();
 		combat.EruptingRiposte2();

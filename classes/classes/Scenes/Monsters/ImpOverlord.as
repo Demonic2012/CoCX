@@ -85,7 +85,7 @@ public class ImpOverlord extends Imp
 			else if (spellChooser == 4 && fatigue <= (maxFatigue() - spellCostHeal)) {
 				outputText("He focuses on his body and his desire to end pain, trying to draw on his arousal without enhancing it.");
 				var temp:int = int((inte / (2 + rand(3))) * (maxHP() / 50));
-				outputText("He flushes with success as his wounds begin to knit! <b>(<font color=\"#008000\">+" + temp + "</font>)</b>.");
+				outputText("He flushes with success as his wounds begin to knit! <b>([font-heal]+" + temp + "[/font])</b>.");
 				addHP(temp);
 				fatigue += spellCostHeal;
 			}
@@ -226,16 +226,16 @@ public class ImpOverlord extends Imp
 			this.butt.type = Butt.RATING_TIGHT;
 			this.lowerBody = LowerBody.HOOFED;
 			this.bodyColor = "red";
-			initStrTouSpeInte(100, 95, 85, 71);
-			initWisLibSensCor(71, 75, 35, 100);
+			initStrTouSpeInte(200, 185, 165, 131);
+			initWisLibSensCor(131, 150, 70, 100);
 			this.weaponName = "scimitar";
 			this.weaponVerb="slash";
-			this.weaponAttack = 30;
+			this.weaponAttack = 60;
 			this.armorName = "sexy black chitin armor-plating";
-			this.armorDef = 20;
-			this.armorMDef = 10;
-			this.bonusHP = 600;
-			this.bonusLust = 131;
+			this.armorDef = 40;
+			this.armorMDef = 20;
+			this.bonusHP = 1000;
+			this.bonusLust = 241;
 			this.lust = 30;
 			this.lustVuln = .3;
 			this.fatigue = 0;

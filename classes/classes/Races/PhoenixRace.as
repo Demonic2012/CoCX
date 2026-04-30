@@ -50,7 +50,8 @@ public class PhoenixRace extends Race {
 				.skinCoatType(Skin.SCALES, +1)
 				.hasCockOfType(CockTypesEnum.LIZARD, +1)
 				.hasPerk(PerkLib.PhoenixFireBreath, +1)
-				.hasPerk(PerkLib.HarpyWomb, +2);
+				.hasPerk(PerkLib.HarpyWomb, +2)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		addConditionedScores(function (body:BodyData):Boolean {
 			return body.hairType === Hair.FEATHER;
 		}, "feather hair;",3)
@@ -60,6 +61,7 @@ public class PhoenixRace extends Race {
 		addBloodline(PerkLib.SalamandersDescendant, PerkLib.BloodlineSalamander);
 		addMutation(IMutationsLib.HarpyHollowBonesIM);
 		addMutation(IMutationsLib.SalamanderAdrenalGlandsIM);
+		addMutation(IMutationsLib.BlazingHeartIM);
 		
 		buildTier(10, "phoenix")
 				.namesTauric("phoenix", "phoenix-taur")

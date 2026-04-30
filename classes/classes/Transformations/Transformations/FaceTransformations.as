@@ -298,7 +298,7 @@ public class FaceTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "Sudden agony sweeps over your [face], your visage turning hideous as bones twist and your jawline shifts. The pain slowly vanishes, leaving you weeping into your fingers. When you pull your hands away you realize you've been left with a completely normal, human face. But then your tooth's suddenly hurt as they begin to change. Your canines getting sharper and more adapted to eating meat just like those of a dragon. <b>You now have dragon fangs.</b>";
+				desc += "Sudden agony sweeps over your [face], your visage turning hideous as bones twist and your jawline shifts. The pain slowly vanishes, leaving you weeping into your fingers. When you pull your hands away you realize you've been left with a completely normal, human face. But then your teeth suddenly hurt as they begin to change. Your canines getting sharper and more adapted to eating meat just like those of a dragon. <b>You now have dragon fangs.</b>";
 
 				if (doOutput) outputText(desc);
 				player.faceType = Face.DRAGON_FANGS;
@@ -555,7 +555,7 @@ public class FaceTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "Your tooth's suddenly hurt as you feel them changing. Your canines getting sharper and more adapted to eating meat. <b>You now have fangs.</b>";
+				desc += "Your teeth suddenly hurt as you feel them changing. Your canines getting sharper and more adapted to eating meat. <b>You now have fangs.</b>";
 
 				if (doOutput) outputText(desc);
 				player.faceType = Face.SALAMANDER_FANGS;
@@ -643,7 +643,7 @@ public class FaceTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "You bring your hands to your [face] as a sudden agony sweeps over it. Through the pain, you can feel its shape changing, details shifting little by little with purpose. When you come back to your senses, you notice <b>you have a innocent, almost angelic face!</b>";
+				desc += "You bring your hands to your [face] as a sudden agony sweeps over it. Through the pain, you can feel its shape changing, details shifting little by little with purpose. When you come back to your senses, you notice <b>you have an innocent, almost angelic face!</b>";
 
 				if (doOutput) outputText(desc);
 				player.faceType = Face.INNOCENT;
@@ -719,6 +719,7 @@ public class FaceTransformations extends MutationsHelper {
 
 				if (doOutput) outputText(desc);
 				player.faceType = Face.BUCKTOOTH;
+				Metamorph.unlockMetamorph(FaceMem.getMemory(FaceMem.BUCKTOOTH));
 			},
 			// is present
 			function (): Boolean {
@@ -735,6 +736,7 @@ public class FaceTransformations extends MutationsHelper {
 
 				if (doOutput) outputText(desc);
 				player.faceType = Face.JABBERWOCKY;
+				Metamorph.unlockMetamorph(FaceMem.getMemory(FaceMem.JABBERWOCKY));
 			},
 			// is present
 			function (): Boolean {
@@ -1013,6 +1015,7 @@ public class FaceTransformations extends MutationsHelper {
 
 				if (doOutput) outputText(desc);
 				player.faceType = Face.KUDERE;
+				Metamorph.unlockMetamorph(FaceMem.getMemory(FaceMem.KUDERE));
 			},
 			// is present
 			function (): Boolean {
@@ -1055,7 +1058,7 @@ public class FaceTransformations extends MutationsHelper {
 			function (doOutput: Boolean): void {
 				var desc: String = "";
 
-				desc += "Thinking on it, you’re smart, small and smugly. The whole idea makes you laugh uncontrollably. But hey seriously since you’re the superior genius around here, might as well flash these idiots an unsettling smile, heck just thinking about how stupid everyone else is makes you smirk constantly, halfway to laughter. Well they might call you crazy but once you bury these primitive fools in the ground they'll all be the crazy ones. <b>You’re now constantly flashing a crazy grin just like a gremlin.</b>";
+				desc += "Thinking on it, you’re smart, small and smuggly. The whole idea makes you laugh uncontrollably. But hey seriously since you’re the superior genius around here, might as well flash these idiots an unsettling smile, heck just thinking about how stupid everyone else is makes you smirk constantly, halfway to laughter. Well, they might call you crazy but once you bury these primitive fools in the ground they'll all be the crazy ones. <b>You’re now constantly flashing a crazy grin just like a gremlin.</b>";
 
 				if (doOutput) outputText(desc);
 				player.faceType = Face.CRAZY;
@@ -1184,6 +1187,91 @@ public class FaceTransformations extends MutationsHelper {
 			// is present
 			function (): Boolean {
 				return player.faceType === Face.DEMON;
+			}
+	);
+
+	public const FaceTroll: Transformation = new SimpleTransformation("Troll Face",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				TransformationUtils.applyTFIfNotPresent(transformations.FaceHuman, doOutput);
+				desc += "You feel tremendous pressure in your jaws and skull. Slight pain and extreme discomfort run through you as you feel tusks sprout from your jaw past your lips. Your nose also becomes more pronounced. <b>You now have troll tusks!</b>";
+
+				if (doOutput) outputText(desc);
+				player.faceType = Face.TROLL;
+				Metamorph.unlockMetamorph(FaceMem.getMemory(FaceMem.TROLL));
+			},
+			// is present
+			function (): Boolean {
+				return player.faceType === Face.TROLL;
+			}
+	);
+
+	public const FaceGlacialTroll: Transformation = new SimpleTransformation("Glacial Troll Face",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				TransformationUtils.applyTFIfNotPresent(transformations.FaceHuman, doOutput);
+				desc += "You feel tremendous pressure in your jaws and skull. Slight pain and extreme discomfort run through you as you feel tusks sprout from your jaw past your lips. Your nose also becomes more pronounced. <b>You now have glacial troll tusks!</b>";
+
+				if (doOutput) outputText(desc);
+				player.faceType = Face.GLACIAL_TROLL;
+				Metamorph.unlockMetamorph(FaceMem.getMemory(FaceMem.GLACIAL_TROLL));
+			},
+			// is present
+			function (): Boolean {
+				return player.faceType === Face.GLACIAL_TROLL;
+			}
+	);
+
+	public const FaceAutomata: Transformation = new SimpleTransformation("Automata Face",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				TransformationUtils.applyTFIfNotPresent(transformations.FaceHuman, doOutput);
+
+				if (doOutput) outputText(desc);
+				player.faceType = Face.AUTOMATA;
+			},
+			// is present
+			function (): Boolean {
+				return player.faceType === Face.AUTOMATA;
+			}
+	);
+
+	public const FaceWerespiderFangs: Transformation = new SimpleTransformation("Werespider Fangs Face",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "Tension builds within your upper gum, just above your canines. You open your mouth and prod at the affected area, pricking your finger on the sharpening tooth as your throat grow dryer. It slides down while you're touching it, lengthening into a needle-like fang.  You could go for some wine right now, with a bloody steak to top it off… maybe just the steak. Or just the blood, really. You aren’t picky. Really, it’s up to you whether just rip off some poor sod’s throat and drink straight from the tap or drink blood from a wineglass, what with <b>your new werespider fangs!</b>";
+
+				if (doOutput) outputText(desc);
+				player.faceType = Face.WERESPIDER_FANGS;
+				if (player.tailRecharge < 5) player.tailRecharge = 5;
+				Metamorph.unlockMetamorph(FaceMem.getMemory(FaceMem.WERESPIDER));
+			},
+			// is present
+			function (): Boolean {
+				return player.faceType === Face.WERESPIDER_FANGS;
+			}
+	);
+
+	public const FaceHollowMask: Transformation = new SimpleTransformation("Face with Hollow Mask",
+			// apply effect
+			function (doOutput: Boolean): void {
+				var desc: String = "";
+
+				TransformationUtils.applyTFIfNotPresent(transformations.FaceHuman, doOutput);
+
+				if (doOutput) outputText(desc);
+				player.faceType = Face.HOLLOW_MASK;
+				Metamorph.unlockMetamorph(FaceMem.getMemory(FaceMem.HOLLOW_MASK));
+			},
+			// is present
+			function (): Boolean {
+				return player.faceType === Face.HOLLOW_MASK;
 			}
 	);
 }

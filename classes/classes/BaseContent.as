@@ -146,10 +146,18 @@ import coc.xxc.StoryContext;
 		{
 			return DungeonAbstractContent.inDungeon;
 		}
-
 		protected function set inDungeon(v:Boolean):void
 		{
 			DungeonAbstractContent.inDungeon = v;
+		}
+
+		protected function get inOutdoorDungeon():Boolean
+		{
+			return DungeonAbstractContent.inOutdoorDungeon;
+		}
+		protected function set inOutdoorDungeon(v:Boolean):void
+		{
+			DungeonAbstractContent.inOutdoorDungeon = v;
 		}
 
 		protected function get inRoomedDungeon():Boolean
@@ -584,9 +592,9 @@ import coc.xxc.StoryContext;
 			return EngineCore.silly();
 		}
 
-		protected function HPChange(changeNum:Number,display:Boolean):void
+		protected function HPChange(changeNum:Number,display:Boolean, stillness:Boolean):void
 		{
-			EngineCore.HPChange(changeNum,display);
+			EngineCore.HPChange(changeNum,display,stillness);
 		}
 
 		// For fatigue(mod,type) calls
@@ -615,7 +623,7 @@ import coc.xxc.StoryContext;
 			return CoC.instance.player;
 		}
 
-		protected function set player(val:Player):void
+		protected static function set player(val:Player):void
 		{
 			CoC.instance.player = val;
 		}
@@ -752,7 +760,7 @@ import coc.xxc.StoryContext;
 			return CoC.instance.model;
 		}
 
-		protected function set model(val:GameModel):void
+		protected static function set model(val:GameModel):void
 		{
 			CoC.instance.model = val;
 		}

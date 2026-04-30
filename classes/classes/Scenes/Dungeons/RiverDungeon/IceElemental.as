@@ -17,7 +17,7 @@ public class IceElemental extends Monster
 			outputText(""+(flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4?"Undine":"The ice elemental")+" crystalizes its fist within a block of hardened ice before jabbing at you.");
 			var damage:Number = inte + wis;
 			if (player.hasPerk(PerkLib.FromTheFrozenWaste) || player.hasPerk(PerkLib.ColdAffinity)) damage *= 0.3;
-			if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) damage *= 3;
+			if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.FireShadowAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) damage *= 3;
 			damage *= ((flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] + 1) * 1.25);
 			damage = Math.round(damage);
 			//Dodge
@@ -34,7 +34,7 @@ public class IceElemental extends Monster
 			outputText(""+(flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4?"Undine":"The ice elemental")+" crystalizes its fist in ice. Jagged icicles emerge as the elemental jabs at you.");
 			var damage:Number = inte + wis;
 			if (player.hasPerk(PerkLib.FromTheFrozenWaste) || player.hasPerk(PerkLib.ColdAffinity)) damage *= 0.3;
-			if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) damage *= 3;
+			if (player.hasPerk(PerkLib.FireAffinity) || player.hasPerk(PerkLib.FireShadowAffinity) || player.hasPerk(PerkLib.AffinityIgnis)) damage *= 3;
 			damage *= ((flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] + 1) * 1.5);
 			damage = Math.round(damage);
 			//Dodge
@@ -87,8 +87,11 @@ public class IceElemental extends Monster
 		
 		override public function won(hpVictory:Boolean, pcCameWorms:Boolean):void
 		{
-			/*if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4) SceneLib.dungeons.riverdungeon.defeatedByAirElementalSubBoss();
-			else */SceneLib.dungeons.riverdungeon.defeatedByIceElemental();
+			if (inDungeon) {
+				/*if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 4) SceneLib.dungeons.riverdungeon.defeatedByAirElementalSubBoss();
+				else */SceneLib.dungeons.riverdungeon.defeatedByIceElemental();
+			}
+			else cleanupAfterCombat();
 		}
 		
 		public function IceElemental() 
@@ -98,13 +101,13 @@ public class IceElemental extends Monster
 				this.imageName = "ice elemental";
 				this.long = "You're currently fighting ice elemental. It's a four feet tall body of ice shaped into a humanoid form. It's using bare fists to fight.";
 				this.tallness = 48;
-				initStrTouSpeInte(22, 37, 57, 105);
-				initWisLibSensCor(105, 10, 55, 50);
-				this.weaponAttack = 12;
-				this.armorDef = 12;
-				this.armorMDef = 100;
+				initStrTouSpeInte(44, 74, 114, 210);
+				initWisLibSensCor(210, 20, 110, 0);
+				this.weaponAttack = 24;
+				this.armorDef = 24;
+				this.armorMDef = 200;
 				this.level = 26;
-				this.bonusHP = 680;
+				this.bonusHP = 1360;
 				this.additionalXP = 185;
 			}
 			else if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 1) {
@@ -112,13 +115,13 @@ public class IceElemental extends Monster
 				this.imageName = "ice elemental";
 				this.long = "You're currently fighting ice elemental. It's a four foot, three inch tall body of ice shaped into a humanoid form. It's using bare fists to fight.";
 				this.tallness = 51;
-				initStrTouSpeInte(25, 40, 60, 120);
-				initWisLibSensCor(120, 10, 65, 50);
-				this.weaponAttack = 14;
-				this.armorDef = 14;
-				this.armorMDef = 120;
+				initStrTouSpeInte(50, 80, 120, 240);
+				initWisLibSensCor(240, 20, 130, 0);
+				this.weaponAttack = 28;
+				this.armorDef = 28;
+				this.armorMDef = 240;
 				this.level = 28;
-				this.bonusHP = 760;
+				this.bonusHP = 1520;
 				this.additionalXP = 215;
 			}
 			else if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 2) {
@@ -126,13 +129,13 @@ public class IceElemental extends Monster
 				this.imageName = "ice elemental";
 				this.long = "You're currently fighting ice elemental. It's a four and half foot tall body of ice shaped into a humanoid form. It's using bare fists to fight.";
 				this.tallness = 54;
-				initStrTouSpeInte(28, 43, 63, 135);
-				initWisLibSensCor(135, 10, 75, 50);
-				this.weaponAttack = 16;
-				this.armorDef = 16;
-				this.armorMDef = 140;
+				initStrTouSpeInte(56, 86, 126, 270);
+				initWisLibSensCor(270, 20, 150, 0);
+				this.weaponAttack = 32;
+				this.armorDef = 32;
+				this.armorMDef = 280;
 				this.level = 30;
-				this.bonusHP = 840;
+				this.bonusHP = 1680;
 				this.additionalXP = 245;
 			}
 			else if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 3) {
@@ -140,29 +143,72 @@ public class IceElemental extends Monster
 				this.imageName = "ice elemental";
 				this.long = "You're currently fighting ice elemental. It's four foot, nine inch tall body of ice shaped into a humanoid form. It's using bare fists to fight.";
 				this.tallness = 57;
-				initStrTouSpeInte(31, 46, 66, 150);
-				initWisLibSensCor(150, 10, 85, 50);
-				this.weaponAttack = 18;
-				this.armorDef = 18;
-				this.armorMDef = 160;
+				initStrTouSpeInte(62, 92, 132, 300);
+				initWisLibSensCor(300, 20, 170, 0);
+				this.weaponAttack = 36;
+				this.armorDef = 36;
+				this.armorMDef = 320;
 				this.level = 32;
-				this.bonusHP = 920;
+				this.bonusHP = 1840;
 				this.additionalXP = 275;
+			}
+			else if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 5) {
+				this.short = "ice elemental";
+				this.imageName = "ice elemental";
+				this.long = "You're currently fighting ice elemental. It's a four, nine inch tall body of ice shaped into a humanoid form. It's using bare fists to fight.";
+				this.tallness = 57;
+				initStrTouSpeInte(176, 206, 246, 870);
+				initWisLibSensCor(870, 20, 550, 0);
+				this.weaponAttack = 212;
+				this.armorDef = 224;
+				this.armorMDef = 2160;
+				this.level = 70;
+				this.bonusHP = 4880;
+				this.additionalXP = 845;
+			}
+			else if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 6) {
+				this.short = "ice elemental";
+				this.imageName = "ice elemental";
+				this.long = "You're currently fighting ice elemental. It's a four, nine inch tall body of ice shaped into a humanoid form. It's using bare fists to fight.";
+				this.tallness = 57;
+				initStrTouSpeInte(266, 296, 336, 1320);
+				initWisLibSensCor(1320, 20, 850, 0);
+				this.weaponAttack = 272;
+				this.armorDef = 344;
+				this.armorMDef = 3360;
+				this.level = 100;
+				this.bonusHP = 7280;
+				this.additionalXP = 1295;
 			}
 			this.a = "the ";
 			this.plural = false;
-			this.lustVuln = 0;
-			this.drop = new WeightedDrop()
-					.add(useables.ELSHARD, 3)
-					.add(useables.LELSHARD, 1);
+			this.lustVuln = 0.01;
 			this.createBreastRow(0, 1);
 			initGenderless();
 			this.weaponName = "fists";
 			this.weaponVerb = "smash";
 			this.armorName = "ice skin";
 			this.createPerk(PerkLib.EnemyElementalType, 0, 0, 0, 0);
+			this.createPerk(PerkLib.EnemyEliteType, 0, 0, 0, 0);
 			this.createPerk(PerkLib.IceNature, 0, 0, 0, 0);
 			this.createPerk(PerkLib.MonsterRegeneration, 1, 0, 0, 0);
+			if (inDungeon) {
+				this.drop = new WeightedDrop()
+					.add(useables.ELSHARD, 3)
+					.add(useables.LELSHARD, 1);
+			}
+			else {
+				if (flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] == 6) {
+					this.drop = new WeightedDrop()
+						.add(useables.ELCRYST, 3)
+						.add(useables.LELCRYST, 1);
+				}
+				else {
+					this.drop = new WeightedDrop()
+						.add(useables.LELSHARD, 3)
+						.add(useables.ELCRYST, 1);
+				}
+			}
 			checkMonster();
 		}
 		

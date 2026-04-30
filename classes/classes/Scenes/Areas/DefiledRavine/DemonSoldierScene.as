@@ -16,7 +16,7 @@ public class DemonSoldierScene extends BaseContent {
         clearOutput();
         monster = new DemonSoldier();
         if (flags[kFLAGS.DEMON_SOLDIERS_ENCOUNTERED] < 1) {
-            outputText("As you pick your way through the terrain a shadow passes overhead, looking up you spot a large flying shape silhouetted against the sun. At first you think it might be some sort of bird, but as the shape swoops closer you see that the wings are more like those of a bat, with a long, spaded tail trailing out behind. Uh-oh...");
+            outputText("As you pick your way through the terrain a shadow passes overhead, looking up you spot a large flying shape silhouetted against the sun. At first you think it might be some sort of bird, but as the shape swoops closer you see that the wings are more like those of a bat, with a long, spaded tail trailing out behind- uh-oh...");
             outputText("\n\nThe Demon lands in front of you with an almost liquid grace. [monster He] folds [monster his] wings behind [monster his] back, and [monster his] tail whips back and forth as a truly malevolent grin splits the infernal creature's face.");
             if (!player.isAnyRaceCached(Races.DEMON, Races.IMP)) outputText("<i>\"Well well, it looks like I've found some sport to liven up a dull patrol!\"</i>");
             else outputText("\"<i>Hmm... you may look like one of us, but I can smell your soul from here; I shall enjoy fucking it out of you!\"</i>");
@@ -50,10 +50,11 @@ public class DemonSoldierScene extends BaseContent {
             addButtonDisabled(0, "Get Oral", "You're not horny enough to consider doing that.");
         }
         //Eliminate the demon threat.
-        if (hpVictory) addButton(3, "Kill " + monster.mf("Him", "Her"), killTheSoldier);
-        else addButtonDisabled(3, "Kill " + monster.mf("Him", "Her"), "You must have beaten the demon by reducing [monster his] HP to zero.");
-        //Nothing? Fuck off kindly.
-        addButton(4, "Leave", cleanupAfterCombat);
+        if (hpVictory) addButton(5, "Kill " + monster.mf("Him", "Her"), killTheSoldier);
+        else addButtonDisabled(5, "Kill " + monster.mf("Him", "Her"), "You must have beaten the demon by reducing [monster his] HP to zero.");
+        addButtonIfTrue(6, "Tame It", SceneLib.campMakeWinions.tamingAttempt, "Req. to have Job: Tamer", player.hasPerk(PerkLib.JobTamer));
+		//Nothing? Fuck off kindly.
+        addButton(14, "Leave", cleanupAfterCombat);
     }
 
     private function giveTheDemonGoodFacial():void {
@@ -85,7 +86,7 @@ public class DemonSoldierScene extends BaseContent {
             } else if (player.cumQ() < 2500) {
                 outputText("blast so much cum into the beast that [monster his] cheeks balloon comically and little jets of pearlescent spooge shoot out of [monster his] nose as [monster he] struggles to keep up with swallowing your mighty load.");
             } else {
-                outputText("gush a vast flood of cum directly down the beast's waiting throat, and the look on the Demon's face is priceless as [monster he] realises that the torrential flood of jizz isn't letting up. As [monster he] struggles to keep up with swallowing your titanic load [monster his] cheeks balloon out, streams of cum spurt out of [monster his] nose and around your shaft, and [monster his] stomach begins to swell, eventually reaching the size of a beachball!");
+                outputText("gush a vast flood of cum directly down the beast's waiting throat, and the look on the Demon's face is priceless as [monster he] realizes that the torrential flood of jizz isn't letting up. As [monster he] struggles to keep up with swallowing your titanic load [monster his] cheeks balloon out, streams of cum spurt out of [monster his] nose and around your shaft, and [monster his] stomach begins to swell, eventually reaching the size of a beachball!");
             }
             outputText("\n\nFinally, you pull your cock from [monster his] silken sheath" + (player.cockTotal() > 1 ? ", as your other cock" + (player.cockTotal() == 2 ? " splatters" : "s splatter") + " cum onto the ground" : "") + " and finish the last of your orgasm over the " + (monster as DemonSoldier).demonTitle() + "'s face, as [monster he] gasps for long-denied air. ");
             player.sexReward("saliva", "Dick");
@@ -97,7 +98,7 @@ public class DemonSoldierScene extends BaseContent {
             outputText("\n\nImmediately, the long, slick rope of the beast's tongue slithers between [monster his] lips to " + (player.cockTotal() == 1 ? "encircle your hot cock, slipping and sliding across the throbbing surface," : "entwine [monster him]self around the throbbing poles of your dicks, writhing across them,") + " as the monster's lips continue to massage your " + player.cockHead(player.biggestCockIndex()) + ".");
             outputText("\n\nThe wriggling tip of the infernal organ dances " + (player.cockTotal() == 1 ? "up and down your meaty pillar of flesh while the rest of it loops around your shaft and pulls tight, firmly gripping your massive member even as [monster his] coils slide along your phallic length." : "all about your meaty pillars of flesh while the rest of it loops around your shafts and pulls tight, firmly gripping your massive members even as [monster his] coils slide along your phallic lengths."));
             outputText((player.isTaur() ? "You rest back on your haunches" : "You lean back") + " and relax as the captive demon services your " + player.multiCockDescriptLight() + " when the creature's tongue-tip rears back like a striking serpent before plunging into your piss-slit, drawing a sharp intake of breath from you.");
-            outputText("\n\nA " + (player.isTaur() ? "whinney" : "ragged sigh") + " escapes your lips as you savour the sensation of the slippery tongue-lasso gliding back and forth along the length of your mighty, rock-solid prick " + (player.cockTotal() == 1 ? "" : "s") + ". The length of flesh writhing within your cum-vein thrashes and undulates, stimulating you from within even as the ropey coils pleasure you without.");
+            outputText("\n\nA " + (player.isTaur() ? "whinney" : "ragged sigh") + " escapes your lips as you savor the sensation of the slippery tongue-lasso gliding back and forth along the length of your mighty, rock-solid prick " + (player.cockTotal() == 1 ? "" : "s") + ". The length of flesh writhing within your cum-vein thrashes and undulates, stimulating you from within even as the ropey coils pleasure you without.");
             outputText("\n\nYou groan as the squirming tendril worms [monster his] way down your urethra, the pleasure mounts and mounts until finally, with a body-wracking shudder you ");
             if (player.cumQ() < 50) {
                 outputText("squirt your load over the beast's upturned face.");
@@ -204,7 +205,7 @@ public class DemonSoldierScene extends BaseContent {
 		//Additional loot!
         if (rand(8) == 0) {
             outputText("\n\nAs you're about to " + (player.isNaga() ? "slither" : "walk") + " away in satisfaction, you spot a glowing, pink crystal and a closer examination reveals it to be a lethicite. Why the demon hasn't even eaten it remains a mystery but either way, you're in luck to have recovered it before it gets eaten (and irreversibly absorbed) and you pocket it. ");
-            inventory.takeItem(consumables.LETHITE, cleanupAfterCombat);
+            inventory.takeItem(consumables.LETH0TE, cleanupAfterCombat);
         }
         cleanupAfterCombat();
 	}
@@ -262,7 +263,7 @@ public class DemonSoldierScene extends BaseContent {
             }
         }
         outputText("\n\nThe tempo of the hellish beast's pistoning becomes more erratic, and spits and spurts of demonic pre-cum spray out around the creature's infernal cock.");
-        outputText("\n\n\"<i>Aaahhhnnn... yeeesss, cum for me... unf... CUM FOR ME, FUCKSLUT!! AAAAHHHHH!!!!</i>\" The Demon shrieks, [monster his] tongue lolling from [monster his] mouth as [monster his] orgasm comes thundering up. The " + (player.hasCock() || player.hasVagina() ? "constant manhandling of your genitalia reaches fever pitch, as [themonster]'s skilful manipulation combined with the " : "") + "vigorous power fucking you're taking has you very close to cumming, yourself.");
+        outputText("\n\n\"<i>Aaahhhnnn... yeeesss, cum for me... unf... CUM FOR ME, FUCKSLUT!! AAAAHHHHH!!!!</i>\" The Demon shrieks, [monster his] tongue lolling from [monster his] mouth as [monster his] orgasm comes thundering up. The " + (player.hasCock() || player.hasVagina() ? "constant manhandling of your genitalia reaches fever pitch, as [themonster]'s skillful manipulation combined with the " : "") + "vigorous power fucking you're taking has you very close to cumming, yourself.");
         outputText("\n\nYou feel the Demon's infernal prick twitching and spasming within you, finally gushing a torrent of hellish sperm inside your ");
         if (player.hasVagina()) { //Pussy or Ass?
             outputText(player.isPregnant() ? "womb. The Demon leans close to your ear and murmurs; <i>\"That's it, let me soak the mewling spawn growing inside you with my demon spunk! If only I could get you double-pregnant!\"</i>" : "womb. The Demon leans close to your ear and murmurs; <i>\"Yes, take my corrupt seed into your belly. Grow fat with my spawn, brood-cow! It's all you pitiful mortals are good for!\"</i>");

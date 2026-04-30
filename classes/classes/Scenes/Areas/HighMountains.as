@@ -8,6 +8,7 @@ import classes.Scenes.API.Encounters;
 import classes.Scenes.API.ExplorationEntry;
 import classes.Scenes.API.GroupEncounter;
 import classes.Scenes.Areas.HighMountains.*;
+import classes.Scenes.Dungeons.RiverDungeon.AirElemental;
 import classes.Scenes.Monsters.LightElfScene;
 import classes.Scenes.NPCs.EtnaFollower;
 import classes.Scenes.SceneLib;
@@ -21,7 +22,7 @@ public class HighMountains extends BaseContent {
     public var cockatriceScene:CockatriceScene = new CockatriceScene();
     public var nekobakeInn:NekobakeInn = new NekobakeInn();
     
-    public const areaLevel:int = 55;
+    public const areaLevel:int = 76;
     public function isDiscovered():Boolean {
         return SceneLib.exploration.counters.highMountains > 0;
     }
@@ -84,7 +85,7 @@ public class HighMountains extends BaseContent {
                 return (flags[kFLAGS.ETNA_FOLLOWER] < 1 || EtnaFollower.EtnaInfidelity == 2)
                     && flags[kFLAGS.ETNA_TALKED_ABOUT_HER] == 2
                     && !player.hasStatusEffect(StatusEffects.EtnaOff)
-                    && (player.level >= 20);
+                    && (player.level >= 20 || flags[kFLAGS.HARDCORE_MODE] == 1);
             },
             chance: highMountainsChance,
             call: SceneLib.etnaScene.repeatYandereEnc
@@ -121,6 +122,11 @@ public class HighMountains extends BaseContent {
             },
             call: cockatriceScene.greeting
         }, {
+			name: "lightelf",
+			label : "Light Elf",
+			kind : 'monster',
+			call: lightelfScene.introLightELfRanger
+		}, {
             name: "lightelf",
 			label : "Light Elf",
 			kind  : 'monster',
@@ -136,6 +142,11 @@ public class HighMountains extends BaseContent {
 			label : "F.Priest",
 			kind  : 'monster',
 			call: SceneLib.lake.fetishZealotScene.zealotHighMountains
+		}, {
+			name: "wind ele",
+			label : "Wind Elemental",
+			kind  : 'monster',
+			call: highmountainsWindElemental
 		}, {
             name: "nekobakeInn",
 			label : "Nekobake Inn",
@@ -182,6 +193,13 @@ public class HighMountains extends BaseContent {
 		var temp:Number = 0.5;
 		temp *= player.npcChanceToEncounter();
 		return temp;
+	}
+	
+	private function highmountainsWindElemental():void {
+		clearOutput();
+		outputText("While exploring the high mountains a sudden gust of wind sends you sprawling to the ground. Lifting your head up you see what appears to be a green skinned woman of which the ethereal frame moves and swirls like a small cyclone as various debris are carried in her wake. This is a fully manifested Sylpheed and the capricious elemental has definitively decided to pick on you to stave her boredom. Knowing full well you can’t reason with this aerial prankster you prepare to fight.\n");
+		flags[kFLAGS.RIVER_DUNGEON_ELEMENTAL_MIXER] = 7;
+		startCombat(new AirElemental());
 	}
 
     public function caveScene():void {

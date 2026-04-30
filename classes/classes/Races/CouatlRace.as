@@ -4,6 +4,7 @@ import classes.BodyParts.*;
 import classes.CockTypesEnum;
 import classes.GeneticMemories.RaceMem;
 import classes.IMutations.IMutationsLib;
+import classes.PerkLib;
 import classes.Race;
 import classes.Races;
 import classes.VaginaClass;
@@ -60,11 +61,14 @@ public class CouatlRace extends Race {
 									|| GorgonRace.isGorgonLike(body)
 									|| VouivreRace.isVouivreLike(body)
 									|| HydraRace.isHydraLike(body)
-									|| ApophisRace.isApophisLike(body));
-						}, 0, -1000);
+									|| ApophisRace.isApophisLike(body)
+									|| MarilithRace.isMarilithLike(body));
+						}, 0, -1000)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		
 		addMutation(IMutationsLib.VenomGlandsIM);
 		addMutation(IMutationsLib.HeartOfTheStormIM);
+		addMutation(IMutationsLib.MightyLowerHalfIM);
 		
 		buildTier(11, "couatl")
 				.buffs({

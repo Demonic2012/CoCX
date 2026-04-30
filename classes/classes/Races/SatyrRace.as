@@ -3,12 +3,13 @@ import classes.BodyData;
 import classes.BodyParts.*;
 import classes.IMutations.IMutationsLib;
 import classes.CockTypesEnum;
+import classes.PerkLib;
 import classes.Race;
 import classes.VaginaClass;
 
 public class SatyrRace extends Race {
-    public static const SatyrHairColors:/*String*/Array = ["red", "mahogany", "brown"];
-    public static const SatyrFurColors:/*String*/Array = ["red", "mahogany", "brown"];
+    public static const SatyrHairColors:/*String*/Array = ["red", "mahogany", "brown", "auburn"];
+    public static const SatyrFurColors:/*String*/Array = ["red", "mahogany", "brown", "auburn"];
     public static const RaceBody:/*String*/Array = [
         /*Antenna*/		"Human",
         /*Arms*/		"Human",
@@ -64,9 +65,11 @@ public class SatyrRace extends Race {
 						function (body:BodyData):Boolean {
 							return (body.player.femininity > 50 && body.player.hasVagina())
 						}, +1)
-				.cockOrVaginaOfType(CockTypesEnum.HUMAN,VaginaClass.HUMAN, +1);
+				.cockOrVaginaOfType(CockTypesEnum.HUMAN,VaginaClass.HUMAN, +1)
+				.hasPerk(PerkLib.GOBXChemical, -1000);
 		
 		addMutation(IMutationsLib.MelkieLungIM);
+		addMutation(IMutationsLib.MightyLegsIM);
 		
 		buildTier(12,"satyr")
 				.namesMaleFemale("satyr", "faun")
